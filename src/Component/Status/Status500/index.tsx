@@ -7,7 +7,7 @@ import {
   Button,
   Grid
 } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet";
 import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
 
 import { styled } from '@mui/material/styles';

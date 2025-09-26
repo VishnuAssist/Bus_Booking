@@ -5,21 +5,22 @@ import RouteAuth from '../Auth/RouteAuth';
 import SidebarLayout from '../Layout/AppLayout';
 import BaseLayout from '../Layout/BaseLayout';
 
-const Loader = (Component:any) => (props:any) =>
-  (
-    <Suspense fallback={<LazyLoading/>}>
-      <Component {...props} />
-    </Suspense>
-  );
+const Loader = (Component: any) => (props: any) =>
+(
+  <Suspense fallback={<LazyLoading />}>
+    <Component {...props} />
+  </Suspense>
+);
 
 const Login = Loader(lazy(() => import('../Screens/auth')));
 const Dashboard = Loader(lazy(() => import('../Screens/dashboard')));
+
 const Status404 = Loader(
   lazy(() => import('../Component/Status/Status404'))
 );
 const Status500 = Loader(
   lazy(() => import('../Component/Status/Status500'))
-);const Status401 = Loader(
+); const Status401 = Loader(
   lazy(() => import('../Component/Status/Status401'))
 );
 const StatusComingSoon = Loader(
@@ -28,6 +29,7 @@ const StatusComingSoon = Loader(
 const StatusMaintenance = Loader(
   lazy(() => import('../Component/Status/Maintenance'))
 );
+
 const routes: RouteObject[] = [
   {
     path: "",
@@ -41,7 +43,7 @@ const routes: RouteObject[] = [
         path: "login",
         element: <Navigate to="/" replace />,
       },
-    
+
       {
         path: "status",
         children: [
@@ -78,7 +80,7 @@ const routes: RouteObject[] = [
     ],
   },
   {
-    element: <RouteAuth/>,
+    element: <RouteAuth />,
     children: [
       {
         path: "dashboards",
@@ -88,17 +90,17 @@ const routes: RouteObject[] = [
             path: "",
             element: <Navigate to="Dashboard" replace />,
           },
-         
+
           {
             path: "Dashboard",
-            element: <Dashboard/>,
+            element: <Dashboard />,
           },
-        
-         
+
+
         ],
       },
-    
-     
+
+
     ],
   },
 ];

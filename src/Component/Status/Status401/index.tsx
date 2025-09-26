@@ -4,7 +4,7 @@ import {
   Container,
   Button,
 } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet";
 
 import { styled } from '@mui/material/styles';
 

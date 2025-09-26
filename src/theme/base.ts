@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { Theme } from '@mui/material';
+import type { Theme } from '@mui/material';
+
 
 import {PureLightTheme} from './schemes/PureLightTheme'
 
