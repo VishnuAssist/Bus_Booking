@@ -36,12 +36,12 @@ const routes: RouteObject[] = [
     element: <BaseLayout />,
     children: [
       {
-        path: "/",
+        path: "/Login",
         element: <Login />,
       },
       {
-        path: "login",
-        element: <Navigate to="/" replace />,
+        path: "",
+        element: <Navigate to="/Login" replace />,
       },
 
       {

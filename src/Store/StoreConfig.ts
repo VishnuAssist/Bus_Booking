@@ -1,18 +1,23 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; 
 
-import accountSlice from "./slice/Account";
+import accountReducer from "./slice/Account";
+import loginReducer from "./slice/loginSlice";
 import { authApi } from "../Api/authApi";
 
+const rootAuthReducer = combineReducers({
+  account: accountReducer,
+  login: loginReducer,
+});
 
 const persistConfig = {
   key: "auth",
   storage,
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, accountSlice);
+const persistedAuthReducer = persistReducer(persistConfig,rootAuthReducer);
 
 export const store = configureStore({
   reducer: {
