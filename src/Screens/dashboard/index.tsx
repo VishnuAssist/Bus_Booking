@@ -1,5 +1,5 @@
 import { Container, Grid } from "@mui/material";
-import { Helmet } from "react-helmet";
+import { Helmet } from "@dr.pogodin/react-helmet";
 import DashCards from "./Cards";
 
 

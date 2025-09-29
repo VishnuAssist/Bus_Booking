@@ -4,7 +4,7 @@ import {
   Container,
   Button,
 } from '@mui/material';
-import { Helmet } from "react-helmet";
+import { Helmet } from "@dr.pogodin/react-helmet";
 import backgroundImage from './bg404.jpg';
 import { styled } from '@mui/material/styles';
 

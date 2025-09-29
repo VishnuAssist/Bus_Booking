@@ -6,7 +6,7 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
-import { Helmet } from "react-helmet";
+import { Helmet } from "@dr.pogodin/react-helmet";
 import Logo from '../../LogoSign';
 
 import { styled } from '@mui/material/styles';

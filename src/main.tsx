@@ -7,16 +7,18 @@ import { persistor, store } from './Store/StoreConfig.ts'
 import { SidebarProvider } from './Context/SidebarContext.tsx';
 import { BrowserRouter } from 'react-router-dom';
 // import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from "@dr.pogodin/react-helmet";
+
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      {/* <HelmetProvider> */}
+      <HelmetProvider>
       <SidebarProvider>
         <BrowserRouter>
           <App />
         </BrowserRouter>
       </SidebarProvider>
-      {/* </HelmetProvider> */}
+      </HelmetProvider>
     </PersistGate>
   </Provider>,
 )
