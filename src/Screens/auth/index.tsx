@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Button, Paper, TextField, Typography, Alert } from "@mui/material";
-
-import { setCredentials, logout } from "../../Store/slice/loginSlice";
+import { logout } from "../../Store/slice/loginSlice";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../Store/StoreConfig";
 
@@ -14,7 +13,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("Admin@123");
 
   const handleLogin = () => {
-          navigate("/dashboards/Dashboard");
+    navigate("/dashboards/Dashboard");
 
     // dispatch(setCredentials({ username, password }));
   };
@@ -54,7 +53,7 @@ const LoginPage: React.FC = () => {
             boxShadow: "0px 4px 20px rgba(0,0,0,0.3)", // keeps card visible
           }}
         >
-        
+
 
           <TextField
             fullWidth
