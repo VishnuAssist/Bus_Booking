@@ -10,18 +10,20 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, error } = useAppSelector((state) => state.auth.login);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("Admin");
+  const [password, setPassword] = useState("Admin@123");
 
   const handleLogin = () => {
-    dispatch(setCredentials({ username, password }));
+          navigate("/dashboards/Dashboard");
+
+    // dispatch(setCredentials({ username, password }));
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/dashboards/Dashboard");
-    }
-  }, [isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate("/dashboards/Dashboard");
+  //   }
+  // }, [isAuthenticated, navigate]);
 
   const handleLogout = () => {
     dispatch(logout());

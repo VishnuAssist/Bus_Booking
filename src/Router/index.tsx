@@ -13,7 +13,7 @@ const Loader = (Component: any) => (props: any) =>
 );
 
 const Login = Loader(lazy(() => import('../Screens/auth')));
-const Dashboard = Loader(lazy(() => import('../Screens/dashboard')));
+const Dashboard = Loader(lazy(() => import('../Screens/dashboard/index')));
 
 const Status404 = Loader(
   lazy(() => import('../Component/Status/Status404'))
@@ -87,7 +87,7 @@ const routes: RouteObject[] = [
         element: <SidebarLayout />,
         children: [
           {
-            path: "",
+            index: true,
             element: <Navigate to="Dashboard" replace />,
           },
 
@@ -95,12 +95,8 @@ const routes: RouteObject[] = [
             path: "Dashboard",
             element: <Dashboard />,
           },
-
-
         ],
       },
-
-
     ],
   },
 ];
