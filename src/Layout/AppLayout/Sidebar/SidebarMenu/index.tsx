@@ -14,10 +14,12 @@ import {
 } from "@mui/material";
 import { NavLink as RouterLink } from "react-router-dom";
 import {
- 
+
   ChevronLeft,
   ChevronRight,
 } from "@mui/icons-material";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import DataUsageIcon from '@mui/icons-material/DataUsage';
 
 
 
@@ -130,24 +132,32 @@ function SidebarMenu({
         title: "Dashboard",
         icon: <MultilineChartIcon />,
         items: [
-        
-      
           {
             label: "Dashboard",
-            link: "/Dashboard",
+            link: "/dashboards/Dashboard",
             icon: <DashboardIcon />,
-            hide:true
+            hide: true,
           },
-       
+          {
+            label: "Commission",
+            link: "/dashboards/Commission",
+            icon: <DataUsageIcon />,
+            hide: true,
+          },
+
           {
             label: "Calendar",
             link: "/dashboards/Calendar",
             icon: <CalendarIcon />,
-          
+          },
+          {
+            label: "Dictionary",
+            link: "/settings/Dictionary",
+            icon: <MenuBookIcon />,
+            hide: true,
           },
         ],
       },
-
     ];
 
     return items

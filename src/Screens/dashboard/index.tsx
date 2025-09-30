@@ -5,6 +5,7 @@ import PageHeader from "./PageHeader";
 import QuickAction from "./QuickAction";
 import Leaderboard from "./Leaderboard.";
 import Achievement from "./Achievements";
+import CommisionContainer from "../../Component/container";
 
 
 const Dashboard = () => {
@@ -14,23 +15,26 @@ const Dashboard = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <Grid container spacing={2}>
-        <Grid size={12}>
-          <PageHeader />
+      <CommisionContainer>
+        <Grid container spacing={2}>
+          <Grid size={12}>
+            <PageHeader />
+          </Grid>
+          <Grid size={12}>
+            <DashCards />
+          </Grid>
+          <Grid size={12}>
+            <QuickAction />
+          </Grid>
+          <Grid size={6}>
+            <Leaderboard />
+          </Grid>
+          <Grid size={6}>
+            <Achievement />
+          </Grid>
         </Grid>
-        <Grid size={12}>
-          <DashCards />
-        </Grid>
-        <Grid size={12}>
-          <QuickAction />
-        </Grid>
-        <Grid size={6}>
-          <Leaderboard />
-        </Grid>
-        <Grid size={6}>
-          <Achievement />
-        </Grid>
-      </Grid>
+      </CommisionContainer>
+
     </>
   );
 }
