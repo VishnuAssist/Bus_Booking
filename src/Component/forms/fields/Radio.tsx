@@ -1,7 +1,8 @@
 import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
-import { OptionType } from "../../../models/formFeilds";
+// import { OptionType } from "../../../models/formFeilds";
 import * as React from "react";
+import type { OptionType } from "../../../model/formFeilds";
 
 interface Props {
   value: string | number|boolean;

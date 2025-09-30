@@ -1,11 +1,5 @@
 import { FormControl, MenuItem, Select } from "@mui/material";
-
-
 import * as React from "react";
-
-
-
-
 import type { OptionType, QueryParamsType } from "../../../Dto/formDto";
 import { defaultparams } from "../../../Constant/defaultValues";
 import { ValidateParams } from "../../../Lib/utile";
@@ -27,12 +21,14 @@ interface Props {
 
 const FormSelect: React.FC<Props> = ({ value, onChange, options, multiple, required, disabled, fullWidth,size,params ,Isall,baseUrl}) =>{
 
-  const { data = [] } = useAutocompletedataQuery({
-      params: ValidateParams({ ...defaultparams, ...params}),
-      baseurl: baseUrl??"/dictionary",
-    } ,{skip:!params})
+  // const { data = [] } = useAutocompletedataQuery({
+  //     params: ValidateParams({ ...defaultparams, ...params}),
+  //     baseurl: baseUrl??"/dictionary",
+  //   } ,{skip:!params})
 
-    const resolvedOptions = options?.length !== 0 ? options : data;
+  const resolvedOptions = options?.length !== 0 ? options : [];
+  
+  console.log("resolvedOptions", resolvedOptions);
     const isValueValid = multiple
       ? Array.isArray(value) &&
         value.every((v) =>

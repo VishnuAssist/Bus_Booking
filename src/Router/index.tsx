@@ -14,6 +14,7 @@ const Loader = (Component: any) => (props: any) =>
 
 const Login = Loader(lazy(() => import('../Screens/auth')));
 const Dashboard = Loader(lazy(() => import('../Screens/dashboard/index')));
+const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
 
 const Status404 = Loader(
   lazy(() => import('../Component/Status/Status404'))
@@ -94,6 +95,30 @@ const routes: RouteObject[] = [
           {
             path: "Dashboard",
             element: <Dashboard />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    element: <RouteAuth />,
+    children: [
+      {
+        path: "settings",
+        element: <SidebarLayout />,
+        children: [
+          // {
+          //   index: true,
+          //   element: <Navigate to="Dashboard" replace />,
+          // },
+
+          // {
+          //   path: "Dashboard",
+          //   element: <Dashboard />,
+          // },
+          {
+            path: "Dictionary",
+            element: <Dictionary />,
           },
         ],
       },

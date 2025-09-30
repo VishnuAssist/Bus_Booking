@@ -10,11 +10,11 @@ import {
 import FormCheckbox from "./CheckBox";
 import FormRadio from "./Radio";
 import FormAutocomplete from "./AutocompleteInput";
-import FormUpload from "./upload";
+// import FormUpload from "./upload";
 
 
 import FormAutocompleteMulitple from "./AutocompleteMulitpleInput";
-import FormUploadImage from "./uploadImage";
+// import FormUploadImage from "./uploadImage";
 import SkipDates from "./skipDateField";
 import type { FormFieldProps } from "../../../Dto/formDto";
 
@@ -140,16 +140,16 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
                     excludeValues={excludeValues}
                   />
                 );
-              case "D&DUpload":
-                return <FormUpload onChange={onChange} allowFile={allowFile} />;
-              case "D&DUploadImage":
-                return (
-                  <FormUploadImage
-                    onChange={onChange}
-                    allowFile={allowFile}
-                    value={value}
-                  />
-                );
+              // case "D&DUpload":
+              //   return <FormUpload onChange={onChange} allowFile={allowFile} />;
+              // case "D&DUploadImage":
+              //   return (
+              //     <FormUploadImage
+              //       onChange={onChange}
+              //       allowFile={allowFile}
+              //       value={value}
+              //     />
+              //   );
          
              
                 
