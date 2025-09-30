@@ -14,6 +14,7 @@ const Loader = (Component: any) => (props: any) =>
 
 const Login = Loader(lazy(() => import('../Screens/auth')));
 const Dashboard = Loader(lazy(() => import('../Screens/dashboard/index')));
+const Commission = Loader(lazy(() => import('../Screens/commission/index')));
 
 const Status404 = Loader(
   lazy(() => import('../Component/Status/Status404'))
@@ -90,10 +91,13 @@ const routes: RouteObject[] = [
             index: true,
             element: <Navigate to="Dashboard" replace />,
           },
-
           {
             path: "Dashboard",
             element: <Dashboard />,
+          },
+          {
+            path: "Commission",
+            element: <Commission />,
           },
         ],
       },
