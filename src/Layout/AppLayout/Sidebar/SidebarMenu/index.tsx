@@ -18,6 +18,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "@mui/icons-material";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 
 
@@ -130,24 +131,26 @@ function SidebarMenu({
         title: "Dashboard",
         icon: <MultilineChartIcon />,
         items: [
-        
-      
           {
             label: "Dashboard",
-            link: "/Dashboard",
+            link: "/dashboards/Dashboard",
             icon: <DashboardIcon />,
-            hide:true
+            hide: true,
           },
-       
+
           {
             label: "Calendar",
             link: "/dashboards/Calendar",
             icon: <CalendarIcon />,
-          
+          },
+          {
+            label: "Dictionary",
+            link: "/settings/Dictionary",
+            icon: <MenuBookIcon />,
+            hide: true,
           },
         ],
       },
-
     ];
 
     return items

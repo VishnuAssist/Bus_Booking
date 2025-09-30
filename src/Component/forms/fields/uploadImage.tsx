@@ -2,7 +2,7 @@ import { FormControl } from "@mui/material";
 import * as React from "react";
 import { useUploadFileMutation } from "../../../Api/CommonApi";
 import UploadModal from "../../Loading/Uploadloading";
-import { getFileIcon } from "../../display/component/fileIcon";
+// import { getFileIcon } from "../../display/component/fileIcon";
 // import { useEffect } from "react";
 
 type AllowedType =
@@ -211,7 +211,7 @@ const FormUploadImage: React.FC<Props> = ({
           alignItems: "center",
         }}
       >
-        {getFileIcon(value || fileUrl || "", 48)}
+        {/* {getFileIcon(value || fileUrl || "", 48)} */}
       </div>
     )}
         </div>
