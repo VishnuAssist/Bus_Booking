@@ -14,7 +14,7 @@ const Leaderboard = () => {
         <>
             <Grid container spacing={2}>
                 <Grid size={12}>
-                    <Card>
+                    <Card sx={{ height: "100%" }}>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
                                 Store Leaderboard

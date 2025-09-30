@@ -308,19 +308,26 @@ const DashCards = () => {
                                 p: 1,
                             }}
                         >
-                            <Stack direction="row" spacing={2} alignItems="center">
-                                <LocalFireDepartmentIcon sx={{ color: "#ffc54d" }} />
-                                <Typography fontWeight={600} color="#ffcf9d">
-                                    12 days
-                                </Typography>
-                                <Typography sx={{ color: "#bbcbdb" }}>
-                                    Current streak
-                                </Typography>
-                                <Box flex={1} />
+                            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                                    <LocalFireDepartmentIcon sx={{ fontSize: 35, color: "#ffc54d" }} />
+                                    <Box>
+                                        <Typography fontSize={18} fontWeight={600} color="#ffcf9d">
+                                            12 days
+                                        </Typography>
+                                        <Typography sx={{ color: "#bbcbdb" }}>
+                                            Current streak
+                                        </Typography>
+                                    </Box>
+                                </Box>
                                 <Typography sx={{ color: "#69aafb", fontWeight: 500 }}>
                                     Best: 28 days
                                 </Typography>
-                            </Stack>
+                            </Box>
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 2 }}>
+                                <CalendarTodayOutlinedIcon />
+                                <Typography fontSize={16}>This Week</Typography>
+                            </Box>
                             <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
                                 {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
                                     <Box
@@ -356,46 +363,46 @@ const DashCards = () => {
                                 height: "100%",
                             }}
                         >
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                justifyContent="space-between"
-                            >
-                                <Stack direction="row" spacing={1.5}>
-                                    <CallMadeOutlinedIcon sx={{ color: "#8cf7ff" }} />
-                                    <Typography fontWeight={600} color="#60d2ec">
-                                        Power Hour Challenge
-                                    </Typography>
-                                    <Chip
-                                        label="Daily"
-                                        size="small"
-                                        sx={{
-                                            bgcolor: "#2f3659",
-                                            color: "#b0c5ff",
-                                            fontWeight: 600,
-                                        }}
-                                    />
-                                </Stack>
-                                <Button
-                                    variant="contained"
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                                <CallMadeOutlinedIcon sx={{ color: "#8cf7ff" }} />
+                                <Typography fontWeight={600} color="#60d2ec">
+                                    Power Hour Challenge
+                                </Typography>
+                                <Chip
+                                    label="Daily"
+                                    size="small"
+                                    color="primary"
                                     sx={{
-                                        bgcolor: "linear-gradient(93deg,#4789ff 55%,#b093fb 100%)",
-                                        borderRadius: 2,
-                                        boxShadow: "none",
                                         fontWeight: 600,
                                     }}
-                                >
-                                    View Details
-                                </Button>
-                            </Stack>
-                            <Stack direction="row" alignItems="center" spacing={2} sx={{ mt: 1 }}>
-                                <Typography fontWeight={600} color="#a6f9b7">
-                                    +150 XP
-                                </Typography>
-                                <Typography color="#bdbbdf">
-                                    3/5 completed
-                                </Typography>
-                            </Stack>
+                                />
+                            </Box>
+                            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 1 }}>
+                                <Box>
+                                    <Typography variant="caption">Complete 5 sales calls before 2 PM today</Typography>
+                                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                                        <Typography fontWeight={600} color="#a6f9b7">
+                                            +150 XP
+                                        </Typography>
+                                        <Typography color="#bdbbdf">
+                                            3/5 completed
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                                <Box>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        sx={{
+                                            bgcolor: "linear-gradient(93deg,#4789ff 55%,#b093fb 100%)",
+                                            borderRadius: 2,
+                                            fontWeight: 600,
+                                        }}
+                                    >
+                                        View Details
+                                    </Button>
+                                </Box>
+                            </Box>
                             <BlueProgress variant="determinate" value={60} sx={{ mt: 2 }} />
                         </Card>
                     </Grid>
@@ -407,19 +414,18 @@ const DashCards = () => {
                                 height: "100%",
                             }}
                         >
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                spacing={2}
-                                sx={{ height: 54 }}
-                            >
-                                <EmojiEventsOutlinedIcon sx={{ color: "#ffe066" }} />
-                                <Typography fontWeight={600} color="#ffe497">
-                                    Weekend Bonus
-                                </Typography>
-                                <Typography color="#d5c9b1" sx={{ ml: 2 }}>
-                                    Double XP active!
-                                </Typography>
+                            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                                    <EmojiEventsOutlinedIcon sx={{ color: "#ffe066", fontSize: 35 }} />
+                                    <Box>
+                                        <Typography fontWeight={600} color="#ffe497">
+                                            Weekend Bonus
+                                        </Typography>
+                                        <Typography color="#d5c9b1">
+                                            Double XP active!
+                                        </Typography>
+                                    </Box>
+                                </Box>
                                 <Chip
                                     label="2x XP"
                                     sx={{
@@ -430,7 +436,7 @@ const DashCards = () => {
                                         ml: 2,
                                     }}
                                 />
-                            </Stack>
+                            </Box>
                         </Card>
                     </Grid>
                 </Grid>

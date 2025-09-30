@@ -1,4 +1,4 @@
-import { Box, Grid, Card, CardContent, Typography, Chip } from "@mui/material";
+import { Box, Grid, Card, CardContent, Typography, } from "@mui/material";
 
 
 const Achievement = () => {
@@ -16,7 +16,7 @@ const Achievement = () => {
         <>
             <Grid container spacing={2}>
                 <Grid size={12}>
-                    <Card>
+                    <Card sx={{ height: "100%" }}>
                         <CardContent>
                             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                                 <Typography variant="h6">Achievements</Typography>
@@ -28,7 +28,6 @@ const Achievement = () => {
                                         <Card sx={{ textAlign: "center", border: ach.active ? "2px solid #2196f3" : "1px dashed #ccc", borderRadius: 3, py: 2 }}>
                                             <Typography variant="h6">{ach.title}</Typography>
                                             <Typography variant="caption" color="text.secondary">{ach.desc}</Typography>
-                                            {ach.active && <Chip label="✔" color="success" size="small" sx={{ mt: 1 }} />}
                                         </Card>
                                     </Grid>
                                 ))}
