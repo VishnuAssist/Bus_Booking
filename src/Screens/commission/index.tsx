@@ -6,6 +6,7 @@ import Cards from "./Cards";
 import Structure from "./Structure";
 import Breakdown from "./Breakdown";
 import MonthlyHistory from "./MonthlyHistory";
+import CommisionContainer from "../../Component/container";
 
 const Commission = () => {
     return (
@@ -13,26 +14,28 @@ const Commission = () => {
             <Helmet>
                 <title>Commission</title>
             </Helmet>
-            <Grid container spacing={2}>
-                <Grid size={12}>
-                    <PageHeader />
+            <CommisionContainer>
+                <Grid container spacing={2}>
+                    <Grid size={12}>
+                        <PageHeader />
+                    </Grid>
+                    <Grid size={12}>
+                        <PageFilter />
+                    </Grid>
+                    <Grid size={12}>
+                        <Cards />
+                    </Grid>
+                    <Grid size={6}>
+                        <Breakdown />
+                    </Grid>
+                    <Grid size={6}>
+                        <MonthlyHistory />
+                    </Grid>
+                    <Grid size={12}>
+                        <Structure />
+                    </Grid>
                 </Grid>
-                <Grid size={12}>
-                    <PageFilter />
-                </Grid>
-                <Grid size={12}>
-                    <Cards />
-                </Grid>
-                <Grid size={6}>
-                    <Breakdown />
-                </Grid>
-                <Grid size={6}>
-                    <MonthlyHistory />
-                </Grid>
-                <Grid size={12}>
-                    <Structure />
-                </Grid>
-            </Grid>
+            </CommisionContainer>
         </>
     )
 };

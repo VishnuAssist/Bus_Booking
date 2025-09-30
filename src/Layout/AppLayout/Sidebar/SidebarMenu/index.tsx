@@ -14,11 +14,12 @@ import {
 } from "@mui/material";
 import { NavLink as RouterLink } from "react-router-dom";
 import {
- 
+
   ChevronLeft,
   ChevronRight,
 } from "@mui/icons-material";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import DataUsageIcon from '@mui/icons-material/DataUsage';
 
 
 
@@ -135,6 +136,12 @@ function SidebarMenu({
             label: "Dashboard",
             link: "/dashboards/Dashboard",
             icon: <DashboardIcon />,
+            hide: true,
+          },
+          {
+            label: "Commission",
+            link: "/dashboards/Commission",
+            icon: <DataUsageIcon />,
             hide: true,
           },
 
