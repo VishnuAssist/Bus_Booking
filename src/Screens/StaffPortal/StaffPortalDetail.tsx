@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, ButtonGroup, Box } from "@mui/material";
-import Attendance from "./Attendance";
+import Attendance from "./Attendence/Attendance";
 import Achievements from "./Achievements";
 import RequestService from "./LeaveRequest";
 
@@ -21,7 +21,7 @@ const StaffPortalDetail: React.FC = () => {
   };
 
   return (
-    <Box>
+    <Box >
       {/* Button Tabs */}
       <ButtonGroup variant="contained" fullWidth sx={{ mb: 2, width: "100%" }}>
         <Button
@@ -45,7 +45,7 @@ const StaffPortalDetail: React.FC = () => {
       </ButtonGroup>
 
       {/* Dynamic Content */}
-      <Box sx={{ p: 2, border: "1px solid #ddd", borderRadius: "8px" }}>
+      <Box sx={{ p: 2, border: "1px solid #ddd", borderRadius: "8px",width:"100%" }}>
         {renderContent()}
       </Box>
     </Box>

@@ -22,8 +22,8 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import DataUsageIcon from '@mui/icons-material/DataUsage';
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 import StoreIcon from '@mui/icons-material/Store';
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SellIcon from '@mui/icons-material/Sell';
-
 
 
 import MultilineChartIcon from "@mui/icons-material/MultilineChart";
@@ -192,7 +192,7 @@ function SidebarMenu({
           {
             label: "StaffPortal",
             link: "/dashboards/StaffPortal",
-            icon: <AccountCircleOutlinedIcon />,
+            icon: <AdminPanelSettingsIcon />,
             hide: true,
           },
         ],
