@@ -165,7 +165,7 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "Shift",
+            label: "Store",
             link: "/settings/store",
             icon: <StoreIcon />,
             hide: true,
