@@ -18,6 +18,13 @@ const Commission = Loader(lazy(() => import('../Screens/commission/index')));
 const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
 const Shift = Loader(lazy(() => import('../Screens/shift/index')));
 
+
+
+
+const Profile = Loader(lazy(() => import('../Screens/Profile')));
+const LeaderBoard = Loader(lazy(() => import('../Screens/LeaderBoard')));
+const StaffPortal = Loader(lazy(() => import('../Screens/StaffPortal')));
+
 const Status404 = Loader(
   lazy(() => import('../Component/Status/Status404'))
 );
@@ -100,6 +107,18 @@ const routes: RouteObject[] = [
           {
             path: "Commission",
             element: <Commission />,
+          },
+          {
+            path: "LeaderBoard",
+            element: <LeaderBoard />,
+          },
+          {
+            path: "Profile",
+            element: <Profile />,
+          },
+          {
+            path: "StaffPortal",
+            element: <StaffPortal />,
           },
         ],
       },

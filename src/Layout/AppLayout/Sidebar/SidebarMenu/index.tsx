@@ -29,9 +29,9 @@ import MultilineChartIcon from "@mui/icons-material/MultilineChart";
 import { SidebarContext } from "../../../../Context/SidebarContext";
 import { CalendarIcon, DashboardIcon } from "../../../../Assests/Icons/icons";
 
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
-
-
+import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 
 
 const MenuWrapper = styled(Box)(({ theme }) => `
@@ -161,6 +161,24 @@ function SidebarMenu({
             label: "Shift",
             link: "/settings/shift",
             icon: <FilterTiltShiftIcon />,
+            hide: true,
+          },
+          {
+            label: "LeaderBoard",
+            link: "/dashboards/LeaderBoard",
+            icon: <EmojiEventsOutlinedIcon />,
+            hide: true,
+          },
+          {
+            label: "Profile",
+            link: "/dashboards/Profile",
+            icon: <AccountCircleOutlinedIcon />,
+            hide: true,
+          },
+          {
+            label: "StaffPortal",
+            link: "/dashboards/StaffPortal",
+            icon: <AccountCircleOutlinedIcon />,
             hide: true,
           },
         ],
