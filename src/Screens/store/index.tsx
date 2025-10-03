@@ -87,7 +87,7 @@ const Store = () => {
 
 
     const onSubmit = async (formData: any) => {
-        console.log("Shift Form Data", formData);
+        console.log("Store Form Data", formData);
         setModalOpen(false);
         setSelectedStore(null);
     };

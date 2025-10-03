@@ -18,6 +18,7 @@ const Commission = Loader(lazy(() => import('../Screens/commission/index')));
 const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
 const Shift = Loader(lazy(() => import('../Screens/shift/index')));
 const Store = Loader(lazy(() => import('../Screens/store/index')));
+const Sales = Loader(lazy(() => import('../Screens/sales/index')));
 
 
 
@@ -152,6 +153,10 @@ const routes: RouteObject[] = [
           {
             path: "store",
             element: <Store />,
+          },
+          {
+            path: "sales",
+            element: <Sales />,
           },
         ],
       },

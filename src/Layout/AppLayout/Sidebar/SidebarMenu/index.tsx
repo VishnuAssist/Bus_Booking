@@ -22,6 +22,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import DataUsageIcon from '@mui/icons-material/DataUsage';
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 import StoreIcon from '@mui/icons-material/Store';
+import SellIcon from '@mui/icons-material/Sell';
 
 
 
@@ -168,6 +169,12 @@ function SidebarMenu({
             label: "Store",
             link: "/settings/store",
             icon: <StoreIcon />,
+            hide: true,
+          },
+          {
+            label: "Sales",
+            link: "/settings/sales",
+            icon: <SellIcon />,
             hide: true,
           },
           {
