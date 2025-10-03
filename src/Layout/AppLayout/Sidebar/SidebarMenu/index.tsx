@@ -21,6 +21,7 @@ import {
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import DataUsageIcon from '@mui/icons-material/DataUsage';
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
+import StoreIcon from '@mui/icons-material/Store';
 
 
 
@@ -161,6 +162,12 @@ function SidebarMenu({
             label: "Shift",
             link: "/settings/shift",
             icon: <FilterTiltShiftIcon />,
+            hide: true,
+          },
+          {
+            label: "Shift",
+            link: "/settings/store",
+            icon: <StoreIcon />,
             hide: true,
           },
         ],

@@ -17,6 +17,7 @@ const Dashboard = Loader(lazy(() => import('../Screens/dashboard/index')));
 const Commission = Loader(lazy(() => import('../Screens/commission/index')));
 const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
 const Shift = Loader(lazy(() => import('../Screens/shift/index')));
+const Store = Loader(lazy(() => import('../Screens/store/index')));
 
 const Status404 = Loader(
   lazy(() => import('../Component/Status/Status404'))
@@ -128,6 +129,10 @@ const routes: RouteObject[] = [
           {
             path: "shift",
             element: <Shift />,
+          },
+          {
+            path: "store",
+            element: <Store />,
           },
         ],
       },
