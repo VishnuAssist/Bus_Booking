@@ -5,7 +5,7 @@
     categoryId: number | undefined;
     category?:string
     name: string;
-  label?:string
+    label?:string
     isActive: boolean;
     DictionaryEntryId?: number|null;
     dictionaryEntryName?:string

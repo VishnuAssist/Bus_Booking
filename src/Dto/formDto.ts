@@ -42,9 +42,7 @@ export interface FormFieldProps<T> {
     | "autocomplete"
     | "D&DUpload"
     | "date"
- 
     | "datetime-local"
-  
     | "autocompletemultiple"
     | "D&DUploadImage"
     | "skipDates";
