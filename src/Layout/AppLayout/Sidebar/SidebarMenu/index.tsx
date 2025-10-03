@@ -165,6 +165,12 @@ function SidebarMenu({
             hide: true,
           },
           {
+            label: "Shift",
+            link: "/settings/store",
+            icon: <StoreIcon />,
+            hide: true,
+          },
+          {
             label: "LeaderBoard",
             link: "/dashboards/LeaderBoard",
             icon: <EmojiEventsOutlinedIcon />,
