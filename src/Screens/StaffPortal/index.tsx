@@ -22,7 +22,7 @@ const Index = () => {
         <title>Profile</title>
       </Helmet>
          <PageTitleWrapper>
-      <PageHeader title ="Staff Portal" description="Manage your attendance, requests, and work activities" btntitle="Edit Profile" icon={""} onActionClick=""/>
+      <PageHeader title ="Staff Portal" description="Manage your attendance, requests, and work activities" btntitle="Edit Profile" icon={""} />
       </PageTitleWrapper>
     
 
