@@ -4,7 +4,7 @@ import SystemRostering from "./SystemRostering";
 import Rostering from "./Rostering";
 // import Attendance from "./Attendance";
 // import Achievements from "./Achievements";
-import RuleEngine from "./RuleEngine";
+import {RuleEngine} from "./RuleEngine";
 import ReportsAnalytics from "./ReportsAnalytics";
 
 const ReportDetails: React.FC = () => {
