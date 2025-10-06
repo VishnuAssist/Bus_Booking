@@ -27,6 +27,9 @@ const Profile = Loader(lazy(() => import('../Screens/Profile')));
 const LeaderBoard = Loader(lazy(() => import('../Screens/LeaderBoard')));
 const StaffPortal = Loader(lazy(() => import('../Screens/StaffPortal')));
 
+const Reports = Loader(lazy(() => import('../Screens/Reports')));
+
+
 const Status404 = Loader(
   lazy(() => import('../Component/Status/Status404'))
 );
@@ -126,6 +129,22 @@ const routes: RouteObject[] = [
       },
     ],
   },
+  {
+  element: <RouteAuth />,
+  children: [
+    {
+      path: "Admin",
+      element: <SidebarLayout />,
+      children: [
+        {
+          path: "Reports",
+          element: <Reports />,
+        },
+      ],
+    },
+  ],
+},
+
   {
     element: <RouteAuth />,
     children: [

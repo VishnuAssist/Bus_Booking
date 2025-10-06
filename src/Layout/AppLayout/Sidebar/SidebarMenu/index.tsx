@@ -34,7 +34,8 @@ import { CalendarIcon, DashboardIcon } from "../../../../Assests/Icons/icons";
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
-
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 
 const MenuWrapper = styled(Box)(({ theme }) => `
   .MuiList-root {
@@ -195,6 +196,21 @@ function SidebarMenu({
             icon: <AdminPanelSettingsIcon />,
             hide: true,
           },
+        ],
+      },
+      {
+        title: "Admin",
+        icon: <AdminPanelSettingsOutlinedIcon />,
+        items: [
+          {
+            label: "Reports",
+            link: "/Admin/Reports",
+            icon: <DescriptionOutlinedIcon />,
+            hide: true,
+          },
+      
+
+        
         ],
       },
     ];
