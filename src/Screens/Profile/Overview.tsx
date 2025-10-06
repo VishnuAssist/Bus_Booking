@@ -11,7 +11,9 @@ import {
   Typography,
   Button,
   LinearProgress,
-  CircularProgress
+  CircularProgress,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import { CameraAlt } from '@mui/icons-material';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
@@ -20,22 +22,29 @@ import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 
 export default function Overview() {
   const [isEditing, setIsEditing] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
   const [profileData, setProfileData] = useState({
     firstName: 'Alex',
     lastName: 'Kim',
     email: 'alex.kim@zonecommission.com',
-    phone: '+1 (555) 123-4567',
-    location: 'San Francisco, CA',
-    bio: 'Passionate sales professional with 3+ years of experience in retail and commission-based roles.',
+    designation: 'Senior Sales Associate',
+    employeeType: 'Full-time',
+    dateOfBirth: '1990-05-15',
+    countryCode: '+1',
+    employeeCode: 'EMP-12345',
+    username: 'alex.kim',
     role: 'Senior Sales Associate',
     department: 'Electronics',
-    startDate: 'March 2022',
-    tier: 'Tier 3 - Senior'
+    startDate: 'March 2022'
   });
 
   const handleUploadPhoto = () => {
     console.log('Upload photo clicked');
+  };
+
+  const handleActiveToggle = (event) => {
+    setIsActive(event.target.checked);
   };
 
   return (
@@ -54,7 +63,15 @@ export default function Overview() {
             <CardContent>
               <Box display="flex" alignItems="center" gap={3} mb={3}>
                 <Box position="relative">
-                  <Avatar src="/avatar.png" sx={{ width: 100, height: 100 }}>
+                  <Avatar 
+                    src="/avatar.png" 
+                    sx={{ 
+                      width: 100, 
+                      height: 100,
+                      border: isActive ? '3px solid #4caf50' : '3px solid #f44336',
+                      borderWidth: 3
+                    }}
+                  >
                     {profileData.firstName[0]}
                     {profileData.lastName[0]}
                   </Avatar>
@@ -79,7 +96,7 @@ export default function Overview() {
                     <Typography variant="h6">
                       {profileData.firstName} {profileData.lastName}
                     </Typography>
-                    <Badge color="primary">{profileData.tier}</Badge>
+                    <Badge color="primary">{profileData.designation}</Badge>
                   </Box>
                   <Typography color="text.secondary">
                     {profileData.role}
@@ -87,6 +104,17 @@ export default function Overview() {
                   <Typography variant="body2" color="text.secondary">
                     {profileData.department} Department
                   </Typography>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={isActive}
+                        onChange={handleActiveToggle}
+                        color="success"
+                      />
+                    }
+                    label={isActive ? "Active" : "Inactive"}
+                    sx={{ mt: 1 }}
+                  />
                 </Box>
               </Box>
 
@@ -132,39 +160,84 @@ export default function Overview() {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                   <TextField
-                    label="Phone"
+                    label="Username"
                     fullWidth
-                    value={profileData.phone}
+                    value={profileData.username}
                     disabled={!isEditing}
                     onChange={(e) =>
-                      setProfileData({ ...profileData, phone: e.target.value })
+                      setProfileData({ ...profileData, username: e.target.value })
                     }
                   />
                 </Grid>
-                <Grid size={{ xs: 12, md: 12 }}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <TextField
-                    label="Location"
+                    label="Designation"
                     fullWidth
-                    value={profileData.location}
+                    value={profileData.designation}
                     disabled={!isEditing}
                     onChange={(e) =>
                       setProfileData({
                         ...profileData,
-                        location: e.target.value
+                        designation: e.target.value
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    label="Employee Type"
+                    fullWidth
+                    value={profileData.employeeType}
+                    disabled={!isEditing}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        employeeType: e.target.value
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    label="Date of Birth"
+                    type="date"
+                    fullWidth
+                    value={profileData.dateOfBirth}
+                    disabled={!isEditing}
+                    InputLabelProps={{ shrink: true }}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        dateOfBirth: e.target.value
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    label="Country Code"
+                    fullWidth
+                    value={profileData.countryCode}
+                    disabled={!isEditing}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        countryCode: e.target.value
                       })
                     }
                   />
                 </Grid>
                 <Grid size={{ xs: 12, md: 12 }}>
                   <TextField
-                    label="Bio"
+                    label="Employee Code"
                     fullWidth
-                    multiline
-                    minRows={3}
-                    value={profileData.bio}
+                    value={profileData.employeeCode}
                     disabled={!isEditing}
                     onChange={(e) =>
-                      setProfileData({ ...profileData, bio: e.target.value })
+                      setProfileData({
+                        ...profileData,
+                        employeeCode: e.target.value
+                      })
                     }
                   />
                 </Grid>
@@ -173,9 +246,9 @@ export default function Overview() {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, md: 4 }} container  sx={{ height: "100%" }}>
-          <Grid size={{ xs: 12, md: 12 }}  sx={{ height: "70%" }}>
-            <Card sx={{ p: 1 ,height: "100%"}}>
+        <Grid size={{ xs: 12, md: 4 }} container sx={{ height: "100%" }}>
+          <Grid size={{ xs: 12, md: 12 }} sx={{ height: "70%" }}>
+            <Card sx={{ p: 1, height: "100%" }}>
               <Box display={'flex'} alignItems={'center'}>
                 <Brightness5OutlinedIcon />
                 <Typography fontSize={'18px'} sx={{ ml: 1 }}>
@@ -188,7 +261,7 @@ export default function Overview() {
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  height: '100%' // ensures vertical centering
+                  height: '100%'
                 }}
               >
                 <Box
@@ -235,15 +308,15 @@ export default function Overview() {
           </Grid>
 
           {/* Quick Stats */}
-          <Grid size={{ xs: 12, md: 12 }}  sx={{ height: "30%" }}>
-            <Card sx={{ p: 1 ,height: "100%"}}>
+          <Grid size={{ xs: 12, md: 12 }} sx={{ height: "30%" }}>
+            <Card sx={{ p: 1, height: "100%" }}>
               <Box display={'flex'} alignItems={'center'}>
                 <WorkOutlineOutlinedIcon />
                 <Typography fontSize={'18px'} sx={{ ml: 1 }}>
                   Work Info
                 </Typography>
               </Box>
-              <CardContent >
+              <CardContent>
                 <Box display="flex" justifyContent="space-between" mb={1}>
                   <Typography color="text.secondary">Role</Typography>
                   <Typography>{profileData.role}</Typography>
@@ -257,8 +330,8 @@ export default function Overview() {
                   <Typography>{profileData.startDate}</Typography>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
-                  <Typography color="text.secondary">Tier</Typography>
-                  <Typography>{profileData.tier}</Typography>
+                  <Typography color="text.secondary">Employee Type</Typography>
+                  <Typography>{profileData.employeeType}</Typography>
                 </Box>
               </CardContent>
             </Card>

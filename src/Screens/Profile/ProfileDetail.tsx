@@ -35,24 +35,24 @@ const ProfileDetail: React.FC = () => {
         >
           Overview
         </Button>
-        <Button
+        {/* <Button
           onClick={() => setActiveTab("performance")}
           color={activeTab === "performance" ? "primary" : "inherit"}
         >
           Performance
-        </Button>
+        </Button> */}
         <Button
           onClick={() => setActiveTab("achievements")}
           color={activeTab === "achievements" ? "primary" : "inherit"}
         >
           Achievements
         </Button>
-        <Button
+        {/* <Button
           onClick={() => setActiveTab("settings")}
           color={activeTab === "settings" ? "primary" : "inherit"}
         >
           Settings
-        </Button>
+        </Button> */}
       </ButtonGroup>
 
       {/* Dynamic Content */}

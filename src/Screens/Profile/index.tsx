@@ -41,7 +41,7 @@ const Index = () => {
         >
           <Grid size={{xs:12}}>
              <ProfileDetail/>
-             {/* <AchievementDemo/> */}
+             <AchievementDemo/>
         </Grid>
         </Grid>
       </Box>

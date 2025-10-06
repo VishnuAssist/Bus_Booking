@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Card, CardContent, Typography, Box, Chip } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Chip } from '@mui/material';
 import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
@@ -52,18 +52,19 @@ const KPICard: React.FC<KPICardProps> = ({
       <CardContent>
       
 
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           <Grid size={{ xs: 7 }}>
             <Typography color="textSecondary" gutterBottom variant="overline">
               {title}
             </Typography>
           </Grid>
-          <Grid size={{ xs: 5 }}>
+          <Grid size={{ xs: 5 }} sx={{display:"flex",justifyContent:"flex-end"}}>
             {getTrendIcon()}
             <Chip
               label={`${trendValue > 0 ? '+' : ''}${trendValue}%`}
               color={getTrendColor()}
               size="small"
+              sx={{ml:1}}
             />
           </Grid>
           <Grid size={{ xs: 12 }}>

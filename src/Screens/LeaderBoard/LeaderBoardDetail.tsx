@@ -43,13 +43,7 @@ const LeaderBoardDetail: React.FC = () => {
         <LeaderBoardCards />
       </Grid>
 
-      {/* <Grid  size={{xs:12,md:6}}>
-        <StoreLeaderboard />
-      </Grid>
-      <Grid  size={{xs:12,md:6}}>
-        <RegionalLeaderboard />
-      </Grid> */}
-
+ 
     </Grid>
   );
 };

@@ -7,12 +7,13 @@ import {
   Typography,
   Chip
 } from '@mui/material';
-import React from 'react';
+
 
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
 import StarIcon from '@mui/icons-material/Star';
+import Performance from './Performance';
 
 const Achievements = () => {
   const recentAchievements = [
@@ -48,7 +49,10 @@ const Achievements = () => {
 
   return (
     <div>
-      <Grid container spacing={2}>
+      <Grid container spacing={2}>\
+        <Grid size={{xs:12}}>
+          <Performance/>
+        </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
           <Card sx={{ p: 1, height: '100%' }}>
             <Box>

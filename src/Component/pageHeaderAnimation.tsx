@@ -42,12 +42,11 @@ const PageHeader: React.FC<PageHeaderProps> = ({
             animate={{ width: '100%' }}
             transition={{ duration: 2, ease: 'easeInOut' }}
           >
-            <Typography sx={{ fontSize: '22px', fontWeight: '1000' ,fontFamily: "'Jura', sans-serif", }}>
-              {/* FarmFusion – Everything farm-related in one place */}
-              {/* TrackMyFarm */}
+            <Typography sx={{ fontSize: '22px', fontWeight: '1000' ,  fontFamily: "'Sansation', sans-serif",  fontStyle: 'normal'  }}>
+
                  {description
                 ? description
-                : 'CattleSync – Everything farm-related in one place'}
+                : ''}
             </Typography>
 
             
