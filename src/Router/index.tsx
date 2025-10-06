@@ -18,6 +18,7 @@ const Commission = Loader(lazy(() => import('../Screens/commission/index')));
 const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
 const Shift = Loader(lazy(() => import('../Screens/shift/index')));
 const Store = Loader(lazy(() => import('../Screens/store/index')));
+const StoreTarget = Loader(lazy(() => import('../Screens/storeTarget/index')));
 const Sales = Loader(lazy(() => import('../Screens/sales/index')));
 
 
@@ -27,7 +28,7 @@ const Profile = Loader(lazy(() => import('../Screens/Profile')));
 const LeaderBoard = Loader(lazy(() => import('../Screens/LeaderBoard')));
 const StaffPortal = Loader(lazy(() => import('../Screens/StaffPortal')));
 
-const Reports = Loader(lazy(() => import('../Screens/Reports')));
+const Reports = Loader(lazy(() => import('../Screens/Reports/Index')));
 
 
 const Status404 = Loader(
@@ -130,20 +131,20 @@ const routes: RouteObject[] = [
     ],
   },
   {
-  element: <RouteAuth />,
-  children: [
-    {
-      path: "Admin",
-      element: <SidebarLayout />,
-      children: [
-        {
-          path: "Reports",
-          element: <Reports />,
-        },
-      ],
-    },
-  ],
-},
+    element: <RouteAuth />,
+    children: [
+      {
+        path: "Admin",
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: "Reports",
+            element: <Reports />,
+          },
+        ],
+      },
+    ],
+  },
 
   {
     element: <RouteAuth />,
@@ -172,6 +173,10 @@ const routes: RouteObject[] = [
           {
             path: "store",
             element: <Store />,
+          },
+          {
+            path: "storeTarget",
+            element: <StoreTarget />,
           },
           {
             path: "sales",
