@@ -156,7 +156,7 @@ const LeaveRequestPage = () => {
         />
       </CommisionContainer>
 
-      <Footer />
+      {/* <Footer /> */}
 
       <CommonDialog
         open={isModalOpen}
