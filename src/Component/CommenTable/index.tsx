@@ -10,10 +10,13 @@ import {
   TablePagination,
   IconButton,
   Stack,
+  ButtonGroup,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
 
 interface Column {
   id: string;
@@ -27,6 +30,8 @@ interface Actions<T> {
   onView?: (row: T) => void;
   onEdit?: (row: T) => void;
   onDelete?: (row: T) => void;
+  onConform?: (row: T) => void;
+  onReject?: (row: T) => void;
 }
 
 interface CommonTableProps<T> {
@@ -37,6 +42,7 @@ interface CommonTableProps<T> {
   onPageChange: (newPage: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   actions?: Actions<T>;
+  approval?: Actions<T>;
 }
 
 function CommonTable<T>({
@@ -47,6 +53,7 @@ function CommonTable<T>({
   onPageChange,
   onRowsPerPageChange,
   actions,
+  approval,
 }: CommonTableProps<T>) {
   const handleChangePage = (_: unknown, newPage: number) => {
     onPageChange(newPage);
@@ -73,6 +80,7 @@ function CommonTable<T>({
                   {column.label}
                 </TableCell>
               ))}
+              {approval && <TableCell align="center">Approval</TableCell>}
               {actions && <TableCell align="center">Actions</TableCell>}
             </TableRow>
           </TableHead>
@@ -89,6 +97,18 @@ function CommonTable<T>({
                       </TableCell>
                     );
                   })}
+                  {approval && (
+                    <TableCell align="center">
+                      <ButtonGroup variant="contained">
+                        <IconButton onClick={() => approval.onConform!(row)}>
+                          <CheckIcon color="success" />
+                        </IconButton>
+                        <IconButton onClick={() => approval.onReject!(row)}>
+                          <ClearIcon color="error" />
+                        </IconButton>
+                      </ButtonGroup>
+                    </TableCell>
+                  )}
                   {actions && (
                     <TableCell align="center">
                       <Stack
