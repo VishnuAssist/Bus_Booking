@@ -7,6 +7,8 @@ import Structure from "./Structure";
 import Breakdown from "./Breakdown";
 import MonthlyHistory from "./MonthlyHistory";
 import CommisionContainer from "../../Component/container";
+import HistoryTabel from "./HistoryTabel";
+import Footer from "../../Component/Footer";
 
 const Commission = () => {
     return (
@@ -34,8 +36,13 @@ const Commission = () => {
                     <Grid size={12}>
                         <Structure />
                     </Grid>
+                    <Grid size={12}>
+                        <HistoryTabel />
+                    </Grid>
                 </Grid>
             </CommisionContainer>
+
+            <Footer />
         </>
     )
 };

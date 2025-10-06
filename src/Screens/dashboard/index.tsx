@@ -6,6 +6,7 @@ import QuickAction from "./QuickAction";
 import Leaderboard from "./Leaderboard.";
 import Achievement from "./Achievements";
 import CommisionContainer from "../../Component/container";
+import Footer from "../../Component/Footer";
 
 
 const Dashboard = () => {
@@ -21,10 +22,10 @@ const Dashboard = () => {
             <PageHeader />
           </Grid>
           <Grid size={12}>
-            <DashCards />
+            <QuickAction />
           </Grid>
           <Grid size={12}>
-            <QuickAction />
+            <DashCards />
           </Grid>
           <Grid size={6}>
             <Leaderboard />
@@ -34,6 +35,8 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </CommisionContainer>
+
+      <Footer />
 
     </>
   );

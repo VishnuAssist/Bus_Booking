@@ -80,7 +80,7 @@ const DashCards = () => {
 
     return (
         <>
-            <Box sx={{ p: 1 }}>
+            <Box>
                 {/* Top Cards */}
                 <Grid container spacing={2} sx={{ mb: 2 }}>
                     {/* Monthly Sales */}

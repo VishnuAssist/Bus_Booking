@@ -21,7 +21,9 @@ import {
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import DataUsageIcon from '@mui/icons-material/DataUsage';
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
-
+import StoreIcon from '@mui/icons-material/Store';
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import SellIcon from '@mui/icons-material/Sell';
 
 
 import MultilineChartIcon from "@mui/icons-material/MultilineChart";
@@ -164,6 +166,18 @@ function SidebarMenu({
             hide: true,
           },
           {
+            label: "Store",
+            link: "/settings/store",
+            icon: <StoreIcon />,
+            hide: true,
+          },
+          {
+            label: "Sales",
+            link: "/settings/sales",
+            icon: <SellIcon />,
+            hide: true,
+          },
+          {
             label: "LeaderBoard",
             link: "/dashboards/LeaderBoard",
             icon: <EmojiEventsOutlinedIcon />,
@@ -178,7 +192,7 @@ function SidebarMenu({
           {
             label: "StaffPortal",
             link: "/dashboards/StaffPortal",
-            icon: <AccountCircleOutlinedIcon />,
+            icon: <AdminPanelSettingsIcon />,
             hide: true,
           },
         ],
