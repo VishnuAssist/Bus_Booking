@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "local": "vite --mode=localdev --port 3000",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
-  },  
+  },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.4",
     "@emotion/react": "^11.14.0",
