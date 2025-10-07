@@ -5,7 +5,7 @@ import CommonTable from "../../Component/CommenTable";
 import Footer from "../../Component/Footer";
 //import { CommonDialog } from "../../Component/forms/FormDialog";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, MenuItem, TextField, Typography } from "@mui/material";
-import { Add, Delete } from "@mui/icons-material";
+import { Add, Delete, Clear } from "@mui/icons-material";
 import CurrentYearTarget from "./CurrentYearTarget";
 
 const StoreTarget = () => {
@@ -14,7 +14,7 @@ const StoreTarget = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     //const [isModalOpen, setModalOpen] = useState(false);
     //const [selectedStoreTarget, setSelectedStoreTarget] = useState<any>(null);
-
+    const [roleModal, setRoleModal] = useState(false);
     const [openForm, setOpenForm] = useState(false);
     const [roleTargets, setRoleTargets] = useState([{ role: "", targetAmount: "" }]);
     const [formData, setFormData] = useState({
@@ -36,6 +36,19 @@ const StoreTarget = () => {
         { id: "targetAchievement", label: "StoreTargetAchievement" },
         { id: "status", label: "Status" },
     ];
+
+    const StoreRoleTargetColumn = [
+        { id: "id", label: "ID" },
+        { id: "role", label: "Role" },
+        { id: "targetAmount", label: "Target Amount" },
+    ];
+
+    const StoreRoleTargetSampleData = [
+        { id: 1, role: "Store Manager", targetAmount: "1,00,000" },
+        { id: 2, role: "Sales Executive", targetAmount: "1,80,000" },
+        { id: 3, role: "Assistant Manager", targetAmount: "1,20,000" },
+        { id: 4, role: "Cashier", targetAmount: "1,50,000" },
+    ]
 
     const StoreTargetSampleData = [
         {
@@ -175,6 +188,31 @@ const StoreTarget = () => {
         "Cashier",
     ];
 
+    const monthOptions = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    const currentYear = new Date().getFullYear();
+    const yearOptions = Array.from(
+        { length: 10 },
+        (_, i) => (currentYear - 5 + i).toString()
+    );
+
+    const handelView = () => {
+        setRoleModal(true);
+    }
+
     // const onSubmit = async (formData: any) => {
     //     console.log("Store Form Data", formData);
     //     setModalOpen(false);
@@ -216,6 +254,9 @@ const StoreTarget = () => {
                                 onConform: (row) => console.log("Approved", row),
                                 onReject: (row) => console.log("Rejected", row)
                             }}
+                            actions={{
+                                onView: handelView,
+                            }}
                         />
                     </Grid>
                 </Grid>
@@ -242,6 +283,27 @@ const StoreTarget = () => {
                 }
             /> */}
 
+            <Dialog open={roleModal} onClose={() => setRoleModal(false)} maxWidth="md" fullWidth>
+                <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <Typography fontSize={20} fontWeight={500}>Target Assigned for Role</Typography>
+                    <IconButton onClick={() => setRoleModal(false)}>
+                        <Clear color="error" />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent>
+                    <Box>
+                        <CommonTable
+                            columns={StoreRoleTargetColumn}
+                            rows={StoreRoleTargetSampleData}
+                            page={page}
+                            rowsPerPage={rowsPerPage}
+                            onPageChange={setPage}
+                            onRowsPerPageChange={setRowsPerPage}
+                        />
+                    </Box>
+                </DialogContent>
+            </Dialog>
+
             <Dialog
                 open={openForm}
                 onClose={() => setOpenForm(false)}
@@ -254,49 +316,35 @@ const StoreTarget = () => {
                         <Grid container spacing={2}>
                             <Grid size={{ xs: 12, md: 6 }}>
                                 <TextField
-                                    label="Year"
-                                    name="year"
-                                    type="month"
-                                    value={formData.year}
-                                    onChange={(e) => {
-                                        // Extract only year part
-                                        const yearValue = e.target.value.split("-")[0];
-                                        setFormData((prev) => ({ ...prev, year: yearValue }));
-                                    }}
-                                    fullWidth
-                                />
-                                <TextField
+                                    select
                                     label="Year"
                                     name="year"
                                     value={formData.year}
                                     onChange={handleInputChange}
                                     fullWidth
-                                />
+                                >
+                                    {yearOptions.map((year) => (
+                                        <MenuItem key={year} value={year}>
+                                            {year}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                             <Grid size={{ xs: 12, md: 6 }}>
                                 <TextField
-                                    label="Month"
-                                    name="month"
-                                    type="month"
-                                    value={formData.month}
-                                    onChange={(e) => {
-                                        // Extract month name
-                                        const monthValue = new Date(e.target.value + "-01").toLocaleString(
-                                            "default",
-                                            { month: "long" }
-                                        );
-                                        setFormData((prev) => ({ ...prev, month: monthValue }));
-                                    }}
-                                    fullWidth
-
-                                />
-                                <TextField
+                                    select
                                     label="Month"
                                     name="month"
                                     value={formData.month}
                                     onChange={handleInputChange}
                                     fullWidth
-                                />
+                                >
+                                    {monthOptions.map((month) => (
+                                        <MenuItem key={month} value={month}>
+                                            {month}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                             <Grid size={{ xs: 12, md: 6 }}>
                                 <TextField
@@ -337,7 +385,6 @@ const StoreTarget = () => {
                             </Grid>
                         </Grid>
 
-                        {/* spacing before role setup */}
                         <Box sx={{ mt: 4, mb: 2, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                             <Typography variant="h6">Role-wise Target Setup</Typography>
                             <Button
