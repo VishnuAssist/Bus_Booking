@@ -22,11 +22,11 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import DataUsageIcon from '@mui/icons-material/DataUsage';
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 import StoreIcon from '@mui/icons-material/Store';
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+//import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SellIcon from '@mui/icons-material/Sell';
+import GroupIcon from '@mui/icons-material/Group';
 
 
-import MultilineChartIcon from "@mui/icons-material/MultilineChart";
 
 import { SidebarContext } from "../../../../Context/SidebarContext";
 import { CalendarIcon, DashboardIcon } from "../../../../Assests/Icons/icons";
@@ -36,6 +36,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+
 
 const MenuWrapper = styled(Box)(({ theme }) => `
   .MuiList-root {
@@ -133,8 +134,6 @@ function SidebarMenu({
   const sidebarItems = useMemo(() => {
     const items = [
       {
-        title: "Dashboard",
-        icon: <MultilineChartIcon />,
         items: [
           {
             label: "Dashboard",
@@ -148,18 +147,24 @@ function SidebarMenu({
             icon: <DataUsageIcon />,
             hide: true,
           },
-
+          {
+            label: "LeaderBoard",
+            link: "/dashboards/LeaderBoard",
+            icon: <EmojiEventsOutlinedIcon />,
+            hide: true,
+          },
+          {
+            label: "Profile",
+            link: "/dashboards/Profile",
+            icon: <AccountCircleOutlinedIcon />,
+            hide: true,
+          },
           {
             label: "Calendar",
             link: "/dashboards/Calendar",
             icon: <CalendarIcon />,
           },
-          {
-            label: "Dictionary",
-            link: "/settings/Dictionary",
-            icon: <MenuBookIcon />,
-            hide: true,
-          },
+
           {
             label: "Shift",
             link: "/settings/shift",
@@ -178,22 +183,16 @@ function SidebarMenu({
             icon: <SellIcon />,
             hide: true,
           },
-          {
-            label: "LeaderBoard",
-            link: "/dashboards/LeaderBoard",
-            icon: <EmojiEventsOutlinedIcon />,
-            hide: true,
-          },
-          {
-            label: "Profile",
-            link: "/dashboards/Profile",
-            icon: <AccountCircleOutlinedIcon />,
-            hide: true,
-          },
+        ],
+      },
+      {
+        title: "Staff Portal",
+        icon: <GroupIcon />,
+        items: [
           {
             label: "StaffPortal",
             link: "/dashboards/StaffPortal",
-            icon: <AdminPanelSettingsIcon />,
+            icon: <GroupIcon />,
             hide: true,
           },
         ],
@@ -208,9 +207,18 @@ function SidebarMenu({
             icon: <DescriptionOutlinedIcon />,
             hide: true,
           },
-      
-
-        
+        ],
+      },
+      {
+        title: "Dictionary",
+        icon: <MenuBookIcon />,
+        items: [
+          {
+            label: "Dictionary",
+            link: "/settings/Dictionary",
+            icon: <MenuBookIcon />,
+            hide: true,
+          },
         ],
       },
     ];
