@@ -15,7 +15,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl,
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
-    const accessToken = state.auth?.accessToken;
+    const accessToken = state.auth?.account?.accessToken;
     if (accessToken) {
       headers.set("authorization", `Bearer ${accessToken}`);
     }
@@ -39,7 +39,7 @@ const APIFetchBase: BaseQueryFn<FetchArgs, unknown, unknown> = async (
       try {
        
         const state = api.getState() as RootState;
-        const refreshToken = state.auth?.refreshToken;
+        const refreshToken = state.auth?.account?.refreshToken;
 
         if (refreshToken) {
           const refreshResult = await baseQuery(
@@ -48,7 +48,7 @@ const APIFetchBase: BaseQueryFn<FetchArgs, unknown, unknown> = async (
               method: "POST",
               body: {
                 refreshToken,
-                token: state.auth?.accessToken,
+                token: state.auth?.account?.accessToken,
               },
             },
             api,

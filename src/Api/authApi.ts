@@ -9,7 +9,7 @@ export const authApi = createApi({
       query: (payload: loginType) => {
         return {
           method: "POST",
-          url: "/account/login",
+          url: "/Account/login",
           body: payload,
         };
       },

@@ -3,17 +3,25 @@ import { Box, Button, Paper, TextField, Typography, Alert } from "@mui/material"
 import { logout } from "../../Store/slice/loginSlice";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../Store/StoreConfig";
+import { useLoginMutation } from "../../Api/authApi";
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, error } = useAppSelector((state) => state.auth.login);
 
-  const [username, setUsername] = useState("Admin");
-  const [password, setPassword] = useState("Admin@123");
+  const [userlogin] = useLoginMutation();
 
-  const handleLogin = () => {
-    navigate("/dashboards/Dashboard");
+  const [username, setUsername] = useState("superadmin");
+  const [password, setPassword] = useState("123Pa$$word!");
+
+  const handleLogin = async () => {
+    const payLoad = {
+      username,
+      password
+    };
+   await userlogin(payLoad);
+    // navigate("/dashboards/Dashboard");
 
     // dispatch(setCredentials({ username, password }));
   };
