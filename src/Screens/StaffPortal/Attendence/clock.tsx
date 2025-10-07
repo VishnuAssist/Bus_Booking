@@ -54,22 +54,28 @@ const ShiftClockMUI: React.FC = () => {
   };
 
   const handleEndShift = () => {
-    const clockOut = new Date().toLocaleTimeString();
-    const shiftData: ShiftData = {
-      shiftId:"1",
-      note,
-      date,
-      clockIn: clockInTime,
-      clockOut,
-      duration: formatTime(seconds),
-    };
-    console.log("Shift Data Submitted:", shiftData);
+    if (note === "") {
+      alert("please enter the note")
+    }
+    else {
+        const clockOut = new Date().toLocaleTimeString();
+        const shiftData: ShiftData = {
+          shiftId: "1",
+          note,
+          date,
+          clockIn: clockInTime,
+          clockOut,
+          duration: formatTime(seconds),
+        };
+        console.log("Shift Data Submitted:", shiftData);
 
-    // Reset
-    setIsRunning(false);
-    setSeconds(0);
-    setClockInTime("");
-    setNote("");
+        // Reset
+        setIsRunning(false);
+        setSeconds(0);
+        setClockInTime("");
+        setNote("");
+    }
+  
   };
 
   return (
@@ -96,7 +102,7 @@ const ShiftClockMUI: React.FC = () => {
           backgroundColor: "#1976d2",
           color: "white",
           borderRadius: isRunning ? 1 : "50%",
-          width: isRunning ? 320 : 160,
+          width: isRunning ? 280 : 160,
           height: isRunning ? 120 : 160,
           fontSize: "18px",
           boxShadow: 3,
