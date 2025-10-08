@@ -1,11 +1,11 @@
 import { useState } from "react";
-import PageHeader from "../../Component/pageHeader";
 import CommisionContainer from "../../Component/container";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
 import type { leaverequesttype } from "../../model/LeaveRequest";
 import { LeaveRequestFormFields, leaveRequestFormValidationSchema, } from "../../feilds_validation/leaveRequestFields";
 import CommonTable from "../../Component/CommenTable";
+import PageHeader from "../../Component/commonPageHeader";
 
 
 const LeaveRequestPage = () => {
@@ -136,9 +136,8 @@ const LeaveRequestPage = () => {
 
   return (
     <>
-      <PageHeader title="Leave Requests" onActionClick={() => setModalOpen(true)} />
-
       <CommisionContainer>
+        <PageHeader title="Leave Requests" btntitle="Add Leave Request" onActionClick={() => setModalOpen(true)} />
         <CommonTable
           columns={columns as any}
           rows={leaveRequests}

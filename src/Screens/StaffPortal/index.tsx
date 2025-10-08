@@ -1,32 +1,17 @@
-import { Helmet } from "@dr.pogodin/react-helmet";
-import PageHeader from "../../Component/pageHeaderAnimation";
-import PageTitleWrapper from "../../Component/PageTitleWrapper";
-
-import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
-
-
-
+import { Grid } from "@mui/material";
 import Footer from "../../Component/Footer";
 import StaffPortalDetail from "./StaffPortalDetail";
+import CommisionContainer from "../../Component/container";
+import PageHeader from "../../Component/commonPageHeader";
 
 
 const Index = () => {
-    const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-
 
   return (
-    <div>
-      <Helmet>
-        <title>Profile</title>
-      </Helmet>
-         <PageTitleWrapper>
-      <PageHeader title ="Staff Portal" description="Manage your attendance, requests, and work activities" btntitle="Edit Profile" icon={""} />
-      </PageTitleWrapper>
-    
+    <>
+      <CommisionContainer>
+        <PageHeader title="Staff Portal" subtitle="Manage your attendance, requests, and work activities" btntitle="Edit Profile" />
 
-         <Box sx={{ maxWidth: "95%", mx: isMobile ? 1 : 4 }}>
         <Grid
           container
           direction="row"
@@ -34,16 +19,17 @@ const Index = () => {
           alignItems="stretch"
           spacing={0}
         >
-          <Grid size={{xs:12}}>
-             <StaffPortalDetail/>
-             
+          <Grid size={{ xs: 12 }}>
+            <StaffPortalDetail />
+
+          </Grid>
         </Grid>
-        </Grid>
-      </Box>
-      <Footer/>
-      
-    </div>
+      </CommisionContainer>
+
+      <Footer />
+
+    </>
   )
 }
 
-export default Index
+export default Index;

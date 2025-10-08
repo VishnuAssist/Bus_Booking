@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PageHeader from "../../Component/pageHeader";
+//import PageHeader from "../../Component/pageHeader";
 import CommisionContainer from "../../Component/container";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
@@ -9,6 +9,7 @@ import {
   dictionaryFormValidationSchema,
 } from "../../feilds_validation/dictionaryFields_validation";
 import CommonTable from "../../Component/CommenTable";
+import PageHeader from "../../Component/commonPageHeader";
 
 const DictionaryPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -122,9 +123,10 @@ const DictionaryPage = () => {
 
   return (
     <>
-      <PageHeader title="Dictionary" onActionClick={() => setModalOpen(true)} />
-
       <CommisionContainer>
+        
+        <PageHeader title="Dictionary" btntitle="Add Dictionary" onActionClick={() => setModalOpen(true)} />
+
         <CommonTable
           columns={columns}
           rows={dictionaries}
