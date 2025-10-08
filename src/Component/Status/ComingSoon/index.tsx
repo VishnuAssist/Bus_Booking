@@ -19,7 +19,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import MailTwoToneIcon from '@mui/icons-material/MailTwoTone';
-import Logo from '../../LogoSign';
+//import Logo from '../../LogoSign';
 
 const MainContent = styled(Box)(
   () => `
@@ -104,7 +104,7 @@ function StatusComingSoon() {
       </Helmet>
       <MainContent>
         <Container maxWidth="md">
-          <Logo />
+          {/* <Logo /> */}
           <Box textAlign="center" mb={3}>
             <Container maxWidth="xs">
               <Typography variant="h1" sx={{ mt: 4, mb: 2 }}>

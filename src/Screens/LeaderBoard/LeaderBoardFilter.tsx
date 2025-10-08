@@ -8,15 +8,15 @@ import {
   Button,
   Grid,
   Typography,
-  IconButton,
+  //IconButton,
 } from "@mui/material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import DownloadIcon from "@mui/icons-material/Download";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import {
-  FilterList as FilterIcon,
+  //FilterList as FilterIcon,
   Search as SearchIcon,
-  Clear as ClearIcon,
+  //Clear as ClearIcon,
 } from "@mui/icons-material";
 
 interface FilterState {
@@ -46,16 +46,16 @@ const LeaderBoardFilter: React.FC<LeaderBoardFilterProps> = ({
     onFilterChange(newFilters);
   };
 
-  const handleClearFilters = () => {
-    const clearedFilters = {
-      employee: "",
-      status: "all",
-      minAmount: "",
-      maxAmount: "",
-    };
-    setFilters(clearedFilters);
-    onFilterChange(clearedFilters);
-  };
+  // const handleClearFilters = () => {
+  //   const clearedFilters = {
+  //     employee: "",
+  //     status: "all",
+  //     minAmount: "",
+  //     maxAmount: "",
+  //   };
+  //   setFilters(clearedFilters);
+  //   onFilterChange(clearedFilters);
+  // };
   const [FilterOpen, setFilterOpen] = useState(false);
   return (
     <Card sx={{ mb: 3 }}>

@@ -16,6 +16,7 @@ const ThemeProviderWrapper: React.FC<ThemeProviderWrapperProps> = (props) => {
   const curThemeName = localStorage.getItem('LeaseApptheme') || 'PureLightTheme';
   const [themeName, _setThemeName] = useState(curThemeName);
   const theme = themeCreator(themeName);
+  console.log(theme)
   const setThemeName = (themeName: string): void => {
     localStorage.setItem('LeaseApptheme', themeName);
     _setThemeName(themeName);

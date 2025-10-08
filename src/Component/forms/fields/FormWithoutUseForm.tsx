@@ -6,7 +6,7 @@ import FormSelect from "./FormSelect"
 import FormCheckbox from "./CheckBox"
 import FormRadio from "./Radio"
 import FormAutocomplete from "./AutocompleteInput"
-import FormUpload from "./upload"
+//import FormUpload from "./upload"
 
 
 import FormUploadImage from "./uploadImage"
@@ -143,8 +143,8 @@ const renderField = ({
           optionLabel={optionLabel}
         />
       );
-    case "D&DUpload":
-      return <FormUpload onChange={onChange} />;
+    // case "D&DUpload":
+    //   return <FormUpload onChange={onChange} />;
     case "D&DUploadImage":
       return <FormUploadImage onChange={onChange}  />;
     default:

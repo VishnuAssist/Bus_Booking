@@ -13,14 +13,14 @@ interface ShiftData {
 const ShiftClockMUI: React.FC = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [seconds, setSeconds] = useState(0);
-//   const [shiftId, setShiftId] = useState("");
+  //   const [shiftId, setShiftId] = useState("");
   const [note, setNote] = useState("");
   const [clockInTime, setClockInTime] = useState("");
   const [date] = useState(() => new Date().toISOString().slice(0, 10));
 
   // Timer effect
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
+    let timer: ReturnType<typeof setInterval> | null = null;
     if (isRunning) {
       timer = setInterval(() => {
         setSeconds((prev) => prev + 1);
@@ -32,6 +32,20 @@ const ShiftClockMUI: React.FC = () => {
       if (timer) clearInterval(timer);
     };
   }, [isRunning]);
+
+  // useEffect(() => {
+  //   let timer: NodeJS.Timeout | null = null;
+  //   if (isRunning) {
+  //     timer = setInterval(() => {
+  //       setSeconds((prev) => prev + 1);
+  //     }, 1000);
+  //   } else {
+  //     if (timer) clearInterval(timer);
+  //   }
+  //   return () => {
+  //     if (timer) clearInterval(timer);
+  //   };
+  // }, [isRunning]);
 
   const formatTime = (totalSeconds: number) => {
     const hrs = Math.floor(totalSeconds / 3600);
@@ -58,24 +72,24 @@ const ShiftClockMUI: React.FC = () => {
       alert("please enter the note")
     }
     else {
-        const clockOut = new Date().toLocaleTimeString();
-        const shiftData: ShiftData = {
-          shiftId: "1",
-          note,
-          date,
-          clockIn: clockInTime,
-          clockOut,
-          duration: formatTime(seconds),
-        };
-        console.log("Shift Data Submitted:", shiftData);
+      const clockOut = new Date().toLocaleTimeString();
+      const shiftData: ShiftData = {
+        shiftId: "1",
+        note,
+        date,
+        clockIn: clockInTime,
+        clockOut,
+        duration: formatTime(seconds),
+      };
+      console.log("Shift Data Submitted:", shiftData);
 
-        // Reset
-        setIsRunning(false);
-        setSeconds(0);
-        setClockInTime("");
-        setNote("");
+      // Reset
+      setIsRunning(false);
+      setSeconds(0);
+      setClockInTime("");
+      setNote("");
     }
-  
+
   };
 
   return (
@@ -84,7 +98,7 @@ const ShiftClockMUI: React.FC = () => {
         // maxWidth: 400,
         mx: "auto",
         // mt: 4,
-        bgcolor:"white",
+        bgcolor: "white",
         p: 2,
         border: "1px solid #ddd",
         borderRadius: 2,

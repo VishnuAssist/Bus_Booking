@@ -14,13 +14,11 @@ const Index = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
 
-    const [form, setForm] = useState(false);
+    const [_form, setForm] = useState(false);
     const openForm = () => {
       setForm(true);
     };
-    const closeForm = () => {
-      setForm(false);
-    };
+    
   return (
     <div>
       <Helmet>

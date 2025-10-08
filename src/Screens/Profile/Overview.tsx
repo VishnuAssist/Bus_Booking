@@ -5,7 +5,7 @@ import {
   Box,
   Card,
   CardContent,
-  CardHeader,
+  //CardHeader,
   Grid,
   TextField,
   Typography,
@@ -21,7 +21,7 @@ import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined';
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 
 export default function Overview() {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, _setIsEditing] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
   const [profileData, setProfileData] = useState({
@@ -43,7 +43,7 @@ export default function Overview() {
     console.log('Upload photo clicked');
   };
 
-  const handleActiveToggle = (event) => {
+  const handleActiveToggle = (event: any) => {
     setIsActive(event.target.checked);
   };
 
@@ -63,10 +63,10 @@ export default function Overview() {
             <CardContent>
               <Box display="flex" alignItems="center" gap={3} mb={3}>
                 <Box position="relative">
-                  <Avatar 
-                    src="/avatar.png" 
-                    sx={{ 
-                      width: 100, 
+                  <Avatar
+                    src="/avatar.png"
+                    sx={{
+                      width: 100,
                       height: 100,
                       border: isActive ? '3px solid #4caf50' : '3px solid #f44336',
                       borderWidth: 3

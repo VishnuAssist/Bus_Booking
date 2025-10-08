@@ -9,28 +9,26 @@ import LeaderBoardDetail from "./LeaderBoardDetail";
 import Footer from "../../Component/Footer";
 
 const Index = () => {
-    const theme = useTheme();
+  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
 
-    const [form, setForm] = useState(false);
-    const openForm = () => {
-      setForm(true);
-    };
-    const closeForm = () => {
-      setForm(false);
-    };
+  const [_form, setForm] = useState(false);
+  const openForm = () => {
+    setForm(true);
+  };
+
   return (
     <div>
       <Helmet>
         <title>Profile</title>
       </Helmet>
-         <PageTitleWrapper>
-      <PageHeader title ="Leaderboards" description="Compete with your team and track performance" btntitle="" icon={""} onActionClick={openForm}/>
+      <PageTitleWrapper>
+        <PageHeader title="Leaderboards" description="Compete with your team and track performance" btntitle="" icon={""} onActionClick={openForm} />
       </PageTitleWrapper>
-    
 
-         <Box sx={{ maxWidth: "95%", mx: isMobile ? 1 : 4 }}>
+
+      <Box sx={{ maxWidth: "95%", mx: isMobile ? 1 : 4 }}>
         <Grid
           container
           direction="row"
@@ -38,13 +36,13 @@ const Index = () => {
           alignItems="stretch"
           spacing={0}
         >
-          <Grid size={{xs:12}}>
-             <LeaderBoardDetail/>
-        </Grid>
+          <Grid size={{ xs: 12 }}>
+            <LeaderBoardDetail />
+          </Grid>
         </Grid>
       </Box>
-      <Footer/>
-      
+      <Footer />
+
     </div>
   )
 }

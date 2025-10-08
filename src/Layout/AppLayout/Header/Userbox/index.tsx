@@ -58,7 +58,7 @@ function HeaderUserbox() {
 
 
 
-  const loginToken = useAppSelector((state) => state.auth.accessToken)
+  const loginToken = useAppSelector((state) => state.auth?.account?.accessToken)
 
 const payloadBase64 = loginToken?.split(".")?.[1]||""; 
 const user = JSON.parse(atob(payloadBase64));

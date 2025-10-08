@@ -1,6 +1,6 @@
 import { FormControl } from "@mui/material";
 import * as React from "react";
-import { useUploadFileMutation } from "../../../Api/CommonApi";
+//import { useUploadFileMutation } from "../../../Api/CommonApi";
 import UploadModal from "../../Loading/Uploadloading";
 // import { getFileIcon } from "../../display/component/fileIcon";
 // import { useEffect } from "react";
@@ -20,8 +20,8 @@ type AllowedType =
 
 interface Props {
   onChange: (filename: string | null) => void;
-    allowFile?: AllowedType[];
-    value?:string | null
+  allowFile?: AllowedType[];
+  value?: string | null
 }
 
 const mimeMap: Record<AllowedType, string[]> = {
@@ -48,18 +48,18 @@ const mimeMap: Record<AllowedType, string[]> = {
 };
 
 const FormUploadImage: React.FC<Props> = ({
-  onChange,
+  //onChange,
   allowFile = ["all"],
   value,
 }) => {
   const [imageError, setImageError] = React.useState(false);
   const baseUrl = import.meta.env.VITE_BASE_URL + "/uploads/";
-    const tempUrl = import.meta.env.VITE_BASE_URL + "/uploads/temp/";
-    
+  const tempUrl = import.meta.env.VITE_BASE_URL + "/uploads/temp/";
+
 
   const [isDragging, setIsDragging] = React.useState(false);
   const [isFileUploaded, setIsFileUploaded] = React.useState(false);
-  const [uploadFile, { isLoading }] = useUploadFileMutation();
+  //const [uploadFile, { isLoading }] = useUploadFileMutation();
   const [error, setError] = React.useState<string | null>(null);
 
   const allowedMimeTypes = allowFile.flatMap((type) => mimeMap[type]);
@@ -73,9 +73,9 @@ const FormUploadImage: React.FC<Props> = ({
     );
   };
 
-  const [fileUrl, setFileUrl] = React.useState<string | null>(null);
-    
-    
+  const [fileUrl, _setFileUrl] = React.useState<string | null>(null);
+
+  const isLoading = true
 
 
 
@@ -91,10 +91,9 @@ const FormUploadImage: React.FC<Props> = ({
     try {
       setIsFileUploaded(false);
       setError(null);
-      const result = await uploadFile(formData).unwrap();
-      const uploadedFileName = result?.fileName;
-      setFileUrl(uploadedFileName);
-      onChange(uploadedFileName);
+      const result = await formData;
+      const uploadedFileName = result;
+      console.log(uploadedFileName);
       setIsFileUploaded(true);
     } catch (err) {
       setError("Upload failed. Please try again.");
@@ -129,7 +128,7 @@ const FormUploadImage: React.FC<Props> = ({
     ? "*/*"
     : allowedMimeTypes.join(",");
 
- 
+
   return (
     <FormControl
       component="fieldset"
@@ -190,30 +189,30 @@ const FormUploadImage: React.FC<Props> = ({
       {(fileUrl || value) && (
         <div style={{ position: "relative", width: "100%", height: "90%" }}>
           {!imageError ? (
-      <img
-        src={fileUrl === null ? `${baseUrl}${value}` : `${tempUrl}${fileUrl}`}
-        alt="Uploaded Preview"
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          display: "block",
-        }}
-        onError={() => setImageError(true)}
-      />
-    ) : (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {/* {getFileIcon(value || fileUrl || "", 48)} */}
-      </div>
-    )}
+            <img
+              src={fileUrl === null ? `${baseUrl}${value}` : `${tempUrl}${fileUrl}`}
+              alt="Uploaded Preview"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {/* {getFileIcon(value || fileUrl || "", 48)} */}
+            </div>
+          )}
         </div>
       )}
 

@@ -4,23 +4,37 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 
-const PerformanceCard = ({ icon, value, label, footer, progress }) => {
+
+interface FooterType {
+  text: string;
+  color?: string;
+}
+
+interface PerformanceCardProps {
+  icon: React.ReactNode;
+  value: string;
+  label: string;
+  footer?: FooterType;
+  progress?: number;
+}
+
+const PerformanceCard = ({ icon, value, label, footer, progress }: PerformanceCardProps) => {
   return (
     <Card sx={{ p: 1, height: '100%' }}>
       <Grid container spacing={2}>
         {/* Icon */}
-        <Grid size={{xs:3}}>
+        <Grid size={{ xs: 3 }}>
           {icon}
         </Grid>
         {/* Main text */}
-        <Grid size={{xs:9}}>
+        <Grid size={{ xs: 9 }}>
           <Typography variant="h6">{value}</Typography>
           <Typography variant="body2" color="text.secondary">
             {label}
           </Typography>
         </Grid>
         {/* Footer */}
-        <Grid size={{xs:12}}>
+        <Grid size={{ xs: 12 }}>
           {progress !== undefined ? (
             <Box display="flex" alignItems="center">
               <Box width="100%" mr={1}>
@@ -32,8 +46,8 @@ const PerformanceCard = ({ icon, value, label, footer, progress }) => {
               </Box>
             </Box>
           ) : (
-            <Typography variant="body2" color={footer.color || "text.secondary"}>
-              {footer.text}
+            <Typography variant="body2" color={footer?.color || "text.secondary"}>
+              {footer?.text}
             </Typography>
           )}
         </Grid>
@@ -74,7 +88,7 @@ const Performance = () => {
     <Box>
       <Grid container spacing={2}>
         {performanceData.map((card, index) => (
-          <Grid key={index} size={{xs:12,sm:6,md:3}}>
+          <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
             <PerformanceCard
               icon={card.icon}
               value={card.value}

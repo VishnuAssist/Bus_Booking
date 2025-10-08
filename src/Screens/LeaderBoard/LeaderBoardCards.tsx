@@ -23,7 +23,7 @@ const KPICard: React.FC<KPICardProps> = ({
   trend,
   trendValue,
   trendPeriod,
-  color
+  //color
 }) => {
   const getTrendIcon = () => {
     switch (trend) {

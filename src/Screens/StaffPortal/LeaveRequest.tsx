@@ -4,11 +4,9 @@ import CommisionContainer from "../../Component/container";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
 import type { leaverequesttype } from "../../model/LeaveRequest";
-import {
-  LeaveRequestFormFields,
-  leaveRequestFormValidationSchema,
-} from "../../feilds_validation/leaveRequestFields";
+import { LeaveRequestFormFields, leaveRequestFormValidationSchema, } from "../../feilds_validation/leaveRequestFields";
 import CommonTable from "../../Component/CommenTable";
+
 
 const LeaveRequestPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -59,27 +57,27 @@ const LeaveRequestPage = () => {
 
   const getLeaveRequestFields = () => {
     const fields = [...LeaveRequestFormFields];
-    
+
     const requestTypeField = fields.find((f) => f.name === "requestType");
     if (requestTypeField) {
       requestTypeField.options = [
-        { id: "Sick Leave", name: "Sick Leave" },
-        { id: "Vacation", name: "Vacation" },
-        { id: "Emergency", name: "Emergency" },
-        { id: "Medical", name: "Medical" },
-        { id: "Personal", name: "Personal" },
+        { id: "1", name: "Sick Leave" },
+        { id: "2", name: "Vacation" },
+        { id: "3", name: "Emergency" },
+        { id: "4", name: "Medical" },
+        { id: "5", name: "Personal" },
       ];
     }
 
     const statusField = fields.find((f) => f.name === "status");
     if (statusField) {
       statusField.options = [
-        { id: "Pending", name: "Pending" },
-        { id: "Approved", name: "Approved" },
-        { id: "Rejected", name: "Rejected" },
+        { id: "1", name: "Pending" },
+        { id: "2", name: "Approved" },
+        { id: "3", name: "Rejected" },
       ];
     }
-    
+
     return fields;
   };
 
@@ -116,8 +114,8 @@ const LeaveRequestPage = () => {
               value === "Approved"
                 ? "green"
                 : value === "Rejected"
-                ? "red"
-                : "orange",
+                  ? "red"
+                  : "orange",
             fontWeight: "bold",
           }}
         >
@@ -142,7 +140,7 @@ const LeaveRequestPage = () => {
 
       <CommisionContainer>
         <CommonTable
-          columns={columns}
+          columns={columns as any}
           rows={leaveRequests}
           page={page}
           rowsPerPage={rowsPerPage}
@@ -156,7 +154,7 @@ const LeaveRequestPage = () => {
         />
       </CommisionContainer>
 
-      {/* <Footer /> */}
+      <Footer />
 
       <CommonDialog
         open={isModalOpen}

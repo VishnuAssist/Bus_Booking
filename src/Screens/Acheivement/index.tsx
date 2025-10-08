@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
-  Badge,
   Button,
   IconButton,
   Box,
   Typography,
   styled,
+  Chip,
 } from "@mui/material";
 import {
   EmojiEvents,
@@ -74,7 +74,7 @@ const StyledCard = styled(Card, {
 
   return {
     position: "relative",
-    width:"100%",
+    width: "100%",
     maxWidth: 348,
     margin: "0 16px",
     animation: "zoomIn 0.5s ease-out",
@@ -164,38 +164,7 @@ const IconContainer = styled(Box, {
   };
 });
 
-const StyledBadge = styled(Badge, {
-  shouldForwardProp: (prop) => prop !== 'rarity',
-})<{ rarity: string }>(({ theme, rarity }) => {
-  const getBorderColor = () => {
-    switch (rarity) {
-      case "common":
-        return theme.palette.grey[400];
-      case "rare":
-        return theme.palette.info.light;
-      case "epic":
-        return theme.palette.secondary.light;
-      case "legendary":
-        return theme.palette.warning.light;
-      default:
-        return theme.palette.grey[400];
-    }
-  };
-  const styles = getBorderColor();
-  return {
 
-
-     display: "inline-block",
-    padding: "6px 16px",
-    borderRadius: "16px",
-    fontSize: "0.75rem",
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    letterSpacing: "0.5px",
-    margin: "8px auto",
-    
-  };
-});
 
 export function AnimatedAchievement({
   achievement,
@@ -290,12 +259,7 @@ export function AnimatedAchievement({
             <IconContainer rarity={achievement.rarity}>
               <EmojiEvents sx={{ width: 40, height: 40 }} />
             </IconContainer>
-
-            <StyledBadge
-              rarity={achievement.rarity}
-              badgeContent={achievement.rarity.toUpperCase()}
-              color="default"
-            />
+            <Chip label={achievement.rarity.toUpperCase()} color="default" />
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>

@@ -30,6 +30,7 @@ import {
   WarningAmber,
   AccessTime,
 } from "@mui/icons-material";
+import { v4 as uuidv4 } from "uuid";
 
 
 interface Rule {
@@ -88,7 +89,7 @@ const getStatusIcon = (status: string) => {
     case "pending":
       return <AccessTime color="action" fontSize="small" />;
     default:
-      return null;
+      return undefined;
   }
 };
 
@@ -137,9 +138,11 @@ export const RuleEngine: React.FC = () => {
 
     const newRule: Rule = {
       ...(form as Rule),
-      id: any,
+      id: crypto.randomUUID(),
       lastModified: new Date().toISOString().split("T")[0],
+      status: form.status as "active" | "inactive" | "pending",
     };
+
     setRules([...rules, newRule]);
     setIsCreating(false);
     setForm({
@@ -152,21 +155,36 @@ export const RuleEngine: React.FC = () => {
     });
   };
 
-  const handleDelete = (id: string) =>
-    setRules((prev) => prev.filter((r) => r.id !== id));
+
+  const handleDelete = (id: string) => setRules((prev) => prev.filter((r) => r.id !== id));
+
+  // const handleDuplicate = (id: string) => {
+  //   const rule = rules.find((r) => r.id === id);
+  //   if (rule) {
+  //     const copy = {
+  //       ...rule,
+  //       id: uuidv4(),
+  //       name: `${rule.name} (Copy)`,
+  //       status: "inactive",
+  //     };
+  //     setRules([...rules, copy]);
+  //   }
+  // };
 
   const handleDuplicate = (id: string) => {
     const rule = rules.find((r) => r.id === id);
     if (rule) {
-      const copy = {
+      const copy: Rule = {
         ...rule,
         id: uuidv4(),
         name: `${rule.name} (Copy)`,
         status: "inactive",
+        lastModified: new Date().toISOString().split("T")[0],
       };
       setRules([...rules, copy]);
     }
   };
+
 
   return (
     <Box sx={{ p: 3 }}>
@@ -198,7 +216,7 @@ export const RuleEngine: React.FC = () => {
           <CardHeader title="Create New Commission Rule" />
           <CardContent>
             <Grid container spacing={2}>
-              <Grid size={{xs:12,sm:6}}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="Rule Name"
                   fullWidth
@@ -206,7 +224,7 @@ export const RuleEngine: React.FC = () => {
                   onChange={(e) => handleChange("name", e.target.value)}
                 />
               </Grid>
-              <Grid size={{xs:12,sm:6}}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <FormControl fullWidth>
                   <InputLabel>Country</InputLabel>
                   <Select
@@ -222,7 +240,7 @@ export const RuleEngine: React.FC = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid size={{xs:12,sm:6}}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <FormControl fullWidth>
                   <InputLabel>Rule Type</InputLabel>
                   <Select
@@ -236,7 +254,7 @@ export const RuleEngine: React.FC = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid size={{xs:12,sm:6}}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -249,7 +267,7 @@ export const RuleEngine: React.FC = () => {
                   label="Active"
                 />
               </Grid>
-              <Grid size={{xs:12}}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   label="Description"
                   multiline
@@ -259,7 +277,7 @@ export const RuleEngine: React.FC = () => {
                   onChange={(e) => handleChange("description", e.target.value)}
                 />
               </Grid>
-              <Grid size={{xs:12}}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   label="Conditions"
                   multiline
@@ -284,7 +302,7 @@ export const RuleEngine: React.FC = () => {
 
       <Grid container spacing={2}>
         {rules.map((rule) => (
-          <Grid size={{xs:12,md:12,lg:12}} key={rule.id}>
+          <Grid size={{ xs: 12, md: 12, lg: 12 }} key={rule.id}>
             <Card
               variant="outlined"
               sx={{
@@ -332,18 +350,18 @@ export const RuleEngine: React.FC = () => {
                     />     <Typography
                       variant="caption"
                       color="text.secondary"
-                      sx={{ ml: "auto",}}
+                      sx={{ ml: "auto", }}
                     >
                       Last modified: {rule.lastModified}
                     </Typography>
-                      <Box sx={{ flexGrow: 1 }} />
+                    <Box sx={{ flexGrow: 1 }} />
                     <Chip
                       size="small"
                       label={rule.status}
                       color={getStatusColor(rule.status)}
                       icon={getStatusIcon(rule.status)}
                     />
-               
+
                   </Stack>
                   <Typography color="text.secondary" fontSize={13}>
                     {rule.description}

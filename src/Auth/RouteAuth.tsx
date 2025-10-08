@@ -10,6 +10,7 @@ interface Props {
 }
 
 export default function RouteAuth({ roles }: Props) {
+  console.log("role", roles);
   // const { user } = useAppSelector((state) => state.auth);
   // const location = useLocation();
 

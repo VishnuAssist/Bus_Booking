@@ -14,9 +14,19 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
 import StarIcon from '@mui/icons-material/Star';
 import Performance from './Performance';
+import type { ChipProps } from '@mui/material';
+
+
+interface AchievementType {
+  icon: React.ReactNode;
+  title: string;
+  time: string;
+  chipLabel: string;
+  chipColor: ChipProps['color'];
+}
 
 const Achievements = () => {
-  const recentAchievements = [
+  const recentAchievements: AchievementType[] = [
     {
       icon: <WhatshotIcon fontSize="large" color="warning" />,
       title: "Sales Streak",
@@ -50,13 +60,13 @@ const Achievements = () => {
   return (
     <div>
       <Grid container spacing={2}>\
-        <Grid size={{xs:12}}>
-          <Performance/>
+        <Grid size={{ xs: 12 }}>
+          <Performance />
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
           <Card sx={{ p: 1, height: '100%' }}>
             <Box>
-              <Typography variant="h6" sx={{fontSize:"18px"}} >Achievement Summary</Typography>
+              <Typography variant="h6" sx={{ fontSize: "18px" }} >Achievement Summary</Typography>
             </Box>
             <CardContent>
               <Box
@@ -64,11 +74,11 @@ const Achievements = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  flexDirection: 'column',mt:5
+                  flexDirection: 'column', mt: 5
                 }}
               >
-                <Typography variant="h4" sx={{fontSize:"17px"}} >18</Typography>
-                <Typography variant="body1" sx={{fontSize:"18px"}} color="text.secondary">
+                <Typography variant="h4" sx={{ fontSize: "17px" }} >18</Typography>
+                <Typography variant="body1" sx={{ fontSize: "18px" }} color="text.secondary">
                   Total Achievements Unlocked
                 </Typography>
                 <Box width="100%" mr={1} my={2}>
@@ -78,7 +88,7 @@ const Achievements = () => {
                     sx={{ height: 10, borderRadius: 5 }}
                   />
                 </Box>
-                <Typography variant="body2" color="text.secondary" sx={{fontSize:"16px"}} >
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: "16px" }} >
                   75% completion rate
                 </Typography>
               </Box>
@@ -88,7 +98,7 @@ const Achievements = () => {
         <Grid size={{ xs: 12, sm: 6 }}>
           <Card sx={{ p: 1, height: '100%' }}>
             <Box>
-              <Typography variant="h6" sx={{fontSize:"18px"}} >Recent Achievements</Typography>
+              <Typography variant="h6" sx={{ fontSize: "18px" }} >Recent Achievements</Typography>
             </Box>
             <CardContent>
               <Grid container spacing={2}>

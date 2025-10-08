@@ -14,7 +14,7 @@ interface FilterState {
 }
 
 const LeaderBoardDetail: React.FC = () => {
-  const [filters, setFilters] = useState<FilterState>({
+  const [_filters, setFilters] = useState<FilterState>({
     employee: '',
     status: 'all',
     minAmount: '',

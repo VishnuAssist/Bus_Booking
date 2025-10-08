@@ -122,7 +122,7 @@ const RecentAchievements: React.FC = () => {
                       height: 48
                     }}
                   >
-                    {React.cloneElement(achievement.icon as React.ReactElement, {
+                    {React.cloneElement(achievement.icon as any, {
                       sx: { color: 'white' }
                     })}
                   </Avatar>
