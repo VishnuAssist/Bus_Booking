@@ -1,12 +1,13 @@
 import { useState } from "react";
 import CommisionContainer from "../../Component/container";
-import PageHeader from "../../Component/pageHeader";
+//import PageHeader from "../../Component/pageHeader";
 import CommonTable from "../../Component/CommenTable";
 import Footer from "../../Component/Footer";
 //import { CommonDialog } from "../../Component/forms/FormDialog";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, MenuItem, TextField, Typography } from "@mui/material";
 import { Add, Delete, Clear } from "@mui/icons-material";
 import CurrentYearTarget from "./CurrentYearTarget";
+import PageHeader from "../../Component/commonPageHeader";
 
 const StoreTarget = () => {
 
@@ -164,7 +165,6 @@ const StoreTarget = () => {
         setRoleTargets(updatedRoles);
     };
 
-
     const handleAddRole = () => {
         setRoleTargets([...roleTargets, { role: "", targetAmount: "" }]);
     };
@@ -236,8 +236,8 @@ const StoreTarget = () => {
     return (
         <>
             {/* <PageHeader title="Store Target" onActionClick={() => setModalOpen(true)} /> */}
-            <PageHeader title="Store Target" onActionClick={() => setOpenForm(true)} />
             <CommisionContainer>
+                <PageHeader title="Store Target" btntitle="Add Store Target" onActionClick={() => setOpenForm(true)} />
                 <Grid container spacing={2}>
                     <Grid size={12}>
                         <CurrentYearTarget />
@@ -444,7 +444,6 @@ const StoreTarget = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
         </>
     )
 }

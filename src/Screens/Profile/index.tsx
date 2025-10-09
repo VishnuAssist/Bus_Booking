@@ -1,35 +1,17 @@
-import { Helmet } from "@dr.pogodin/react-helmet";
-import PageHeader from "../../Component/pageHeaderAnimation";
-import PageTitleWrapper from "../../Component/PageTitleWrapper";
-
-import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
-import { useState } from "react";
-
+import { Grid } from "@mui/material";
 import ProfileDetail from "./ProfileDetail";
 import Footer from "../../Component/Footer";
 import { AchievementDemo } from "../Acheivement";
+import CommisionContainer from "../../Component/container";
+import PageHeader from "../../Component/commonPageHeader";
 
 const Index = () => {
-    const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-
-    const [_form, setForm] = useState(false);
-    const openForm = () => {
-      setForm(true);
-    };
-    
   return (
-    <div>
-      <Helmet>
-        <title>Profile</title>
-      </Helmet>
-         <PageTitleWrapper>
-      <PageHeader title ="My Profile" description="Manage your account and preferences" btntitle="Edit Profile" icon={""} onActionClick={openForm}/>
-      </PageTitleWrapper>
-    
+    <>
+      <CommisionContainer>
+        <PageHeader title="My Profile" subtitle="Manage your account and preferences" />
 
-         <Box sx={{ maxWidth: "95%", mx: isMobile ? 1 : 4 }}>
         <Grid
           container
           direction="row"
@@ -37,16 +19,17 @@ const Index = () => {
           alignItems="stretch"
           spacing={0}
         >
-          <Grid size={{xs:12}}>
-             <ProfileDetail/>
-             <AchievementDemo/>
+          <Grid size={{ xs: 12 }}>
+            <ProfileDetail />
+            <AchievementDemo />
+          </Grid>
         </Grid>
-        </Grid>
-      </Box>
-      <Footer/>
-      
-    </div>
+      </CommisionContainer>
+
+      <Footer />
+
+    </>
   )
 }
 
-export default Index
+export default Index;

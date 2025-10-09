@@ -1,11 +1,11 @@
 import { useState } from "react";
 import CommonTable from "../../Component/CommenTable";
 import CommisionContainer from "../../Component/container";
-import PageHeader from "../../Component/pageHeader";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
 import { StoreFormFields, storeFormValidationSchema } from "../../feilds_validation/storeFieldsValidation";
 import { useNavigate } from "react-router-dom";
+import PageHeader from "../../Component/commonPageHeader";
 
 const Store = () => {
 
@@ -15,8 +15,6 @@ const Store = () => {
     const [selectedStore, setSelectedStore] = useState<any>(null);
 
     const navi = useNavigate();
-
-
 
     const StoreColumns = [
         { id: "id", label: "Store ID" },
@@ -121,9 +119,8 @@ const Store = () => {
 
     return (
         <>
-            <PageHeader title="Store" onActionClick={() => setModalOpen(true)} />
-
             <CommisionContainer>
+                <PageHeader title="Store" btntitle="Add Store" onActionClick={() => setModalOpen(true)} />
                 <CommonTable
                     columns={StoreColumns}
                     rows={StoreSampleData}
@@ -162,7 +159,6 @@ const Store = () => {
                     }
                 }
             />
-
         </>
     )
 };

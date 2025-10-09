@@ -1,34 +1,16 @@
-import { Helmet } from "@dr.pogodin/react-helmet";
-import PageHeader from "../../Component/pageHeaderAnimation";
-import PageTitleWrapper from "../../Component/PageTitleWrapper";
-
-import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
-import { useState } from "react";
-
+import { Grid } from "@mui/material";
 import LeaderBoardDetail from "./LeaderBoardDetail";
 import Footer from "../../Component/Footer";
+import CommisionContainer from "../../Component/container";
+import PageHeader from "../../Component/commonPageHeader";
 
 const Index = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-
-  const [_form, setForm] = useState(false);
-  const openForm = () => {
-    setForm(true);
-  };
 
   return (
-    <div>
-      <Helmet>
-        <title>Profile</title>
-      </Helmet>
-      <PageTitleWrapper>
-        <PageHeader title="Leaderboards" description="Compete with your team and track performance" btntitle="" icon={""} onActionClick={openForm} />
-      </PageTitleWrapper>
+    <>
+      <CommisionContainer>
+        <PageHeader title="Leaderboards" subtitle="Compete with your team and track performance" />
 
-
-      <Box sx={{ maxWidth: "95%", mx: isMobile ? 1 : 4 }}>
         <Grid
           container
           direction="row"
@@ -40,10 +22,11 @@ const Index = () => {
             <LeaderBoardDetail />
           </Grid>
         </Grid>
-      </Box>
+      </CommisionContainer>
+
       <Footer />
 
-    </div>
+    </>
   )
 }
 

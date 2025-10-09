@@ -7,7 +7,7 @@ interface Props {
 
 const CommisionContainer = ({ children }: Props) => {
   return (
-    <Box sx={{ maxWidth: "99%", mx: 2, height: "100%" }} id="LeaseView">
+    <Box sx={{ maxWidth: "98%", mx: 3, height: "100%" }} id="LeaseView">
       {children}
     </Box>
   );

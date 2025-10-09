@@ -1,30 +1,16 @@
-import { Helmet } from "@dr.pogodin/react-helmet";
-import PageHeader from "../../Component/pageHeaderAnimation";
-import PageTitleWrapper from "../../Component/PageTitleWrapper";
-import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Grid } from "@mui/material";
 import Footer from "../../Component/Footer";
 import ReportDetails from "./ReportDetails";
+import CommisionContainer from "../../Component/container";
+import PageHeader from "../../Component/commonPageHeader";
 
 const Index = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <div>
-      <Helmet>
-        <title>Reports</title>
-      </Helmet>
+    <>
+      <CommisionContainer>
+        <PageHeader title="Reports" subtitle="Manage system configuration and data" btntitle="Generate Report" />
 
-      <PageTitleWrapper>
-        <PageHeader
-          title="Reports"
-          description="Manage system configuration and data"
-          btntitle="Generate Report"
-          icon={""}
-        />
-      </PageTitleWrapper>
-
-      <Box sx={{ maxWidth: "95%", mx: isMobile ? 1 : 4 }}>
         <Grid
           container
           direction="row"
@@ -32,15 +18,13 @@ const Index = () => {
           alignItems="stretch"
           spacing={0}
         >
-          <Grid  size={{xs:12}}>
+          <Grid size={{ xs: 12 }}>
             <ReportDetails />
           </Grid>
         </Grid>
-      </Box>
-
+      </CommisionContainer>
       <Footer />
-    </div>
+    </>
   );
 };
-
 export default Index;

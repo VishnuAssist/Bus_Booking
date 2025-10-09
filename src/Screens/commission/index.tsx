@@ -1,6 +1,4 @@
-import { Helmet } from "@dr.pogodin/react-helmet";
 import { Grid } from "@mui/material";
-import PageHeader from "./PageHeader";
 import PageFilter from "./PageFilter";
 import Cards from "./Cards";
 import Structure from "./Structure";
@@ -9,18 +7,21 @@ import MonthlyHistory from "./MonthlyHistory";
 import CommisionContainer from "../../Component/container";
 import HistoryTabel from "./HistoryTabel";
 import Footer from "../../Component/Footer";
+import PageHeader from "../../Component/commonPageHeader";
+import CalculateIcon from '@mui/icons-material/Calculate';
+
 
 const Commission = () => {
     return (
         <>
-            <Helmet>
-                <title>Commission</title>
-            </Helmet>
             <CommisionContainer>
+                <PageHeader
+                    title="Commission"
+                    subtitle="Track your earnings and performance"
+                    btntitle="Recalculate"
+                    icon={<CalculateIcon />}
+                />
                 <Grid container spacing={2}>
-                    <Grid size={12}>
-                        <PageHeader />
-                    </Grid>
                     <Grid size={12}>
                         <PageFilter />
                     </Grid>

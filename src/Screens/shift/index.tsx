@@ -1,13 +1,11 @@
 import { useState } from "react";
-import PageHeader from "../../Component/pageHeader";
+//import PageHeader from "../../Component/pageHeader";
 import CommisionContainer from "../../Component/container";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
-import {
-  ShiftFormFields,
-  shiftFormValidationSchema,
-} from "../../feilds_validation/shiftFields";
+import { ShiftFormFields, shiftFormValidationSchema } from "../../feilds_validation/shiftFields";
 import CommonTable from "../../Component/CommenTable";
+import PageHeader from "../../Component/commonPageHeader";
 
 const sampleShifts = [
   {
@@ -108,19 +106,15 @@ const Shift = () => {
 
   return (
     <>
-      <PageHeader
-        title="Shift Management"
-        onActionClick={() => setModalOpen(true)}
-      />
-
       <CommisionContainer>
+        <PageHeader title="Shift Management" btntitle="Add Shift" onActionClick={() => setModalOpen(true)} />
         <CommonTable
           columns={shiftColumns}
           rows={sampleShifts}
           page={page}
-          rowsPerPage={rowsPerPage} 
-          onPageChange={setPage} 
-          onRowsPerPageChange={setRowsPerPage} 
+          rowsPerPage={rowsPerPage}
+          onPageChange={setPage}
+          onRowsPerPageChange={setRowsPerPage}
           actions={{
             onView: (row) => console.log("view", row),
             onEdit: (row) => {

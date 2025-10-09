@@ -1,10 +1,10 @@
 import { useState } from "react";
 import CommonTable from "../../Component/CommenTable";
 import CommisionContainer from "../../Component/container";
-import PageHeader from "../../Component/pageHeader";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
 import { salesFormValidationSchema, SalesFormFields } from "../../feilds_validation/salesFieldsValidation";
+import PageHeader from "../../Component/commonPageHeader";
 
 const Sales = () => {
 
@@ -169,15 +169,14 @@ const Sales = () => {
                 { id: "1", name: "MacBook Pro" },
             ]
         }
-
         return fields;
     };
 
     return (
         <>
-            <PageHeader title="Sales" onActionClick={() => setModalOpen(true)} />
-
             <CommisionContainer>
+                <PageHeader title="Sales" btntitle="Add Sales" onActionClick={() => setModalOpen(true)} />
+                    
                 <CommonTable
                     columns={SalesColumns}
                     rows={SalesSampleData}
