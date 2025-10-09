@@ -12,9 +12,18 @@ const Loader = (Component: any) => (props: any) =>
   </Suspense>
 );
 
+// OverView
 const Login = Loader(lazy(() => import('../Screens/auth')));
 const Dashboard = Loader(lazy(() => import('../Screens/dashboard/index')));
 const Commission = Loader(lazy(() => import('../Screens/commission/index')));
+const LeaderBoard = Loader(lazy(() => import('../Screens/LeaderBoard')));
+const Profile = Loader(lazy(() => import('../Screens/Profile')));
+
+// Staff Portal
+const Attendence = Loader(lazy(() => import('../Screens/StaffPortal/Attendence')));
+const LeaveRequest = Loader(lazy(() => import('../Screens/StaffPortal/LeaveRequest')));
+const Achievements = Loader(lazy(() => import('../Screens/StaffPortal/Achievements')));
+
 const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
 const Shift = Loader(lazy(() => import('../Screens/shift/index')));
 const Store = Loader(lazy(() => import('../Screens/store/index')));
@@ -24,9 +33,6 @@ const Sales = Loader(lazy(() => import('../Screens/sales/index')));
 
 
 
-const Profile = Loader(lazy(() => import('../Screens/Profile')));
-const LeaderBoard = Loader(lazy(() => import('../Screens/LeaderBoard')));
-const StaffPortal = Loader(lazy(() => import('../Screens/StaffPortal')));
 
 const Reports = Loader(lazy(() => import('../Screens/Reports/Index')));
 
@@ -122,9 +128,28 @@ const routes: RouteObject[] = [
             path: "Profile",
             element: <Profile />,
           },
+        ],
+      },
+    ],
+  },
+  {
+    element: <RouteAuth />,
+    children: [
+      {
+        path: "staff",
+        element: <SidebarLayout />,
+        children: [
           {
-            path: "StaffPortal",
-            element: <StaffPortal />,
+            path: "attendence",
+            element: <Attendence />,
+          },
+          {
+            path: "leaveRequest",
+            element: <LeaveRequest />,
+          },
+          {
+            path: "achievements",
+            element: <Achievements />,
           },
         ],
       },
@@ -134,11 +159,11 @@ const routes: RouteObject[] = [
     element: <RouteAuth />,
     children: [
       {
-        path: "Admin",
+        path: "admin",
         element: <SidebarLayout />,
         children: [
           {
-            path: "Reports",
+            path: "reports",
             element: <Reports />,
           },
         ],

@@ -24,7 +24,7 @@ const PageHeader = ({ title, subtitle, btntitle, btntitle2, icon, icon2, onActio
                     <Typography sx={{ fontSize: '18px', fontWeight: '800' }}>{title}</Typography>
                     <Typography variant="subtitle2" sx={{ fontSize: '15px', }}>{subtitle}</Typography>
                 </Grid>
-                <Grid size={{ xs: 6, lg: 4 }} sx={{ textAlign: "end" }}>
+                <Grid size={{ xs: 6, lg: 4 }} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 2 }}>
                     {btntitle && (
                         <Button
                             sx={{ mt: { xs: 2, md: 0 } }}

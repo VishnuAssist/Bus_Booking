@@ -22,9 +22,11 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import DataUsageIcon from '@mui/icons-material/DataUsage';
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 import StoreIcon from '@mui/icons-material/Store';
-//import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SellIcon from '@mui/icons-material/Sell';
 import GroupIcon from '@mui/icons-material/Group';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import GradeOutlinedIcon from '@mui/icons-material/GradeOutlined';
 
 
 
@@ -190,9 +192,21 @@ function SidebarMenu({
         icon: <GroupIcon />,
         items: [
           {
-            label: "StaffPortal",
-            link: "/dashboards/StaffPortal",
-            icon: <GroupIcon />,
+            label: "Attendence",
+            link: "/staff/attendence",
+            icon: <AccessTimeIcon />,
+            hide: true,
+          },
+          {
+            label: "LeaveRequest",
+            link: "/staff/leaveRequest",
+            icon: <DescriptionOutlinedIcon />,
+            hide: true,
+          },
+          {
+            label: "Achievements",
+            link: "/staff/achievements",
+            icon: <GradeOutlinedIcon />,
             hide: true,
           },
         ],
@@ -204,7 +218,7 @@ function SidebarMenu({
           {
             label: "Reports",
             link: "/Admin/Reports",
-            icon: <DescriptionOutlinedIcon />,
+            icon: < AdminPanelSettingsIcon />,
             hide: true,
           },
         ],
