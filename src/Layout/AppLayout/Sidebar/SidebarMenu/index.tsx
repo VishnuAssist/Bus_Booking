@@ -13,11 +13,7 @@ import {
   type TooltipProps,
 } from "@mui/material";
 import { NavLink as RouterLink } from "react-router-dom";
-import {
 
-  ChevronLeft,
-  ChevronRight,
-} from "@mui/icons-material";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import DataUsageIcon from '@mui/icons-material/DataUsage';
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
@@ -123,8 +119,8 @@ const TooltipWrapper = styled(({ className, ...props }: TooltipProps) => (
 
 function SidebarMenu({
   expanded,
-  expand,
-  mobile,
+  // expand,
+  // mobile,
 }: {
   expanded: boolean;
   expand: () => void;
@@ -276,9 +272,10 @@ function SidebarMenu({
 
   return (
     <MenuWrapper>
-      <List component="div">
+      {/* <List component="div">
         {!mobile && (
           <ListItem component="div">
+            
             <Box
               sx={{
                 width: "100%",
@@ -286,6 +283,7 @@ function SidebarMenu({
                 justifyContent: "flex-end",
               }}
             >
+           
               <Button
                 disableRipple
                 component="a"
@@ -304,7 +302,7 @@ function SidebarMenu({
             </Box>
           </ListItem>
         )}
-      </List>
+      </List> */}
 
       {expanded ? (
         sidebarItems.map((group, index) => (

@@ -9,9 +9,14 @@ import HistoryTabel from "./HistoryTabel";
 import Footer from "../../Component/Footer";
 import PageHeader from "../../Component/commonPageHeader";
 import CalculateIcon from '@mui/icons-material/Calculate';
+import { useAllCommisionDataQuery } from "../../Api/rolesApi";
 
 
 const Commission = () => {
+
+    const { data } = useAllCommisionDataQuery({})
+    
+    console.log("data", data);
     return (
         <>
             <CommisionContainer>
