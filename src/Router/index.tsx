@@ -24,6 +24,9 @@ const Attendence = Loader(lazy(() => import('../Screens/StaffPortal/Attendence')
 const LeaveRequest = Loader(lazy(() => import('../Screens/StaffPortal/LeaveRequest')));
 const Achievements = Loader(lazy(() => import('../Screens/StaffPortal/Achievements')));
 
+// Admin
+const AdminAchievement = Loader(lazy(() => import('../Screens/Admin/Achievements')));
+
 const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
 const Shift = Loader(lazy(() => import('../Screens/shift/index')));
 const Store = Loader(lazy(() => import('../Screens/store/index')));
@@ -162,6 +165,18 @@ const routes: RouteObject[] = [
         path: "admin",
         element: <SidebarLayout />,
         children: [
+          {
+            path: "achievement",
+            element: <AdminAchievement />,
+          },
+          {
+            path: "reports",
+            element: <Reports />,
+          },
+          {
+            path: "reports",
+            element: <Reports />,
+          },
           {
             path: "reports",
             element: <Reports />,
