@@ -8,10 +8,11 @@ import {
   useTheme,
   Container,
   useMediaQuery,
+  Button,
 } from "@mui/material";
 import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
 import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
-
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 
@@ -22,8 +23,12 @@ import { SidebarContext } from "../../../Context/SidebarContext";
 import Modechanger from "./ModeChanger";
 
 
+interface HeaderProps {
+  expanded: boolean;
+  setExpanded: (e: boolean) => void;
+}
 
-function Header({ expand }: { expand: boolean }) {
+function Header({ expanded, setExpanded }: HeaderProps) {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -43,12 +48,13 @@ function Header({ expand }: { expand: boolean }) {
           justify-content: space-between;
            width: 100%;
           @media (min-width: ${theme.breakpoints.values.lg}px) {
-              left: ${expand ? theme.sidebar.width : "80px"};
+              left: ${expanded ? theme.sidebar.width : "80px"};
               width: auto;
           }
   `
   );
 
+  const handleExpand = () => setExpanded(!expanded);
   return (
     <HeaderWrapper sx={{ height: isMobile ? "60px" : theme.header.height }}>
       <Container
@@ -62,7 +68,22 @@ function Header({ expand }: { expand: boolean }) {
           px: 2,
         }}
       >
-        
+       
+           <Button
+                disableRipple
+                onClick={handleExpand}
+                sx={{
+                  minWidth: "auto",
+                  padding: 0.2,
+                  mr: 1,bgcolor: "rgb(85,105,254)",
+                }}
+              >
+                {expanded ? (
+                  <ChevronLeft sx={{ color: "white" }} />
+                ) : (
+                  <ChevronRight sx={{ color: "white" }} />
+                )}
+              </Button>
         
         {isMobile  ? (
           <Box
