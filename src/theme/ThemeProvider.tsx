@@ -2,7 +2,7 @@ import { useState,  } from 'react';
 import { ThemeProvider } from '@mui/material/styles'; 
 import { themeCreator } from './base';
 import * as React from 'react';
-import { PureLightTheme } from './schemes/PureLightTheme';
+
 
 export const ThemeContext = React.createContext(
   (_themeName: string): void => {}
@@ -24,8 +24,8 @@ const ThemeProviderWrapper: React.FC<ThemeProviderWrapperProps> = (props) => {
 
   return (
     <ThemeContext.Provider value={setThemeName}>
-      {/* <ThemeProvider theme={theme}>{props.children}</ThemeProvider> */}
-      <ThemeProvider theme={PureLightTheme}>{props.children}</ThemeProvider>
+      <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
+      {/* <ThemeProvider theme={PureLightTheme}>{props.children}</ThemeProvider> */}
     </ThemeContext.Provider>
   );
 };

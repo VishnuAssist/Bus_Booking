@@ -19,6 +19,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 
 import { SidebarContext } from "../../../Context/SidebarContext";
+import Modechanger from "./ModeChanger";
 
 
 
@@ -61,6 +62,8 @@ function Header({ expand }: { expand: boolean }) {
           px: 2,
         }}
       >
+        
+        
         {isMobile  ? (
           <Box
             sx={{
@@ -104,9 +107,13 @@ function Header({ expand }: { expand: boolean }) {
                 color: "white",
                 fontWeight: "bold",
               }}
-            ></Box>
+            >
+
+              
+            </Box>
 
             <Box display="flex" alignItems="center" sx={{ ml: "auto" }}>
+                <Modechanger />
               {!isMobile && (
                 <Box
                   component="span"
