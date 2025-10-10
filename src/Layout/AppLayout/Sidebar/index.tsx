@@ -13,6 +13,8 @@ import {
   Button,
   lighten,
   darken,
+  Typography,
+  Avatar,
 } from "@mui/material";
 
 import SidebarMenu from "./SidebarMenu";
@@ -60,12 +62,12 @@ function Sidebar({
           background:
             theme.palette.mode === "dark"
               ? alpha(
-                  lighten(
-                    theme.header.background || theme.colors.alpha.black[100],
-                    0.1
-                  ),
-                  0.5
-                )
+                lighten(
+                  theme.header.background || theme.colors.alpha.black[100],
+                  0.1
+                ),
+                0.5
+              )
               : darken(theme.colors.alpha.black[100], 0.5),
           boxShadow:
             theme.palette.mode === "dark" ? theme.sidebar.boxShadow : "none",
@@ -84,16 +86,13 @@ function Sidebar({
             }}
           >
             {expanded ? (
-              <>
-                {" "}
-                <Box>
-                  <h3>Zone Commission</h3>
-                  <h4>Performance Platform</h4>
-                </Box>{" "}
-              </>
+              <Box sx={{ textAlign: "center", mt: 0.5 }}>
+                <Typography fontSize={15} >Zone Commission</Typography>
+                <Typography fontSize={12}>Performance Platform</Typography>
+              </Box>
             ) : (
-              <Box>
-                <h3>Zone Commission</h3>{" "}
+              <Box sx={{ textAlign: "center", my: 1 }}>
+                <Typography fontSize={15} >Zone</Typography>
               </Box>
             )}
 
@@ -120,6 +119,13 @@ function Sidebar({
           }}
         />
         <Box p={1}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Avatar />
+            <Box>
+              <Typography>Super Admin</Typography>
+              <Typography>Admin</Typography>
+            </Box>
+          </Box>
           <Link
             to="https://claims-assist-docs.vercel.app/"
             style={{ textDecoration: "none" }}
@@ -132,7 +138,7 @@ function Sidebar({
               fullWidth
               startIcon={<LiveHelpIcon sx={{ ml: 1 }} />}
             >
-              {expanded && "FAQ"}
+              {expanded && "FAQ123"}
             </Button>
           </Link>
         </Box>
