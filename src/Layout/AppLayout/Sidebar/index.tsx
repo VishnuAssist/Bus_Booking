@@ -15,8 +15,9 @@ import {
   darken,
   Typography,
   Avatar,
+  IconButton,
 } from "@mui/material";
-
+import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 import SidebarMenu from "./SidebarMenu";
 // import Logo from "../../../components/LogoSign";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
@@ -62,12 +63,12 @@ function Sidebar({
           background:
             theme.palette.mode === "dark"
               ? alpha(
-                lighten(
-                  theme.header.background || theme.colors.alpha.black[100],
-                  0.1
-                ),
-                0.5
-              )
+                  lighten(
+                    theme.header.background || theme.colors.alpha.black[100],
+                    0.1
+                  ),
+                  0.5
+                )
               : darken(theme.colors.alpha.black[100], 0.5),
           boxShadow:
             theme.palette.mode === "dark" ? theme.sidebar.boxShadow : "none",
@@ -81,18 +82,42 @@ function Sidebar({
         >
           <Box
             pb={expanded ? 1.7 : 0.5}
+            pr={expanded ? 1.7 : 1.4}
             sx={{
               width: "100%",
             }}
           >
             {expanded ? (
-              <Box sx={{ textAlign: "center", mt: 0.5 }}>
-                <Typography fontSize={15} >Zone Commission</Typography>
-                <Typography fontSize={12}>Performance Platform</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  textAlign: "center",
+                  mt: 1,
+                }}
+              >
+                <IconButton sx={{bgcolor: "secondary.main", borderRadius: "4px" }}>
+                  <FilterTiltShiftIcon />
+                </IconButton>
+                <Box>
+                  <Typography fontSize={16} fontWeight={700}>
+                    Zone Commission
+                  </Typography>
+                  <Typography fontSize={12}>Performance Platform</Typography>
+                </Box>
               </Box>
             ) : (
-              <Box sx={{ textAlign: "center", my: 1 }}>
-                <Typography fontSize={15} >Zone</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <IconButton sx={{ bgcolor: "secondary.main", borderRadius: "4px" }}>
+                  <FilterTiltShiftIcon />
+                </IconButton>
               </Box>
             )}
 
@@ -119,14 +144,47 @@ function Sidebar({
           }}
         />
         <Box p={1}>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Avatar />
-            <Box>
-              <Typography>Super Admin</Typography>
-              <Typography>Admin</Typography>
+          {expanded ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",textAlign: "center",
+              }}
+            >
+              <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
+                AK
+              </Avatar>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography variant="subtitle1" fontWeight={600} color="white">
+                  Super Admin
+                </Typography>
+                <Typography variant="body2" color="white">
+                  Admin
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-          <Link
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+                    <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
+                AK
+              </Avatar>
+            </Box>
+          )}
+          {/* <Link
             to="https://claims-assist-docs.vercel.app/"
             style={{ textDecoration: "none" }}
             target="_blank"
@@ -140,7 +198,7 @@ function Sidebar({
             >
               {expanded && "FAQ123"}
             </Button>
-          </Link>
+          </Link> */}
         </Box>
       </SidebarWrapper>
       <Drawer
