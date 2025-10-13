@@ -21,6 +21,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import { SidebarContext } from "../../../Context/SidebarContext";
 import Modechanger from "./ModeChanger";
+import SignOutButton from "./SignOut";
 
 
 interface HeaderProps {
@@ -68,7 +69,7 @@ function Header({ expanded, setExpanded }: HeaderProps) {
           px: 2,
         }}
       >
-       
+       {!isMobile && (
            <Button
                 disableRipple
                 onClick={handleExpand}
@@ -83,7 +84,7 @@ function Header({ expanded, setExpanded }: HeaderProps) {
                 ) : (
                   <ChevronRight sx={{ color: "white" }} />
                 )}
-              </Button>
+              </Button>)}
         
         {isMobile  ? (
           <Box
@@ -135,6 +136,7 @@ function Header({ expanded, setExpanded }: HeaderProps) {
 
             <Box display="flex" alignItems="center" sx={{ ml: "auto" }}>
                 <Modechanger />
+                <SignOutButton/>
               {!isMobile && (
                 <Box
                   component="span"
