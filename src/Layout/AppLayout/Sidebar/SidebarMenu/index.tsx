@@ -212,6 +212,18 @@ function SidebarMenu({
         icon: <AdminPanelSettingsOutlinedIcon />,
         items: [
           {
+            label: "Achievement",
+            link: "/Admin/achievement",
+            icon: < AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "RuleEngine",
+            link: "/Admin/ruleEngine",
+            icon: < AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
             label: "Reports",
             link: "/Admin/Reports",
             icon: < AdminPanelSettingsIcon />,

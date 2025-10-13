@@ -26,6 +26,7 @@ const Achievements = Loader(lazy(() => import('../Screens/StaffPortal/Achievemen
 
 // Admin
 const AdminAchievement = Loader(lazy(() => import('../Screens/Admin/Achievements')));
+const RuleEngine = Loader(lazy(() => import('../Screens/Admin/RuleEngine')));
 
 const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
 const Shift = Loader(lazy(() => import('../Screens/shift/index')));
@@ -170,8 +171,8 @@ const routes: RouteObject[] = [
             element: <AdminAchievement />,
           },
           {
-            path: "reports",
-            element: <Reports />,
+            path: "ruleEngine",
+            element: <RuleEngine />,
           },
           {
             path: "reports",
