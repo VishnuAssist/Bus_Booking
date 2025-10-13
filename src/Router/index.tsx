@@ -18,6 +18,7 @@ const Dashboard = Loader(lazy(() => import('../Screens/dashboard/index')));
 const Commission = Loader(lazy(() => import('../Screens/commission/index')));
 const LeaderBoard = Loader(lazy(() => import('../Screens/LeaderBoard')));
 const Profile = Loader(lazy(() => import('../Screens/Profile')));
+const Calender = Loader(lazy(() => import('../Screens/Calender')));
 
 // Staff Portal
 const Attendence = Loader(lazy(() => import('../Screens/StaffPortal/Attendence')));
@@ -131,6 +132,10 @@ const routes: RouteObject[] = [
           {
             path: "Profile",
             element: <Profile />,
+          },
+          {
+            path: "Calender",
+            element: <Calender />,
           },
         ],
       },

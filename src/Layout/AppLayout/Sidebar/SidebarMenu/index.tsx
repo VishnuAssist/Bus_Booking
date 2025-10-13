@@ -159,9 +159,11 @@ function SidebarMenu({
           },
           {
             label: "Calendar",
-            link: "/dashboards/Calendar",
+            link: "/dashboards/Calender",
             icon: <CalendarIcon />,
+            hide: true,
           },
+       
 
           {
             label: "Shift",
