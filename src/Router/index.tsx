@@ -26,15 +26,15 @@ const LeaveRequest = Loader(lazy(() => import('../Screens/StaffPortal/LeaveReque
 const Achievements = Loader(lazy(() => import('../Screens/StaffPortal/Achievements')));
 
 // Management
-
-
-
-
+const TeamOverview = Loader(lazy(() => import('../Screens/Management/TeamOverview')));
+const Rostering = Loader(lazy(() => import('../Screens/Management/Rostering')));
+const Coaching = Loader(lazy(() => import('../Screens/Management/Coaching')));
+const Performence = Loader(lazy(() => import('../Screens/Management/Performence')))
 
 // Admin
 
-
-const AdminAttendance = Loader(lazy(() => import('../Screens/Admin/Attendance')))
+const AdminRostering = Loader(lazy(() => import('../Screens/Admin/Rostering')));
+const AdminAttendance = Loader(lazy(() => import('../Screens/Admin/Attendance')));
 const AdminAchievement = Loader(lazy(() => import('../Screens/Admin/Achievements')));
 const RuleEngine = Loader(lazy(() => import('../Screens/Admin/RuleEngine')));
 const ReportAndAnalytics = Loader(lazy(() => import('../Screens/Admin/ReportsAndAnalytics')));
@@ -183,19 +183,19 @@ const routes: RouteObject[] = [
         children: [
           {
             path: "teamOverview",
-            element: <Attendence />,
+            element: <TeamOverview />,
           },
           {
             path: "rostering",
-            element: <LeaveRequest />,
+            element: <Rostering />,
           },
           {
             path: "coaching",
-            element: <Achievements />,
+            element: <Coaching />,
           },
           {
             path: "performance",
-            element: <Achievements />,
+            element: <Performence />,
           },
         ],
       },
@@ -214,7 +214,7 @@ const routes: RouteObject[] = [
           },
           {
             path: "rostering",
-            element: <AdminAchievement />,
+            element: <AdminRostering />,
           },
           {
             path: "attendance",
