@@ -24,9 +24,19 @@ const Attendence = Loader(lazy(() => import('../Screens/StaffPortal/Attendence')
 const LeaveRequest = Loader(lazy(() => import('../Screens/StaffPortal/LeaveRequest')));
 const Achievements = Loader(lazy(() => import('../Screens/StaffPortal/Achievements')));
 
+// Management
+
+
+
+
+
 // Admin
+
+
+const AdminAttendance = Loader(lazy(() => import('../Screens/Admin/Attendance')))
 const AdminAchievement = Loader(lazy(() => import('../Screens/Admin/Achievements')));
 const RuleEngine = Loader(lazy(() => import('../Screens/Admin/RuleEngine')));
+const ReportAndAnalytics = Loader(lazy(() => import('../Screens/Admin/ReportsAndAnalytics')));
 
 const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
 const Shift = Loader(lazy(() => import('../Screens/shift/index')));
@@ -163,9 +173,48 @@ const routes: RouteObject[] = [
     element: <RouteAuth />,
     children: [
       {
+        path: "management",
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: "teamOverview",
+            element: <Attendence />,
+          },
+          {
+            path: "rostering",
+            element: <LeaveRequest />,
+          },
+          {
+            path: "coaching",
+            element: <Achievements />,
+          },
+          {
+            path: "performance",
+            element: <Achievements />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    element: <RouteAuth />,
+    children: [
+      {
         path: "admin",
         element: <SidebarLayout />,
         children: [
+          {
+            path: "systemOverview",
+            element: <AdminAchievement />,
+          },
+          {
+            path: "rostering",
+            element: <AdminAchievement />,
+          },
+          {
+            path: "attendance",
+            element: <AdminAttendance />,
+          },
           {
             path: "achievement",
             element: <AdminAchievement />,
@@ -175,8 +224,8 @@ const routes: RouteObject[] = [
             element: <RuleEngine />,
           },
           {
-            path: "reports",
-            element: <Reports />,
+            path: "reportandAnalytics",
+            element: <ReportAndAnalytics />,
           },
           {
             path: "reports",

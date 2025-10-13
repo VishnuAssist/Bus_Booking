@@ -208,9 +208,57 @@ function SidebarMenu({
         ],
       },
       {
+        title: "Management",
+        icon: <GroupIcon />,
+        items: [
+          {
+            label: "Team Overview",
+            link: "/management/teamOverview",
+            icon: <AccessTimeIcon />,
+            hide: true,
+          },
+          {
+            label: "Rostering",
+            link: "/management/rostering",
+            icon: <DescriptionOutlinedIcon />,
+            hide: true,
+          },
+          {
+            label: "Coaching",
+            link: "/management/coaching",
+            icon: <GradeOutlinedIcon />,
+            hide: true,
+          },
+          {
+            label: "Performance",
+            link: "/management/performance",
+            icon: <GradeOutlinedIcon />,
+            hide: true,
+          },
+        ],
+      },
+      {
         title: "Admin",
         icon: <AdminPanelSettingsOutlinedIcon />,
         items: [
+          {
+            label: "System Overview",
+            link: "/Admin/systemOverview",
+            icon: < AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "Rostering",
+            link: "/Admin/rostering",
+            icon: < AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "Attendance",
+            link: "/Admin/attendance",
+            icon: < AdminPanelSettingsIcon />,
+            hide: true,
+          },
           {
             label: "Achievement",
             link: "/Admin/achievement",
@@ -224,8 +272,8 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "Reports",
-            link: "/Admin/Reports",
+            label: "Report&Analytics",
+            link: "/Admin/reportandAnalytics",
             icon: < AdminPanelSettingsIcon />,
             hide: true,
           },
