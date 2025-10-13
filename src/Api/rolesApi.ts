@@ -25,7 +25,7 @@ export const rolesApi = createApi({
       transformResponse: (response, metaData) =>
         dataWithMeta<CommissionData[], MetaData>(
           response as CommissionData[],
-          metaData
+          metaData as any
         ),
       providesTags: ["RolesApi"],
     }),

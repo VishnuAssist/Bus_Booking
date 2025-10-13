@@ -39,6 +39,7 @@ const APIFetchBase: BaseQueryFn<FetchArgs, unknown, unknown> = async (
       try {
        
         const state = api.getState() as RootState;
+        console.log("state",state);
         const refreshToken = state.auth?.account?.refreshToken;
 
         if (refreshToken) {

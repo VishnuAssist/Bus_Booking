@@ -149,7 +149,7 @@ function Sidebar({
               sx={{
                 display: "flex",
                 justifyContent: "space-evenly",
-                alignItems: "center",textAlign: "center",
+                alignItems: "center",
               }}
             >
               <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
