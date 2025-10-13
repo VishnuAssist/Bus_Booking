@@ -1,4 +1,4 @@
-import { Box, Grid, Card, CardContent, Typography, Button, Stack, Divider, } from "@mui/material";
+import { Box, Grid, Card, CardContent, Typography, Button, Stack } from "@mui/material";
 import ReactApexChart from "react-apexcharts";
 import type { ApexOptions } from "apexcharts";
 import CommisionContainer from "../../../Component/container";
@@ -87,6 +87,38 @@ const ReportAndAnalytics = () => {
 
                 <Box p={2}>
                     <Grid container spacing={2}>
+                        <Grid size={12}>
+                            <Card sx={{ height: "100%" }}>
+                                <CardContent>
+                                    <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>
+                                        Report Generation
+                                    </Typography>
+                                    <Stack direction="row" spacing={2}>
+                                        <Button
+                                            variant="outlined"
+                                            //startIcon={<FileText size={18} />}
+                                            fullWidth
+                                        >
+                                            Commission Report
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            //startIcon={<Activity size={18} />}
+                                            fullWidth
+                                        >
+                                            Performance Report
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            //startIcon={<Cpu size={18} />}
+                                            fullWidth
+                                        >
+                                            System Report
+                                        </Button>
+                                    </Stack>
+                                </CardContent>
+                            </Card>
+                        </Grid>
                         <Grid size={{ xs: 12, md: 6 }}>
                             <Card sx={{ height: "100%" }}>
                                 <CardContent>
@@ -144,39 +176,6 @@ const ReportAndAnalytics = () => {
                                         type="pie"
                                         height={260}
                                     />
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                        <Grid size={12}>
-                            <Card sx={{ height: "100%" }}>
-                                <CardContent>
-                                    <Typography variant="subtitle1" fontWeight={600}>
-                                        Report Generation
-                                    </Typography>
-                                    <Divider sx={{ my: 2 }} />
-                                    <Stack direction="row" spacing={2}>
-                                        <Button
-                                            variant="outlined"
-                                            //startIcon={<FileText size={18} />}
-                                            fullWidth
-                                        >
-                                            Commission Report
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            //startIcon={<Activity size={18} />}
-                                            fullWidth
-                                        >
-                                            Performance Report
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            //startIcon={<Cpu size={18} />}
-                                            fullWidth
-                                        >
-                                            System Report
-                                        </Button>
-                                    </Stack>
                                 </CardContent>
                             </Card>
                         </Grid>
