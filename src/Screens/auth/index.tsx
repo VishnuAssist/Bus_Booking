@@ -4,6 +4,8 @@ import { logout } from "../../Store/slice/loginSlice";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../Store/StoreConfig";
 import { useLoginMutation } from "../../Api/authApi";
+import { addTokensAndUser } from "../../Store/slice/Account";
+import {  toast } from 'react-toastify';
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,10 +22,19 @@ const LoginPage: React.FC = () => {
       username,
       password
     };
-    await userlogin(payLoad);
+    await userlogin(payLoad)
+      .unwrap()
+      .then((res) => {
+        console.log("res", res);
+        if (res?.status == 401) {
+          toast.error("cheack the username or password");
+        }
+        if (res.token) {
+          dispatch(addTokensAndUser(res));
+        }
+      });
     navigate("/dashboards/Dashboard");
 
-    // dispatch(setCredentials({ username, password }));
   };
 
   // useEffect(() => {
