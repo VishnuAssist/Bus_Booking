@@ -3,9 +3,14 @@ import { useState } from "react";
 import CommisionContainer from "../../Component/container";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
-import { ShiftFormFields, shiftFormValidationSchema } from "../../feilds_validation/shiftFields";
+import {
+  ShiftFormFields,
+  shiftFormValidationSchema,
+} from "../../feilds_validation/shiftFields";
 import CommonTable from "../../Component/CommenTable";
 import PageHeader from "../../Component/commonPageHeader";
+import { Box, Tab, Tabs } from "@mui/material";
+import CalendarView from "./calendarview";
 
 const sampleShifts = [
   {
@@ -65,7 +70,6 @@ const sampleShifts = [
   },
 ];
 
-
 const shiftColumns = [
   { id: "startTime", label: "Start Time" },
   { id: "endTime", label: "End Time" },
@@ -77,13 +81,17 @@ const shiftColumns = [
   { id: "storeId", label: "Store ID" },
 ];
 
-
 const Shift = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<any>(null);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
+  const [tabValue, setTabValue] = useState(0);
+
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   const shiftFields = () => {
     const fields = [...ShiftFormFields];
@@ -107,23 +115,50 @@ const Shift = () => {
   return (
     <>
       <CommisionContainer>
-        <PageHeader title="Shift Management" btntitle="Add Shift" onActionClick={() => setModalOpen(true)} />
-        <CommonTable
-          columns={shiftColumns}
-          rows={sampleShifts}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onPageChange={setPage}
-          onRowsPerPageChange={setRowsPerPage}
-          actions={{
-            onView: (row) => console.log("view", row),
-            onEdit: (row) => {
-              setSelectedShift(row);
-              setModalOpen(true);
-            },
-            onDelete: (row) => console.log("delete", row),
-          }}
+        <PageHeader
+          title="Shift Management"
+          btntitle="Add Shift"
+          onActionClick={() => setModalOpen(true)}
         />
+
+        <Box sx={{ mb: 2 }}>
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            textColor="primary"
+            indicatorColor="primary"
+            
+          >
+            <Tab label="List View" />
+            <Tab label="Calendar View" />
+          </Tabs>
+        </Box>
+        {tabValue === 0 && (
+          <Box>
+            <CommonTable
+              columns={shiftColumns}
+              rows={sampleShifts}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              onPageChange={setPage}
+              onRowsPerPageChange={setRowsPerPage}
+              actions={{
+                onView: (row) => console.log("view", row),
+                onEdit: (row) => {
+                  setSelectedShift(row);
+                  setModalOpen(true);
+                },
+                onDelete: (row) => console.log("delete", row),
+              }}
+            />
+          </Box>
+        )}
+
+        {tabValue === 1 && (
+          <Box sx={{ mt: 2 }}>
+            <CalendarView />
+          </Box>
+        )}
       </CommisionContainer>
 
       <Footer />

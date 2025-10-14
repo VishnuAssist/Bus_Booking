@@ -72,7 +72,7 @@ const HeaderCardView = () => {
                 <Stack direction="row" alignItems="center" gap={1.2}>
                   <Avatar
                     sx={{
-                      color: theme.palette.primary.light,
+                      color: theme.palette.primary.main,
                       width: 44,
                       height: 44,
                     }}

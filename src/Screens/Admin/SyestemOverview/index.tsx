@@ -16,10 +16,10 @@ const Index = () => {
             <Grid size={{ xs: 12 }}>
               <HeaderCardView />
             </Grid>
-            <Grid size={{ xs: 12, md: 8 }}>
+            <Grid size={{ xs: 12, md: 8 }} sx={{mb:2}}>
               <TeamPerformance />
             </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid size={{ xs: 12, md: 4 }} sx={{mb:2}}>
               <SystemActivity />
             </Grid>
           </Grid>
