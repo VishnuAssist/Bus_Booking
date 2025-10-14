@@ -1,4 +1,5 @@
 import { Avatar, Box, Card, CardContent, Chip, Grid, LinearProgress, Stack, Typography } from "@mui/material";
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 
 const TeamPerformance = () => {
 
@@ -52,58 +53,68 @@ const TeamPerformance = () => {
 
     return (
         <>
-            <Typography variant="h6" mb={1}>
-                Team Performance Overview
-            </Typography>
-            <Grid container spacing={2}>
-                {performanceData.map((member, index) => {
-                    const percent = Math.round((member.sales / member.target) * 100);
-                    return (
-                        <Grid size={{ xs: 12, md: 6 }} key={index}>
-                            <Card>
-                                <CardContent>
-                                    <Stack direction="row" spacing={2} alignItems="center">
-                                        <Avatar src="" />
-                                        <Box>
-                                            <Typography fontWeight={600}>{member.name}</Typography>
-                                            <Stack direction="row" spacing={1}>
-                                                <Chip label={member.level} size="small" />
-                                                <Typography variant="caption">
-                                                    {member.status}
-                                                </Typography>
-                                            </Stack>
-                                        </Box>
-                                        <Box ml="auto" width={60}>
+            <Card sx={{ height: "100%" }}>
+                <CardContent>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                            <PeopleOutlinedIcon />
+                            <Typography variant="h6">
+                                Team Performance Overview
+                            </Typography>
+                        </Box>
+                        <Chip label={"Real-Time"} />
+                    </Box>
+                    <Grid container spacing={2}>
+                        {performanceData.map((member, index) => {
+                            const percent = Math.round((member.sales / member.target) * 100);
+                            return (
+                                <Grid size={{ xs: 12, md: 6 }} key={index}>
+                                    <Card>
+                                        <CardContent>
+                                            <Stack direction="row" spacing={2} alignItems="center">
+                                                <Avatar src="" />
+                                                <Box>
+                                                    <Typography fontWeight={600}>{member.name}</Typography>
+                                                    <Stack direction="row" spacing={1}>
+                                                        <Chip label={member.level} size="small" />
+                                                        <Typography variant="caption">
+                                                            {member.status}
+                                                        </Typography>
+                                                    </Stack>
+                                                </Box>
+                                                <Box ml="auto" width={60}>
 
-                                        </Box>
-                                    </Stack>
-                                    <Box mt={2}>
-                                        <Typography fontSize={13}>
-                                            Sales Progress (${member.sales.toLocaleString()} / $
-                                            {member.target.toLocaleString()})
-                                        </Typography>
-                                        <LinearProgress
-                                            value={percent}
-                                            variant="determinate"
-                                            sx={{ mt: 1, height: 8, borderRadius: 2 }}
-                                        />
-                                    </Box>
-                                    <Stack direction="row" spacing={2} mt={1}>
-                                        <Typography fontSize={12}>{member.streak} Day Streak</Typography>
-                                        <Typography fontSize={12}>
-                                            ${member.commission} Commission
-                                        </Typography>
-                                        <Typography fontSize={12}>{member.badges} Badges</Typography>
-                                    </Stack>
-                                    <Typography variant="caption" color="text.secondary">
-                                        Last sale: {member.lastSale}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    );
-                })}
-            </Grid>
+                                                </Box>
+                                            </Stack>
+                                            <Box mt={2}>
+                                                <Typography fontSize={13}>
+                                                    Sales Progress (${member.sales.toLocaleString()} / $
+                                                    {member.target.toLocaleString()})
+                                                </Typography>
+                                                <LinearProgress
+                                                    value={percent}
+                                                    variant="determinate"
+                                                    sx={{ mt: 1, height: 8, borderRadius: 2 }}
+                                                />
+                                            </Box>
+                                            <Stack direction="row" spacing={2} mt={1}>
+                                                <Typography fontSize={12}>{member.streak} Day Streak</Typography>
+                                                <Typography fontSize={12}>
+                                                    ${member.commission} Commission
+                                                </Typography>
+                                                <Typography fontSize={12}>{member.badges} Badges</Typography>
+                                            </Stack>
+                                            <Typography variant="caption" color="text.secondary">
+                                                Last sale: {member.lastSale}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                </CardContent>
+            </Card>
         </>
     )
 };
