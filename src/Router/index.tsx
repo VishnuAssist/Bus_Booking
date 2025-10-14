@@ -34,6 +34,7 @@ const Performence = Loader(lazy(() => import('../Screens/Management/Performence'
 // Admin
 
 const AdminRostering = Loader(lazy(() => import('../Screens/Admin/Rostering')));
+const AdminSystemOverview = Loader(lazy(() => import('../Screens/Admin/SyestemOverview')));
 const AdminAttendance = Loader(lazy(() => import('../Screens/Admin/Attendance')));
 const AdminAchievement = Loader(lazy(() => import('../Screens/Admin/Achievements')));
 const RuleEngine = Loader(lazy(() => import('../Screens/Admin/RuleEngine')));
@@ -210,7 +211,7 @@ const routes: RouteObject[] = [
         children: [
           {
             path: "systemOverview",
-            element: <AdminAchievement />,
+            element: <AdminSystemOverview />,
           },
           {
             path: "rostering",
