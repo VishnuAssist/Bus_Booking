@@ -27,13 +27,12 @@ const Achievements = Loader(lazy(() => import('../Screens/StaffPortal/Achievemen
 
 // Management
 const TeamOverview = Loader(lazy(() => import('../Screens/Management/TeamOverview')));
-const Rostering = Loader(lazy(() => import('../Screens/Management/Rostering')));
 const Coaching = Loader(lazy(() => import('../Screens/Management/Coaching')));
 const Performence = Loader(lazy(() => import('../Screens/Management/Performence')))
 
 // Admin
 
-const AdminRostering = Loader(lazy(() => import('../Screens/Admin/Rostering')));
+const Shift = Loader(lazy(() => import('../Screens/shift/index')));
 const AdminSystemOverview = Loader(lazy(() => import('../Screens/Admin/SyestemOverview')));
 const AdminAttendance = Loader(lazy(() => import('../Screens/Admin/Attendance')));
 const AdminAchievement = Loader(lazy(() => import('../Screens/Admin/Achievements')));
@@ -41,7 +40,6 @@ const RuleEngine = Loader(lazy(() => import('../Screens/Admin/RuleEngine')));
 const ReportAndAnalytics = Loader(lazy(() => import('../Screens/Admin/ReportsAndAnalytics')));
 
 const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
-const Shift = Loader(lazy(() => import('../Screens/shift/index')));
 const Store = Loader(lazy(() => import('../Screens/store/index')));
 const StoreTarget = Loader(lazy(() => import('../Screens/storeTarget/index')));
 const Sales = Loader(lazy(() => import('../Screens/sales/index')));
@@ -187,10 +185,6 @@ const routes: RouteObject[] = [
             element: <TeamOverview />,
           },
           {
-            path: "rostering",
-            element: <Rostering />,
-          },
-          {
             path: "coaching",
             element: <Coaching />,
           },
@@ -214,8 +208,8 @@ const routes: RouteObject[] = [
             element: <AdminSystemOverview />,
           },
           {
-            path: "rostering",
-            element: <AdminRostering />,
+            path: "shift",
+            element: <Shift />,
           },
           {
             path: "attendance",
@@ -261,10 +255,6 @@ const routes: RouteObject[] = [
           {
             path: "Dictionary",
             element: <Dictionary />,
-          },
-          {
-            path: "shift",
-            element: <Shift />,
           },
           {
             path: "store",

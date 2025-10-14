@@ -163,14 +163,9 @@ function SidebarMenu({
             icon: <CalendarIcon />,
             hide: true,
           },
-       
 
-          {
-            label: "Shift",
-            link: "/settings/shift",
-            icon: <FilterTiltShiftIcon />,
-            hide: true,
-          },
+
+
           {
             label: "Store",
             link: "/settings/store",
@@ -220,9 +215,9 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "Rostering",
-            link: "/management/rostering",
-            icon: <DescriptionOutlinedIcon />,
+            label: "Shift",
+            link: "/Admin/shift",
+            icon: <FilterTiltShiftIcon />,
             hide: true,
           },
           {
@@ -250,9 +245,9 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "Rostering",
-            link: "/Admin/rostering",
-            icon: < AdminPanelSettingsIcon />,
+            label: "Shift",
+            link: "/Admin/shift",
+            icon: <FilterTiltShiftIcon />,
             hide: true,
           },
           {
