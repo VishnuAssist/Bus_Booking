@@ -15,14 +15,11 @@ import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-
 // import { useNavigate } from "react-router";
-
 
 import { SidebarContext } from "../../../Context/SidebarContext";
 import Modechanger from "./ModeChanger";
 import SignOutButton from "./SignOut";
-
 
 interface HeaderProps {
   expanded: boolean;
@@ -69,24 +66,26 @@ function Header({ expanded, setExpanded }: HeaderProps) {
           px: 2,
         }}
       >
-       {!isMobile && (
-           <Button
-                disableRipple
-                onClick={handleExpand}
-                sx={{
-                  minWidth: "auto",
-                  padding: 0.2,
-                  mr: 1,bgcolor: "rgb(85,105,254)",
-                }}
-              >
-                {expanded ? (
-                  <ChevronLeft sx={{ color: "white" }} />
-                ) : (
-                  <ChevronRight sx={{ color: "white" }} />
-                )}
-              </Button>)}
-        
-        {isMobile  ? (
+        {!isMobile && (
+          <Button
+            disableRipple
+            onClick={handleExpand}
+            sx={{
+              minWidth: "auto",
+              padding: 0.2,
+              mr: 1,
+              bgcolor: "rgb(85,105,254)",
+            }}
+          >
+            {expanded ? (
+              <ChevronLeft sx={{ color: "white" }} />
+            ) : (
+              <ChevronRight sx={{ color: "white" }} />
+            )}
+          </Button>
+        )}
+
+        {isMobile ? (
           <Box
             sx={{
               flex: 1,
@@ -95,7 +94,7 @@ function Header({ expanded, setExpanded }: HeaderProps) {
               px: 1,
             }}
           >
-            <IconButton >
+            <IconButton>
               <ArrowBackIcon />
             </IconButton>
           </Box>
@@ -110,7 +109,7 @@ function Header({ expanded, setExpanded }: HeaderProps) {
               </Box>
             </Box>
 
-            <Box
+            {/* <Box
               sx={{
                 display: { lg: "flex" },
                 alignItems: "center",
@@ -132,11 +131,11 @@ function Header({ expanded, setExpanded }: HeaderProps) {
             >
 
               
-            </Box>
+            </Box> */}
 
             <Box display="flex" alignItems="center" sx={{ ml: "auto" }}>
-                <Modechanger />
-                <SignOutButton/>
+              <Modechanger />
+              <SignOutButton />
               {!isMobile && (
                 <Box
                   component="span"
