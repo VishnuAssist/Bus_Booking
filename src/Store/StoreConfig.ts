@@ -7,6 +7,7 @@ import accountReducer from "./slice/Account";
 import loginReducer from "./slice/loginSlice";
 import { authApi } from "../Api/authApi";
 import { rolesApi } from "../Api/rolesApi";
+import { dictionaryApi } from "../Api/dictionaryApi";
 
 const rootAuthReducer = combineReducers({
   account: accountReducer,
@@ -25,13 +26,14 @@ export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [rolesApi.reducerPath]: rolesApi.reducer,
+    [dictionaryApi.reducerPath]: dictionaryApi.reducer,
 
     auth: persistedAuthReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat([authApi.middleware,rolesApi.middleware]),
+    }).concat([authApi.middleware, rolesApi.middleware, dictionaryApi.middleware]),
 });
 
 export const persistor = persistStore(store);

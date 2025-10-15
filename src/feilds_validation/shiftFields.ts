@@ -4,16 +4,16 @@ import type { ShiftType } from "../model/shiftType";
 
 export const ShiftFormFields: FormFieldProps<ShiftType>[] = [
   {
-    label: "Start Time",
-    name: "startTime",
-    type: "datetime-local",
+    label: "Assign User",
+    name: "assignUser",
+    type: "select",
     required: true,
-    size: { sm: 12, md: 6, lg: 6 },
+    size: { sm: 12, md: 12, lg: 12 },
   },
   {
-    label: "End Time",
-    name: "endTime",
-    type: "datetime-local",
+    label: "Store Name",
+    name: "storename",
+    type: "text",
     required: true,
     size: { sm: 12, md: 6, lg: 6 },
   },
@@ -46,21 +46,30 @@ export const ShiftFormFields: FormFieldProps<ShiftType>[] = [
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
+    label: "Start Time",
+    name: "startTime",
+    type: "datetime-local",
+    required: true,
+    size: { sm: 12, md: 6, lg: 6 },
+  },
+  {
+    label: "End Time",
+    name: "endTime",
+    type: "datetime-local",
+    required: true,
+    size: { sm: 12, md: 6, lg: 6 },
+  },
+  {
     label: "Notes",
     name: "notes",
     type: "text",
     required: false,
     size: { sm: 12, md: 12, lg: 12 },
   },
-  {
-    label: "Store ID",
-    name: "storeId",
-    type: "number",
-    required: true,
-    size: { sm: 12, md: 6, lg: 6 },
-  },
 ];
+
 export const shiftFormValidationSchema = yup.object().shape({
+  assignUser: yup.string().required("User Name is required"),
   startTime: yup.string().required("Start time is required"),
   endTime: yup.string().required("End time is required"),
   shiftType: yup
@@ -69,7 +78,7 @@ export const shiftFormValidationSchema = yup.object().shape({
     .required("Shift type is required"),
   startDate: yup.date().required("Start date is required"),
   endDate: yup.date().required("End date is required"),
-  skipDate: yup.date().nullable(), 
+  skipDate: yup.date().nullable(),
   notes: yup.string().nullable(),
   storeId: yup
     .number()

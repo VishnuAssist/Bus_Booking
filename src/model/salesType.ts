@@ -1,12 +1,17 @@
 export interface SalesType {
-    id?: number;
-    category: string;
-    name: string;
-    role: string;
-    code: string;
-    date: string;
-    store: string;
-    Brand: string;
-    product: string;
-    productType: string;
+  id?: number;
+  departmentId: number;
+  brandId: number;
+  saleAmount: number;
+  categoryId: number;
+  subCategoryId: number;
+  subSubCategoryId: number;
+  saleTypeId: number;
+  productPrice: number;
+  tax: number;
+  discount: number;
+  quantity: number;
+  invoiceNumber: string;
+  itemNumber: string;
+  notes: string;
 }
