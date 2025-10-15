@@ -58,7 +58,6 @@ const HeaderCardView = () => {
                 transition: "all 0.3s ease",
                 "&:hover": {
                   transform: "translateY(-4px)",
-                  boxShadow: 6,
                 },
               }}
             >
