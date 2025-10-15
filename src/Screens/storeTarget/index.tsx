@@ -20,8 +20,8 @@ const StoreTarget = () => {
         { id: "year", label: "Year" },
         { id: "month", label: "Month" },
         { id: "targetAmount", label: "Target Amount" },
-        { id: "storeKPITraget", label: "StoreKPITargetBraPenetration" },
-        { id: "storeKPIAchievement", label: "StoreKPIAchievementBraPenetration" },
+        { id: "storeKPITraget", label: "StoreKPITarget" },
+        { id: "storeKPIAchievement", label: "StoreKPIAchievement" },
         { id: "targetAchievement", label: "StoreTargetAchievement" },
         { id: "status", label: "Status" },
     ];
