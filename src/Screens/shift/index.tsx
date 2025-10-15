@@ -10,7 +10,9 @@ import {
 import CommonTable from "../../Component/CommenTable";
 import PageHeader from "../../Component/commonPageHeader";
 import { Box, Tab, Tabs } from "@mui/material";
-import CalendarView from "./calendarview";
+import CalendarView from "./CalendarView";
+import { usePostShiftMutation } from "../../Api/shiftApi";
+import type { Shift } from "../../model/shiftType";
 
 const sampleShifts = [
   {
@@ -90,6 +92,8 @@ const Shift = () => {
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [tabValue, setTabValue] = useState(0);
 
+  const [postShift] = usePostShiftMutation();
+
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
@@ -107,36 +111,34 @@ const Shift = () => {
     return fields;
   };
 
-  const onSubmit = async (formData: any) => {
-    const normalized = {
-      ...formData,
-      startDate: formData.startDate
-        ? new Date(formData.startDate).toISOString().split("T")[0]
-        : "",
-      endDate: formData.endDate
-        ? new Date(formData.endDate).toISOString().split("T")[0]
-        : "",
-      skipDate: formData.skipDate
-        ? new Date(formData.skipDate).toISOString().split("T")[0]
-        : "",
-    };
+  const onSubmit = async (formData: Shift) => {
+    // const payload = {
+    //   id: 0,
+    //   userIds: null,
+    //   startTime: formData.startTime || "",
+    //   endTime: formData.endTime || "",
+    //   duration: "",
+    //   shiftType: formData.shiftType || "",
+    //   startDate: formData.startDate
+    //     ? new Date(formData.startDate).toISOString()
+    //     : "",
+    //   endDate: formData.endDate ? new Date(formData.endDate).toISOString() : "",
+    //   skipDates: formData.skipDates
+    //     ? new Date(formData.skipDates).toISOString()
+    //     : "",
+    //   notes: formData.notes || "",
+    //   reason: formData.reason || "",
+    //   status: 1,
+    //   storeId: Number(formData.storeId) || 0,
+    // };
 
-    if (selectedShift) {
-      setShifts((prev) =>
-        prev.map((shift) =>
-          shift.id === selectedShift.id ? { ...shift, ...normalized } : shift
-        )
-      );
-    } else {
-      const newShift = {
-        id: Date.now(),
-        ...normalized,
-      };
-      setShifts((prev) => [...prev, newShift]);
+    try {
+      await postShift(payload).unwrap();
+      setModalOpen(false);
+      setSelectedShift(null);
+    } catch (error) {
+      console.error("Error creating shift:", error);
     }
-
-    setModalOpen(false);
-    setSelectedShift(null);
   };
 
   return (
@@ -194,7 +196,12 @@ const Shift = () => {
                 endTime: s.endTime,
                 location: `Store ${s.storeId}`,
                 employeeId: s.storeId,
+                original: s,
               }))}
+              onEditShift={(shift) => {
+                setSelectedShift(shift);
+                setModalOpen(true);
+              }}
             />
           </Box>
         )}

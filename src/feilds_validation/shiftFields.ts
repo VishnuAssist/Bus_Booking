@@ -1,22 +1,22 @@
 import * as yup from "yup";
 import type { FormFieldProps } from "../model/formFeilds";
-import type { ShiftType } from "../model/shiftType";
+import type { Shift } from "../model/shiftType";
 
-export const ShiftFormFields: FormFieldProps<ShiftType>[] = [
-  {
-    label: "Assign User",
-    name: "assignUser",
-    type: "select",
-    required: true,
-    size: { sm: 12, md: 12, lg: 12 },
-  },
-  {
-    label: "Store Name",
-    name: "storename",
-    type: "text",
-    required: true,
-    size: { sm: 12, md: 6, lg: 6 },
-  },
+export const ShiftFormFields: FormFieldProps<Shift>[] = [
+  // {
+  //   label: "Assign User",
+  //   name: "assignUser",
+  //   type: "select",
+  //   required: true,
+  //   size: { sm: 12, md: 12, lg: 12 },
+  // },
+  // {
+  //   label: "Store Name",
+  //   name: "storename",
+  //   type: "text",
+  //   required: true,
+  //   size: { sm: 12, md: 6, lg: 6 },
+  // },
   {
     label: "Shift Type",
     name: "shiftType",
@@ -39,8 +39,8 @@ export const ShiftFormFields: FormFieldProps<ShiftType>[] = [
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
-    label: "Skip Date",
-    name: "skipDate",
+    label: "Skip Dates",
+    name: "skipDates",
     type: "date",
     required: false,
     size: { sm: 12, md: 6, lg: 6 },

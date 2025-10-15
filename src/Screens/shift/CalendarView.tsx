@@ -26,6 +26,7 @@ import { ChevronLeft, ChevronRight, Today } from "@mui/icons-material";
 
 interface CalendarViewProps {
   shifts: any[];
+  onEditShift?: (shift: any) => void;
 }
 
 type ViewMode = "week" | "month" | "year";
@@ -108,7 +109,10 @@ function formatYear(date: Date) {
   return date.getFullYear();
 }
 
-export default function CalendarView({ shifts }: CalendarViewProps) {
+export default function CalendarView({
+  shifts,
+  onEditShift,
+}: CalendarViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<ViewMode>("week");
   const [searchTerm, setSearchTerm] = useState("");
@@ -263,9 +267,18 @@ export default function CalendarView({ shifts }: CalendarViewProps) {
                             <Card
                               key={shift.id}
                               variant="outlined"
+                              onClick={() =>
+                                onEditShift?.(shift.original || shift)
+                              }
                               sx={{
                                 mb: 0.75,
                                 borderRadius: 1.5,
+                                cursor: "pointer",
+                                transition: "0.2s",
+                                "&:hover": {
+                                  boxShadow: 3,
+                                  transform: "scale(1.02)",
+                                },
                               }}
                             >
                               <CardContent
@@ -289,7 +302,7 @@ export default function CalendarView({ shifts }: CalendarViewProps) {
                                   variant="caption"
                                   sx={{ opacity: 0.85, color: "primary.main" }}
                                 >
-                                 {shift.startTime} - {shift.endTime}
+                                  {shift.startTime} - {shift.endTime}
                                 </Typography>
                               </CardContent>
                             </Card>
@@ -385,7 +398,16 @@ export default function CalendarView({ shifts }: CalendarViewProps) {
                             <Card
                               key={s.id}
                               variant="outlined"
-                              sx={{ borderRadius: 1.25 }}
+                              onClick={() => onEditShift?.(s.original || s)}
+                              sx={{
+                                borderRadius: 1.25,
+                                cursor: "pointer",
+                                transition: "0.2s",
+                                "&:hover": {
+                                  boxShadow: 3,
+                                  transform: "scale(1.02)",
+                                },
+                              }}
                             >
                               <CardContent sx={{ p: 0.75 }}>
                                 <Typography
