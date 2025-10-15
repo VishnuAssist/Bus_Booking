@@ -11,6 +11,7 @@ import {
   IconButton,
   Stack,
   ButtonGroup,
+  Button,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
@@ -32,6 +33,7 @@ interface Actions<T> {
   onDelete?: (row: T) => void;
   onConform?: (row: T) => void;
   onReject?: (row: T) => void;
+  onAction?: (row: T) => void;
 }
 
 interface CommonTableProps<T> {
@@ -43,6 +45,7 @@ interface CommonTableProps<T> {
   onRowsPerPageChange: (rows: number) => void;
   actions?: Actions<T>;
   approval?: Actions<T>;
+  custombutton?: Actions<T>;
 }
 
 function CommonTable<T>({
@@ -54,6 +57,7 @@ function CommonTable<T>({
   onRowsPerPageChange,
   actions,
   approval,
+  custombutton,
 }: CommonTableProps<T>) {
   const handleChangePage = (_: unknown, newPage: number) => {
     onPageChange(newPage);
@@ -82,6 +86,7 @@ function CommonTable<T>({
               ))}
               {approval && <TableCell align="center">Approval</TableCell>}
               {actions && <TableCell align="center">Actions</TableCell>}
+              {custombutton && <TableCell align="center">Generate</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -107,6 +112,13 @@ function CommonTable<T>({
                           <ClearIcon color="error" />
                         </IconButton>
                       </ButtonGroup>
+                    </TableCell>
+                  )}
+                  {custombutton && (
+                    <TableCell align="center">
+                      <Button color="primary" size="small" onClick={() => custombutton.onAction!(row)}>
+                        Generate
+                      </Button>
                     </TableCell>
                   )}
                   {actions && (

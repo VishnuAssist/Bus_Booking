@@ -23,6 +23,7 @@ import SidebarMenu from "./SidebarMenu";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import Scrollbar from "../../../Component/Scrollbar";
 import { SidebarContext } from "../../../Context/SidebarContext";
+import { useAuth } from "../../../hooks/useAuth";
 
 function Sidebar({
   expanded,
@@ -47,6 +48,12 @@ function Sidebar({
          
   `
   );
+
+  const { username, token,role, email } = useAuth();
+  console.log("user",username)
+  console.log("token",token)
+  console.log("email",email)
+  console.log("email",role)
   return (
     <>
       <SidebarWrapper
@@ -69,7 +76,8 @@ function Sidebar({
                   ),
                   0.5
                 )
-              : darken(theme.colors.alpha.black[100], 0.5),
+              // : darken(theme.colors.alpha.black[100], 0.5),
+              : theme.sidebar.background,
           boxShadow:
             theme.palette.mode === "dark" ? theme.sidebar.boxShadow : "none",
         }}
@@ -153,7 +161,7 @@ function Sidebar({
               }}
             >
               <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
-                AK
+                  {username?.charAt(0).toUpperCase()}
               </Avatar>
 
               <Box
@@ -164,10 +172,10 @@ function Sidebar({
                 }}
               >
                 <Typography variant="subtitle1" fontWeight={600} color="white">
-                  Super Admin
+                  {username}
                 </Typography>
                 <Typography variant="body2" color="white">
-                  Admin
+                  {role}
                 </Typography>
               </Box>
             </Box>
@@ -180,7 +188,7 @@ function Sidebar({
               }}
             >
                     <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
-                AK
+                  {username?.charAt(0).toUpperCase()}
               </Avatar>
             </Box>
           )}
