@@ -10,6 +10,7 @@ import {
 } from "../../feilds_validation/dictionaryFields_validation";
 import CommonTable from "../../Component/CommenTable";
 import PageHeader from "../../Component/commonPageHeader";
+import { useGetalldictionaryQuery } from "../../Api/dictionaryApi";
 
 const DictionaryPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -18,6 +19,10 @@ const DictionaryPage = () => {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
+
+  const { data: dicData } = useGetalldictionaryQuery({})
+  
+  console.log("dicData", dicData);
 
   const [dictionaries, setDictionaries] = useState<dictionarytype[]>([
     {

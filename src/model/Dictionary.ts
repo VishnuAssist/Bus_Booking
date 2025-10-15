@@ -1,18 +1,16 @@
 
   
-  export interface dictionarytype  {
+  export interface dictionarytype {
     id?: number;
-    categoryId: number | undefined;
-    category?:string
+    categoryId: number;
     name: string;
-    label?:string
+    label?: string;
+    code?: string;
     isActive: boolean;
-    DictionaryEntryId?: number|null;
-    dictionaryEntryName?:string
-    systemDefined?:boolean
-    description?:string
-   
-  
+    DictionaryEntryId?: number | null;
+    dictionaryEntryName?: string;
+    systemDefined?: boolean;
+    description?: string;
   };
   export interface dictionarycategoryType{
     "id": number,
