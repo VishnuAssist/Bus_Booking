@@ -1,51 +1,64 @@
-import React, { useState } from "react";
-import { Box, Button, Paper, TextField, Typography, Alert } from "@mui/material";
-import { logout } from "../../Store/slice/loginSlice";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Paper,
+  TextField,
+
+} from "@mui/material";
 import { useNavigate } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../Store/StoreConfig";
 import { useLoginMutation } from "../../Api/authApi";
-import { addTokensAndUser } from "../../Store/slice/Account";
-import {  toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const LoginPage: React.FC = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated, error } = useAppSelector((state) => state.auth.login);
-
   const [userlogin] = useLoginMutation();
 
   const [username, setUsername] = useState("superadmin");
   const [password, setPassword] = useState("123Pa$$word!");
+  const [_isAuthenticated, setIsAuthenticated] = useState(false);
+
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const handleLogin = async () => {
-    const payLoad = {
-      username,
-      password
-    };
-    await userlogin(payLoad)
-      .unwrap()
-      .then((res) => {
-        console.log("res", res);
-        if (res?.status == 401) {
-          toast.error("cheack the username or password");
-        }
-        if (res.token) {
-          dispatch(addTokensAndUser(res));
-        }
-      });
-    navigate("/dashboards/Dashboard");
+    try {
+      const payLoad = { username, password };
+      const res = await userlogin(payLoad).unwrap();
+console.log("token",res)
+      if (res?.status === 401) {
+        toast.error("Check the username or password");
+        return;
+      }
 
+      if (res?.token) {
+        
+        localStorage.setItem("user", JSON.stringify(res));
+        localStorage.setItem("email", res.email ?? "");
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("refreshToken", res.refreshToken);
+        localStorage.setItem("refreshTokenExpiryTime", res.refreshTokenExpiryTime);
+
+        toast.success("Login successful!");
+        setIsAuthenticated(true);
+
+        
+        setTimeout(() => {
+          navigate("/dashboards/Dashboard");
+        }, 200);
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast.error("Login failed");
+    }
   };
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate("/dashboards/Dashboard");
-  //   }
-  // }, [isAuthenticated, navigate]);
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
 
   return (
     <Box
@@ -54,26 +67,24 @@ const LoginPage: React.FC = () => {
       alignItems="center"
       minHeight="100vh"
       sx={{
-        backgroundImage: `url("/image/commission.jpg")`, // your cow image path
+        backgroundImage: `url("/image/commission.jpg")`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      {!isAuthenticated ? (
+    
         <Paper
           elevation={3}
           sx={{
             p: 4,
             borderRadius: 3,
             width: 350,
-            bgcolor: "rgba(255, 255, 255, 0.1)", // makes card semi-transparent
-            backdropFilter: "blur(5px)", // adds slight blur for better readability
-            boxShadow: "0px 4px 20px rgba(0,0,0,0.3)", // keeps card visible
+            bgcolor: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(5px)",
+            boxShadow: "0px 4px 20px rgba(0,0,0,0.3)",
           }}
         >
-
-
           <TextField
             fullWidth
             label="Username"
@@ -93,12 +104,6 @@ const LoginPage: React.FC = () => {
             margin="normal"
           />
 
-          {error && (
-            <Alert severity="error" sx={{ mt: 1, mb: 1 }}>
-              {error}
-            </Alert>
-          )}
-
           <Button
             fullWidth
             variant="contained"
@@ -109,33 +114,9 @@ const LoginPage: React.FC = () => {
             Login
           </Button>
         </Paper>
-      ) : (
-        <Paper
-          elevation={3}
-          sx={{
-            p: 4,
-            borderRadius: 3,
-            width: 350,
-            textAlign: "center",
-            bgcolor: "rgba(255, 255, 255, 0.7)",
-            backdropFilter: "blur(6px)",
-            boxShadow: "0px 4px 20px rgba(0,0,0,0.3)",
-          }}
-        >
-          <Typography variant="h6" fontWeight="bold" mb={2}>
-            Welcome, Admin!
-          </Typography>
-          <Button
-            fullWidth
-            variant="contained"
-            color="error"
-            onClick={handleLogout}
-            sx={{ borderRadius: 2 }}
-          >
-            Logout
-          </Button>
-        </Paper>
-      )}
+      
+     
+     
     </Box>
   );
 };

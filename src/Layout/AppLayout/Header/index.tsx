@@ -74,7 +74,7 @@ function Header({ expanded, setExpanded }: HeaderProps) {
               minWidth: "auto",
               padding: 0.2,
               mr: 1,
-              bgcolor: "rgb(85,105,254)",
+              bgcolor: theme.colors.primary.main,
             }}
           >
             {expanded ? (

@@ -1,40 +1,105 @@
-// import { useContext } from "react";
-import { IconButton, Tooltip } from "@mui/material";
+import  { useState } from "react";
+import {
+  IconButton,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Box,
+  Typography,
+} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-// import { AuthContext } from "../../../../context/AuthProvider"; // adjust path as needed
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SignOutButton() {
-//   const { signOut } = useContext(AuthContext); // assuming you have AuthContext for login/logout handling
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
-//   const handleSignOut = () => {
-//     // Clear any saved tokens or user data
-//     localStorage.removeItem("userToken");
-//     localStorage.removeItem("LeaseApptheme"); // optional if you want to reset theme too
+  const handleOpenDialog = () => setOpen(true);
+  const handleCloseDialog = () => setOpen(false);
 
-//     // Trigger your sign out logic (redirect, API call, etc.)
-//     if (signOut) {
-//       signOut();
-//     } else {
-//       window.location.href = "/login"; // fallback redirect
-//     }
-//   };
+  const handleSignOut = () => {
+    // Clear localStorage
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("refreshTokenExpiryTime");
+    localStorage.removeItem("email");
+
+    toast.info("Logged out successfully");
+
+    handleCloseDialog();
+    navigate("/login");
+  };
 
   return (
-    <Tooltip title="Sign Out">
-      <IconButton
-        // onClick={handleSignOut}
-        color="inherit"
-        sx={{
-          transition: "all 0.3s ease",ml:2,
-          "&:hover": {
-            transform: "scale(1.1)",
-            color: "error.main"
-          },
-        }}
+    <>
+      
+      <Tooltip title="Sign Out">
+        <IconButton
+          onClick={handleOpenDialog}
+          color="inherit"
+          sx={{
+            transition: "all 0.3s ease",
+            ml: 2,
+            "&:hover": {
+              transform: "scale(1.1)",
+              color: "error.main",
+            },
+          }}
+        >
+          <LogoutIcon />
+        </IconButton>
+      </Tooltip>
+
+      
+      <Dialog
+        open={open}
+        onClose={handleCloseDialog}
+        maxWidth="xs"
+        fullWidth
       >
-        <LogoutIcon />
-      </IconButton>
-    </Tooltip>
+        <DialogTitle
+          sx={{
+            textAlign: "center",
+            fontWeight: 600,
+            pb: 0,
+          }}
+        >
+          Confirm Sign Out
+        </DialogTitle>
+
+        <DialogContent sx={{ textAlign: "center" }}>
+          <Box display="flex" justifyContent="center" mt={2} mb={1}>
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png"
+              alt="Sign Out Illustration"
+              style={{ width: 80, height: 80 }}
+            />
+          </Box>
+          <Typography variant="body1" sx={{ mt: 1 }}>
+            Are you sure you want to sign out?
+          </Typography>
+        </DialogContent>
+
+        <DialogActions sx={{ justifyContent: "space-between", pb: 2 }}>
+          <Button onClick={handleCloseDialog} variant="outlined" color="inherit" size="small">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSignOut}
+            variant="contained"
+            color="error"
+            size="small"
+          >
+            Sign Out
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 
