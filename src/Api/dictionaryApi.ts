@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import APIFetchBase from "../Store/ApiConfig";
 import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
-import type { dictionarytype } from "../model/Dictionary";
+import type { dictionarycategoryType, dictionarytype } from "../model/Dictionary";
 
 export const dictionaryApi = createApi({
   reducerPath: "dictionaryApi",
@@ -28,17 +28,24 @@ export const dictionaryApi = createApi({
         ),
       providesTags: ["DictionaryApi"],
     }),
-    addEditdictionary: builder.mutation<any, any>({
-      query: (args) => ({
+    getcategories: builder.query<
+      { categories: dictionarycategoryType[] },
+      void
+    >({
+      query: () => ({
         method: "GET",
-        url: "/Dictionary",
-        params: {
-          ...args,
-        },
+        url: "/Dictionary/filters",
       }),
     }),
-    
+    addEditdictionary: builder.mutation<any, FormData>({
+      query: (args) => ({
+        method: args?.get("id") ? `PUT` : "POST",
+        url: "/Dictionary",
+        body: args,
+      }),
+      invalidatesTags: ["DictionaryApi"],
+    }),
   }),
 });
 
-export const { useGetalldictionaryQuery } = dictionaryApi;
+export const { useGetalldictionaryQuery,useGetcategoriesQuery,useAddEditdictionaryMutation } = dictionaryApi;
