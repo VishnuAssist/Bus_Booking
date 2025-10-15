@@ -24,11 +24,19 @@ export const StoreTargetFormFields: FormFieldProps<StoreTargetType>[] = [
         type: "number",
         required: true,
         size: { sm: 12, md: 6, lg: 6 },
-    }
+    },
+    {
+        label: "Brand",
+        name: "brandId",
+        type: "text",
+        required: true,
+        size: { sm: 12, md: 6, lg: 6 },
+    },
 ];
 
 export const storeTargetFormValidationSchema = yup.object().shape({
     year: yup.date().required("Year is required"),
     month: yup.date().required("Month is required"),
-    targetAmount: yup.number().required("Number is required"),
+    targetAmount: yup.number().required("Target Amount is required"),
+    brandId: yup.number().required("Brand Id is required"),
 });

@@ -114,7 +114,7 @@ const Store = () => {
     };
 
     const handelView = () => {
-        navi(`settings/storeTarget`)
+        navi(`/settings/storeTarget`)
     };
 
     return (

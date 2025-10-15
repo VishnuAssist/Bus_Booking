@@ -103,6 +103,7 @@ const ShiftClockMUI: React.FC = () => {
         border: "1px solid #ddd",
         borderRadius: 2,
         textAlign: "center",
+        height: "100%"
       }}
     >
       <Typography variant="h4" gutterBottom>
