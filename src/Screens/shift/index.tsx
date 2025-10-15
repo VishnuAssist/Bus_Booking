@@ -84,6 +84,7 @@ const shiftColumns = [
 const Shift = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<any>(null);
+  const [shifts, setShifts] = useState(sampleShifts);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
@@ -98,16 +99,42 @@ const Shift = () => {
     const storeField = fields.find((f) => f.name === "shiftType");
     if (storeField) {
       storeField.options = [
-        { id: "1", name: "Addidas" },
-        { id: "2", name: "Puma" },
-        { id: "3", name: "Nike" },
+        { id: "1", name: "Morning" },
+        { id: "2", name: "After Noon" },
+        { id: "3", name: "Night" },
       ];
     }
     return fields;
   };
 
   const onSubmit = async (formData: any) => {
-    console.log("Shift Form Data", formData);
+    const normalized = {
+      ...formData,
+      startDate: formData.startDate
+        ? new Date(formData.startDate).toISOString().split("T")[0]
+        : "",
+      endDate: formData.endDate
+        ? new Date(formData.endDate).toISOString().split("T")[0]
+        : "",
+      skipDate: formData.skipDate
+        ? new Date(formData.skipDate).toISOString().split("T")[0]
+        : "",
+    };
+
+    if (selectedShift) {
+      setShifts((prev) =>
+        prev.map((shift) =>
+          shift.id === selectedShift.id ? { ...shift, ...normalized } : shift
+        )
+      );
+    } else {
+      const newShift = {
+        id: Date.now(),
+        ...normalized,
+      };
+      setShifts((prev) => [...prev, newShift]);
+    }
+
     setModalOpen(false);
     setSelectedShift(null);
   };
@@ -127,7 +154,6 @@ const Shift = () => {
             onChange={handleTabChange}
             textColor="primary"
             indicatorColor="primary"
-            
           >
             <Tab label="List View" />
             <Tab label="Calendar View" />
@@ -137,7 +163,7 @@ const Shift = () => {
           <Box>
             <CommonTable
               columns={shiftColumns}
-              rows={sampleShifts}
+              rows={shifts}
               page={page}
               rowsPerPage={rowsPerPage}
               onPageChange={setPage}
@@ -148,7 +174,8 @@ const Shift = () => {
                   setSelectedShift(row);
                   setModalOpen(true);
                 },
-                onDelete: (row) => console.log("delete", row),
+                onDelete: (row) =>
+                  setShifts((prev) => prev.filter((s) => s.id !== row.id)),
               }}
             />
           </Box>
@@ -156,7 +183,19 @@ const Shift = () => {
 
         {tabValue === 1 && (
           <Box sx={{ mt: 2 }}>
-            <CalendarView />
+            <CalendarView
+              shifts={shifts.map((s) => ({
+                id: s.id,
+                title: s.shiftType,
+                name: `Store ${s.storeId}`,
+                start: new Date(s.startDate),
+                end: new Date(s.endDate),
+                startTime: s.startTime,
+                endTime: s.endTime,
+                location: `Store ${s.storeId}`,
+                employeeId: s.storeId,
+              }))}
+            />
           </Box>
         )}
       </CommisionContainer>
