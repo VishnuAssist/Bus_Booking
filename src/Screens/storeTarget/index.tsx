@@ -3,7 +3,7 @@ import CommisionContainer from "../../Component/container";
 import CommonTable from "../../Component/CommenTable";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
-import { Grid } from "@mui/material";
+import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Typography, type SelectChangeEvent } from "@mui/material";
 import CurrentYearTarget from "./CurrentYearTarget";
 import PageHeader from "../../Component/commonPageHeader";
 import { StoreTargetFormFields, storeTargetFormValidationSchema } from "../../feilds_validation/storeTargetFieldsValidation";
@@ -14,6 +14,8 @@ const StoreTarget = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedStoreTarget, setSelectedStoreTarget] = useState<any>(null);
+    const [Generate, setGenerate] = useState(false);
+    const [selectedRule, setSelectedRule] = useState("");
 
     const StoreTargetColumns = [
         { id: "id", label: "ID" },
@@ -149,6 +151,14 @@ const StoreTarget = () => {
         return fields;
     };
 
+    const handelGenrateView = () => {
+        setGenerate(true);
+    };
+
+    const handleSelectChange = (event: SelectChangeEvent<string>) => {
+        setSelectedRule(event.target.value);
+    };
+
     return (
         <>
             <CommisionContainer>
@@ -168,6 +178,9 @@ const StoreTarget = () => {
                             approval={{
                                 onConform: (row) => console.log("Approved", row),
                                 onReject: (row) => console.log("Rejected", row)
+                            }}
+                            custombutton={{
+                                onAction: handelGenrateView
                             }}
                         />
                     </Grid>
@@ -194,6 +207,32 @@ const StoreTarget = () => {
                     }
                 }
             />
+
+            <Dialog open={Generate} fullWidth maxWidth="sm">
+                <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <Typography variant="h6" fontWeight={600}>Select Rule</Typography>
+                    <Button color="error" onClick={() => setGenerate(false)} >close</Button>
+                </DialogTitle>
+                <DialogContent>
+                    <Box sx={{ my: 1 }}>
+                        <FormControl fullWidth size="small">
+                            <InputLabel id="rule-select-label">Select Rules</InputLabel>
+                            <Select
+                                labelId="rule-select-label"
+                                value={selectedRule}
+                                onChange={handleSelectChange}
+                            >
+                                <MenuItem value="rule1">Rule 1 - Basic Rule</MenuItem>
+                                <MenuItem value="rule2">Rule 2 - Advanced Rule</MenuItem>
+                                <MenuItem value="rule3">Rule 3 - Custom Rule</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+                    <Box sx={{ textAlign: "end" }}>
+                        <Button variant="contained" color="success" size="small">Select</Button>
+                    </Box>
+                </DialogContent>
+            </Dialog>
         </>
     )
 }
