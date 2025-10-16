@@ -5,11 +5,12 @@ import storage from "redux-persist/lib/storage";
 
 import accountReducer from "./slice/Account";
 import loginReducer from "./slice/loginSlice";
-import shiftReducer from "./slice/ShiftSlice";
+//import shiftReducer from "./slice/ShiftSlice";
 import { authApi } from "../Api/authApi";
 import { rolesApi } from "../Api/rolesApi";
 import { dictionaryApi } from "../Api/dictionaryApi";
 import { shiftApi } from "../Api/shiftApi";
+import { autocompleteApi } from "../Api/AutocompleteApi";
 
 const rootAuthReducer = combineReducers({
   account: accountReducer,
@@ -30,13 +31,14 @@ export const store = configureStore({
     [rolesApi.reducerPath]: rolesApi.reducer,
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
     [shiftApi.reducerPath]: shiftApi.reducer,
+    [autocompleteApi.reducerPath]: autocompleteApi.reducer,
 
     auth: persistedAuthReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat([authApi.middleware, rolesApi.middleware, dictionaryApi.middleware,shiftApi.middleware]),
+    }).concat([authApi.middleware, rolesApi.middleware, dictionaryApi.middleware,shiftApi.middleware, autocompleteApi.middleware]),
 });
 
 export const persistor = persistStore(store);
