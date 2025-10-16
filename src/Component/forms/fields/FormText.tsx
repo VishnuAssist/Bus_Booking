@@ -10,7 +10,7 @@ interface Props {
   fullWidth: boolean;
   variant: "standard" | "filled" | "outlined";
   placeholder?: string;
-  type: "text" | "number" | "password"|"date" |"dateTime"|"datetime-local";
+  type: "text" | "number" | "password"|"date" |"dateTime"|"datetime-local" | "time";
   error?: string;
   size?:"small"|"medium",
   startInput?:React.ReactNode,

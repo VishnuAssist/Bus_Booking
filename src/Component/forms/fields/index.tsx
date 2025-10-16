@@ -67,6 +67,7 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
                   size={inputsize}
                 />
               );
+              
             case "checkbox":
               return (
                 <FormCheckbox
@@ -81,6 +82,7 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
                   }
                 />
               );
+
             case "radio":
               return (
                 <FormRadio
@@ -90,9 +92,9 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
                   disabled={disabled}
                 />
               );
+
             case "skipDates":
               return <SkipDates name={name} disabled={disabled} />;
-
 
             case "autocomplete":
               return (
@@ -113,6 +115,7 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
                   autocompletelabel={props?.autocompletelabel}
                 />
               );
+
             case "autocompletemultiple":
               return (
                 <FormAutocompleteMulitple
@@ -133,6 +136,7 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
                   excludeValues={excludeValues}
                 />
               );
+
             // case "D&DUpload":
             //   return <FormUpload onChange={onChange} allowFile={allowFile} />;
             // case "D&DUploadImage":
@@ -144,10 +148,8 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
             //     />
             //   );
 
-
-
             default:
-              const validTextTypes = ["number", "text", "password", "date", "datetime-local", "dateTime",] as const;
+              const validTextTypes = ["number", "text", "password", "date", "datetime-local", "dateTime", "time"] as const;
               const safeType = validTextTypes.includes(type as any) ? (type as (typeof validTextTypes)[number]) : "text";
               return (
                 <FormText

@@ -48,14 +48,14 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
   {
     label: "Start Time",
     name: "startTime",
-    type: "datetime-local",
+    type: "time",
     required: true,
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
     label: "End Time",
     name: "endTime",
-    type: "datetime-local",
+    type: "time",
     required: true,
     size: { sm: 12, md: 6, lg: 6 },
   },
