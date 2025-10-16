@@ -14,7 +14,6 @@ import { shiftApi } from "../Api/shiftApi";
 const rootAuthReducer = combineReducers({
   account: accountReducer,
   login: loginReducer,
-  shift: shiftReducer,
 });
 
 const persistConfig = {

@@ -10,7 +10,7 @@ export const shiftApi = createApi({
   tagTypes: ["ShiftApi"],
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
-    postShift: builder.mutation<Shift, ShiftType>({
+    postShift: builder.mutation<Shift, any>({
       query: (args) => ({
         method: "POST",
         url: "api/ShiftSchedule",

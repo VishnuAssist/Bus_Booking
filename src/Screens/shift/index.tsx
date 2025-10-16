@@ -13,6 +13,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import CalendarView from "./CalendarView";
 import { usePostShiftMutation } from "../../Api/shiftApi";
 import type { Shift } from "../../model/shiftType";
+import { createFormData } from "../../Lib/ApiUtil";
 
 const sampleShifts = [
   {
@@ -112,28 +113,10 @@ const Shift = () => {
   };
 
   const onSubmit = async (formData: Shift) => {
-    // const payload = {
-    //   id: 0,
-    //   userIds: null,
-    //   startTime: formData.startTime || "",
-    //   endTime: formData.endTime || "",
-    //   duration: "",
-    //   shiftType: formData.shiftType || "",
-    //   startDate: formData.startDate
-    //     ? new Date(formData.startDate).toISOString()
-    //     : "",
-    //   endDate: formData.endDate ? new Date(formData.endDate).toISOString() : "",
-    //   skipDates: formData.skipDates
-    //     ? new Date(formData.skipDates).toISOString()
-    //     : "",
-    //   notes: formData.notes || "",
-    //   reason: formData.reason || "",
-    //   status: 1,
-    //   storeId: Number(formData.storeId) || 0,
-    // };
-
+    console.log("formData",formData)
     try {
-      await postShift(payload).unwrap();
+      const finalData = { ...formData, id: selectedShift?.id || null };
+      await postShift(finalData).unwrap();
       setModalOpen(false);
       setSelectedShift(null);
     } catch (error) {
@@ -219,18 +202,7 @@ const Shift = () => {
         title={selectedShift ? "Edit Shift" : "Add Shift"}
         validationSchema={shiftFormValidationSchema}
         fields={shiftFields()}
-        defaultValues={
-          selectedShift || {
-            startTime: "",
-            endTime: "",
-            shiftType: "",
-            startDate: "",
-            endDate: "",
-            skipDate: "",
-            notes: "",
-            storeId: "",
-          }
-        }
+        defaultValues={selectedShift || {}}
       />
     </>
   );

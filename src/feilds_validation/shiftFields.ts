@@ -78,7 +78,7 @@ export const shiftFormValidationSchema = yup.object().shape({
     .required("Shift type is required"),
   startDate: yup.date().required("Start date is required"),
   endDate: yup.date().required("End date is required"),
-  skipDate: yup.date().nullable(),
+  skipDates: yup.date().nullable(),
   notes: yup.string().nullable(),
   storeId: yup
     .number()
