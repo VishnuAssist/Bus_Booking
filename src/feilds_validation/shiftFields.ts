@@ -6,7 +6,7 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
   {
     label: "Assign User",
     name: "userIds",
-    type: "select",
+    type: "autocompletemultiple",
     required: true,
     multiple: true,
     size: { sm: 12, md: 12, lg: 12 },
