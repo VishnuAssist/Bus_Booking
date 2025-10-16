@@ -38,6 +38,7 @@ export interface FormFieldProps<T> {
   | "D&DUpload"
   | "file"
   | "date"
+  | "multiDate"
   | "time"
   | "TimePicker"
   | "datetime-local"
