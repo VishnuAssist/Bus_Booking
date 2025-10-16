@@ -6,7 +6,7 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
   {
     label: "Assign User",
     name: "userIds",
-    type: "autocompletemultiple",
+    type: "select",
     required: true,
     multiple: true,
     size: { sm: 12, md: 12, lg: 12 },
@@ -49,14 +49,14 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
   {
     label: "Start Time",
     name: "startTime",
-    type: "time",
+    type: "datetime-local",
     required: true,
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
     label: "End Time",
     name: "endTime",
-    type: "time",
+    type: "datetime-local",
     required: true,
     size: { sm: 12, md: 6, lg: 6 },
   },
