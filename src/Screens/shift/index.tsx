@@ -3,15 +3,12 @@ import { useState } from "react";
 import CommisionContainer from "../../Component/container";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
-import {
-  ShiftFormFields,
-  shiftFormValidationSchema,
-} from "../../feilds_validation/shiftFields";
+import { ShiftFormFields, shiftFormValidationSchema } from "../../feilds_validation/shiftFields";
 import CommonTable from "../../Component/CommenTable";
 import PageHeader from "../../Component/commonPageHeader";
 import { Box, Tab, Tabs } from "@mui/material";
 import CalendarView from "./CalendarView";
-import { usePostShiftMutation,useGetallshiftQuery } from "../../Api/shiftApi";
+import { usePostShiftMutation, useGetallshiftQuery } from "../../Api/shiftApi";
 import type { Shift } from "../../model/shiftType";
 import { useGetallAccountQuery } from "../../Api/authApi";
 import { createFormData } from "../../Lib/ApiUtil";
@@ -89,7 +86,7 @@ const shiftColumns = [
 const Shift = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<any>(null);
-  const [shifts, setShifts] = useState(sampleShifts);
+  const [shifts, _setShifts] = useState(sampleShifts);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
@@ -128,7 +125,7 @@ const Shift = () => {
   };
 
   const onSubmit = async (formData: Shift) => {
-    console.log("formData",formData)
+    console.log("formData", formData)
     try {
       const finalData = { ...formData, id: selectedShift?.id || null };
       await postShift(finalData).unwrap();
@@ -168,15 +165,15 @@ const Shift = () => {
               rowsPerPage={rowsPerPage}
               onPageChange={setPage}
               onRowsPerPageChange={setRowsPerPage}
-              // actions={{
-              //   onView: (row) => console.log("view", row),
-              //   onEdit: (row) => {
-              //     setSelectedShift(row);
-              //     setModalOpen(true);
-              //   },
-              //   onDelete: (row) =>
-              //     setShifts((prev) => prev.filter((s) => s.id !== row.id)),
-              // }}
+            // actions={{
+            //   onView: (row) => console.log("view", row),
+            //   onEdit: (row) => {
+            //     setSelectedShift(row);
+            //     setModalOpen(true);
+            //   },
+            //   onDelete: (row) =>
+            //     setShifts((prev) => prev.filter((s) => s.id !== row.id)),
+            // }}
             />
           </Box>
         )}
