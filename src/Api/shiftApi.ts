@@ -18,7 +18,27 @@ export const shiftApi = createApi({
       }),
       invalidatesTags: ["ShiftApi"],
     }),
+     getallshift: builder.query<{ items: Shift[]; metaData: MetaData },any>({
+          query: (args) => ({
+            method: "GET",
+            url: "/api/ShiftSchedule",
+            params: {
+              ...args,
+            },
+          }),
+          transformResponse: (response, metaData) =>
+            dataWithMeta<Shift[], MetaData>(
+              response as Shift[],
+              metaData as any
+            ),
+          providesTags: ["ShiftApi"],
+        }),
   }),
 });
 
-export const { usePostShiftMutation } = shiftApi;
+export const
+ { 
+  usePostShiftMutation,
+  useGetallshiftQuery,
+
+ } = shiftApi;

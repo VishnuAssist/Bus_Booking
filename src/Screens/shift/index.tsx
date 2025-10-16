@@ -11,7 +11,7 @@ import CommonTable from "../../Component/CommenTable";
 import PageHeader from "../../Component/commonPageHeader";
 import { Box, Tab, Tabs } from "@mui/material";
 import CalendarView from "./CalendarView";
-import { usePostShiftMutation } from "../../Api/shiftApi";
+import { usePostShiftMutation,useGetallshiftQuery } from "../../Api/shiftApi";
 import type { Shift } from "../../model/shiftType";
 import { createFormData } from "../../Lib/ApiUtil";
 
@@ -94,6 +94,7 @@ const Shift = () => {
   const [tabValue, setTabValue] = useState(0);
 
   const [postShift] = usePostShiftMutation();
+  const { data:shiftData }= useGetallshiftQuery({});
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -148,20 +149,20 @@ const Shift = () => {
           <Box>
             <CommonTable
               columns={shiftColumns}
-              rows={shifts}
+              rows={shiftData?.items || []}
               page={page}
               rowsPerPage={rowsPerPage}
               onPageChange={setPage}
               onRowsPerPageChange={setRowsPerPage}
-              actions={{
-                onView: (row) => console.log("view", row),
-                onEdit: (row) => {
-                  setSelectedShift(row);
-                  setModalOpen(true);
-                },
-                onDelete: (row) =>
-                  setShifts((prev) => prev.filter((s) => s.id !== row.id)),
-              }}
+              // actions={{
+              //   onView: (row) => console.log("view", row),
+              //   onEdit: (row) => {
+              //     setSelectedShift(row);
+              //     setModalOpen(true);
+              //   },
+              //   onDelete: (row) =>
+              //     setShifts((prev) => prev.filter((s) => s.id !== row.id)),
+              // }}
             />
           </Box>
         )}

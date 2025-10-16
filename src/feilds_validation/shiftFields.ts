@@ -60,6 +60,13 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
+    label: "Store Id",
+    name: "storeId",
+    type: "number",
+    required: false,
+    size: { sm: 12, md: 6, lg: 6 },
+  },
+  {
     label: "Notes",
     name: "notes",
     type: "text",
@@ -69,7 +76,7 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
 ];
 
 export const shiftFormValidationSchema = yup.object().shape({
-  assignUser: yup.string().required("User Name is required"),
+  // assignUser: yup.string().required("User Name is required"),
   startTime: yup.string().required("Start time is required"),
   endTime: yup.string().required("End time is required"),
   shiftType: yup
@@ -80,8 +87,5 @@ export const shiftFormValidationSchema = yup.object().shape({
   endDate: yup.date().required("End date is required"),
   skipDates: yup.date().nullable(),
   notes: yup.string().nullable(),
-  storeId: yup
-    .number()
-    .typeError("Store ID is required")
-    .required("Store ID is required"),
+  storeId: yup.number().nullable(),
 });
