@@ -13,7 +13,7 @@ export const shiftApi = createApi({
     postShift: builder.mutation<Shift, any>({
       query: (args) => ({
         method: "POST",
-        url: "api/ShiftSchedule",
+        url: "/ShiftSchedule",
         body: args,
       }),
       invalidatesTags: ["ShiftApi"],
@@ -21,7 +21,7 @@ export const shiftApi = createApi({
      getallshift: builder.query<{ items: Shift[]; metaData: MetaData },any>({
           query: (args) => ({
             method: "GET",
-            url: "/api/ShiftSchedule",
+            url: "/ShiftSchedule",
             params: {
               ...args,
             },

@@ -3,13 +3,14 @@ import type { FormFieldProps } from "../model/formFeilds";
 import type { Shift } from "../model/shiftType";
 
 export const ShiftFormFields: FormFieldProps<Shift>[] = [
-  // {
-  //   label: "Assign User",
-  //   name: "assignUser",
-  //   type: "select",
-  //   required: true,
-  //   size: { sm: 12, md: 12, lg: 12 },
-  // },
+  {
+    label: "Assign User",
+    name: "userIds",
+    type: "autocompletemultiple",
+    required: true,
+    multiple: true,
+    size: { sm: 12, md: 12, lg: 12 },
+  },
   // {
   //   label: "Store Name",
   //   name: "storename",
@@ -76,7 +77,11 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
 ];
 
 export const shiftFormValidationSchema = yup.object().shape({
-  // assignUser: yup.string().required("User Name is required"),
+  userIds: yup
+    .array()
+    .of(yup.string().required())
+    .min(1, "At least one user must be selected")
+    .required("Assign User is required"),
   startTime: yup.string().required("Start time is required"),
   endTime: yup.string().required("End time is required"),
   shiftType: yup

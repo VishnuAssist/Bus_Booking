@@ -13,7 +13,9 @@ import { Box, Tab, Tabs } from "@mui/material";
 import CalendarView from "./CalendarView";
 import { usePostShiftMutation,useGetallshiftQuery } from "../../Api/shiftApi";
 import type { Shift } from "../../model/shiftType";
+import { useGetallAccountQuery } from "../../Api/authApi";
 import { createFormData } from "../../Lib/ApiUtil";
+import type { UserList, UserType } from "../../model/userType";
 
 const sampleShifts = [
   {
@@ -95,13 +97,25 @@ const Shift = () => {
 
   const [postShift] = usePostShiftMutation();
   const { data:shiftData }= useGetallshiftQuery({});
-
+  const { data:userData }= useGetallAccountQuery({});
+  console.log("userData",userData)
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
+
+  
   const shiftFields = () => {
     const fields = [...ShiftFormFields];
+
+    const userField = fields.find((f) => f.name === "userIds");
+  if (userField && userData) {
+  userField.options = userData?.items?.map((user: any) => ({
+    id: user.id,
+    name: user?.userName,
+  }));
+}
+
     const storeField = fields.find((f) => f.name === "shiftType");
     if (storeField) {
       storeField.options = [
