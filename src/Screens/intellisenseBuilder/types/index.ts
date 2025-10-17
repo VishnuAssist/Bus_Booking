@@ -8,6 +8,7 @@ export interface WorkflowData {
 export interface ActionGroup {
   id: string;
   actionType: string;
+  actionName: string;
   expression?: string;
 }
 
@@ -25,9 +26,9 @@ export interface RuleBuilderState {
 }
 
 export interface RuleBuilderProps {
-  onWorkflowSave?: (workflow: any) => void;
-  onWorkflowTest?: (workflow: any) => void;
-  onSaveToApi?: (workflow: any) => void;
+  onWorkflowSave?: (workflow: GeneratedWorkflow[]) => void;
+  onWorkflowTest?: (workflow: GeneratedWorkflow[]) => void;
+  onSaveToApi?: (workflow: GeneratedWorkflow[]) => void;
   initialWorkflow?: Partial<RuleBuilderState>;
 }
 
@@ -58,7 +59,19 @@ export interface GeneratedWorkflow {
     RuleName: string;
     Expression: string;
     Actions?: {
-      OnSuccess: {
+      OnSuccess?: {
+        Name: string;
+        Context: {
+          Expression: string;
+        };
+      };
+      OnFailure?: {
+        Name: string;
+        Context: {
+          Expression: string;
+        };
+      };
+      OnError?: {
         Name: string;
         Context: {
           Expression: string;
@@ -68,12 +81,15 @@ export interface GeneratedWorkflow {
   }>;
 }
 
-// Action type enum for better type safety
-export enum ActionTypeEnum {
-  OnSuccess = "onSuccess",
-  OnFailure = "onFailure",
-  OnError = "onError",
-}
+// Action type constants for better type safety
+export const ActionTypeEnum = {
+  OnSuccess: "onSuccess",
+  OnFailure: "onFailure",
+  OnError: "onError",
+} as const;
+
+export type ActionTypeEnum =
+  (typeof ActionTypeEnum)[keyof typeof ActionTypeEnum];
 
 export interface ActionType {
   value: ActionTypeEnum;

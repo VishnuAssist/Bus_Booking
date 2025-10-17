@@ -38,6 +38,7 @@ export const validateRuleGroup = (
   }
 
   // Validate action groups
+  const usedActionTypes = new Set<string>();
   rule.actionGroups.forEach((action, actionIndex) => {
     if (!action.actionType.trim()) {
       errors.push(
@@ -47,7 +48,21 @@ export const validateRuleGroup = (
           "Action type"
         )
       );
+    } else {
+      // Check for duplicate action types
+      if (usedActionTypes.has(action.actionType)) {
+        errors.push(
+          VALIDATION_MESSAGES.getActionError(
+            ruleIndex,
+            actionIndex,
+            `Duplicate action type: ${action.actionType}`
+          )
+        );
+      } else {
+        usedActionTypes.add(action.actionType);
+      }
     }
+
     if (!action.expression?.trim()) {
       errors.push(
         VALIDATION_MESSAGES.getActionError(
@@ -58,6 +73,16 @@ export const validateRuleGroup = (
       );
     }
   });
+
+  // Check maximum action groups limit (3 - one for each action type)
+  if (rule.actionGroups.length > 3) {
+    errors.push(
+      VALIDATION_MESSAGES.getRuleError(
+        ruleIndex,
+        "Maximum 3 action groups allowed (OnSuccess, OnFailure, OnError)"
+      )
+    );
+  }
 
   return {
     isValid: errors.length === 0,

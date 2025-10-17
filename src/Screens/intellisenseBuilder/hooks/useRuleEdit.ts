@@ -126,14 +126,40 @@ export const useRuleEdit = () => {
               actionGroups: [],
             };
 
-            // Transform actions if they exist
-            if (rule.Actions?.OnSuccess) {
-              const actionGroup: ActionGroup = {
-                id: `action_${Date.now()}_${index}`,
-                actionType: rule.Actions.OnSuccess.Name || "onSuccess",
-                expression: rule.Actions.OnSuccess.Context?.Expression || "",
-              };
-              ruleGroup.actionGroups.push(actionGroup);
+            // Transform all actions if they exist
+            if (rule.Actions) {
+              // Handle OnSuccess action
+              if (rule.Actions.OnSuccess) {
+                const actionGroup: ActionGroup = {
+                  id: `action_${Date.now()}_${index}_success`,
+                  actionType: "onSuccess",
+                  actionName: rule.Actions.OnSuccess.Name || "OnSuccess Action",
+                  expression: rule.Actions.OnSuccess.Context?.Expression || "",
+                };
+                ruleGroup.actionGroups.push(actionGroup);
+              }
+
+              // Handle OnFailure action
+              if (rule.Actions.OnFailure) {
+                const actionGroup: ActionGroup = {
+                  id: `action_${Date.now()}_${index}_failure`,
+                  actionType: "onFailure",
+                  actionName: rule.Actions.OnFailure.Name || "OnFailure Action",
+                  expression: rule.Actions.OnFailure.Context?.Expression || "",
+                };
+                ruleGroup.actionGroups.push(actionGroup);
+              }
+
+              // Handle OnError action
+              if (rule.Actions.OnError) {
+                const actionGroup: ActionGroup = {
+                  id: `action_${Date.now()}_${index}_error`,
+                  actionType: "onError",
+                  actionName: rule.Actions.OnError.Name || "OnError Action",
+                  expression: rule.Actions.OnError.Context?.Expression || "",
+                };
+                ruleGroup.actionGroups.push(actionGroup);
+              }
             }
 
             return ruleGroup;
