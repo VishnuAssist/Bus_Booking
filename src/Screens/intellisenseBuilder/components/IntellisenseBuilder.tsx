@@ -37,8 +37,7 @@ import { useRuleEdit } from "../hooks/useRuleEdit";
 import RuleGroupComponent from "./RuleGroupComponent";
 import TestData from "./TestData";
 import type { RuleBuilderProps } from "../types";
-import { GradientButton, ValidationAlert, EmptyState } from "../ui";
-import JsonDrawer from "../../../Component/JsonDrawer";
+import { GradientButton, ValidationAlert, EmptyState, DataDrawer } from "../ui";
 
 const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
   onWorkflowSave,
@@ -61,6 +60,8 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
   const [isJsonDrawerOpen, setIsJsonDrawerOpen] = useState(false);
   const [generatedJson, setGeneratedJson] = useState("");
   const [activeTab, setActiveTab] = useState(0);
+  const [apiResponse, setApiResponse] = useState<any>(null);
+  const [showApiResponse, setShowApiResponse] = useState(false);
   const hasLoadedRuleData = useRef(false);
 
   // Handle edit mode initialization and data loading
@@ -122,9 +123,24 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
   };
 
   const handleTest = async () => {
-    const workflow = actions.generateWorkflow();
-    await testWorkflow(workflow);
-    onWorkflowTest?.(workflow);
+    try {
+      const workflow = actions.generateWorkflow();
+      const result = await testWorkflow(workflow);
+
+      // Store the API response and show it in drawer
+      setApiResponse(result);
+      setShowApiResponse(true);
+
+      onWorkflowTest?.(workflow);
+    } catch (error) {
+      console.error("Test API error:", error);
+      // Store error response and show it in drawer
+      setApiResponse({
+        error:
+          error instanceof Error ? error.message : "Failed to call test API",
+      });
+      setShowApiResponse(true);
+    }
   };
 
   const handleGenerateJson = () => {
@@ -340,10 +356,21 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
           </Card>
 
           {/* JSON Drawer */}
-          <JsonDrawer
+          <DataDrawer
             isOpen={isJsonDrawerOpen}
             onClose={handleCloseJsonDrawer}
-            jsonData={generatedJson}
+            data={generatedJson}
+            type="json"
+            title="Generated JSON"
+          />
+
+          {/* API Response Drawer */}
+          <DataDrawer
+            isOpen={showApiResponse}
+            onClose={() => setShowApiResponse(false)}
+            data={apiResponse}
+            type="api"
+            showActions={true}
           />
         </Box>
       )}

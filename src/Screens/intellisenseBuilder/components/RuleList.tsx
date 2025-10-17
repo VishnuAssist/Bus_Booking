@@ -94,13 +94,15 @@ const RuleList: React.FC = () => {
             Manage commission calculation rules and policies
           </Typography>
         </Box>
-        <GradientButton
-          gradientVariant="green"
+
+        <Button
+          sx={{ mt: { xs: 2, md: 0 } }}
+          variant="contained"
           startIcon={<Add />}
           onClick={handleCreate}
         >
           Create Rule
-        </GradientButton>
+        </Button>
       </Box>
 
       {/* Search */}
