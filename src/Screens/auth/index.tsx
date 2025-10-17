@@ -9,6 +9,8 @@ import {
 import { useNavigate } from "react-router";
 import { useLoginMutation } from "../../Api/authApi";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addTokensAndUser } from "../../Store/slice/Account";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -26,23 +28,27 @@ const LoginPage: React.FC = () => {
     }
   }, []);
 
+  const dispatch = useDispatch()
+
   const handleLogin = async () => {
     try {
       const payLoad = { username, password };
       const res = await userlogin(payLoad).unwrap();
-console.log("token",res)
+      console.log("token",res)
       if (res?.status === 401) {
         toast.error("Check the username or password");
         return;
       }
 
-      if (res?.token) {
+      if (res) {
         
-        localStorage.setItem("user", JSON.stringify(res));
-        localStorage.setItem("email", res.email ?? "");
-        localStorage.setItem("token", res.token);
-        localStorage.setItem("refreshToken", res.refreshToken);
-        localStorage.setItem("refreshTokenExpiryTime", res.refreshTokenExpiryTime);
+        // localStorage.setItem("user", JSON.stringify(res));
+        // localStorage.setItem("email", res.email ?? "");
+        // localStorage.setItem("token", res.token);
+        // localStorage.setItem("refreshToken", res.refreshToken);
+        // localStorage.setItem("refreshTokenExpiryTime", res.refreshTokenExpiryTime);
+        
+        dispatch(addTokensAndUser(res));
 
         toast.success("Login successful!");
         setIsAuthenticated(true);

@@ -13,21 +13,26 @@ import {
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { removeTokensAndUser } from "../../../../Store/slice/Account";
 
 function SignOutButton() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  const dispatch = useDispatch()
 
   const handleOpenDialog = () => setOpen(true);
   const handleCloseDialog = () => setOpen(false);
 
   const handleSignOut = () => {
     // Clear localStorage
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("refreshTokenExpiryTime");
-    localStorage.removeItem("email");
+    // localStorage.removeItem("user");
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("refreshToken");
+    // localStorage.removeItem("refreshTokenExpiryTime");
+    // localStorage.removeItem("email");
+    dispatch(removeTokensAndUser());
 
     toast.info("Logged out successfully");
 
