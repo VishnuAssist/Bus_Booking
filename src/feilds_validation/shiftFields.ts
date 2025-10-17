@@ -3,20 +3,22 @@ import type { FormFieldProps } from "../model/formFeilds";
 import type { Shift } from "../model/shiftType";
 
 export const ShiftFormFields: FormFieldProps<Shift>[] = [
-  // {
-  //   label: "Assign User",
-  //   name: "assignUser",
-  //   type: "select",
-  //   required: true,
-  //   size: { sm: 12, md: 12, lg: 12 },
-  // },
-  // {
-  //   label: "Store Name",
-  //   name: "storename",
-  //   type: "text",
-  //   required: true,
-  //   size: { sm: 12, md: 6, lg: 6 },
-  // },
+  {
+    label: "Assign User",
+    name: "userIds",
+    type: "autocompletemultiple",
+    required: true,
+    multiple: true,
+    size: { sm: 12, md: 12, lg: 12 },
+  },
+  {
+    label: "Assign Group",
+    name: "groupIds",
+    type: "select",
+    required: true,
+    multiple: true,
+    size: {  sm: 12, md: 12, lg: 12 },
+  },
   {
     label: "Shift Type",
     name: "shiftType",
@@ -39,25 +41,33 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
-    label: "Skip Dates",
-    name: "skipDates",
-    type: "date",
-    required: false,
-    size: { sm: 12, md: 6, lg: 6 },
-  },
-  {
     label: "Start Time",
     name: "startTime",
-    type: "datetime-local",
+    type: "time",
     required: true,
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
     label: "End Time",
     name: "endTime",
-    type: "datetime-local",
+    type: "time",
     required: true,
     size: { sm: 12, md: 6, lg: 6 },
+  },
+  {
+    label: "Store Id",
+    name: "storeId",
+    type: "number",
+    required: false,
+    size: { sm: 12, md: 6, lg: 6 },
+  },
+  {
+    label: "Skip Dates",
+    name: "skipDates",
+    type: "skipDates",
+    required: true,
+    multiple: true,
+    size: { sm: 12, md: 12, lg: 12 },
   },
   {
     label: "Notes",
@@ -69,19 +79,17 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
 ];
 
 export const shiftFormValidationSchema = yup.object().shape({
-  assignUser: yup.string().required("User Name is required"),
+  userIds: yup
+    .array()
+    .of(yup.string().required())
+    .min(1, "At least one user must be selected")
+    .required("Assign User is required"),
   startTime: yup.string().required("Start time is required"),
   endTime: yup.string().required("End time is required"),
-  shiftType: yup
-    .number()
-    .typeError("Shift type is required")
-    .required("Shift type is required"),
+  shiftType: yup.string().required("Shift type is required"),
   startDate: yup.date().required("Start date is required"),
   endDate: yup.date().required("End date is required"),
-  skipDates: yup.date().nullable(),
+  skipDates: yup.date().required("Skip date is required"),
   notes: yup.string().nullable(),
-  storeId: yup
-    .number()
-    .typeError("Store ID is required")
-    .required("Store ID is required"),
+  storeId: yup.number().nullable(),
 });

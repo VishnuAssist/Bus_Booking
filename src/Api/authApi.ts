@@ -1,9 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import APIFetchBase from "../Store/ApiConfig";
 import type { loginType, UserLoginType } from "../Dto/authDto";
+import type { MetaData } from "../model/common";
+import type { UserList, UserType } from "../model/userType";
+import { dataWithMeta } from "../Lib/ApiUtil";
+
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: APIFetchBase,
+  tagTypes: ["AccountApi"],
   endpoints: (builder) => ({
     login: builder.mutation<UserLoginType, loginType>({
       query: (payload: loginType) => {
@@ -35,11 +40,25 @@ export const authApi = createApi({
         };
       },
     }),
-
+    getallAccount: builder.query<{ items: UserList[]; metaData: MetaData },any>({
+              query: (args) => ({
+                method: "GET",
+                url: "/Account/all",
+                params: {
+                  ...args,
+                },
+              }),
+              transformResponse: (response, metaData) =>
+                dataWithMeta<UserList[], MetaData>(
+                  response as UserList[],
+                  metaData as any
+                ),
+              providesTags: ["AccountApi"],
+            }),
     logout: builder.mutation<
       { status: number; message: string },
       number | undefined
-    >({
+>({
       query: (userId: number) => {
         return {
           method: "POST",
@@ -47,9 +66,15 @@ export const authApi = createApi({
         };
       },
     }),
-
+    
 
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, usePasswordRequestMutation, useResetPasswordMutation } = authApi;
+export const {
+   useLoginMutation, 
+   useLogoutMutation,
+   usePasswordRequestMutation,
+   useResetPasswordMutation,
+   useGetallAccountQuery,
+     } = authApi;

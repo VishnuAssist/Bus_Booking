@@ -25,3 +25,27 @@ export interface Shift {
   status: number;
   storeId: number;
 }
+
+export interface ShiftUser {
+  id: string;
+  userName: string;
+  email: string;
+}
+
+export interface ShiftResponse {
+  id: number;
+  users: ShiftUser[];
+  startTime: string;
+  endTime: string;
+  duration: string;
+  shiftType: string;
+  startDate: string;
+  endDate: string;  
+  skipDates: string;
+  notes: string;
+  reason: string;
+  status: number;
+  storeId: number;
+}
+
+export type ShiftList = ShiftResponse[];
