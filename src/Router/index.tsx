@@ -5,6 +5,7 @@ import RouteAuth from "../Auth/RouteAuth";
 import SidebarLayout from "../Layout/AppLayout";
 import BaseLayout from "../Layout/BaseLayout";
 import RuleList from "../Screens/intellisenseBuilder/components/RuleList";
+import IntellisenseBuilder from "../Screens/intellisenseBuilder/components/IntellisenseBuilder";
 
 const Loader = (Component: any) => (props: any) =>
   (
@@ -235,6 +236,10 @@ const routes: RouteObject[] = [
           {
             path: "rulesList",
             element: <RuleList />,
+          },
+          {
+            path: "intellisenseBuilder",
+            element: <IntellisenseBuilder />,
           },
           {
             path: "reportandAnalytics",

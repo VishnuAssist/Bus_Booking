@@ -15,7 +15,6 @@ interface RuleExpressionEditorProps {
   label?: string;
   placeholder?: string;
   height?: string;
-  theme?: "light" | "dark";
   required?: boolean;
   hasError?: boolean;
 }
@@ -26,7 +25,6 @@ const RuleExpressionEditor: React.FC<RuleExpressionEditorProps> = ({
   label,
   placeholder = "Enter expression...",
   height = "120px",
-  theme = "light",
   required = false,
   hasError = false,
 }) => {
@@ -128,7 +126,7 @@ const RuleExpressionEditor: React.FC<RuleExpressionEditorProps> = ({
       <CodeMirror
         value={localValue}
         height={height}
-        theme={theme}
+        // theme={theme}
         placeholder={placeholder}
         extensions={[completionExtension, EditorView.lineWrapping]}
         onChange={handleChange}

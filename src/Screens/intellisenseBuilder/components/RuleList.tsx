@@ -27,12 +27,15 @@ const RuleList: React.FC = () => {
 
   const { data: rules = [], isLoading, error, refetch } = useGetRulesQuery({});
 
+  // Debug logging
+  console.log("RuleList - API Response:", { rules, isLoading, error });
+
   const handleEdit = (ruleId: string | number) => {
-    navigate(`/intellisense-builder?editRuleId=${ruleId}`);
+    navigate(`/Admin/intellisenseBuilder?editRuleId=${ruleId}`);
   };
 
   const handleCreate = () => {
-    navigate("/intellisense-builder");
+    navigate("/Admin/intellisenseBuilder");
   };
 
   const handleDelete = async (ruleId: string | number) => {

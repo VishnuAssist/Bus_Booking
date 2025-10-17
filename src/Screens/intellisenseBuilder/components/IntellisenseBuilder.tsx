@@ -6,8 +6,6 @@ import {
   CardHeader,
   Typography,
   Stack,
-  IconButton,
-  Tooltip,
   TextField,
   Tabs,
   Tab,
@@ -17,8 +15,6 @@ import {
 import {
   Save as SaveIcon,
   PlayArrow as PlayIcon,
-  Brightness4 as DarkModeIcon,
-  Brightness7 as LightModeIcon,
   Add as AddIcon,
   Description as GenerateIcon,
   ArrowBack as ArrowBackIcon,
@@ -30,7 +26,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
+  type DragEndEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -42,10 +38,10 @@ import { useWorkflowActions } from "../hooks/useWorkflowActions";
 import { useRuleEdit } from "../hooks/useRuleEdit";
 import RuleGroupComponent from "./RuleGroupComponent";
 import TestData from "./TestData";
-import JsonDrawer from "../../../components/JsonDrawer";
 import type { RuleBuilderProps } from "../types";
 import { GradientButton, ValidationAlert, EmptyState } from "../ui";
 import { OUTLINED_BUTTON_STYLES } from "../constants";
+import JsonDrawer from "../../../Component/JsonDrawer";
 
 const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
   onWorkflowSave,
@@ -67,7 +63,6 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
 
   const [isJsonDrawerOpen, setIsJsonDrawerOpen] = useState(false);
   const [generatedJson, setGeneratedJson] = useState("");
-  const [editorTheme, setEditorTheme] = useState<"light" | "dark">("light");
   const [activeTab, setActiveTab] = useState(0);
   const hasLoadedRuleData = useRef(false);
 
@@ -107,10 +102,6 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
-  const toggleTheme = () => {
-    setEditorTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
 
   const handleSave = async () => {
     const workflow = actions.generateWorkflow();
@@ -212,25 +203,6 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
               ? "Modify existing rule workflow and actions"
               : "Build complex workflows with rules and actions"
           }
-          action={
-            <Stack direction="row" spacing={1}>
-              <Tooltip
-                title={
-                  editorTheme === "light"
-                    ? "Switch to Dark Mode"
-                    : "Switch to Light Mode"
-                }
-              >
-                <IconButton onClick={toggleTheme} color="default">
-                  {editorTheme === "light" ? (
-                    <DarkModeIcon />
-                  ) : (
-                    <LightModeIcon />
-                  )}
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          }
         />
       </Card>
 
@@ -331,7 +303,6 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
                       onAddActionGroup={actions.addActionGroup}
                       onUpdateActionGroup={actions.updateActionGroup}
                       onDeleteActionGroup={actions.deleteActionGroup}
-                      editorTheme={editorTheme}
                     />
                   ))}
                 </SortableContext>

@@ -31,7 +31,6 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import RuleList from "../../../../Screens/intellisenseBuilder/components/RuleList";
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -268,8 +267,8 @@ function SidebarMenu({
           },
           {
             label: "RuleList",
-            link: "/admin/rulesList",
-            icon: <RuleList />,
+            link: "/Admin/rulesList",
+            icon: <AdminPanelSettingsIcon />,
             hide: true,
           },
           {

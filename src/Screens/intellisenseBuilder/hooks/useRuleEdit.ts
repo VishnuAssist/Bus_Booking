@@ -159,7 +159,7 @@ export const useRuleEdit = () => {
         }).unwrap();
 
         // Navigate back to rules list
-        navigate("/rules-list");
+        navigate("/Admin/rulesList");
 
         return true;
       } catch (error) {
@@ -181,7 +181,7 @@ export const useRuleEdit = () => {
       isLoading: false,
       error: null,
     });
-    navigate("/rules-list");
+    navigate("/Admin/rulesList");
   }, [navigate]);
 
   return {

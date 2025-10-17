@@ -32,7 +32,6 @@ interface ActionGroupComponentProps {
     updates: Partial<ActionGroup>
   ) => void;
   onDelete: (ruleId: string, actionId: string) => void;
-  editorTheme?: "light" | "dark";
 }
 
 const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
@@ -40,7 +39,6 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
   ruleId,
   onUpdate,
   onDelete,
-  editorTheme = "light",
 }) => {
   const handleExpressionChange = useCallback(
     (value: string) => {
@@ -162,7 +160,6 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
             label="Action Expression (Formula)"
             placeholder={PLACEHOLDER_TEXT.ACTION_EXPRESSION}
             height="80px"
-            theme={editorTheme}
             required={true}
             hasError={!actionGroup.expression?.trim()}
           />

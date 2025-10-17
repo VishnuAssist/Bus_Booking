@@ -39,7 +39,6 @@ interface RuleGroupComponentProps {
     updates: Partial<ActionGroup>
   ) => void;
   onDeleteActionGroup: (ruleId: string, actionId: string) => void;
-  editorTheme?: "light" | "dark";
 }
 
 const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
@@ -49,7 +48,6 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
   onAddActionGroup,
   onUpdateActionGroup,
   onDeleteActionGroup,
-  editorTheme = "light",
 }) => {
   const {
     attributes,
@@ -121,7 +119,6 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
             label="Rule Expression (Condition)"
             placeholder={PLACEHOLDER_TEXT.RULE_EXPRESSION}
             height="100px"
-            theme={editorTheme}
             required={true}
             hasError={!ruleGroup.expression.trim()}
           />
@@ -169,7 +166,6 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
                   ruleId={ruleGroup.id}
                   onUpdate={onUpdateActionGroup}
                   onDelete={onDeleteActionGroup}
-                  editorTheme={editorTheme}
                 />
               ))}
             </Stack>
