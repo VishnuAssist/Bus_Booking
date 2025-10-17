@@ -11,8 +11,11 @@ import CommonTable from "../../Component/CommenTable";
 import PageHeader from "../../Component/commonPageHeader";
 import { Box, Tab, Tabs } from "@mui/material";
 import CalendarView from "./CalendarView";
-import { usePostShiftMutation } from "../../Api/shiftApi";
+import { usePostShiftMutation, useGetallshiftQuery } from "../../Api/shiftApi";
 import type { Shift } from "../../model/shiftType";
+import { useGetallAccountQuery } from "../../Api/authApi";
+import { createFormData } from "../../Lib/ApiUtil";
+import type { UserList, UserType } from "../../model/userType";
 
 const sampleShifts = [
   {
@@ -86,13 +89,15 @@ const shiftColumns = [
 const Shift = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<any>(null);
-  const [shifts, setShifts] = useState(sampleShifts);
+  const [shifts, _setShifts] = useState(sampleShifts);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [tabValue, setTabValue] = useState(0);
 
   const [postShift] = usePostShiftMutation();
+  const { data: shiftData } = useGetallshiftQuery({});
+  const { data: userData } = useGetallAccountQuery({});
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -100,6 +105,15 @@ const Shift = () => {
 
   const shiftFields = () => {
     const fields = [...ShiftFormFields];
+
+    const userField = fields.find((f) => f.name === "userIds");
+    if (userField && userData) {
+      userField.options = userData?.items?.map((user: any) => ({
+        id: user.id,
+        name: user?.userName,
+      }));
+    }
+
     const storeField = fields.find((f) => f.name === "shiftType");
     if (storeField) {
       storeField.options = [
@@ -108,32 +122,27 @@ const Shift = () => {
         { id: "3", name: "Night" },
       ];
     }
+    const groupField = fields.find((f) => f.name === "groupIds");
+    if (groupField) {
+      groupField.options = [
+        { id: "1", name: "Group 1" },
+        { id: "2", name: "Group 2" },
+        { id: "3", name: "Group 3" },
+      ];
+    }
     return fields;
   };
 
   const onSubmit = async (formData: Shift) => {
-    // const payload = {
-    //   id: 0,
-    //   userIds: null,
-    //   startTime: formData.startTime || "",
-    //   endTime: formData.endTime || "",
-    //   duration: "",
-    //   shiftType: formData.shiftType || "",
-    //   startDate: formData.startDate
-    //     ? new Date(formData.startDate).toISOString()
-    //     : "",
-    //   endDate: formData.endDate ? new Date(formData.endDate).toISOString() : "",
-    //   skipDates: formData.skipDates
-    //     ? new Date(formData.skipDates).toISOString()
-    //     : "",
-    //   notes: formData.notes || "",
-    //   reason: formData.reason || "",
-    //   status: 1,
-    //   storeId: Number(formData.storeId) || 0,
-    // };
-
+    console.log("formData", formData);
     try {
-      await postShift(payload).unwrap();
+      const finalData = {
+        ...formData,
+        id: selectedShift?.id || 0,
+        reason: null,
+        status: 0,
+      };
+      await postShift(finalData).unwrap();
       setModalOpen(false);
       setSelectedShift(null);
     } catch (error) {
@@ -165,20 +174,20 @@ const Shift = () => {
           <Box>
             <CommonTable
               columns={shiftColumns}
-              rows={shifts}
+              rows={sampleShifts}
               page={page}
               rowsPerPage={rowsPerPage}
               onPageChange={setPage}
               onRowsPerPageChange={setRowsPerPage}
-              actions={{
-                onView: (row) => console.log("view", row),
-                onEdit: (row) => {
-                  setSelectedShift(row);
-                  setModalOpen(true);
-                },
-                onDelete: (row) =>
-                  setShifts((prev) => prev.filter((s) => s.id !== row.id)),
-              }}
+              // actions={{
+              //   onView: (row) => console.log("view", row),
+              //   onEdit: (row) => {
+              //     setSelectedShift(row);
+              //     setModalOpen(true);
+              //   },
+              //   onDelete: (row) =>
+              //     setShifts((prev) => prev.filter((s) => s.id !== row.id)),
+              // }}
             />
           </Box>
         )}
@@ -219,18 +228,7 @@ const Shift = () => {
         title={selectedShift ? "Edit Shift" : "Add Shift"}
         validationSchema={shiftFormValidationSchema}
         fields={shiftFields()}
-        defaultValues={
-          selectedShift || {
-            startTime: "",
-            endTime: "",
-            shiftType: "",
-            startDate: "",
-            endDate: "",
-            skipDate: "",
-            notes: "",
-            storeId: "",
-          }
-        }
+        defaultValues={selectedShift || {}}
       />
     </>
   );
