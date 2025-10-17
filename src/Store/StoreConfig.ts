@@ -1,7 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
+import {
+  useDispatch,
+  useSelector,
+  type TypedUseSelectorHook,
+} from "react-redux";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; 
+import storage from "redux-persist/lib/storage";
 
 import accountReducer from "./slice/Account";
 import loginReducer from "./slice/loginSlice";
@@ -11,6 +15,7 @@ import { rolesApi } from "../Api/rolesApi";
 import { dictionaryApi } from "../Api/dictionaryApi";
 import { shiftApi } from "../Api/shiftApi";
 import { autocompleteApi } from "../Api/AutocompleteApi";
+import { rulesApi } from "../Api/rulesApi";
 
 const rootAuthReducer = combineReducers({
   account: accountReducer,
@@ -23,7 +28,7 @@ const persistConfig = {
   whitelist: ["account"],
 };
 
-const persistedAuthReducer = persistReducer(persistConfig,rootAuthReducer);
+const persistedAuthReducer = persistReducer(persistConfig, rootAuthReducer);
 
 export const store = configureStore({
   reducer: {
@@ -32,13 +37,21 @@ export const store = configureStore({
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
     [shiftApi.reducerPath]: shiftApi.reducer,
     [autocompleteApi.reducerPath]: autocompleteApi.reducer,
+    [rulesApi.reducerPath]: rulesApi.reducer,
 
     auth: persistedAuthReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat([authApi.middleware, rolesApi.middleware, dictionaryApi.middleware,shiftApi.middleware, autocompleteApi.middleware]),
+    }).concat([
+      authApi.middleware,
+      rolesApi.middleware,
+      dictionaryApi.middleware,
+      shiftApi.middleware,
+      autocompleteApi.middleware,
+      rulesApi.middleware,
+    ]),
 });
 
 export const persistor = persistStore(store);

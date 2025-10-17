@@ -7,7 +7,6 @@ import {
   styled,
   Button,
   ListItem,
-
   Tooltip,
   tooltipClasses,
   type TooltipProps,
@@ -15,28 +14,27 @@ import {
 import { NavLink as RouterLink } from "react-router-dom";
 
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import DataUsageIcon from '@mui/icons-material/DataUsage';
+import DataUsageIcon from "@mui/icons-material/DataUsage";
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
-import StoreIcon from '@mui/icons-material/Store';
+import StoreIcon from "@mui/icons-material/Store";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import SellIcon from '@mui/icons-material/Sell';
-import GroupIcon from '@mui/icons-material/Group';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import GradeOutlinedIcon from '@mui/icons-material/GradeOutlined';
-
-
+import SellIcon from "@mui/icons-material/Sell";
+import GroupIcon from "@mui/icons-material/Group";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
 
 import { SidebarContext } from "../../../../Context/SidebarContext";
 import { CalendarIcon, DashboardIcon } from "../../../../Assests/Icons/icons";
 
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
-import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import RuleList from "../../../../Screens/intellisenseBuilder/components/RuleList";
 
-
-const MenuWrapper = styled(Box)(({ theme }) => `
+const MenuWrapper = styled(Box)(
+  ({ theme }) => `
   .MuiList-root {
     padding: ${theme.spacing(1)};
     & > .MuiList-root {
@@ -51,9 +49,11 @@ const MenuWrapper = styled(Box)(({ theme }) => `
     padding: ${theme.spacing(0, 2.5)};
     line-height: 1.2;
   }
-`);
+`
+);
 
-const SubMenuWrapper = styled(Box)(({ theme }) => `
+const SubMenuWrapper = styled(Box)(
+  ({ theme }) => `
   .MuiList-root {
     .MuiListItem-root {
       padding: 1px 0;
@@ -98,7 +98,8 @@ const SubMenuWrapper = styled(Box)(({ theme }) => `
       }
     }
   }
-`);
+`
+);
 
 const TooltipWrapper = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -119,15 +120,14 @@ const TooltipWrapper = styled(({ className, ...props }: TooltipProps) => (
 
 function SidebarMenu({
   expanded,
-  // expand,
-  // mobile,
-}: {
+}: // expand,
+// mobile,
+{
   expanded: boolean;
   expand: () => void;
   mobile: boolean;
 }) {
   const { closeSidebar } = useContext(SidebarContext);
-
 
   const sidebarItems = useMemo(() => {
     const items = [
@@ -163,8 +163,6 @@ function SidebarMenu({
             icon: <CalendarIcon />,
             hide: true,
           },
-
-
 
           {
             label: "Store",
@@ -241,7 +239,7 @@ function SidebarMenu({
           {
             label: "System Overview",
             link: "/Admin/systemOverview",
-            icon: < AdminPanelSettingsIcon />,
+            icon: <AdminPanelSettingsIcon />,
             hide: true,
           },
           {
@@ -253,25 +251,31 @@ function SidebarMenu({
           {
             label: "Attendance",
             link: "/Admin/attendance",
-            icon: < AdminPanelSettingsIcon />,
+            icon: <AdminPanelSettingsIcon />,
             hide: true,
           },
           {
             label: "Achievement",
             link: "/Admin/achievement",
-            icon: < AdminPanelSettingsIcon />,
+            icon: <AdminPanelSettingsIcon />,
             hide: true,
           },
           {
             label: "RuleEngine",
             link: "/Admin/ruleEngine",
-            icon: < AdminPanelSettingsIcon />,
+            icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "RuleList",
+            link: "/admin/rulesList",
+            icon: <RuleList />,
             hide: true,
           },
           {
             label: "Report&Analytics",
             link: "/Admin/reportandAnalytics",
-            icon: < AdminPanelSettingsIcon />,
+            icon: <AdminPanelSettingsIcon />,
             hide: true,
           },
         ],
@@ -381,19 +385,21 @@ function SidebarMenu({
         <Fragment>
           <SubMenuWrapper>
             <List component="div">
-              {sidebarItems.flatMap((group) => group.items).map((item, index) => (
-                <ListItem key={index} component="div">
-                  <TooltipWrapper title={item.label} arrow>
-                    <Button
-                      disableRipple
-                      component={RouterLink}
-                      onClick={closeSidebar}
-                      to={item.link}
-                      startIcon={item.icon}
-                    />
-                  </TooltipWrapper>
-                </ListItem>
-              ))}
+              {sidebarItems
+                .flatMap((group) => group.items)
+                .map((item, index) => (
+                  <ListItem key={index} component="div">
+                    <TooltipWrapper title={item.label} arrow>
+                      <Button
+                        disableRipple
+                        component={RouterLink}
+                        onClick={closeSidebar}
+                        to={item.link}
+                        startIcon={item.icon}
+                      />
+                    </TooltipWrapper>
+                  </ListItem>
+                ))}
             </List>
           </SubMenuWrapper>
         </Fragment>
