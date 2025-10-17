@@ -76,8 +76,8 @@ function Sidebar({
                   ),
                   0.5
                 )
-              // : darken(theme.colors.alpha.black[100], 0.5),
-              : theme.sidebar.background,
+              : darken(theme.colors.alpha.black[100], 0.5),
+              // : theme.sidebar.background,
           boxShadow:
             theme.palette.mode === "dark" ? theme.sidebar.boxShadow : "none",
         }}
