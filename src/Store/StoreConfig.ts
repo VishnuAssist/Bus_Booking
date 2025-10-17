@@ -43,6 +43,7 @@ export const store = configureStore({
     [rulesApi.reducerPath]: rulesApi.reducer,
 
     auth: persistedAuthReducer,
+    testData: testDataReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

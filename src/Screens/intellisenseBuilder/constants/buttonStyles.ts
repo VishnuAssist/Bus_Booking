@@ -27,8 +27,6 @@ export const BUTTON_BASE_STYLES = {
   fontSize: "0.875rem",
   fontWeight: 600,
   textTransform: "none",
-  py: 1.5,
-  px: 3,
 } as const;
 
 export const OUTLINED_BUTTON_STYLES = {

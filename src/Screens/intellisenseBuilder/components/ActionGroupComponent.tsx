@@ -47,8 +47,14 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
     [ruleId, actionGroup.id, onUpdate]
   );
 
+  const style = {
+    border: "1px solid grey",
+    boxShadow:
+      "0px 9px 16px rgba(159, 162, 191, .18), 0px 2px 2px rgba(159, 162, 191, 0.32)",
+  };
+
   return (
-    <Accordion sx={{ mb: 1 }} defaultExpanded>
+    <Accordion sx={{ mb: 1 }} defaultExpanded style={style}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Box
           sx={{ display: "flex", alignItems: "center", gap: 2, width: "100%" }}

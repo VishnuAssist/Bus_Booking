@@ -3,14 +3,12 @@ import {
   Box,
   Card,
   CardContent,
-  CardHeader,
   Typography,
   Stack,
   TextField,
   Tabs,
   Tab,
   Button,
-  Alert,
 } from "@mui/material";
 import {
   Save as SaveIcon,
@@ -40,7 +38,6 @@ import RuleGroupComponent from "./RuleGroupComponent";
 import TestData from "./TestData";
 import type { RuleBuilderProps } from "../types";
 import { GradientButton, ValidationAlert, EmptyState } from "../ui";
-import { OUTLINED_BUTTON_STYLES } from "../constants";
 import JsonDrawer from "../../../Component/JsonDrawer";
 
 const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
@@ -168,67 +165,55 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
   };
 
   return (
-    <Box>
-      {/* Header */}
-      <Card sx={{ mb: 2 }}>
-        <CardHeader
-          title={
-            <Stack direction="row" alignItems="center" spacing={2}>
-              {editMode.isEditMode && (
-                <Button
-                  startIcon={<ArrowBackIcon />}
-                  onClick={cancelEdit}
-                  variant="outlined"
-                  size="small"
-                >
-                  Back to Rules List
-                </Button>
-              )}
-              <Box>
-                <Typography variant="h6" component="div">
-                  {editMode.isEditMode
-                    ? "Edit Rule"
-                    : "Intellisense Rule Builder"}
+    <Box sx={{ p: 3 }}>
+      <Box>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={3}
+        >
+          <Box>
+            {editMode.isEditMode ? (
+              <Box display="flex" alignItems="center" gap={1}>
+                <Typography variant="h4" fontWeight={800}>
+                  Edit Rule{" "}
                 </Typography>
-                {editMode.isEditMode && editMode.originalRuleName && (
-                  <Typography variant="body2" color="text.secondary">
-                    Editing: {editMode.originalRuleName}
-                  </Typography>
-                )}
               </Box>
-            </Stack>
-          }
-          subheader={
-            editMode.isEditMode
-              ? "Modify existing rule workflow and actions"
-              : "Build complex workflows with rules and actions"
-          }
-        />
-      </Card>
+            ) : (
+              <Typography variant="h4" fontWeight={800}>
+                Intellisense Rule Builder
+              </Typography>
+            )}
 
-      {/* Edit Mode Error States */}
+            <Typography color="text.secondary">
+              {editMode.isEditMode
+                ? "Modify existing rule workflow and actions"
+                : "Build complex workflows with rules and actions"}
+            </Typography>
+          </Box>
 
-      {editMode.isEditMode && editMode.error && (
-        <Card sx={{ mb: 2 }}>
-          <CardContent>
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {editMode.error}
-            </Alert>
+          {editMode.isEditMode && (
             <Button
-              variant="outlined"
-              onClick={cancelEdit}
               startIcon={<ArrowBackIcon />}
+              onClick={cancelEdit}
+              variant="outlined"
+              size="small"
             >
               Back to Rules List
             </Button>
-          </CardContent>
-        </Card>
-      )}
+          )}
+        </Box>
+      </Box>
 
       {/* Tabs */}
       <Card sx={{ mb: 2 }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={activeTab} onChange={handleTabChange}>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            aria-label="basic tabs example"
+          >
             <Tab label="Rule Builder" />
             <Tab label="Test Data" />
           </Tabs>
@@ -346,7 +331,7 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
                   startIcon={<PlayIcon />}
                   onClick={handleTest}
                   disabled={!isValidationPassing() || isTestLoading}
-                  sx={OUTLINED_BUTTON_STYLES.green}
+                  // sx={OUTLINED_BUTTON_STYLES.green}
                 >
                   {isTestLoading ? "Testing..." : "Test API"}
                 </GradientButton>

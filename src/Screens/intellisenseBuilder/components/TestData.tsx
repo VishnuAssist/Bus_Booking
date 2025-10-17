@@ -83,6 +83,9 @@ interface TestDataProps {
 const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
   const dispatch = useAppDispatch();
   const testData = useAppSelector((state) => state.testData);
+
+  console.log("testData", testData);
+
   const [activeTab, setActiveTab] = useState(0);
   const [editingItem, setEditingItem] = useState<{
     type: string;
