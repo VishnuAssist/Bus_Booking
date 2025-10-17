@@ -14,7 +14,7 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
   {
     label: "Assign Group",
     name: "groupIds",
-    type: "select",
+    type: "autocompletemultiple",
     required: true,
     multiple: true,
     size: {  sm: 12, md: 12, lg: 12 },
@@ -62,18 +62,18 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
+    label: "Notes",
+    name: "notes",
+    type: "text",
+    required: false,
+    size: { sm: 12, md: 12, lg: 12 },
+  },
+  {
     label: "Skip Dates",
     name: "skipDates",
     type: "skipDates",
     required: true,
     multiple: true,
-    size: { sm: 12, md: 12, lg: 12 },
-  },
-  {
-    label: "Notes",
-    name: "notes",
-    type: "text",
-    required: false,
     size: { sm: 12, md: 12, lg: 12 },
   },
 ];

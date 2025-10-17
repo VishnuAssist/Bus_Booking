@@ -91,7 +91,7 @@ const LeaveRequest = () => {
         <>
             <CommisionContainer>
                 <PageHeader
-                    title="Leave Request"
+                    title="Staff Services"
                     subtitle="Manage your work schedule and requests"
                     btntitle="My Request"
                     btntitle2="Apply"
@@ -104,13 +104,13 @@ const LeaveRequest = () => {
                     {LeaveRequest && (
                         <Grid size={12}>
                             <Card>
-                                <CardHeader title={selectedLeaveRequest ? "Edit Leave Request" : "Add New Leave Request"} />
+                                <CardHeader title={selectedLeaveRequest ? "Edit Request" : "Add New Request"} />
                                 <CardContent>
                                     <Box component="form" noValidate autoComplete="off" sx={{ mt: 1 }}>
                                         <Grid container spacing={3}>
                                             <Grid size={12}>
                                                 <FormControl fullWidth>
-                                                    <InputLabel id="leave-type-label">Leave Type</InputLabel>
+                                                    <InputLabel id="leave-type-label">Request Type</InputLabel>
                                                     <Select labelId="leave-type-label" label="Leave Type" defaultValue="">
                                                         <MenuItem value="sick">Sick Leave</MenuItem>
                                                         <MenuItem value="anual">Anual Leave</MenuItem>

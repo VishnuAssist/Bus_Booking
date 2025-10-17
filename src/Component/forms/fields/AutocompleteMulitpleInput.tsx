@@ -1,20 +1,19 @@
-"use client"
+"use client";
 
-import { Autocomplete, TextField, Checkbox, Chip, CircularProgress } from "@mui/material"
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank"
-import CheckBoxIcon from "@mui/icons-material/CheckBox"
-import * as React from "react"
+import {
+  Autocomplete,
+  TextField,
+  Checkbox,
+  Chip,
+  CircularProgress,
+} from "@mui/material";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import * as React from "react";
+import type { OptionType } from "../../../Dto/formDto";
 
-import { useAutocompletedataQuery } from "../../../Api/AutocompleteApi";
-import type { OptionType, QueryParamsType } from "../../../Dto/formDto"
-import { ValidateParams } from "../../../Lib/utile"
-import { defaultparams } from "../../../Constant/defaultValues"
-
-
-
-
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
-const checkedIcon = <CheckBoxIcon fontSize="small" />
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface Props {
   value?: (string | number)[] | string | number;
@@ -24,52 +23,36 @@ interface Props {
   disabled?: boolean;
   variant?: "standard" | "filled" | "outlined";
   placeholder?: string;
-  baseUrl?: string;
-  Params?: QueryParamsType;
   size?: "small" | "medium";
-  name?: string;
-  valueName?: string;
+  multiple?: boolean;
+  excludeValues?: string[];
+  readonlyallowdelete?: boolean;
   optionLabel?: (item: any, index: number) => string;
   autocompletelabel?: {
     optionlable?: string;
     optionvalue?: { id: string; value?: string };
   };
-  excludeValues?: string[];
-  multiple?: boolean;
-  readonlyallowdelete?: boolean;
 }
 
-const FormAutocompleteMulitple: React.FC<Props> = ({
+const FormAutocompleteMultiple: React.FC<Props> = ({
   value,
   onChange,
+  options = [],
   fullWidth = true,
   disabled = false,
   variant = "outlined",
-  optionLabel,
   placeholder = "",
-  baseUrl,
   size = "medium",
-  Params,
   excludeValues = [],
-  autocompletelabel,
   multiple = true,
   readonlyallowdelete = false,
+  optionLabel,
+  autocompletelabel,
 }) => {
   const [searchParams, setSearchParams] = React.useState<string>("");
-  const [cachedSelectedOptions, setCachedSelectedOptions] = React.useState<
-    any[]
-  >([]);
-
-  const { data = [], isFetching } = useAutocompletedataQuery({
-    params: ValidateParams({
-      ...defaultparams,
-      ...Params,
-      SearchTerm: searchParams,
-
-      ...(multiple && value && Array.isArray(value) ? { ids: value } : {}),
-    }),
-    baseurl: baseUrl || "/dictionary",
-  });
+  const [cachedSelectedOptions, setCachedSelectedOptions] = React.useState<any[]>(
+    []
+  );
 
   const getOptionId = (opt: any) =>
     autocompletelabel?.optionvalue?.id
@@ -85,7 +68,7 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
     if (!value) return multiple ? [] : null;
 
     if (multiple && Array.isArray(value)) {
-      const matchingOptions = data.filter((opt) => {
+      const matchingOptions = options.filter((opt) => {
         const optId = getOptionId(opt);
         return value.some((v) => String(v) === String(optId));
       });
@@ -99,7 +82,6 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
         missingIds.some((id) => String(getOptionId(opt)) === String(id))
       );
 
-      // If we still have missing values, create placeholder options
       const remainingMissingIds = missingIds.filter(
         (id) =>
           !cachedOptionsForMissingIds.some(
@@ -109,7 +91,7 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
 
       const placeholderOptions = remainingMissingIds.map((id) => ({
         id,
-        name: `Loading... (${id})`,
+        name: `(${id})`,
         isPlaceholder: true,
       }));
 
@@ -119,99 +101,69 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
         ...placeholderOptions,
       ];
     } else if (!multiple) {
-      // For single selection
-      const matchInData = data.find(
+      const matchInOptions = options.find(
         (opt) => String(getOptionId(opt)) === String(value)
       );
-      if (matchInData) return matchInData;
+      if (matchInOptions) return matchInOptions;
 
       const matchInCached = cachedSelectedOptions.find(
         (opt) => String(getOptionId(opt)) === String(value)
       );
       if (matchInCached) return matchInCached;
 
-
       return value
-        ? { id: value, name: `Loading... (${value})`, isPlaceholder: true }
+        ? { id: value, name: `(${value})`, isPlaceholder: true }
         : null;
     }
 
     return multiple ? [] : null;
-  }, [value, data, multiple, cachedSelectedOptions]);
-
+  }, [value, options, multiple, cachedSelectedOptions]);
 
   React.useEffect(() => {
     if (selectedValues) {
       if (multiple && Array.isArray(selectedValues)) {
         const validOptions = selectedValues.filter((opt) => !opt.isPlaceholder);
-
         setCachedSelectedOptions((prev) => {
           const combined = [...prev];
-
-          let hasNew = false;
-
           validOptions.forEach((opt) => {
             const id = String(getOptionId(opt));
-            const alreadyExists = prev.some(
-              (prevOpt) => String(getOptionId(prevOpt)) === id
-            );
-            if (!alreadyExists) {
-              hasNew = true;
+            if (
+              !prev.some((prevOpt) => String(getOptionId(prevOpt)) === id)
+            ) {
               combined.push(opt);
             }
           });
-
-          return hasNew ? combined : prev;
+          return combined;
         });
       } else if (!multiple && selectedValues && !selectedValues.isPlaceholder) {
         const id = String(getOptionId(selectedValues));
-        const alreadyExists = cachedSelectedOptions.some(
-          (opt) => String(getOptionId(opt)) === id
-        );
-
-        if (!alreadyExists) {
+        if (
+          !cachedSelectedOptions.some(
+            (opt) => String(getOptionId(opt)) === id
+          )
+        ) {
           setCachedSelectedOptions((prev) => [...prev, selectedValues]);
         }
       }
     }
   }, [selectedValues, multiple, cachedSelectedOptions]);
-React.useEffect(()=>{
-  if(Params){
-    setCachedSelectedOptions([])
-  }
-},[Params])
+
   const combinedOptions = React.useMemo(() => {
-    if (!multiple) {
-      return data?.filter((opt) => !excludeValues.includes(opt?.name||"")) || []
-    }
-    
-    const allOptions = [...(data || [])]
-    
-    cachedSelectedOptions?.forEach((cachedOpt) => {
-      if (
-        !allOptions.some(
-          (opt) => String(getOptionId(opt)) === String(getOptionId(cachedOpt))
-        )
-      ) {
-        allOptions.push(cachedOpt)
-      }
-    })
-  
-   
-    if (readonlyallowdelete) {
-      const selectedIds = Array.isArray(selectedValues) 
+    const filteredOptions = options.filter(
+      (opt) => !excludeValues.includes(opt?.name || "")
+    );
+
+    if (readonlyallowdelete && multiple) {
+      const selectedIds = Array.isArray(selectedValues)
         ? selectedValues.map((opt) => String(getOptionId(opt)))
         : [];
-      
-      return allOptions.filter((opt) => {
-        const optId = String(getOptionId(opt));
-        return selectedIds.includes(optId) && !excludeValues.includes(opt.name||"");
-      });
+      return filteredOptions.filter((opt) =>
+        selectedIds.includes(String(getOptionId(opt)))
+      );
     }
 
-    return allOptions.filter((opt) => !excludeValues.includes(opt.name||""))
-  }, [data, cachedSelectedOptions, multiple, excludeValues, readonlyallowdelete, selectedValues])
-  
+    return filteredOptions;
+  }, [options, excludeValues, readonlyallowdelete, selectedValues, multiple]);
 
   return (
     <Autocomplete
@@ -219,7 +171,6 @@ React.useEffect(()=>{
       options={combinedOptions}
       fullWidth={fullWidth}
       disabled={disabled}
-      loading={isFetching}
       value={selectedValues}
       inputValue={searchParams}
       onInputChange={(_, newValue, reason) => {
@@ -232,41 +183,6 @@ React.useEffect(()=>{
       isOptionEqualToValue={(option, value) =>
         String(getOptionId(option)) === String(getOptionId(value))
       }
-      filterOptions={(options, state) => {
-        // If readonlyallowdelete is true, don't allow filtering/searching for new options
-        if (readonlyallowdelete) {
-          return options;
-        }
-
-        const searchTerm = state.inputValue.toLowerCase().trim();
-
-        if (!searchTerm) {
-          return options;
-        }
-
-        if (
-          multiple &&
-          Array.isArray(selectedValues) &&
-          selectedValues.length > 0
-        ) {
-          const selectedIds = selectedValues.map((opt) =>
-            String(getOptionId(opt))
-          );
-
-          return options.filter((option) => {
-            const optionId = String(getOptionId(option));
-            const optionLabel = getOptionLabelFromOption(option).toLowerCase();
-            const matchesSearch = optionLabel.includes(searchTerm);
-
-            return matchesSearch || selectedIds.includes(optionId);
-          });
-        }
-
-        return options.filter((option) => {
-          const optionLabel = getOptionLabelFromOption(option).toLowerCase();
-          return optionLabel.includes(searchTerm);
-        });
-      }}
       renderOption={(props, option, { selected }) => (
         <li {...props}>
           {multiple && (
@@ -277,13 +193,7 @@ React.useEffect(()=>{
               checked={selected}
             />
           )}
-          {option.isPlaceholder ? (
-            <span style={{ color: "#666" }}>
-              {getOptionLabelFromOption(option)}
-            </span>
-          ) : (
-            getOptionLabelFromOption(option)
-          )}
+          {getOptionLabelFromOption(option)}
         </li>
       )}
       renderTags={(tagValue, getTagProps) =>
@@ -307,17 +217,10 @@ React.useEffect(()=>{
           onChange(selectedArray, newValue);
         } else {
           const selectedId = newValue ? getOptionId(newValue) : "";
-         
-          const currentValues = Array.isArray(value)
-            ? value
-            : value
-            ? [value]
-            : [];
-          const newValues = selectedId
-            ? [...currentValues, selectedId]
-            : currentValues;
-          onChange(newValues, newValue);
-          setSearchParams(String(getOptionLabelFromOption(newValue) ?? ""));
+          onChange(selectedId, newValue);
+          setSearchParams(
+            String(getOptionLabelFromOption(newValue) ?? "")
+          );
         }
       }}
       renderInput={(params) => (
@@ -326,17 +229,16 @@ React.useEffect(()=>{
           size={size}
           variant={variant}
           fullWidth={fullWidth}
-          placeholder={readonlyallowdelete ? "Only deletion allowed" : placeholder}
+          placeholder={
+            readonlyallowdelete ? "Only deletion allowed" : placeholder
+          }
           InputProps={{
             ...params.InputProps,
             readOnly: readonlyallowdelete,
             endAdornment: (
-              <React.Fragment>
-                {isFetching ? (
-                  <CircularProgress color="inherit" size={20} />
-                ) : null}
+              <>
                 {params.InputProps.endAdornment}
-              </React.Fragment>
+              </>
             ),
           }}
         />
@@ -345,4 +247,4 @@ React.useEffect(()=>{
   );
 };
 
-export default FormAutocompleteMulitple
+export default FormAutocompleteMultiple;

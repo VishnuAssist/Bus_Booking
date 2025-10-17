@@ -16,6 +16,9 @@ import type { Shift } from "../../model/shiftType";
 import { useGetallAccountQuery } from "../../Api/authApi";
 import { createFormData } from "../../Lib/ApiUtil";
 import type { UserList, UserType } from "../../model/userType";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { AssignFormDialog } from "../../Component/forms/AssignForm";
 
 const sampleShifts = [
   {
@@ -150,6 +153,25 @@ const Shift = () => {
     }
   };
 
+  const handleDropShift = (shiftId: number, newDate: Date, employeeId?: string) => {
+    const shift = shifts.find(s => s.id === shiftId);
+    if (shift) {
+      const newStartDate = newDate.toISOString().split('T')[0];
+      const newEndDate = new Date(newDate);
+      newEndDate.setDate(newDate.getDate() + (new Date(shift.endDate).getDate() - new Date(shift.startDate).getDate()));
+      
+      const updatedShift = {
+        ...shift,
+        startDate: newStartDate,
+        endDate: newEndDate.toISOString().split('T')[0],
+        storeId: employeeId || shift.storeId,
+      };
+      
+      setSelectedShift(updatedShift);
+      setModalOpen(true);
+    }
+  };
+
   return (
     <>
       <CommisionContainer>
@@ -193,6 +215,7 @@ const Shift = () => {
         )}
 
         {tabValue === 1 && (
+          <DndProvider backend={HTML5Backend}>
           <Box sx={{ mt: 2 }}>
             <CalendarView
               shifts={shifts.map((s) => ({
@@ -211,14 +234,16 @@ const Shift = () => {
                 setSelectedShift(shift);
                 setModalOpen(true);
               }}
+               onDropShift={handleDropShift}
             />
           </Box>
+          </DndProvider>
         )}
       </CommisionContainer>
 
       <Footer />
 
-      <CommonDialog
+      <AssignFormDialog
         open={isModalOpen}
         onClose={() => {
           setModalOpen(false);
