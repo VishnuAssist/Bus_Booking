@@ -7,31 +7,33 @@ import {
   styled,
   Button,
   ListItem,
-
   Tooltip,
   tooltipClasses,
   type TooltipProps,
 } from "@mui/material";
 import { NavLink as RouterLink } from "react-router-dom";
-import {
- 
-  ChevronLeft,
-  ChevronRight,
-} from "@mui/icons-material";
 
-
-
-import MultilineChartIcon from "@mui/icons-material/MultilineChart";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import DataUsageIcon from "@mui/icons-material/DataUsage";
+import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
+import StoreIcon from "@mui/icons-material/Store";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import SellIcon from "@mui/icons-material/Sell";
+import GroupIcon from "@mui/icons-material/Group";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
 
 import { SidebarContext } from "../../../../Context/SidebarContext";
 import { CalendarIcon, DashboardIcon } from "../../../../Assests/Icons/icons";
 
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
+import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 
-
-
-
-const MenuWrapper = styled(Box)(({ theme }) => `
+const MenuWrapper = styled(Box)(
+  ({ theme }) => `
   .MuiList-root {
     padding: ${theme.spacing(1)};
     & > .MuiList-root {
@@ -46,9 +48,11 @@ const MenuWrapper = styled(Box)(({ theme }) => `
     padding: ${theme.spacing(0, 2.5)};
     line-height: 1.2;
   }
-`);
+`
+);
 
-const SubMenuWrapper = styled(Box)(({ theme }) => `
+const SubMenuWrapper = styled(Box)(
+  ({ theme }) => `
   .MuiList-root {
     .MuiListItem-root {
       padding: 1px 0;
@@ -93,7 +97,8 @@ const SubMenuWrapper = styled(Box)(({ theme }) => `
       }
     }
   }
-`);
+`
+);
 
 const TooltipWrapper = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -114,40 +119,178 @@ const TooltipWrapper = styled(({ className, ...props }: TooltipProps) => (
 
 function SidebarMenu({
   expanded,
-  expand,
-  mobile,
-}: {
+}: // expand,
+// mobile,
+{
   expanded: boolean;
   expand: () => void;
   mobile: boolean;
 }) {
   const { closeSidebar } = useContext(SidebarContext);
 
-
   const sidebarItems = useMemo(() => {
     const items = [
       {
-        title: "Dashboard",
-        icon: <MultilineChartIcon />,
         items: [
-        
-      
           {
             label: "Dashboard",
-            link: "/Dashboard",
+            link: "/dashboards/Dashboard",
             icon: <DashboardIcon />,
-            hide:true
+            hide: true,
           },
-       
+          {
+            label: "Commission",
+            link: "/dashboards/Commission",
+            icon: <DataUsageIcon />,
+            hide: true,
+          },
+          {
+            label: "LeaderBoard",
+            link: "/dashboards/LeaderBoard",
+            icon: <EmojiEventsOutlinedIcon />,
+            hide: true,
+          },
+          {
+            label: "Profile",
+            link: "/dashboards/Profile",
+            icon: <AccountCircleOutlinedIcon />,
+            hide: true,
+          },
           {
             label: "Calendar",
-            link: "/dashboards/Calendar",
+            link: "/dashboards/Calender",
             icon: <CalendarIcon />,
-          
+            hide: true,
+          },
+
+          {
+            label: "Store",
+            link: "/settings/store",
+            icon: <StoreIcon />,
+            hide: true,
+          },
+          {
+            label: "Sales",
+            link: "/settings/sales",
+            icon: <SellIcon />,
+            hide: true,
           },
         ],
       },
-
+      {
+        title: "Staff Portal",
+        icon: <GroupIcon />,
+        items: [
+          {
+            label: "Attendence",
+            link: "/staff/attendence",
+            icon: <AccessTimeIcon />,
+            hide: true,
+          },
+          {
+            label: "LeaveRequest",
+            link: "/staff/leaveRequest",
+            icon: <DescriptionOutlinedIcon />,
+            hide: true,
+          },
+          {
+            label: "Achievements",
+            link: "/staff/achievements",
+            icon: <GradeOutlinedIcon />,
+            hide: true,
+          },
+        ],
+      },
+      {
+        title: "Management",
+        icon: <GroupIcon />,
+        items: [
+          {
+            label: "Team Overview",
+            link: "/management/teamOverview",
+            icon: <AccessTimeIcon />,
+            hide: true,
+          },
+          {
+            label: "Shift",
+            link: "/Admin/shift",
+            icon: <FilterTiltShiftIcon />,
+            hide: true,
+          },
+          {
+            label: "Coaching",
+            link: "/management/coaching",
+            icon: <GradeOutlinedIcon />,
+            hide: true,
+          },
+          {
+            label: "Performance",
+            link: "/management/performance",
+            icon: <GradeOutlinedIcon />,
+            hide: true,
+          },
+        ],
+      },
+      {
+        title: "Admin",
+        icon: <AdminPanelSettingsOutlinedIcon />,
+        items: [
+          {
+            label: "System Overview",
+            link: "/Admin/systemOverview",
+            icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "Shift",
+            link: "/Admin/shift",
+            icon: <FilterTiltShiftIcon />,
+            hide: true,
+          },
+          {
+            label: "Attendance",
+            link: "/Admin/attendance",
+            icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "Achievement",
+            link: "/Admin/achievement",
+            icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "RuleEngine",
+            link: "/Admin/ruleEngine",
+            icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "RuleList",
+            link: "/Admin/rulesList",
+            icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "Report&Analytics",
+            link: "/Admin/reportandAnalytics",
+            icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+        ],
+      },
+      {
+        title: "Dictionary",
+        icon: <MenuBookIcon />,
+        items: [
+          {
+            label: "Dictionary",
+            link: "/settings/Dictionary",
+            icon: <MenuBookIcon />,
+            hide: true,
+          },
+        ],
+      },
     ];
 
     return items
@@ -189,9 +332,10 @@ function SidebarMenu({
 
   return (
     <MenuWrapper>
-      <List component="div">
+      {/* <List component="div">
         {!mobile && (
           <ListItem component="div">
+            
             <Box
               sx={{
                 width: "100%",
@@ -199,6 +343,7 @@ function SidebarMenu({
                 justifyContent: "flex-end",
               }}
             >
+           
               <Button
                 disableRipple
                 component="a"
@@ -217,7 +362,7 @@ function SidebarMenu({
             </Box>
           </ListItem>
         )}
-      </List>
+      </List> */}
 
       {expanded ? (
         sidebarItems.map((group, index) => (
@@ -239,19 +384,21 @@ function SidebarMenu({
         <Fragment>
           <SubMenuWrapper>
             <List component="div">
-              {sidebarItems.flatMap((group) => group.items).map((item, index) => (
-                <ListItem key={index} component="div">
-                  <TooltipWrapper title={item.label} arrow>
-                    <Button
-                      disableRipple
-                      component={RouterLink}
-                      onClick={closeSidebar}
-                      to={item.link}
-                      startIcon={item.icon}
-                    />
-                  </TooltipWrapper>
-                </ListItem>
-              ))}
+              {sidebarItems
+                .flatMap((group) => group.items)
+                .map((item, index) => (
+                  <ListItem key={index} component="div">
+                    <TooltipWrapper title={item.label} arrow>
+                      <Button
+                        disableRipple
+                        component={RouterLink}
+                        onClick={closeSidebar}
+                        to={item.link}
+                        startIcon={item.icon}
+                      />
+                    </TooltipWrapper>
+                  </ListItem>
+                ))}
             </List>
           </SubMenuWrapper>
         </Fragment>

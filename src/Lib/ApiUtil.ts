@@ -45,19 +45,34 @@ export const formatErrorMessage = (error: any): string => {
         : "Unknown error occurred";
   }
 };
+export function createFormData(item: any) {
+  let formData = new FormData();
+  for (const key in item) {
+    if (item[key] !== null && item[key] !== undefined) {
+      formData.append(key, item[key]);
+    }
+  }
+
+  return formData;
+}
 
 
-export const dataWithMeta = <T, M>(response: T, meta: M) => {
-  const pagination = (meta as any).response?.headers?.get('pagination');
+export const dataWithMeta = <T, M>(
+  response: T,
+  meta: M
+): { items: T; metaData: any } => {
+  const pagination = (meta as any)?.response?.headers?.get("pagination");
+
   if (pagination) {
     const parsedPagination = JSON.parse(pagination);
     return {
       items: response,
-      metaData: parsedPagination
+      metaData: parsedPagination,
     };
   }
+
   return {
     items: response,
-    metaData: {}
+    metaData: {},
   };
 };

@@ -13,7 +13,7 @@ export interface QueryParamsType {
 export interface OptionType {
     id?: string | number;
     value?: string | number | boolean;
-    name?:string
+    name?: string
 }
 type AllowedType =
     | "pdf"
@@ -42,9 +42,8 @@ export interface FormFieldProps<T> {
     | "autocomplete"
     | "D&DUpload"
     | "date"
- 
+    | "time"
     | "datetime-local"
-  
     | "autocompletemultiple"
     | "D&DUploadImage"
     | "skipDates";

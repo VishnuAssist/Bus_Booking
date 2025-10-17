@@ -1,7 +1,8 @@
 import { FormControl } from "@mui/material";
 import * as React from "react";
-import { useUploadFileMutation } from "../../../Api/CommonApi";
+//import { useUploadFileMutation } from "../../../Api/CommonApi";
 import UploadModal from "../../Loading/Uploadloading";
+//import { useUploadFileMutation } from "../../../Api/commonApi";
 
 type AllowedType =
   | "pdf"
@@ -44,10 +45,13 @@ const mimeMap: Record<AllowedType, string[]> = {
   all: ["*/*"],
 };
 
-const FormUpload: React.FC<Props> = ({ onChange, allowFile = ["all"] }) => {
+const FormUpload: React.FC<Props> = ({
+  //onChange, 
+  allowFile = ["all"]
+}) => {
   const [isDragging, setIsDragging] = React.useState(false);
   const [isFileUploaded, setIsFileUploaded] = React.useState(false);
-  const [uploadFile, { isLoading }] = useUploadFileMutation();
+  //const [uploadFile, { isLoading }] = useUploadFileMutation();
   const [error, setError] = React.useState<string | null>(null);
 
   const allowedMimeTypes = allowFile.flatMap((type) => mimeMap[type]);
@@ -73,8 +77,9 @@ const FormUpload: React.FC<Props> = ({ onChange, allowFile = ["all"] }) => {
     try {
       setIsFileUploaded(false);
       setError(null);
-      const result = await uploadFile(formData).unwrap();
-      onChange(result?.fileName);
+      const result = await formData;
+      console.log(result)
+      //onChange(result?.fileName);
       setIsFileUploaded(true);
     } catch (err) {
       setError("Upload failed. Please try again.");
@@ -108,6 +113,7 @@ const FormUpload: React.FC<Props> = ({ onChange, allowFile = ["all"] }) => {
     ? "*/*"
     : allowedMimeTypes.join(",");
 
+  const isLoading = true;  
   return (
     <FormControl
       component="fieldset"

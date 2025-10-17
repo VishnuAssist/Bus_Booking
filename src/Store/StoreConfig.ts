@@ -1,38 +1,60 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  useDispatch,
+  useSelector,
+  type TypedUseSelectorHook,
+} from "react-redux";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; 
+import storage from "redux-persist/lib/storage";
 
-import accountSlice from "./slice/Account";
+import accountReducer from "./slice/Account";
+import loginReducer from "./slice/loginSlice";
+import testDataReducer from "./slice/TestSlice";
+
+//import shiftReducer from "./slice/ShiftSlice";
 import { authApi } from "../Api/authApi";
+import { rolesApi } from "../Api/rolesApi";
+import { dictionaryApi } from "../Api/dictionaryApi";
+import { shiftApi } from "../Api/shiftApi";
+import { autocompleteApi } from "../Api/AutocompleteApi";
+import { rulesApi } from "../Api/rulesApi";
 
+const rootAuthReducer = combineReducers({
+  account: accountReducer,
+  login: loginReducer,
+  testData: testDataReducer,
+});
 
 const persistConfig = {
-  key: "auth",
+  key: "root",
   storage,
+  whitelist: ["account"],
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, accountSlice);
+const persistedAuthReducer = persistReducer(persistConfig, rootAuthReducer);
 
 export const store = configureStore({
   reducer: {
- 
     [authApi.reducerPath]: authApi.reducer,
-    
-
-
-
+    [rolesApi.reducerPath]: rolesApi.reducer,
+    [dictionaryApi.reducerPath]: dictionaryApi.reducer,
+    [shiftApi.reducerPath]: shiftApi.reducer,
+    [autocompleteApi.reducerPath]: autocompleteApi.reducer,
+    [rulesApi.reducerPath]: rulesApi.reducer,
 
     auth: persistedAuthReducer,
-  
+    testData: testDataReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }).concat([
-      
       authApi.middleware,
-     
+      rolesApi.middleware,
+      dictionaryApi.middleware,
+      shiftApi.middleware,
+      autocompleteApi.middleware,
+      rulesApi.middleware,
     ]),
 });
 

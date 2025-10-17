@@ -2,20 +2,27 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 import { Mutex } from "async-mutex";
 
 import type { BaseQueryFn, FetchArgs } from "@reduxjs/toolkit/query";
-import { formatErrorMessage, showErrorToast, showSuccessToast } from "../Lib/ApiUtil";
+import {
+  formatErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../Lib/ApiUtil";
 import type { RootState } from "./StoreConfig";
-import { addTokensAndUser, removeTokensAndUser, setSessionExpired } from "./slice/Account";
+import {
+  addTokensAndUser,
+  removeTokensAndUser,
+  setSessionExpired,
+} from "./slice/Account";
 
 const mutex = new Mutex();
 
 const baseUrl = import.meta.env.VITE_BASE_URL + "/api";
 
-
 const baseQuery = fetchBaseQuery({
   baseUrl,
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
-    const accessToken = state.auth?.accessToken;
+    const accessToken = state.auth?.account?.accessToken;
     if (accessToken) {
       headers.set("authorization", `Bearer ${accessToken}`);
     }
@@ -31,15 +38,13 @@ const APIFetchBase: BaseQueryFn<FetchArgs, unknown, unknown> = async (
   await mutex.waitForUnlock();
   let result: any = await baseQuery(args, api, extraOptions);
 
-
-
   if (result?.error?.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
       try {
-       
         const state = api.getState() as RootState;
-        const refreshToken = state.auth?.refreshToken;
+        console.log("state", state);
+        const refreshToken = state.auth?.account?.refreshToken;
 
         if (refreshToken) {
           const refreshResult = await baseQuery(
@@ -48,7 +53,7 @@ const APIFetchBase: BaseQueryFn<FetchArgs, unknown, unknown> = async (
               method: "POST",
               body: {
                 refreshToken,
-                token: state.auth?.accessToken,
+                token: state.auth?.account?.accessToken,
               },
             },
             api,
@@ -61,7 +66,6 @@ const APIFetchBase: BaseQueryFn<FetchArgs, unknown, unknown> = async (
                 refreshResult.data as {
                   accessToken: string;
                   refreshToken: string;
-                  
                 }
               )
             );
@@ -80,32 +84,32 @@ const APIFetchBase: BaseQueryFn<FetchArgs, unknown, unknown> = async (
     }
   }
 
+  if (result?.error) {
+    const message = formatErrorMessage(result.error);
+    showErrorToast(message);
+  } else {
+    const method = result?.meta?.request?.method?.toUpperCase();
+    const requestUrl = result?.meta?.request?.url ?? "";
 
- if (result?.error) {
-  const message = formatErrorMessage(result.error);
-  showErrorToast(message);
-} else {
-  const method = result?.meta?.request?.method?.toUpperCase();
-  const requestUrl = result?.meta?.request?.url ?? "";
+    const excludedUrls = ["/account/login", "/Account/refresh"];
+    const isExcluded = excludedUrls.some((url) => requestUrl.includes(url));
 
-  const excludedUrls = ["/account/login", "/Account/refresh"];
-  const isExcluded = excludedUrls.some(url => requestUrl.includes(url));
+    if (!isExcluded) {
+      const responseData: any = result.data;
+      const customMessage =
+        responseData?.message || responseData?.data?.message;
 
-  if (!isExcluded) {
-    const responseData: any = result.data;
-    const customMessage = responseData?.message || responseData?.data?.message;
-
-    if (customMessage) {
-      showSuccessToast(customMessage);
-    } else if (method === "POST") {
-      showSuccessToast("Created successfully");
-    } else if (method === "PUT") {
-      showSuccessToast("Updated successfully");
-    } else if (method === "DELETE") {
-      showSuccessToast("Deleted successfully");
+      if (customMessage) {
+        showSuccessToast(customMessage);
+      } else if (method === "POST") {
+        showSuccessToast("Created successfully");
+      } else if (method === "PUT") {
+        showSuccessToast("Updated successfully");
+      } else if (method === "DELETE") {
+        showSuccessToast("Deleted successfully");
+      }
     }
   }
-}
 
   return result;
 };

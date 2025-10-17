@@ -6,8 +6,8 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
-import { Helmet } from 'react-helmet-async';
-import Logo from '../../LogoSign';
+import { Helmet } from "@dr.pogodin/react-helmet";
+//import Logo from '../../LogoSign';
 
 import { styled } from '@mui/material/styles';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -34,7 +34,7 @@ function StatusMaintenance() {
       </Helmet>
       <MainContent>
         <Container maxWidth="md">
-          <Logo />
+          {/* <Logo /> */}
           <Box textAlign="center">
             <Container maxWidth="xs">
               <Typography variant="h2" sx={{ mt: 4, mb: 2 }}>

@@ -1,6 +1,8 @@
-import { useContext } from 'react';
+import { useContext } from "react";
+// import Scrollbar from "../../../components/Scrollbar";
+// import { SidebarContext } from "../../../contexts/sidebarContext";
+import { Link } from "react-router-dom";
 
-import { NavLink as RouterLink } from 'react-router-dom';
 import {
   Box,
   Drawer,
@@ -11,51 +13,53 @@ import {
   Button,
   lighten,
   darken,
-} from '@mui/material';
-import SidebarMenu from './SidebarMenu';
+  Typography,
+  Avatar,
+  IconButton,
+} from "@mui/material";
+import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
+import SidebarMenu from "./SidebarMenu";
+// import Logo from "../../../components/LogoSign";
+import LiveHelpIcon from "@mui/icons-material/LiveHelp";
+import Scrollbar from "../../../Component/Scrollbar";
+import { SidebarContext } from "../../../Context/SidebarContext";
+import { useAuth } from "../../../hooks/useAuth";
 
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
-import { SidebarContext } from '../../../Context/SidebarContext';
-import Scrollbar from '../../../Component/Scrollbar';
-const SidebarWrapper = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "expanded",
-})<{ expanded: boolean }>(({ theme, expanded }) => ({
-  color: theme.colors.alpha.trueWhite[70],
-  background:
-    theme.palette.mode === "dark"
-      ? alpha(lighten(theme?.header?.background || "black", 0.1), 0.5)
-      : darken(theme.colors.alpha.black[100], 0.5),
-  position: "relative",
-  zIndex: 7,
-  height: "100%",
-  width: expanded ? theme.sidebar.width : 80,
-  transition: "width 0.6s ease-in-out",
-  overflowX: "hidden",
-  overflowY: "hidden",
-  [theme.breakpoints.up("sm")]: {
-    marginTop: "0px",
-  },
-  [theme.breakpoints.up("md")]: {
-    marginTop: "0px",
-  },
-  [theme.breakpoints.up("lg")]: {
-    marginTop: "56px",
-  },
-}));
-
-
-function Sidebar({ expanded, setExpanded }: { expanded: boolean, setExpanded: (e: boolean) => void }) {
+function Sidebar({
+  expanded,
+  setExpanded,
+}: {
+  expanded: boolean;
+  setExpanded: (e: boolean) => void;
+}) {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const closeSidebar = () => toggleSidebar();
   const handleToggle = () => setExpanded(!expanded);
   const theme = useTheme();
 
+  const SidebarWrapper = styled(Box)(
+    ({ theme }) => `
+  
+     
+          color: ${theme.colors.alpha.trueWhite[70]};
+          position: relative;
+          z-index: 7;
+          height: 100%;
+         
+  `
+  );
+
+  const { username, token,role, email } = useAuth();
+  console.log("user",username)
+  console.log("token",token)
+  console.log("email",email)
+  console.log("email",role)
   return (
     <>
       <SidebarWrapper
-        expanded={expanded}
         sx={{
-          pb: 15,
+          pb: expanded ? 16 : 14,
+          width: expanded ? theme.sidebar.width : 80,
           display: {
             xs: "none",
             lg: "inline-block",
@@ -63,12 +67,78 @@ function Sidebar({ expanded, setExpanded }: { expanded: boolean, setExpanded: (e
           position: "fixed",
           left: 0,
           top: 0,
+          background:
+            theme.palette.mode === "dark"
+              ? alpha(
+                  lighten(
+                    theme.header.background || theme.colors.alpha.black[100],
+                    0.1
+                  ),
+                  0.5
+                )
+              // : darken(theme.colors.alpha.black[100], 0.5),
+              : theme.sidebar.background,
           boxShadow:
             theme.palette.mode === "dark" ? theme.sidebar.boxShadow : "none",
         }}
       >
+        <Box
+          width={"100%"}
+          mt={expanded ? 0 : 1.2}
+          display={"flex"}
+          mx={expanded ? 1 : 1}
+        >
+          <Box
+            pb={expanded ? 1.7 : 0.5}
+            pr={expanded ? 1.7 : 1.4}
+            sx={{
+              width: "100%",
+            }}
+          >
+            {expanded ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  textAlign: "center",
+                  mt: 1,
+                }}
+              >
+                <IconButton sx={{bgcolor: "secondary.main", borderRadius: "4px" }}>
+                  <FilterTiltShiftIcon />
+                </IconButton>
+                <Box>
+                  <Typography fontSize={16} fontWeight={700}>
+                    Zone Commission
+                  </Typography>
+                  <Typography fontSize={12}>Performance Platform</Typography>
+                </Box>
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <IconButton sx={{ bgcolor: "secondary.main", borderRadius: "4px" }}>
+                  <FilterTiltShiftIcon />
+                </IconButton>
+              </Box>
+            )}
 
-        {/* <Divider /> */}
+            {/* <Logo size={expanded ? 85 : 70} /> */}
+          </Box>
+        </Box>
+        <Divider
+          sx={{
+            // mt: theme.spacing(1),
+            mx: theme.spacing(2),
+            background: theme.colors.alpha.trueWhite[10],
+          }}
+        />
         <Scrollbar>
           <SidebarMenu
             expanded={expanded}
@@ -82,17 +152,61 @@ function Sidebar({ expanded, setExpanded }: { expanded: boolean, setExpanded: (e
           }}
         />
         <Box p={1}>
-          <Button
-            component={RouterLink}
-            to="https://leasedoc.netlify.app"
-            variant="contained"
-            color="success"
-            size="small"
-            fullWidth
-            endIcon={<QuestionMarkIcon sx={{ mr: 2 }} />}
+          {expanded ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+              }}
+            >
+              <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
+                  {username?.charAt(0).toUpperCase()}
+              </Avatar>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography variant="subtitle1" fontWeight={600} color="white">
+                  {username}
+                </Typography>
+                <Typography variant="body2" color="white">
+                  {role}
+                </Typography>
+              </Box>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+                    <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
+                  {username?.charAt(0).toUpperCase()}
+              </Avatar>
+            </Box>
+          )}
+          {/* <Link
+            to="https://claims-assist-docs.vercel.app/"
+            style={{ textDecoration: "none" }}
+            target="_blank"
           >
-            {expanded && "FAQ"}
-          </Button>
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+              fullWidth
+              startIcon={<LiveHelpIcon sx={{ ml: 1 }} />}
+            >
+              {expanded && "FAQ123"}
+            </Button>
+          </Link> */}
         </Box>
       </SidebarWrapper>
       <Drawer
@@ -106,35 +220,39 @@ function Sidebar({ expanded, setExpanded }: { expanded: boolean, setExpanded: (e
         elevation={9}
       >
         <SidebarWrapper
-          expanded={true}
           sx={{
-            pb: 16.5,
+            pb: 7.5,
+            background:
+              theme.palette.mode === "dark"
+                ? theme.colors.alpha.white[100]
+                : darken(theme.colors.alpha.black[100], 0.5),
             width: theme.sidebar.width,
           }}
         >
-
           <Scrollbar>
-            <Divider
-              sx={{
-                mt: theme.spacing(3),
-                mx: theme.spacing(2),
-                background: theme.colors.alpha.trueWhite[10],
-              }}
-            />
             <SidebarMenu expanded={true} expand={handleToggle} mobile={true} />
           </Scrollbar>
+          <Divider
+            sx={{
+              background: theme.colors.alpha.trueWhite[10],
+            }}
+          />
           <Box p={2}>
-            <Button
-              component={RouterLink}
-              to="https://leasedoc.netlify.app"
-              variant="contained"
-              color="success"
-              size="small"
-              fullWidth
-              endIcon={<QuestionMarkIcon sx={{ mr: 2 }} />}
+            <Link
+              to="https://claims-assist-docs.vercel.app/"
+              style={{ textDecoration: "none" }}
+              target="_blank"
             >
-              {expanded && "FAQ"}
-            </Button>
+              <Button
+                variant="contained"
+                color="success"
+                size="small"
+                fullWidth
+                startIcon={<LiveHelpIcon />}
+              >
+                FAQ
+              </Button>
+            </Link>
           </Box>
         </SidebarWrapper>
       </Drawer>
