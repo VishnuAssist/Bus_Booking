@@ -23,13 +23,15 @@ import {
   Typography,
 } from "@mui/material";
 import { ChevronLeft, ChevronRight, Today } from "@mui/icons-material";
+import { useDrag, useDrop } from "react-dnd";
 
 interface CalendarViewProps {
   shifts: any[];
   onEditShift?: (shift: any) => void;
+  onDropShift?: (shiftId: number, newDate: Date, employeeId?: string) => void;
 }
 
-type ViewMode = "week" | "month" | "year";
+type ViewMode = "day" | "week" | "month" | "year";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -39,6 +41,105 @@ const employees = [
   { id: "3", name: "Mike Johnson", avatar: "/default-avator.png" },
   { id: "4", name: "Sarah Wilson", avatar: "/default-avator.png" },
 ];
+
+const ItemTypes = {
+  SHIFT: "shift",
+};
+
+const DraggableShiftCard = ({
+  shift,
+  onEditShift,
+}: {
+  shift: any;
+  onEditShift?: (shift: any) => void;
+}) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: ItemTypes.SHIFT,
+    item: { shift },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <Card
+      ref={drag as unknown as React.Ref<HTMLDivElement>}
+      variant="outlined"
+      onClick={() => onEditShift?.(shift.original || shift)}
+      sx={{
+        mb: 0.75,
+        borderRadius: 1.5,
+        cursor: "grab",
+        transition: "0.2s",
+        opacity: isDragging ? 0.5 : 1,
+        "&:hover": {
+          boxShadow: 3,
+          transform: "scale(1.02)",
+        },
+      }}
+    >
+      <CardContent sx={{ p: 1.0, "&:last-child": { pb: 1.0 } }}>
+        <Typography
+          variant="caption"
+          fontWeight={700}
+          sx={{ color: "primary.main" }}
+        >
+          {shift.name}
+        </Typography>
+        <Typography
+          variant="caption"
+          display="block"
+          sx={{ opacity: 0.95, color: "primary.main" }}
+        >
+          {shift.title}
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{ opacity: 0.85, color: "primary.main" }}
+        >
+          {shift.startTime} - {shift.endTime}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+const DropTargetCell = ({
+  date,
+  employeeId,
+  onDrop,
+  children,
+}: {
+  date: Date;
+  employeeId?: string;
+  onDrop: (shiftId: number, newDate: Date, employeeId?: string) => void;
+  children: React.ReactNode;
+}) => {
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: ItemTypes.SHIFT,
+    drop: (item: { shift: any }) => {
+      onDrop(item.shift.id, date, employeeId);
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
+
+  return (
+    <Box
+      ref={drop as unknown as React.Ref<HTMLDivElement>}
+      sx={{
+        height: "100%",
+        minHeight: 80,
+        backgroundColor: isOver ? "rgba(25, 118, 210, 0.08)" : "transparent",
+        transition: "background-color 0.2s",
+        borderRadius: 1,
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
 
 function isSameDay(a: Date, b: Date) {
   return (
@@ -112,13 +213,11 @@ function formatYear(date: Date) {
 export default function CalendarView({
   shifts,
   onEditShift,
+  onDropShift,
 }: CalendarViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<ViewMode>("week");
   const [searchTerm, setSearchTerm] = useState("");
-
-  const rightPaneRef = useRef<HTMLDivElement | null>(null);
-  const leftPaneRef = useRef<HTMLDivElement | null>(null);
 
   const filteredEmployees = useMemo(
     () =>
@@ -154,12 +253,6 @@ export default function CalendarView({
       ? formatMonth(currentDate)
       : formatYear(currentDate).toString();
 
-  const handleRightScroll = () => {
-    if (leftPaneRef.current && rightPaneRef.current) {
-      leftPaneRef.current.scrollTop = rightPaneRef.current.scrollTop;
-    }
-  };
-
   const shiftsForDay = (date: Date) => {
     const allowedEmployeeIds = new Set(filteredEmployees.map((e) => e.id));
     return shifts.filter(
@@ -169,13 +262,129 @@ export default function CalendarView({
     );
   };
 
+  const handleDrop = (shiftId: number, newDate: Date, employeeId?: string) => {
+    onDropShift?.(shiftId, newDate, employeeId);
+  };
+
+  const DayView = () => {
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+
+    return (
+      <Box sx={{ display: "flex", flex: 1, overflow: "auto" }}>
+        <Box sx={{ width: 60, flexShrink: 0 }}>
+          {/* Time labels */}
+          {hours.map((h) => (
+            <Box
+              key={h}
+              sx={{
+                height: 60,
+                borderBottom: "1px solid",
+                borderColor: "divider",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="caption">
+                {h.toString().padStart(2, "0")}:00
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+
+        <Box sx={{ flex: 1, overflow: "auto" }}>
+          <TableContainer
+            component={Paper}
+            elevation={0}
+            sx={{ border: 1, borderColor: "divider", borderRadius: 2 }}
+          >
+            <Table size="small" stickyHeader>
+              <TableHead>
+                <TableRow>
+                  {filteredEmployees.map((emp) => (
+                    <TableCell
+                      key={emp.id}
+                      align="center"
+                      sx={{ minWidth: 140, bgcolor: "background.paper" }}
+                    >
+                      {emp.name}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {hours.map((h) => (
+                  <TableRow key={h} sx={{ height: 60 }}>
+                    {filteredEmployees.map((emp) => {
+                      const empShifts = shifts.filter(
+                        (s) =>
+                          s.employeeId === emp.id &&
+                          new Date(s.start).getHours() <= h &&
+                          new Date(s.end).getHours() > h &&
+                          isSameDay(new Date(s.start), currentDate)
+                      );
+                      return (
+                        <TableCell
+                          key={emp.id + "-" + h}
+                          sx={{
+                            p: 0.5,
+                            borderRight: 1,
+                            borderColor: "divider",
+                            verticalAlign: "top",
+                          }}
+                        >
+                          {empShifts.map((shift) => (
+                            <Card
+                              key={shift.id}
+                              variant="outlined"
+                              onClick={() =>
+                                onEditShift?.(shift.original || shift)
+                              }
+                              sx={{
+                                mb: 0.25,
+                                borderRadius: 1.5,
+                                cursor: "pointer",
+                                transition: "0.2s",
+                                "&:hover": {
+                                  boxShadow: 3,
+                                  transform: "scale(1.02)",
+                                },
+                              }}
+                            >
+                              <CardContent sx={{ p: 0.5 }}>
+                                <Typography
+                                  variant="caption"
+                                  fontWeight={700}
+                                  color="primary.main"
+                                >
+                                  {shift.name}
+                                </Typography>
+                                <Typography
+                                  variant="caption"
+                                  display="block"
+                                  sx={{ opacity: 0.85, color: "primary.main" }}
+                                >
+                                  {shift.startTime} - {shift.endTime}
+                                </Typography>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
+    );
+  };
+
   const WeekView = () => (
     <Box sx={{ display: "flex", flex: 1, overflow: "hidden" }}>
-      <Box
-        ref={rightPaneRef}
-        onScroll={handleRightScroll}
-        sx={{ flex: 1, overflow: "auto" }}
-      >
+      <Box sx={{ flex: 1, overflow: "auto" }}>
         <TableContainer
           component={Paper}
           elevation={0}
@@ -258,56 +467,25 @@ export default function CalendarView({
                           verticalAlign: "top",
                         }}
                       >
-                        {empShifts.length === 0 ? (
-                          <Typography variant="caption" color="text.disabled">
-                            No shift
-                          </Typography>
-                        ) : (
-                          empShifts.map((shift) => (
-                            <Card
-                              key={shift.id}
-                              variant="outlined"
-                              onClick={() =>
-                                onEditShift?.(shift.original || shift)
-                              }
-                              sx={{
-                                mb: 0.75,
-                                borderRadius: 1.5,
-                                cursor: "pointer",
-                                transition: "0.2s",
-                                "&:hover": {
-                                  boxShadow: 3,
-                                  transform: "scale(1.02)",
-                                },
-                              }}
-                            >
-                              <CardContent
-                                sx={{ p: 1.0, "&:last-child": { pb: 1.0 } }}
-                              >
-                                <Typography
-                                  variant="caption"
-                                  fontWeight={700}
-                                  sx={{ color: "primary.main" }}
-                                >
-                                  {shift.name}
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  display="block"
-                                  sx={{ opacity: 0.95, color: "primary.main" }}
-                                >
-                                  {shift.title}
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  sx={{ opacity: 0.85, color: "primary.main" }}
-                                >
-                                  {shift.startTime} - {shift.endTime}
-                                </Typography>
-                              </CardContent>
-                            </Card>
-                          ))
-                        )}
+                        <DropTargetCell
+                          date={date}
+                          employeeId={emp.id}
+                          onDrop={handleDrop}
+                        >
+                          {empShifts.length === 0 ? (
+                            <Typography variant="caption" color="text.disabled">
+                              No shift
+                            </Typography>
+                          ) : (
+                            empShifts.map((shift) => (
+                              <DraggableShiftCard
+                                key={shift.id}
+                                shift={shift}
+                                onEditShift={onEditShift}
+                              />
+                            ))
+                          )}
+                        </DropTargetCell>
                       </TableCell>
                     );
                   })}
@@ -357,95 +535,54 @@ export default function CalendarView({
                         borderColor: "divider",
                       }}
                     >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          mb: 0.5,
-                        }}
-                      >
-                        <Typography
-                          variant="body2"
-                          fontWeight={700}
-                          color={isToday ? "primary.main" : "text.primary"}
-                        >
-                          {date.getDate()}
-                        </Typography>
-                        {isToday && (
-                          <Chip
-                            size="small"
-                            color="primary"
-                            label="Today"
-                            sx={{ height: 20, fontSize: 10 }}
-                          />
-                        )}
-                      </Box>
-                      <Divider sx={{ mb: 0.75 }} />
-                      {dayShifts.length === 0 ? (
-                        <Typography variant="caption" color="text.disabled">
-                          No shifts
-                        </Typography>
-                      ) : (
+                      <DropTargetCell date={date} onDrop={handleDrop}>
                         <Box
                           sx={{
                             display: "flex",
-                            flexDirection: "column",
-                            gap: 0.5,
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            mb: 0.5,
                           }}
                         >
-                          {dayShifts.map((s) => (
-                            <Card
-                              key={s.id}
-                              variant="outlined"
-                              onClick={() => onEditShift?.(s.original || s)}
-                              sx={{
-                                borderRadius: 1.25,
-                                cursor: "pointer",
-                                transition: "0.2s",
-                                "&:hover": {
-                                  boxShadow: 3,
-                                  transform: "scale(1.02)",
-                                },
-                              }}
-                            >
-                              <CardContent sx={{ p: 0.75 }}>
-                                <Typography
-                                  variant="caption"
-                                  fontWeight={700}
-                                  color="text.primary"
-                                >
-                                  {s.name}
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  display="block"
-                                  color="text.secondary"
-                                >
-                                  {s.title}
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  color="text.secondary"
-                                >
-                                  {new Date(s.start).toLocaleTimeString(
-                                    "en-US",
-                                    {
-                                      hour: "numeric",
-                                      minute: "2-digit",
-                                    }
-                                  )}{" "}
-                                  -{" "}
-                                  {new Date(s.end).toLocaleTimeString("en-US", {
-                                    hour: "numeric",
-                                    minute: "2-digit",
-                                  })}
-                                </Typography>
-                              </CardContent>
-                            </Card>
-                          ))}
+                          <Typography
+                            variant="body2"
+                            fontWeight={700}
+                            color={isToday ? "primary.main" : "text.primary"}
+                          >
+                            {date.getDate()}
+                          </Typography>
+                          {isToday && (
+                            <Chip
+                              size="small"
+                              color="primary"
+                              label="Today"
+                              sx={{ height: 20, fontSize: 10 }}
+                            />
+                          )}
                         </Box>
-                      )}
+                        <Divider sx={{ mb: 0.75 }} />
+                        {dayShifts.length === 0 ? (
+                          <Typography variant="caption" color="text.disabled">
+                            No shifts
+                          </Typography>
+                        ) : (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 0.5,
+                            }}
+                          >
+                            {dayShifts.map((s) => (
+                              <DraggableShiftCard
+                                key={s.id}
+                                shift={s}
+                                onEditShift={onEditShift}
+                              />
+                            ))}
+                          </Box>
+                        )}
+                      </DropTargetCell>
                     </TableCell>
                   );
                 })}
@@ -487,7 +624,7 @@ export default function CalendarView({
             <Card
               key={monthDate.getMonth()}
               variant="outlined"
-              sx={{ borderRadius: 2 }}
+              sx={{ borderRadius: 2, width: "100%" }}
             >
               <Box
                 sx={{
@@ -551,38 +688,40 @@ export default function CalendarView({
                                 borderColor: "divider",
                               }}
                             >
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "space-between",
-                                }}
-                              >
-                                <Typography
-                                  component="span"
+                              <DropTargetCell date={date} onDrop={handleDrop}>
+                                <Box
                                   sx={{
-                                    fontSize: 11,
-                                    fontWeight: isToday ? 800 : 600,
-                                    color: isToday
-                                      ? "primary.main"
-                                      : "text.secondary",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
                                   }}
                                 >
-                                  {date.getDate()}
-                                </Typography>
-                                {count > 0 && (
-                                  <Box
+                                  <Typography
                                     component="span"
                                     sx={{
-                                      ml: 0.5,
-                                      width: 6,
-                                      height: 6,
-                                      borderRadius: "50%",
-                                      bgcolor: "primary.main",
+                                      fontSize: 11,
+                                      fontWeight: isToday ? 800 : 600,
+                                      color: isToday
+                                        ? "primary.main"
+                                        : "text.secondary",
                                     }}
-                                  />
-                                )}
-                              </Box>
+                                  >
+                                    {date.getDate()}
+                                  </Typography>
+                                  {count > 0 && (
+                                    <Box
+                                      component="span"
+                                      sx={{
+                                        ml: 0.5,
+                                        width: 6,
+                                        height: 6,
+                                        borderRadius: "50%",
+                                        bgcolor: "primary.main",
+                                      }}
+                                    />
+                                  )}
+                                </Box>
+                              </DropTargetCell>
                             </TableCell>
                           );
                         })}
@@ -665,6 +804,7 @@ export default function CalendarView({
                 "& .Mui-selected": { fontWeight: 700 },
               }}
             >
+              <Tab value="day" label="Day" />
               <Tab value="week" label="Week" />
               <Tab value="month" label="Month" />
               <Tab value="year" label="Year" />
@@ -674,6 +814,7 @@ export default function CalendarView({
       </AppBar>
 
       <Box sx={{ p: 2, pt: 2, flex: 1, display: "flex", minHeight: 0 }}>
+        {view === "day" && <DayView />}
         {view === "week" && <WeekView />}
         {view === "month" && <MonthView />}
         {view === "year" && <YearView />}

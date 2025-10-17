@@ -188,7 +188,7 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "LeaveRequest",
+            label: "Staff Services",
             link: "/staff/leaveRequest",
             icon: <DescriptionOutlinedIcon />,
             hide: true,
