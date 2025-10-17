@@ -102,25 +102,12 @@ const DataDrawer: React.FC<DataDrawerProps> = ({
 
   return (
     <>
-      <Drawer
-        anchor="right"
-        open={isOpen}
-        onClose={onClose}
-        sx={{
-          "& .MuiDrawer-paper": {
-            width: 400,
-            backgroundColor: "#1a1a1a",
-            color: "#e5e5e5",
-            borderLeft: "2px solid #333",
-          },
-        }}
-      >
+      <Drawer anchor="right" open={isOpen} onClose={onClose}>
         {/* Header */}
         <Box
           sx={{
             p: 2.5,
             borderBottom: "1px solid #333",
-            backgroundColor: "#2a2a2a",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -129,7 +116,6 @@ const DataDrawer: React.FC<DataDrawerProps> = ({
           <Typography
             variant="h6"
             sx={{
-              color: "#fff",
               fontSize: "1.125rem",
               fontWeight: "bold",
               display: "flex",
@@ -205,7 +191,6 @@ const DataDrawer: React.FC<DataDrawerProps> = ({
             flex: 1,
             p: 2.5,
             overflow: "auto",
-            backgroundColor: "#1a1a1a",
           }}
         >
           <Paper
@@ -241,7 +226,6 @@ const DataDrawer: React.FC<DataDrawerProps> = ({
             sx={{
               p: 2,
               borderTop: "1px solid #333",
-              backgroundColor: "#2a2a2a",
               color: "#888",
               fontSize: "0.75rem",
             }}
