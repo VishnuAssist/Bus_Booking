@@ -58,13 +58,31 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
     isDragging,
   } = useSortable({ id: ruleGroup.id });
 
+  // Error detection logic
+  const hasRuleErrors =
+    !ruleGroup.ruleName.trim() || !ruleGroup.expression.trim();
+
+  const hasActionErrors = ruleGroup.actionGroups.some((action) => {
+    const isDuplicate = ruleGroup.actionGroups
+      .filter((ag) => ag.id !== action.id)
+      .some((ag) => ag.actionType === action.actionType);
+
+    return (
+      !action.actionType?.trim() || !action.expression?.trim() || isDuplicate
+    );
+  });
+
+  const hasLimitError = ruleGroup.actionGroups.length > 3;
+  const hasAnyErrors = hasRuleErrors || hasActionErrors || hasLimitError;
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
-    border: "1px solid grey",
-    boxShadow:
-      "0px 9px 16px rgba(159, 162, 191, .18), 0px 2px 2px rgba(159, 162, 191, 0.32)",
+    border: hasAnyErrors ? "2px solid #f44336" : "1px solid grey",
+    boxShadow: hasAnyErrors
+      ? "0px 9px 16px rgba(244, 67, 54, 0.2), 0px 2px 2px rgba(244, 67, 54, 0.3)"
+      : "0px 9px 16px rgba(159, 162, 191, .18), 0px 2px 2px rgba(159, 162, 191, 0.32)",
   };
 
   return (
@@ -80,7 +98,7 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
             {...attributes}
             {...listeners}
           />
-          <Box sx={{ flex: 1 }}>
+          <Box sx={{ flex: 1, display: "flex", alignItems: "center", gap: 1 }}>
             <TextField
               placeholder={PLACEHOLDER_TEXT.RULE_NAME}
               value={ruleGroup.ruleName}
@@ -155,8 +173,15 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
               startIcon={<AddIcon />}
               onClick={() => onAddActionGroup(ruleGroup.id)}
               size="small"
+              disabled={ruleGroup.actionGroups.length >= 3}
+              title={
+                ruleGroup.actionGroups.length >= 3
+                  ? "Maximum 3 action groups allowed (OnSuccess, OnFailure, OnError)"
+                  : "Add Action Group"
+              }
             >
               Add Action Group
+              {ruleGroup.actionGroups.length >= 3 && " (Max Reached)"}
             </Button>
           </Box>
 
@@ -167,6 +192,7 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
                   key={actionGroup.id}
                   actionGroup={actionGroup}
                   ruleId={ruleGroup.id}
+                  allActionGroups={ruleGroup.actionGroups}
                   onUpdate={onUpdateActionGroup}
                   onDelete={onDeleteActionGroup}
                 />

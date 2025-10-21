@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
-import CodeMirror from "@uiw/react-codemirror";
+
 import { autocompletion } from "@codemirror/autocomplete";
 import { EditorView } from "@codemirror/view";
 import { Box, Typography, CircularProgress } from "@mui/material";
@@ -8,6 +8,8 @@ import {
   useGetCountriesQuery,
 } from "../../../Api/rulesApi";
 import { ruleExpressionCompletions } from "../utils/completionEngine";
+import { useTheme } from "@mui/material/styles";
+import CodeMirror from "@uiw/react-codemirror";
 
 interface RuleExpressionEditorProps {
   value: string;
@@ -29,8 +31,20 @@ const RuleExpressionEditor: React.FC<RuleExpressionEditorProps> = ({
   hasError = false,
 }) => {
   const [localValue, setLocalValue] = useState(value);
+  const theme = useTheme();
 
-  // Fetch schema and countries from API
+  const defaultBorderColor =
+    theme.palette.mode === "dark"
+      ? theme.palette.grey[700]
+      : theme.palette.divider;
+
+  const errorBorderColor = theme.palette.error.main;
+
+  const finalBorderStyle =
+    hasError || (required && !localValue.trim())
+      ? `1px solid ${errorBorderColor}`
+      : `1px solid ${defaultBorderColor}`;
+
   const { data: schemaData, isLoading: schemaLoading } =
     useGetRuleSchemaQuery();
   const { data: countriesData = [], isLoading: countriesLoading } =
@@ -126,23 +140,30 @@ const RuleExpressionEditor: React.FC<RuleExpressionEditorProps> = ({
       <CodeMirror
         value={localValue}
         height={height}
-        // theme={theme}
+        theme={theme.palette.mode === "dark" ? "dark" : "light"}
         placeholder={placeholder}
         extensions={[completionExtension, EditorView.lineWrapping]}
         onChange={handleChange}
         style={{
           fontSize: "14px",
-          border:
-            hasError || (required && !localValue.trim())
-              ? "1px solid #d32f2f"
-              : "1px solid #ddd",
-          borderRadius: "4px",
+          border: finalBorderStyle,
+          borderRadius: "16px",
+          overflow: "hidden",
         }}
         basicSetup={{
           lineNumbers: false,
-          foldGutter: false,
-          highlightActiveLineGutter: false,
-          highlightActiveLine: false,
+          foldGutter: true,
+          highlightActiveLineGutter: true,
+          highlightActiveLine: true,
+          indentOnInput: true,
+          bracketMatching: true,
+          closeBrackets: true,
+          autocompletion: true,
+          rectangularSelection: true,
+          crosshairCursor: true,
+          highlightSelectionMatches: true,
+          closeBracketsKeymap: true,
+          searchKeymap: true,
         }}
       />
     </Box>
