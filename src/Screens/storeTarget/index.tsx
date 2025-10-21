@@ -4,7 +4,7 @@ import CommonTable from "../../Component/CommenTable";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
 import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Typography, type SelectChangeEvent } from "@mui/material";
-import CurrentYearTarget from "./CurrentYearTarget";
+
 import PageHeader from "../../Component/commonPageHeader";
 import { StoreTargetFormFields, storeTargetFormValidationSchema } from "../../feilds_validation/storeTargetFieldsValidation";
 
@@ -164,9 +164,7 @@ const StoreTarget = () => {
             <CommisionContainer>
                 <PageHeader title="Store Target" btntitle="Add Store Target" onActionClick={() => setModalOpen(true)} />
                 <Grid container spacing={2}>
-                    <Grid size={12}>
-                        <CurrentYearTarget />
-                    </Grid>
+                
                     <Grid size={12}>
                         <CommonTable
                             columns={StoreTargetColumns}

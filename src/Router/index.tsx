@@ -20,7 +20,7 @@ const Dashboard = Loader(lazy(() => import("../Screens/dashboard/index")));
 const Commission = Loader(lazy(() => import("../Screens/commission/index")));
 const LeaderBoard = Loader(lazy(() => import("../Screens/LeaderBoard")));
 const Profile = Loader(lazy(() => import("../Screens/Profile")));
-const Calender = Loader(lazy(() => import("../Screens/Calender")));
+const Calender = Loader(lazy(() => import("../Screens/calender")));
 
 // Staff Portal
 const Attendence = Loader(
