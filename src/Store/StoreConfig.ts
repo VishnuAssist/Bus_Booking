@@ -10,6 +10,7 @@ import storage from "redux-persist/lib/storage";
 import accountReducer from "./slice/Account";
 import loginReducer from "./slice/loginSlice";
 import testDataReducer from "./slice/TestSlice";
+import ParamsReducer from "./slice/ParamsSlice";
 
 //import shiftReducer from "./slice/ShiftSlice";
 import { authApi } from "../Api/authApi";
@@ -25,6 +26,7 @@ const rootAuthReducer = combineReducers({
   account: accountReducer,
   login: loginReducer,
   testData: testDataReducer,
+  Params: ParamsReducer,
 });
 
 const persistConfig = {

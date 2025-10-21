@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import routes from "./Router";
 
 import ThemeProvider from './theme/ThemeProvider';
-
+import './styles.css';
 function App() {
   const content = useRoutes(routes);
 

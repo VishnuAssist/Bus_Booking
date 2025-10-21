@@ -18,16 +18,26 @@ import {
   useGetcategoriesQuery,
 } from "../../Api/dictionaryApi";
 import { createFormData } from "../../Lib/ApiUtil";
+import { Paper } from "@mui/material";
+import AppPagination from "../../Component/AppPagination";
+import { setDictionaryParams } from "../../Store/slice/ParamsSlice";
+import { getAxiosParamsA } from "../../Api/util";
+import { useAppDispatch, useAppSelector } from "../../Store/StoreConfig";
+import DictionarySearch from "./DictionarySearch";
 
 const DictionaryPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedDictionary, setSelectedDictionary] =
     useState<dictionarytype | null>(null);
+  const dispatch = useAppDispatch();
+  const DictionaryParams = useAppSelector(
+    (state) => state.auth.Params.DictionaryParams
+  );
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4);
-
-  const { data: dicData } = useGetalldictionaryQuery({});
+  // const { data: dicData } = useGetalldictionaryQuery({});
+  const { data: dicData } = useGetalldictionaryQuery(
+    getAxiosParamsA({ ...DictionaryParams, PageSize: 5 })
+  );
   const { data: categorys } = useGetcategoriesQuery();
 
   const handleModalClose = () => {
@@ -87,7 +97,7 @@ const DictionaryPage = () => {
     setSelectedDictionary(row);
     setModalOpen(true);
   };
-  
+
   const handleDelete = async (row: dictionarytype) => {
     await deleteDictionary(row?.id || 0);
     console.log("row", row);
@@ -101,20 +111,29 @@ const DictionaryPage = () => {
           btntitle="Add Dictionary"
           onActionClick={() => setModalOpen(true)}
         />
-
-        <CommonTable
-          columns={columns}
-          rows={dicData?.items || []}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onPageChange={setPage}
-          onRowsPerPageChange={setRowsPerPage}
-          actions={{
-            onView: handleView,
-            onEdit: handleEdit,
-            onDelete: handleDelete,
-          }}
-        />
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <DictionarySearch
+            params={DictionaryParams}
+            setParams={(p) => dispatch(setDictionaryParams(p))}
+          />
+          <CommonTable
+            columns={columns}
+            rows={dicData?.items || []}
+            actions={{
+              onView: handleView,
+              onEdit: handleEdit,
+              onDelete: handleDelete,
+            }}
+          />
+          {dicData?.metaData && (
+            <AppPagination
+              metaData={dicData?.metaData}
+              onPageChange={(page: number) =>
+                dispatch(setDictionaryParams({ PageNumber: page }))
+              }
+            />
+          )}
+        </Paper>
       </CommisionContainer>
 
       <Footer />

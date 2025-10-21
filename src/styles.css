@@ -1,0 +1,72 @@
+.MuiFormLabel-root.label-bold {
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.required-asterisk {
+  font-weight: bold;
+  font-size: 16px;
+  color: red;
+}
+
+.card-style {
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 24px;
+  width: 100%;
+  height: 140px;
+  border-radius: 10px;
+  box-shadow:
+    1px 4px 8px -2px rgba(0, 0, 0, 0.3),
+    -1px 4px 8px -2px rgba(0, 0, 0, 0.3),
+    0px 6px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.error-text {
+  color: #f11841;
+  font-weight: 800;
+  font-size: 0.76rem;
+  margin-left: 10px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.typography-300px {
+  font-weight: bold !important;
+   font-size: 14px !important;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.typography-maxwidth-50 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50%;
+  color: #fff;
+  font-size: 0.875rem; 
+  font-weight: bold !important;    
+}
+
+.typography-maxwidth-70 {
+  font-size: 14px;
+  font-weight: bold !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.typography-maxwidth-100 {
+  font-size: 14px;
+  font-weight: bold !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  margin-top: 8px !important; 
+}
