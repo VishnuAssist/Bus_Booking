@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
     }
   }, []);
 
-  const dispatch = useDispatch()
+  
 
   const handleLogin = async () => {
     try {
