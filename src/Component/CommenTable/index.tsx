@@ -1,4 +1,4 @@
-
+import React from "react";
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-
+  TablePagination,
   IconButton,
   Stack,
   ButtonGroup,
@@ -51,13 +51,23 @@ interface CommonTableProps<T> {
 function CommonTable<T>({
   columns,
   rows,
-
+  page,
+  rowsPerPage,
+  onPageChange,
+  onRowsPerPageChange,
   actions,
   approval,
   custombutton,
 }: CommonTableProps<T>) {
+  const handleChangePage = (_: unknown, newPage: number) => {
+    onPageChange(newPage);
+  };
 
-
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    onRowsPerPageChange(+event.target.value);
+  };
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -141,7 +151,15 @@ function CommonTable<T>({
           </TableBody>
         </Table>
       </TableContainer>
-      
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Paper>
   );
 }
