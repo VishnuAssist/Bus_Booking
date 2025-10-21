@@ -17,11 +17,7 @@ import {
 import RuleExpressionEditor from "./RuleExpressionEditor";
 import { type ActionGroup, actionTypes } from "../types";
 import { IconActionButton } from "../ui";
-import {
-  PLACEHOLDER_TEXT,
-  HELPER_TEXT,
-  VALIDATION_MESSAGES,
-} from "../constants";
+import { PLACEHOLDER_TEXT, HELPER_TEXT } from "../constants";
 
 interface ActionGroupComponentProps {
   actionGroup: ActionGroup;
@@ -120,11 +116,23 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
                   (type) => type.value === actionGroup.actionType
                 ) || null
               }
-              onChange={(_, newValue) =>
+              onChange={(_, newValue) => {
+                const actionType = newValue ? newValue.value : "";
+                let actionName = "";
+
+                if (actionType === "onSuccess") {
+                  actionName = "OutputExpression";
+                } else if (actionType === "onError") {
+                  actionName = "EvaluateRule";
+                } else if (actionType === "onFailure") {
+                  actionName = "EvaluateRule";
+                }
+
                 onUpdate(ruleId, actionGroup.id, {
-                  actionType: newValue ? newValue.value : "",
-                })
-              }
+                  actionType,
+                  actionName,
+                });
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -162,11 +170,11 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
           <TextField
             label="Action Name"
             value={actionGroup.actionName || ""}
-            onChange={(e) =>
-              onUpdate(ruleId, actionGroup.id, {
-                actionName: e.target.value,
-              })
-            }
+            // onChange={(e) =>
+            //   onUpdate(ruleId, actionGroup.id, {
+            //     actionName: e.target.value,
+            //   })
+            // }
             size="small"
             sx={{
               flex: 1,
@@ -178,7 +186,9 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
                 color: "#666",
               },
             }}
+            disabled={true}
             placeholder={PLACEHOLDER_TEXT.ACTION_EXPRESSION}
+            // style={{ display: "none" }}
           />
         </Stack>
 
