@@ -33,18 +33,15 @@ import { Paper } from "@mui/material";
 const Sales = () => {
   const dispatch = useAppDispatch();
 
+  const salesParams = useAppSelector((state) => state.auth.Params.SalesParams);
 
-const salesParams = useAppSelector((state) => state.auth.Params.SalesParams);
-
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedSales, setSelectedSales] = useState<SalesType | null>(null);
 
   // API hooks
-//   const { data: salesData } = useGetAllSalesQuery({});
+  //   const { data: salesData } = useGetAllSalesQuery({});
 
-    const { data: salesData,  } = useGetAllSalesQuery(
+  const { data: salesData } = useGetAllSalesQuery(
     getAxiosParamsA({ ...salesParams, PageSize: 5 })
   );
   console.log("sales", salesData);
@@ -195,27 +192,27 @@ const salesParams = useAppSelector((state) => state.auth.Params.SalesParams);
           onActionClick={() => setModalOpen(true)}
         />
 
-<Paper sx={{ width: "100%", overflow: "hidden" }}>
-<SalesSearch params={salesParams}      setParams={(p) => dispatch(setSalesParams(p))}/>
-        <CommonTable
-          columns={SalesColumns}
-          rows={salesData?.items || []}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onPageChange={setPage}
-          onRowsPerPageChange={setRowsPerPage}
-          actions={{
-            onEdit: handleEdit,
-            onDelete: handleDelete,
-          }}
-        />
-        <AppPagination
-          metaData={salesData?.metaData}
-        
-          onPageChange={(page: number) =>
-            dispatch(setSalesParams({ PageNumber: page }))
-          }
-        />
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <SalesSearch
+            params={salesParams}
+            setParams={(p) => dispatch(setSalesParams(p))}
+          />
+          <CommonTable
+            columns={SalesColumns}
+            rows={salesData?.items || []}
+            actions={{
+              onEdit: handleEdit,
+              onDelete: handleDelete,
+            }}
+          />
+          {salesData?.metaData && (
+            <AppPagination
+              metaData={salesData?.metaData}
+              onPageChange={(page: number) =>
+                dispatch(setSalesParams({ PageNumber: page }))
+              }
+            />
+          )}
         </Paper>
       </CommisionContainer>
 

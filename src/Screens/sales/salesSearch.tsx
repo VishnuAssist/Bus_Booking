@@ -47,7 +47,7 @@ const SalesSearch = ({ params, setParams }: prop) => {
             setSearchTerm(event.target.value);
             debouncedSearch(event);
           }}
-          placeholder="Search sales records"
+          placeholder="Search"
         />
       </Box>
       <Box>

@@ -4,6 +4,7 @@ import type { QueryParamsType } from "../../model/common";
 
 interface ParamsState {
   SalesParams: QueryParamsType;
+  DictionaryParams: QueryParamsType;
 }
 
 function initParams(status?: number): QueryParamsType {
@@ -20,6 +21,7 @@ function initParams(status?: number): QueryParamsType {
 
 const initialState: ParamsState = {
   SalesParams: initParams(),
+  DictionaryParams :initParams(),
 };
 
 export const Paramsslice = createSlice({
@@ -29,6 +31,9 @@ export const Paramsslice = createSlice({
     setSalesParams: (state, action: PayloadAction<Partial<QueryParamsType>>) => {
       state.SalesParams = { ...state.SalesParams, ...action.payload };
     },
+    setDictionaryParams :(state ,action : PayloadAction<Partial<QueryParamsType>>) =>{
+      state.DictionaryParams = {...state.DictionaryParams,...action.payload};
+    },
     resetSalesParams: (state) => { 
       state.SalesParams = initParams(); 
     },
@@ -37,6 +42,7 @@ export const Paramsslice = createSlice({
 
 export const {
   setSalesParams,
+  setDictionaryParams,
   resetSalesParams,
 } = Paramsslice.actions;
 
