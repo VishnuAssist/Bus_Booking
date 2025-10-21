@@ -1,8 +1,8 @@
 import * as yup from "yup";
 import type { FormFieldProps } from "../model/formFeilds";
-import type { StoreType } from "../model/storeType";
+import type { StoreDto } from "../model/storeType";
 
-export const StoreFormFields: FormFieldProps<StoreType>[] = [
+export const StoreFormFields: FormFieldProps<StoreDto>[] = [
     {
         label: "Store Name",
         name: "name",
@@ -20,7 +20,8 @@ export const StoreFormFields: FormFieldProps<StoreType>[] = [
     {
         label: "Country Code",
         name: "countryCode",
-        type: "select",
+        type: "autocomplete",
+        baseurl: "/Common/GetCountries",
         required: true,
         size: { sm: 12, md: 12, lg: 12 },
     },
