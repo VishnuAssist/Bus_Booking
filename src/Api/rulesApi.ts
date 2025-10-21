@@ -1,40 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { QueryParamsType } from "../Dto/formDto";
 import APIFetchBase from "../Store/ApiConfig";
-
-// Define types for Rules API
-export interface RuleType {
-  id?: string | number;
-  name?: string;
-  description?: string;
-  isActive?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-  [key: string]: any;
-}
-
-export interface RuleSchemaType {
-  name?: string;
-  type?: string;
-}
-
-export interface CommissionType {
-  id?: string | number;
-  name?: string;
-  value?: number;
-  [key: string]: any;
-}
-
-export interface CountryType {
-  code?: string;
-  name?: string;
-}
-
-export interface ProcessRequestType {
-  ruleId?: string | number;
-  data?: any;
-  [key: string]: any;
-}
+import type {
+  RuleType,
+  RuleSchemaType,
+  CommissionType,
+  CountryType,
+  ProcessRequestType,
+  MonthlySummarriesType,
+} from "../model/rulesType";
 
 export const rulesApi = createApi({
   reducerPath: "rulesApi",
@@ -115,6 +89,29 @@ export const rulesApi = createApi({
       providesTags: ["Commissions"],
     }),
 
+    // Get staff commissions
+    getStaffCommissions: builder.query<CommissionType[], MonthlySummarriesType>(
+      {
+        query: (args) => ({
+          method: "GET",
+          url: "/Rules/staff-commissions",
+          params: args,
+        }),
+      }
+    ),
+
+    // Get monthly summarries
+    getMonthlySummarries: builder.query<
+      CommissionType[],
+      MonthlySummarriesType
+    >({
+      query: (args) => ({
+        method: "GET",
+        url: "/Rules/monthly-summarries",
+        params: args,
+      }),
+    }),
+
     // Process rule
     processRule: builder.mutation<any, { data: ProcessRequestType }>({
       query: (args) => ({
@@ -157,4 +154,6 @@ export const {
   useProcessRuleMutation,
   useTestRuleMutation,
   useGetCountriesQuery,
+  useGetStaffCommissionsQuery,
+  useGetMonthlySummarriesQuery,
 } = rulesApi;

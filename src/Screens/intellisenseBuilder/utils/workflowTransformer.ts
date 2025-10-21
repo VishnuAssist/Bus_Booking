@@ -14,6 +14,7 @@ export const generateWorkflowJSON = (
         const baseRule = {
           RuleName: rule.ruleName,
           Expression: rule.expression,
+          RuleExpressionType: "LambdaExpression",
         };
 
         // Only include Actions if there are action groups
