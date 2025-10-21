@@ -7,7 +7,6 @@ export interface RuleType {
   isActive?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  [key: string]: any;
 }
 
 export interface RuleSchemaType {
@@ -19,7 +18,6 @@ export interface CommissionType {
   id?: string | number;
   name?: string;
   value?: number;
-  [key: string]: any;
 }
 
 export interface CountryType {
@@ -30,7 +28,6 @@ export interface CountryType {
 export interface ProcessRequestType {
   ruleId?: string | number;
   data?: any;
-  [key: string]: any;
 }
 
 export interface MonthlySummarriesType {
@@ -39,4 +36,22 @@ export interface MonthlySummarriesType {
   userId: string;
   storeId: number;
   userGroupId: number;
+}
+
+export interface StaffCommissionResponseType {
+  id: number;
+  userId: string;
+  userName: string;
+  employeeCode: string;
+  storeId: string | null;
+  storeName: string | null;
+  payout: number;
+  note: string;
+  commissionTypeId: number | null;
+  ruleId: number;
+  commissinDate: string;
+  commissionYear: number;
+  commissionMonth: number;
+  createdOn: string;
+  createdBy: string;
 }

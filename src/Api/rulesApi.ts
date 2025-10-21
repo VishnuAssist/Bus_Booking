@@ -8,6 +8,7 @@ import type {
   CountryType,
   ProcessRequestType,
   MonthlySummarriesType,
+  StaffCommissionResponseType,
 } from "../model/rulesType";
 
 export const rulesApi = createApi({
@@ -90,15 +91,16 @@ export const rulesApi = createApi({
     }),
 
     // Get staff commissions
-    getStaffCommissions: builder.query<CommissionType[], MonthlySummarriesType>(
-      {
-        query: (args) => ({
-          method: "GET",
-          url: "/Rules/staff-commissions",
-          params: args,
-        }),
-      }
-    ),
+    getStaffCommissions: builder.query<
+      StaffCommissionResponseType[],
+      MonthlySummarriesType
+    >({
+      query: (args) => ({
+        method: "GET",
+        url: "/Rules/staff-commissions",
+        params: args,
+      }),
+    }),
 
     // Get monthly summarries
     getMonthlySummarries: builder.query<
