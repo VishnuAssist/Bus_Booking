@@ -35,7 +35,7 @@ const detectLambdaContext = (
   schema: SchemaTable
 ): LambdaContext | null => {
   const lambdaContextMatch = beforeCursor.match(
-    /(\w+)\.(where|sum|average|any|all|first|last|max|min)\s*\(\s*(\w+)\s*=>/
+    /(\w+)\.(where|sum|average|any|all|first|last|max|min)\s*\(\s*(\w+)\s*=>/i
   );
 
   if (!lambdaContextMatch) return null;
@@ -78,7 +78,7 @@ const detectPropertyChainContext = (
   // If we're in a lambda context, check if tableName is the parameter
   if (lambdaContext?.isInLambda) {
     const lambdaMatch = beforeCursor.match(
-      /(\w+)\.(where|sum|average|any|all|first|last|max|min)\s*\(\s*(\w+)\s*=>/
+      /(\w+)\.(where|sum|average|any|all|first|last|max|min)\s*\(\s*(\w+)\s*=>/i
     );
     if (lambdaMatch) {
       const paramName = lambdaMatch[3];
@@ -102,7 +102,7 @@ const detectMethodChainContext = (
   propertyChainMatch: PropertyChainContext | null
 ): MethodChainContext => {
   const methodChainMatch = beforeCursor.match(
-    /(\w+)\.(where|sum|average|any|all|first|last|max|min)\([^)]*\)\.$/
+    /(\w+)\.(where|sum|average|any|all|first|last|max|min)\([^)]*\)\.$/i
   );
 
   if (methodChainMatch && !propertyChainMatch) {
