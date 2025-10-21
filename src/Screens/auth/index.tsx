@@ -22,26 +22,23 @@ const LoginPage: React.FC = () => {
     }
   }, []);
 
-  const dispatch = useDispatch()
-
   const handleLogin = async () => {
     try {
       const payLoad = { username, password };
       const res = await userlogin(payLoad).unwrap();
-      console.log("token",res)
+      console.log("token", res);
       if (res?.status === 401) {
         toast.error("Check the username or password");
         return;
       }
 
       if (res) {
-        
         // localStorage.setItem("user", JSON.stringify(res));
         // localStorage.setItem("email", res.email ?? "");
         // localStorage.setItem("token", res.token);
         // localStorage.setItem("refreshToken", res.refreshToken);
         // localStorage.setItem("refreshTokenExpiryTime", res.refreshTokenExpiryTime);
-        
+
         dispatch(addTokensAndUser(res));
 
         toast.success("Login successful!");
