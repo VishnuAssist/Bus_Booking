@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Card,
@@ -47,6 +47,7 @@ import RuleGroupComponent from "./RuleGroupComponent";
 import TestData from "./TestData";
 import type { RuleBuilderProps } from "../types";
 import { GradientButton, ValidationAlert, EmptyState, DataDrawer } from "../ui";
+import { toast } from "react-toastify";
 
 const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
   onWorkflowSave,
@@ -55,6 +56,7 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
 }) => {
   const { state, actions } = useRuleBuilder(initialWorkflow);
   const { ruleId } = useParams<{ ruleId?: string }>();
+  const navigate = useNavigate();
 
   const [createRuleMutation] = useCreateRuleMutation();
   const [testRuleMutation, { isLoading: isTestLoading }] =
@@ -68,7 +70,8 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
       const result = await createRuleMutation({ data: apiData }).unwrap();
 
       console.log("Workflow saved successfully:", result);
-      alert(SUCCESS_MESSAGES.WORKFLOW_SAVED);
+      navigate("/Admin/rulesList");
+      toast(SUCCESS_MESSAGES.WORKFLOW_SAVED);
     } catch (error) {
       console.error("Failed to save workflow to API:", error);
       alert(ERROR_MESSAGES.SAVE_API_FAILED);
@@ -93,12 +96,12 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
 
       const result = await testRuleMutation({ data: testPayload }).unwrap();
       console.log("Test API result:", result);
-      alert(SUCCESS_MESSAGES.TEST_API_SUCCESS);
+      toast(SUCCESS_MESSAGES.TEST_API_SUCCESS);
 
       return result;
     } catch (error) {
       console.error("Test API error:", error);
-      alert(ERROR_MESSAGES.TEST_API_FAILED);
+      toast(ERROR_MESSAGES.TEST_API_FAILED);
       throw error;
     }
   };
@@ -262,16 +265,14 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
             </Typography>
           </Box>
 
-          {editMode.isEditMode && (
-            <Button
-              startIcon={<ArrowBackIcon />}
-              onClick={cancelEdit}
-              variant="outlined"
-              size="small"
-            >
-              Back to Rules List
-            </Button>
-          )}
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={cancelEdit}
+            variant="outlined"
+            size="small"
+          >
+            Back to Rules List
+          </Button>
         </Box>
       </Box>
 
