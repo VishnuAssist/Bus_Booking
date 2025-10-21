@@ -226,17 +226,3 @@ export const isValidRuleForEditing = (apiRule: RuleType): boolean => {
     return false;
   }
 };
-
-/**
- * Extract rule ID from URL parameters
- */
-export const extractRuleIdFromUrl = (
-  searchParams: URLSearchParams
-): string | number | null => {
-  const ruleId = searchParams.get("editRuleId");
-  if (!ruleId) return null;
-
-  // Try to parse as number first, fallback to string
-  const numericId = Number(ruleId);
-  return isNaN(numericId) ? ruleId : numericId;
-};

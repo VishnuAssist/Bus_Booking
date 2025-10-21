@@ -8,7 +8,6 @@ import {
   transformApiRuleToBuilderState,
   transformBuilderStateToApiRule,
   isValidRuleForEditing,
-  extractRuleIdFromUrl,
 } from "../utils/ruleTransformer";
 import type {
   RuleBuilderState,
@@ -25,7 +24,7 @@ export interface EditModeState {
   error: string | null;
 }
 
-export const useRuleEdit = () => {
+export const useRuleEdit = (ruleId?: string | number) => {
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState<EditModeState>({
     isEditMode: false,
@@ -36,6 +35,19 @@ export const useRuleEdit = () => {
   });
 
   const [updateRule, { isLoading: isUpdating }] = useUpdateRuleMutation();
+
+  // Initialize edit mode when ruleId is provided
+  useEffect(() => {
+    if (ruleId) {
+      setEditMode({
+        isEditMode: true,
+        ruleId,
+        originalRuleName: "",
+        isLoading: true,
+        error: null,
+      });
+    }
+  }, [ruleId]);
 
   // Get rule data when in edit mode
   const {
@@ -55,22 +67,6 @@ export const useRuleEdit = () => {
       error: ruleError ? "Failed to load rule data" : null,
     }));
   }, [isLoadingRule, ruleError]);
-
-  /**
-   * Load rule for editing from URL parameters
-   */
-  const loadRuleFromUrl = useCallback((searchParams: URLSearchParams) => {
-    const ruleId = extractRuleIdFromUrl(searchParams);
-    if (ruleId) {
-      setEditMode({
-        isEditMode: true,
-        ruleId,
-        originalRuleName: "",
-        isLoading: true,
-        error: null,
-      });
-    }
-  }, []);
 
   /**
    * Transform loaded rule data to builder state
@@ -99,7 +95,9 @@ export const useRuleEdit = () => {
     } catch (error) {
       setEditMode((prev) => ({
         ...prev,
-        error: "Failed to transform rule data",
+        error: `Failed to transform rule data: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
         isLoading: false,
       }));
       return null;
@@ -212,7 +210,6 @@ export const useRuleEdit = () => {
 
   return {
     editMode,
-    loadRuleFromUrl,
     getTransformedRuleData,
     saveEditedRule,
     cancelEdit,

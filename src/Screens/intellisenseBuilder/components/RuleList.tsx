@@ -31,7 +31,7 @@ const RuleList: React.FC = () => {
   console.log("RuleList - API Response:", { rules, isLoading, error });
 
   const handleEdit = (ruleId: string | number) => {
-    navigate(`/Admin/intellisenseBuilder?editRuleId=${ruleId}`);
+    navigate(`/Admin/intellisenseBuilder/${ruleId}/edit`);
   };
 
   const handleCreate = () => {

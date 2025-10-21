@@ -133,11 +133,16 @@ export const filterOptions = (
   wordText: string,
   isExplicit: boolean
 ): CompletionOption[] => {
-  return options.filter(
-    (opt) =>
-      !wordText ||
-      wordText === "" ||
-      opt.label.toLowerCase().includes(wordText.toLowerCase()) ||
-      isExplicit
-  );
+  // If no word text or explicit trigger, return all options
+  if (!wordText || wordText === "" || isExplicit) {
+    return options;
+  }
+
+  // Normalize both the option label and word text for case-insensitive matching
+  const normalizedWordText = wordText.toLowerCase();
+
+  return options.filter((opt) => {
+    const normalizedLabel = opt.label.toLowerCase();
+    return normalizedLabel.includes(normalizedWordText);
+  });
 };
