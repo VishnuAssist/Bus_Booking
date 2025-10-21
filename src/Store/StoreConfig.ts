@@ -15,6 +15,7 @@ import testDataReducer from "./slice/TestSlice";
 import { authApi } from "../Api/authApi";
 import { rolesApi } from "../Api/rolesApi";
 import { dictionaryApi } from "../Api/dictionaryApi";
+import { salesApi } from "../Api/salesApi";
 import { shiftApi } from "../Api/shiftApi";
 import { autocompleteApi } from "../Api/AutocompleteApi";
 import { rulesApi } from "../Api/rulesApi";
@@ -38,6 +39,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [rolesApi.reducerPath]: rolesApi.reducer,
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
+    [salesApi.reducerPath]: salesApi.reducer,
     [shiftApi.reducerPath]: shiftApi.reducer,
     [autocompleteApi.reducerPath]: autocompleteApi.reducer,
     [rulesApi.reducerPath]: rulesApi.reducer,
@@ -52,6 +54,7 @@ export const store = configureStore({
       authApi.middleware,
       rolesApi.middleware,
       dictionaryApi.middleware,
+      salesApi.middleware,
       shiftApi.middleware,
       autocompleteApi.middleware,
       rulesApi.middleware,
