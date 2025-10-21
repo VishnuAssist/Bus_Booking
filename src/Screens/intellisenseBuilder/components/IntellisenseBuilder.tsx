@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Card,
@@ -32,8 +33,16 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useRuleBuilder } from "../hooks/useRuleBuilder";
-import { useWorkflowActions } from "../hooks/useWorkflowActions";
 import { useRuleEdit } from "../hooks/useRuleEdit";
+import {
+  useCreateRuleMutation,
+  useTestRuleMutation,
+} from "../../../Api/rulesApi";
+import { prepareApiData, stringifyWorkflow } from "../utils";
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from "../constants";
+import { useAppDispatch, useAppSelector } from "../../../Store/StoreConfig";
+import { updateWorkflowJson } from "../../../Store/slice/TestSlice";
+import type { GeneratedWorkflow } from "../types";
 import RuleGroupComponent from "./RuleGroupComponent";
 import TestData from "./TestData";
 import type { RuleBuilderProps } from "../types";
@@ -45,30 +54,74 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
   initialWorkflow,
 }) => {
   const { state, actions } = useRuleBuilder(initialWorkflow);
-  const { saveWorkflow, testWorkflow, generateJSON, isTestLoading } =
-    useWorkflowActions();
+  const { ruleId } = useParams<{ ruleId?: string }>();
+
+  const [createRuleMutation] = useCreateRuleMutation();
+  const [testRuleMutation, { isLoading: isTestLoading }] =
+    useTestRuleMutation();
+  const dispatch = useAppDispatch();
+  const testData = useAppSelector((state) => state.testData);
+
+  const saveWorkflow = async (workflow: GeneratedWorkflow[]) => {
+    try {
+      const apiData = prepareApiData(workflow);
+      const result = await createRuleMutation({ data: apiData }).unwrap();
+
+      console.log("Workflow saved successfully:", result);
+      alert(SUCCESS_MESSAGES.WORKFLOW_SAVED);
+    } catch (error) {
+      console.error("Failed to save workflow to API:", error);
+      alert(ERROR_MESSAGES.SAVE_API_FAILED);
+      throw error;
+    }
+  };
+
+  const testWorkflow = async (workflow: GeneratedWorkflow[]) => {
+    try {
+      const workflowJson = stringifyWorkflow(workflow);
+
+      dispatch(updateWorkflowJson(workflowJson));
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { workflowJson: _, ...testDataWithoutWorkflow } = testData;
+
+      // Prepare the test data with the generated workflowJson
+      const testPayload = {
+        ...testDataWithoutWorkflow,
+        workflowJson: workflowJson,
+      };
+
+      const result = await testRuleMutation({ data: testPayload }).unwrap();
+      console.log("Test API result:", result);
+      alert(SUCCESS_MESSAGES.TEST_API_SUCCESS);
+
+      return result;
+    } catch (error) {
+      console.error("Test API error:", error);
+      alert(ERROR_MESSAGES.TEST_API_FAILED);
+      throw error;
+    }
+  };
+
+  // Direct generateJSON function
+  const generateJSON = (workflow: GeneratedWorkflow[]) => {
+    return stringifyWorkflow(workflow);
+  };
 
   const {
     editMode,
-    loadRuleFromUrl,
     getTransformedRuleData,
     saveEditedRule,
     cancelEdit,
     isUpdating,
-  } = useRuleEdit();
+  } = useRuleEdit(ruleId);
 
   const [isJsonDrawerOpen, setIsJsonDrawerOpen] = useState(false);
   const [generatedJson, setGeneratedJson] = useState("");
   const [activeTab, setActiveTab] = useState(0);
-  const [apiResponse, setApiResponse] = useState<any>(null);
+  const [apiResponse, setApiResponse] = useState<unknown>(null);
   const [showApiResponse, setShowApiResponse] = useState(false);
   const hasLoadedRuleData = useRef(false);
-
-  // Handle edit mode initialization and data loading
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    loadRuleFromUrl(urlParams);
-  }, [loadRuleFromUrl]);
 
   useEffect(() => {
     if (

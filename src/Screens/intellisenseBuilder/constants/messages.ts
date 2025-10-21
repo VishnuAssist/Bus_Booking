@@ -1,12 +1,6 @@
 // Validation and notification messages
 
 export const VALIDATION_MESSAGES = {
-  WORKFLOW_NAME_REQUIRED: "Workflow name is required",
-  RULE_NAME_REQUIRED: "Rule name is required",
-  RULE_EXPRESSION_REQUIRED: "Rule expression is required",
-  ACTION_TYPE_REQUIRED: "Action type is required",
-  ACTION_EXPRESSION_REQUIRED: "Action expression is required",
-
   getRuleError: (ruleIndex: number, field: string) =>
     `Rule ${ruleIndex + 1}: ${field} is required`,
 
@@ -28,10 +22,8 @@ export const ERROR_MESSAGES = {
 } as const;
 
 export const PLACEHOLDER_TEXT = {
-  RULE_NAME: "Enter rule name",
   RULE_EXPRESSION:
     "e.g., metrics.TargetAchievement >= 120 AND metrics.AttendancePercentage >= 95",
-  ACTION_NAME: "Enter action name...",
   ACTION_EXPRESSION: "e.g., sales.Amount * 0.05 or user.Name + ' - Commission'",
 } as const;
 

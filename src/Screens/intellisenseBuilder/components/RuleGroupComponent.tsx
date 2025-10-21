@@ -100,7 +100,7 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
           />
           <Box sx={{ flex: 1, display: "flex", alignItems: "center", gap: 1 }}>
             <TextField
-              placeholder={PLACEHOLDER_TEXT.RULE_NAME}
+              placeholder="Enter rule name"
               value={ruleGroup.ruleName}
               onChange={(e) =>
                 onUpdate(ruleGroup.id, {
@@ -112,9 +112,7 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
               required
               error={!ruleGroup.ruleName.trim()}
               helperText={
-                !ruleGroup.ruleName.trim()
-                  ? VALIDATION_MESSAGES.RULE_NAME_REQUIRED
-                  : ""
+                !ruleGroup.ruleName.trim() ? "Rule name is required" : ""
               }
               onClick={(e) => e.stopPropagation()}
             />
@@ -145,7 +143,7 @@ const RuleGroupComponent: React.FC<RuleGroupComponentProps> = ({
           />
           {!ruleGroup.expression.trim() && (
             <FormHelperText error sx={{ mt: 0.5 }}>
-              {VALIDATION_MESSAGES.RULE_EXPRESSION_REQUIRED}
+              Rule expression is required
             </FormHelperText>
           )}
           <Typography

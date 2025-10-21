@@ -242,6 +242,10 @@ const routes: RouteObject[] = [
             element: <IntellisenseBuilder />,
           },
           {
+            path: "intellisenseBuilder/:ruleId/edit",
+            element: <IntellisenseBuilder />,
+          },
+          {
             path: "reportandAnalytics",
             element: <ReportAndAnalytics />,
           },

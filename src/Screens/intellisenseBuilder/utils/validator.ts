@@ -14,7 +14,7 @@ export const validateWorkflowData = (
   const errors: string[] = [];
 
   if (!workflowData.workflowName.trim()) {
-    errors.push(VALIDATION_MESSAGES.WORKFLOW_NAME_REQUIRED);
+    errors.push("Workflow name is required");
   }
 
   return {

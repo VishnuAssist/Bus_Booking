@@ -130,14 +130,14 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
                   {...params}
                   label="Action Type *"
                   variant="outlined"
-                  placeholder={PLACEHOLDER_TEXT.ACTION_NAME}
+                  placeholder="Enter action name..."
                   required
                   error={
                     !actionGroup.actionType?.trim() || isDuplicateActionType()
                   }
                   helperText={
                     !actionGroup.actionType?.trim()
-                      ? VALIDATION_MESSAGES.ACTION_TYPE_REQUIRED
+                      ? "Action type is required"
                       : isDuplicateActionType()
                       ? `Action type "${actionGroup.actionType}" is already used in this rule`
                       : ""
@@ -195,7 +195,7 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
           />
           {!actionGroup.expression?.trim() && (
             <FormHelperText error sx={{ mt: 0.5 }}>
-              {VALIDATION_MESSAGES.ACTION_EXPRESSION_REQUIRED}
+              Action expression is required
             </FormHelperText>
           )}
           <Typography
