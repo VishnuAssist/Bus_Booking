@@ -21,6 +21,7 @@ import { shiftApi } from "../Api/shiftApi";
 import { autocompleteApi } from "../Api/AutocompleteApi";
 import { rulesApi } from "../Api/rulesApi";
 import { storeApi } from "../Api/StoreApi";
+import { attendanceApi } from "../Api/AttendanceApi";
 
 const rootAuthReducer = combineReducers({
   account: accountReducer,
@@ -46,6 +47,7 @@ export const store = configureStore({
     [shiftApi.reducerPath]: shiftApi.reducer,
     [autocompleteApi.reducerPath]: autocompleteApi.reducer,
     [storeApi.reducerPath]: storeApi.reducer,
+    [attendanceApi.reducerPath]: attendanceApi.reducer,
     [rulesApi.reducerPath]: rulesApi.reducer,
 
     auth: persistedAuthReducer,
@@ -62,6 +64,7 @@ export const store = configureStore({
       shiftApi.middleware,
       autocompleteApi.middleware,
       storeApi.middleware,
+      attendanceApi.middleware,
       rulesApi.middleware,
     ]),
 });

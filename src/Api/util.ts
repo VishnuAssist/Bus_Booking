@@ -38,6 +38,10 @@ export function getAxiosParamsA(dictionaryParams: QueryParamsType) {
     params["startDate"] = dictionaryParams?.startDate?.toString();
   if (dictionaryParams?.endDate)
     params["endDate"] = dictionaryParams?.endDate?.toString();
+  if (dictionaryParams?.StartDate)
+    params["StartDate"] = dictionaryParams?.StartDate?.toString();
+  if (dictionaryParams?.EndDate)
+    params["EndDate"] = dictionaryParams?.EndDate?.toString();
 
   if (dictionaryParams?.Status)
     params["Status"] = dictionaryParams?.Status?.toString();

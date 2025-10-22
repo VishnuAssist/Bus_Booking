@@ -60,9 +60,9 @@ const SalesSearch = ({ params, setParams }: prop) => {
                 type="date"
                 fullWidth
                 variant="outlined"
-                value={params?.startDate}
+                value={params?.StartDate}
                 onChange={(e) => {
-                  setParams({ ...params, startDate: e.target.value ,PageNumber:1});
+                  setParams({ ...params, StartDate: e.target.value ,PageNumber:1});
                 }}
               />
       </Box>
@@ -75,12 +75,12 @@ const SalesSearch = ({ params, setParams }: prop) => {
                 type="date"
                 fullWidth
                 variant="outlined"
-                value={params?.endDate}
+                value={params?.EndDate}
                 inputProps={{
                   min: params?.startDate,
                 }}
                  onChange={(e) => {
-                  setParams({ ...params, endDate: e.target.value ,PageNumber:1});
+                  setParams({ ...params, EndDate: e.target.value ,PageNumber:1});
                 }}
               />
       </Box>
