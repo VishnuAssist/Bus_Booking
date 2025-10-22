@@ -21,6 +21,7 @@ import { shiftApi } from "../Api/shiftApi";
 import { autocompleteApi } from "../Api/AutocompleteApi";
 import { rulesApi } from "../Api/rulesApi";
 import { storeApi } from "../Api/StoreApi";
+import { commissionApi } from "../Api/commisionApi";
 
 const rootAuthReducer = combineReducers({
   account: accountReducer,
@@ -47,7 +48,7 @@ export const store = configureStore({
     [autocompleteApi.reducerPath]: autocompleteApi.reducer,
     [storeApi.reducerPath]: storeApi.reducer,
     [rulesApi.reducerPath]: rulesApi.reducer,
-
+    [commissionApi.reducerPath]: commissionApi.reducer,
     auth: persistedAuthReducer,
     testData: testDataReducer,
   },
@@ -63,6 +64,7 @@ export const store = configureStore({
       autocompleteApi.middleware,
       storeApi.middleware,
       rulesApi.middleware,
+      commissionApi.middleware,
     ]),
 });
 

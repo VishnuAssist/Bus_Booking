@@ -40,25 +40,28 @@ export const authApi = createApi({
         };
       },
     }),
-    getallAccount: builder.query<{ items: UserList[]; metaData: MetaData },any>({
-              query: (args) => ({
-                method: "GET",
-                url: "/Account/all",
-                params: {
-                  ...args,
-                },
-              }),
-              transformResponse: (response, metaData) =>
-                dataWithMeta<UserList[], MetaData>(
-                  response as UserList[],
-                  metaData as any
-                ),
-              providesTags: ["AccountApi"],
-            }),
+    getallAccount: builder.query<
+      { items: UserList[]; metaData: MetaData },
+      any
+    >({
+      query: (args) => ({
+        method: "GET",
+        url: "/Account/all",
+        params: {
+          ...args,
+        },
+      }),
+      transformResponse: (response, metaData) =>
+        dataWithMeta<UserList[], MetaData>(
+          response as UserList[],
+          metaData as any
+        ),
+      providesTags: ["AccountApi"],
+    }),
     logout: builder.mutation<
       { status: number; message: string },
       number | undefined
->({
+    >({
       query: (userId: number) => {
         return {
           method: "POST",
@@ -66,15 +69,13 @@ export const authApi = createApi({
         };
       },
     }),
-    
-
   }),
 });
 
 export const {
-   useLoginMutation, 
-   useLogoutMutation,
-   usePasswordRequestMutation,
-   useResetPasswordMutation,
-   useGetallAccountQuery,
-     } = authApi;
+  useLoginMutation,
+  useLogoutMutation,
+  usePasswordRequestMutation,
+  useResetPasswordMutation,
+  useGetallAccountQuery,
+} = authApi;

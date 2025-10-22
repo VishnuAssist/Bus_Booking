@@ -4,17 +4,14 @@ import APIFetchBase from "../Store/ApiConfig";
 import type {
   RuleType,
   RuleSchemaType,
-  CommissionType,
   CountryType,
   ProcessRequestType,
-  MonthlySummarriesType,
-  StaffCommissionResponseType,
 } from "../model/rulesType";
 
 export const rulesApi = createApi({
   reducerPath: "rulesApi",
   baseQuery: APIFetchBase,
-  tagTypes: ["Rules", "RuleSchema", "Commissions"],
+  tagTypes: ["Rules", "RuleSchema"],
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
     // Get all rules
@@ -77,43 +74,6 @@ export const rulesApi = createApi({
       providesTags: ["RuleSchema"],
     }),
 
-    // Get commissions
-    getCommissions: builder.query<
-      CommissionType[],
-      { params?: QueryParamsType }
-    >({
-      query: (args) => ({
-        method: "GET",
-        url: "/Rules/commissions",
-        params: args?.params,
-      }),
-      providesTags: ["Commissions"],
-    }),
-
-    // Get staff commissions
-    getStaffCommissions: builder.query<
-      StaffCommissionResponseType[],
-      MonthlySummarriesType
-    >({
-      query: (args) => ({
-        method: "GET",
-        url: "/Rules/staff-commissions",
-        params: args,
-      }),
-    }),
-
-    // Get monthly summarries
-    getMonthlySummarries: builder.query<
-      CommissionType[],
-      MonthlySummarriesType
-    >({
-      query: (args) => ({
-        method: "GET",
-        url: "/Rules/monthly-summarries",
-        params: args,
-      }),
-    }),
-
     // Process rule
     processRule: builder.mutation<any, { data: ProcessRequestType }>({
       query: (args) => ({
@@ -152,10 +112,7 @@ export const {
   useUpdateRuleMutation,
   useDeleteRuleMutation,
   useGetRuleSchemaQuery,
-  useGetCommissionsQuery,
   useProcessRuleMutation,
   useTestRuleMutation,
   useGetCountriesQuery,
-  useGetStaffCommissionsQuery,
-  useGetMonthlySummarriesQuery,
 } = rulesApi;

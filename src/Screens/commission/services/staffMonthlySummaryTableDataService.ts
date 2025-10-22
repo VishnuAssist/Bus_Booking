@@ -1,6 +1,6 @@
-import type { StaffCommissionResponseType } from "../../../model/rulesType";
+import type { StaffCommissionResponseType } from "../../../model/commissionType";
 
-export const getTableData = (
+export const staffMonthlySummaryTableDataService = (
   staffCommissions: StaffCommissionResponseType[] | undefined
 ) => {
   const HistoryColumns = [
