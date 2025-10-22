@@ -61,7 +61,8 @@ const ReportAndAnalytics = Loader(
 
 const Dictionary = Loader(lazy(() => import("../Screens/dictionary/index")));
 const Store = Loader(lazy(() => import("../Screens/store/index")));
-const StoreTarget = Loader(lazy(() => import("../Screens/storeTarget/index")));
+const StoreTarget = Loader(lazy(() => import("../Screens/storeTarget")));
+const StoreKPI= Loader(lazy(() => import("../Screens/storeTarget/storeKPI")));
 const Sales = Loader(lazy(() => import("../Screens/sales/index")));
 
 const Reports = Loader(lazy(() => import("../Screens/Reports/Index")));
@@ -285,6 +286,10 @@ const routes: RouteObject[] = [
           {
             path: "storeTarget",
             element: <StoreTarget />,
+          },
+           {
+            path: "storeKPI",
+            element: <StoreKPI />,
           },
           {
             path: "sales",

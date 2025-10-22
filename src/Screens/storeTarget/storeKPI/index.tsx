@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import CommisionContainer from "../../Component/container";
-import CommonTable from "../../Component/CommenTable";
-import Footer from "../../Component/Footer";
-import { CommonDialog } from "../../Component/forms/FormDialog";
+import { useSearchParams } from "react-router-dom";
+import CommisionContainer from "../../../Component/container";
+import CommonTable from "../../../Component/CommenTable";
+import Footer from "../../../Component/Footer";
+import { CommonDialog } from "../../../Component/forms/FormDialog";
 import {
   Box,
   Button,
@@ -17,32 +17,36 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material";
-import PageHeader from "../../Component/commonPageHeader";
-import {
-  StoreTargetFormFields,
-  storeTargetFormValidationSchema,
-} from "../../feilds_validation/storeTargetFieldsValidation";
-import {
-  useGetAllStoreTargetsQuery,
-  useAddStoreTargetMutation,
-  useEditStoreTargetMutation,
-  useDeleteStoreTargetMutation,
-  useProcessStoreTargetMutation,
 
-} from "../../Api/StoreApi";
-import type { QueryParamsType } from "../../Dto/formDto";
-import { ValidateParams } from "../../Lib/utile";
-import AppPagination from "../../Component/AppPagination";
-import type { StoreMonthlyTargetDto } from "../../model/storeTargetType";
+import {
+  useGetStoreKPIsQuery,
+  useAddStoreKPIMutation,
+  useEditStoreKPIMutation,
+  useDeleteStoreKPIMutation,
+  useProcessStoreKPIMutation,
+  
+} from "../../../Api/StoreApi";
+import type { QueryParamsType } from "../../../Dto/formDto";
+import { ValidateParams } from "../../../Lib/utile";
+import AppPagination from "../../../Component/AppPagination";
+import * as yup from "yup";
+import PageHeader from "../../../Component/commonPageHeader";
+import type { StoreKPIDto } from "../../../model/storeTargetType";
 
-const StoreTarget = () => {
+const storeKPIValidationSchema = yup.object({
+  kpiName: yup.string().required("KPI Name is required"),
+  kpiTarget: yup.number().min(0, "Must be positive"),
+  kpiAchievement: yup.number().min(0, "Must be positive"),
+});
+
+const StoreKPI = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const storeId = searchParams.get("id");
+  const storeTargetId = searchParams.get("targetId");
+  const storeId = searchParams.get("storeId");
 
   const [params, setParams] = useState<QueryParamsType>({});
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedStoreTarget, setSelectedStoreTarget] = useState<StoreMonthlyTargetDto | null>(null);
+  const [selectedKPI, setSelectedKPI] = useState<StoreKPIDto | null>(null);
   const [processDialogOpen, setProcessDialogOpen] = useState(false);
 
   // Process form state
@@ -50,74 +54,90 @@ const StoreTarget = () => {
     year: new Date().getFullYear(),
     month: new Date().getMonth() + 1,
     brandCode: "",
+    category: "",
     ruleIds: "",
   });
 
   // API hooks
-  const { data: targetsData, isLoading, error } = useGetAllStoreTargetsQuery({
-    ...ValidateParams(params),
-    StoreId: storeId ? parseInt(storeId) : undefined,
-  });
+  const { data: kpisData, isLoading, error } = useGetStoreKPIsQuery(
+    {
+      storeTargetId: storeTargetId ? parseInt(storeTargetId) : 0,
+      params: ValidateParams(params),
+    },
+    { skip: !storeTargetId }
+  );
 
-  const [addStoreTarget] = useAddStoreTargetMutation();
-  const [editStoreTarget] = useEditStoreTargetMutation();
-  const [deleteStoreTarget] = useDeleteStoreTargetMutation();
-  const [processStoreTarget, { isLoading: isProcessing }] = useProcessStoreTargetMutation();
+  const [addKPI] = useAddStoreKPIMutation();
+  const [editKPI] = useEditStoreKPIMutation();
+  const [deleteKPI] = useDeleteStoreKPIMutation();
+  const [processKPI, { isLoading: isProcessing }] = useProcessStoreKPIMutation();
 
-  const StoreTargetColumns = [
+  const KPIColumns = [
     { id: "id", label: "ID" },
-    { id: "year", label: "Year" },
-    { id: "month", label: "Month" },
-    { id: "brandCode", label: "Brand Code" },
-    { id: "targetAmount", label: "Target Amount", format: (value: number) => `₹${value.toLocaleString()}` },
+    { id: "kpiName", label: "KPI Name" },
+    { id: "kpiTarget", label: "Target" },
+    { id: "kpiAchievement", label: "Achievement" },
+    { id: "ruleId", label: "Rule ID" },
   ];
 
-  const onSubmit = async (formData: StoreMonthlyTargetDto) => {
+  const kpiFields = [
+    {
+      name: "kpiName",
+      label: "KPI Name",
+      type: "text" as const,
+      required: true,
+    },
+    {
+      name: "kpiTarget",
+      label: "KPI Target",
+      type: "number" as const,
+    },
+    {
+      name: "kpiAchievement",
+      label: "KPI Achievement",
+      type: "number" as const,
+    },
+  ];
+
+  const onSubmit = async (formData: StoreKPIDto) => {
     try {
       const payload = {
         ...formData,
-        storeId: storeId ? parseInt(storeId) : formData.storeId,
+        storeTargetId: storeTargetId ? parseInt(storeTargetId) : formData.storeTargetId,
       };
 
-      if (selectedStoreTarget?.id) {
-        await editStoreTarget({ ...payload, id: selectedStoreTarget.id }).unwrap();
-        alert("Store Target updated successfully");
+      if (selectedKPI?.id) {
+        await editKPI({ ...payload, id: selectedKPI.id }).unwrap();
+        console.log("KPI updated successfully");
       } else {
-        await addStoreTarget(payload).unwrap();
-        alert("Store Target added successfully");
+        await addKPI(payload).unwrap();
+        console.log("KPI added successfully");
       }
       setModalOpen(false);
-      setSelectedStoreTarget(null);
+      setSelectedKPI(null);
     } catch (err) {
-      console.error("Failed to save store target:", err);
-      alert("Failed to save store target");
+      console.error("Failed to save KPI:", err);
     }
   };
 
-  const handleDelete = async (row: StoreMonthlyTargetDto) => {
-    if (row.id && window.confirm("Are you sure you want to delete this store target?")) {
+  const handleDelete = async (row: StoreKPIDto) => {
+    if (row.id && window.confirm("Are you sure you want to delete this KPI?")) {
       try {
-        await deleteStoreTarget(row.id).unwrap();
-        alert("Store Target deleted successfully");
+        await deleteKPI(row.id).unwrap();
       } catch (err) {
         console.error("Failed to delete:", err);
-        alert("Failed to delete store target");
       }
     }
   };
 
-  const handleViewKPIs = (row: StoreMonthlyTargetDto) => {
-    navigate(`/settings/storeKPI?targetId=${row.id}&storeId=${storeId}`);
-  };
-
-  const handleProcessTarget = async () => {
+  const handleProcessKPI = async () => {
     if (!storeId) {
       alert("Store ID is required");
       return;
     }
 
-    if (!processForm.brandCode) {
-      alert("Brand Code is required");
+    if (!processForm.category) {
+      alert("Category is required");
       return;
     }
 
@@ -126,54 +146,47 @@ const StoreTarget = () => {
         ? processForm.ruleIds.split(",").map((id) => parseInt(id.trim())).filter((id) => !isNaN(id))
         : undefined;
 
-      await processStoreTarget({
+      await processKPI({
         year: processForm.year,
         month: processForm.month,
         storeId: parseInt(storeId),
         brandCode: processForm.brandCode,
+        category: processForm.category,
         ruleIdsToUse: ruleIdsArray,
       }).unwrap();
 
-      alert("Store Target processed successfully!");
+      alert("Store KPI processed successfully!");
       setProcessDialogOpen(false);
       setProcessForm({
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1,
         brandCode: "",
+        category: "",
         ruleIds: "",
       });
     } catch (err) {
-      console.error("Failed to process store target:", err);
-      alert("Failed to process store target");
+      console.error("Failed to process KPI:", err);
+      alert("Failed to process KPI");
     }
   };
 
-  const storeTargetFields = () => {
-    const fields = [...StoreTargetFormFields];
-    // Add storeId if not in URL
-    if (!storeId) {
-      fields.unshift({
-        name: "storeId",
-        label: "Store ID",
-        type: "number",
-        required: true,
-      });
-    }
-    return fields;
-  };
+  if (!storeTargetId) {
+    return (
+      <CommisionContainer>
+        <Alert severity="warning">Store Target ID is required to view KPIs</Alert>
+      </CommisionContainer>
+    );
+  }
 
   if (isLoading) {
     return (
       <CommisionContainer>
         <PageHeader
-          title="Store Target"
-          btntitle="Add Store Target"
+          title="Store KPIs"
+          btntitle="Add KPI"
           onActionClick={() => setModalOpen(true)}
         />
-        <div style={{ padding: "20px", textAlign: "center" }}>
-          <CircularProgress />
-          <Typography sx={{ mt: 2 }}>Loading store targets...</Typography>
-        </div>
+        <div style={{ padding: "20px", textAlign: "center" }}>Loading KPIs...</div>
       </CommisionContainer>
     );
   }
@@ -182,11 +195,11 @@ const StoreTarget = () => {
     return (
       <CommisionContainer>
         <PageHeader
-          title="Store Target"
-          btntitle="Add Store Target"
+          title="Store KPIs"
+          btntitle="Add KPI"
           onActionClick={() => setModalOpen(true)}
         />
-        <Alert severity="error">Error loading store targets. Please try again.</Alert>
+        <Alert severity="error">Error loading KPIs. Please try again.</Alert>
       </CommisionContainer>
     );
   }
@@ -195,28 +208,27 @@ const StoreTarget = () => {
     <>
       <CommisionContainer>
         <PageHeader
-          title={`Store Target ${storeId ? `- Store #${storeId}` : ''}`}
-          btntitle="Add Store Target"
+          title="Store KPIs"
+          btntitle="Add KPI"
           onActionClick={() => setModalOpen(true)}
-          btntitle2="Process Target"
+          btntitle2="Process KPI"
           onActionClick2={() => setProcessDialogOpen(true)}
         />
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <CommonTable
-            columns={StoreTargetColumns}
-            rows={targetsData?.items || []}
+            columns={KPIColumns}
+            rows={kpisData?.items || []}
             actions={{
-              onView: handleViewKPIs,
               onEdit: (row) => {
-                setSelectedStoreTarget(row);
+                setSelectedKPI(row);
                 setModalOpen(true);
               },
               onDelete: handleDelete,
             }}
           />
-          {targetsData?.metaData && (
+          {kpisData?.metaData && (
             <AppPagination
-              metaData={targetsData.metaData}
+              metaData={kpisData.metaData}
               onPageChange={(page: number) => setParams({ ...params, PageNumber: page })}
             />
           )}
@@ -225,29 +237,28 @@ const StoreTarget = () => {
 
       <Footer />
 
-      {/* Add/Edit Store Target Dialog */}
+      {/* Add/Edit KPI Dialog */}
       <CommonDialog
         open={isModalOpen}
         onClose={() => {
           setModalOpen(false);
-          setSelectedStoreTarget(null);
+          setSelectedKPI(null);
         }}
         onSubmit={onSubmit}
-        title={selectedStoreTarget ? "Edit Store Target" : "Add Store Target"}
-        validationSchema={storeTargetFormValidationSchema}
-        fields={storeTargetFields()}
+        title={selectedKPI ? "Edit KPI" : "Add KPI"}
+        validationSchema={storeKPIValidationSchema}
+        fields={kpiFields}
         defaultValues={
-          selectedStoreTarget || {
-            storeId: storeId ? parseInt(storeId) : undefined,
-            year: new Date().getFullYear(),
-            month: new Date().getMonth() + 1,
-            brandCode: "",
-            targetAmount: 0,
+          selectedKPI || {
+            storeTargetId: storeTargetId ? parseInt(storeTargetId) : undefined,
+            kpiName: "",
+            kpiTarget: 0,
+            kpiAchievement: 0,
           }
         }
       />
 
-      
+      {/* Process KPI Dialog */}
       <Dialog open={processDialogOpen} fullWidth maxWidth="sm">
         <DialogTitle
           sx={{
@@ -257,7 +268,7 @@ const StoreTarget = () => {
           }}
         >
           <Typography variant="h6" fontWeight={600}>
-            Process Store Target
+            Process Store KPI
           </Typography>
           <Button color="error" onClick={() => setProcessDialogOpen(false)}>
             Close
@@ -266,7 +277,7 @@ const StoreTarget = () => {
         <DialogContent>
           <Box sx={{ my: 2 }}>
             <Grid container spacing={2}>
-              <Grid size={{xs:12, sm:6}}>
+              <Grid size={{xs:12}} >
                 <TextField
                   fullWidth
                   size="small"
@@ -278,7 +289,7 @@ const StoreTarget = () => {
                   }
                 />
               </Grid>
-              <Grid size={{xs:12, sm:6}}>
+              <Grid size={{xs:12}} >
                 <TextField
                   fullWidth
                   size="small"
@@ -291,7 +302,7 @@ const StoreTarget = () => {
                   inputProps={{ min: 1, max: 12 }}
                 />
               </Grid>
-              <Grid size={{xs:12}} >
+              <Grid size={{xs:12}}>
                 <TextField
                   fullWidth
                   size="small"
@@ -303,7 +314,20 @@ const StoreTarget = () => {
                   required
                 />
               </Grid>
-              <Grid size={{xs:12}} >
+              <Grid size={{xs:12}}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Category"
+                  value={processForm.category}
+                  onChange={(e) =>
+                    setProcessForm({ ...processForm, category: e.target.value })
+                  }
+                  required
+                  helperText="Category to process (e.g., Electronics, Clothing)"
+                />
+              </Grid>
+              <Grid size={{xs:12}}>
                 <TextField
                   fullWidth
                   size="small"
@@ -323,8 +347,8 @@ const StoreTarget = () => {
               variant="contained"
               color="success"
               size="small"
-              onClick={handleProcessTarget}
-              disabled={isProcessing || !processForm.brandCode}
+              onClick={handleProcessKPI}
+              disabled={isProcessing || !processForm.brandCode || !processForm.category}
             >
               {isProcessing ? <CircularProgress size={20} /> : "Process"}
             </Button>
@@ -335,4 +359,4 @@ const StoreTarget = () => {
   );
 };
 
-export default StoreTarget;
+export default StoreKPI;

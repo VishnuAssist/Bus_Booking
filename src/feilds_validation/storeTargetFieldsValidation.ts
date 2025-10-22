@@ -1,42 +1,48 @@
+
 import * as yup from "yup";
-import type { FormFieldProps } from "../model/formFeilds";
-import type { StoreTargetType } from "../model/storeTargetType";
 
-
-export const StoreTargetFormFields: FormFieldProps<StoreTargetType>[] = [
-    {
-        label: "Year",
-        name: "year",
-        type: "date",
-        required: true,
-        size: { sm: 12, md: 6, lg: 6 },
-    },
-    {
-        label: "Month",
-        name: "month",
-        type: "date",
-        required: true,
-        size: { sm: 12, md: 6, lg: 6 },
-    },
-    {
-        label: "Target Amount",
-        name: "targetAmount",
-        type: "number",
-        required: true,
-        size: { sm: 12, md: 6, lg: 6 },
-    },
-    {
-        label: "Brand",
-        name: "brandId",
-        type: "text",
-        required: true,
-        size: { sm: 12, md: 6, lg: 6 },
-    },
-];
-
-export const storeTargetFormValidationSchema = yup.object().shape({
-    year: yup.date().required("Year is required"),
-    month: yup.date().required("Month is required"),
-    targetAmount: yup.number().required("Target Amount is required"),
-    brandId: yup.number().required("Brand Id is required"),
+export const storeTargetFormValidationSchema = yup.object({
+  storeId: yup.number().required("Store ID is required").positive("Must be positive"),
+  year: yup
+    .number()
+    .required("Year is required")
+    .min(2000, "Year must be at least 2000")
+    .max(2100, "Year must be less than 2100"),
+  month: yup
+    .number()
+    .required("Month is required")
+    .min(1, "Month must be between 1 and 12")
+    .max(12, "Month must be between 1 and 12"),
+  brandCode: yup.string().required("Brand Code is required"),
+  targetAmount: yup
+    .number()
+    .required("Target Amount is required")
+    .min(0, "Target Amount must be positive"),
 });
+
+export const StoreTargetFormFields = [
+  {
+    name: "year",
+    label: "Year",
+    type: "number" as const,
+    required: true,
+  },
+  {
+    name: "month",
+    label: "Month",
+    type: "number" as const,
+    required: true,
+  },
+  {
+    name: "brandCode",
+    label: "Brand Code",
+    type: "text" as const,
+    required: true,
+  },
+  {
+    name: "targetAmount",
+    label: "Target Amount",
+    type: "number" as const,
+    required: true,
+  },
+];

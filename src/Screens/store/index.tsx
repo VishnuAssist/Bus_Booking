@@ -10,16 +10,16 @@ import {
   useGetAllStoresQuery,
   useAddStoreMutation,
   useEditStoreMutation,
- 
   useDeleteStoreMutation,
 } from "../../Api/StoreApi";
 import type { StoreDto } from "../../model/storeType";
 import type { QueryParamsType } from "../../Dto/formDto";
 import { ValidateParams } from "../../Lib/utile";
-
+import AppPagination from "../../Component/AppPagination";
+import { Paper } from "@mui/material";
 
 const Store = () => {
-const [params, setParams] = useState<QueryParamsType>({});
+  const [params, setParams] = useState<QueryParamsType>({});
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<StoreDto | null>(null);
 
@@ -42,7 +42,6 @@ const [params, setParams] = useState<QueryParamsType>({});
   const onSubmit = async (formData: StoreDto) => {
     try {
       if (selectedStore?.storeId) {
-    
         await editStore({
           ...formData,
           storeId: selectedStore.storeId,
@@ -50,13 +49,11 @@ const [params, setParams] = useState<QueryParamsType>({});
         console.log("Store updated successfully");
       } else {
         await addStore(formData).unwrap();
-  
       }
       setModalOpen(false);
       setSelectedStore(null);
     } catch (err) {
       console.error("Failed to save store:", err);
-    
     }
   };
 
@@ -64,9 +61,8 @@ const [params, setParams] = useState<QueryParamsType>({});
     if (row.storeId && window.confirm("Are you sure you want to delete this store?")) {
       try {
         await deleteStore(row.storeId).unwrap();
-     
       } catch (err) {
-       
+        console.error("Failed to delete:", err);
       }
     }
   };
@@ -91,12 +87,11 @@ const [params, setParams] = useState<QueryParamsType>({});
     return fields;
   };
 
-  const handleView = (row: StoreDto) => {
-    navi(`/settings/storeTarget/${row.storeId}`);
+  const handleViewTargets = (row: StoreDto) => {
+    navi(`/settings/storeTarget?id=${row.storeId}`);
   };
 
- console.log("storesData", storesData);
-
+  console.log("storesData", storesData);
 
   if (isLoading) {
     return (
@@ -122,29 +117,28 @@ const [params, setParams] = useState<QueryParamsType>({});
     <>
       <CommisionContainer>
         <PageHeader title="Store" btntitle="Add Store" onActionClick={() => setModalOpen(true)} />
-        <CommonTable
-          columns={StoreColumns}
-          rows={storesData?.items || []}
-          page={storesData?.metaData.currentPage??0}
-          rowsPerPage={storesData?.metaData.pageSize??0}
-          onPageChange={()=>setParams((prev) => ({
-            ...prev,
-            pageNumber: (storesData?.metaData.currentPage??0) + 1,
-          }))}
-          onRowsPerPageChange={(rowPerPage) => setParams((prev) => ({
-            ...prev,
-            pageSize: rowPerPage,
-          }))}
-        //   totalCount={storesData?.metaData?.totalCount??0}
-          actions={{
-            onView: handleView,
-            onEdit: (row) => {
-              setSelectedStore(row);
-              setModalOpen(true);
-            },
-            onDelete: handleDelete,
-          }}
-        />
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <CommonTable
+            columns={StoreColumns}
+            rows={storesData?.items || []}
+            actions={{
+              onView: handleViewTargets,
+              onEdit: (row) => {
+                setSelectedStore(row);
+                setModalOpen(true);
+              },
+              onDelete: handleDelete,
+            }}
+          />
+          {storesData?.metaData && (
+            <AppPagination
+              metaData={storesData?.metaData}
+              onPageChange={(page: number) =>
+                setParams({ ...params, PageNumber: page })
+              }
+            />
+          )}
+        </Paper>
       </CommisionContainer>
 
       <Footer />
