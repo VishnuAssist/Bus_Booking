@@ -302,7 +302,7 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
               <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                 <Box sx={{ flex: "1 1 300px", minWidth: "300px" }}>
                   <TextField
-                    label="Workflow Name *"
+                    label="Workflow Name"
                     value={state.workflowData.workflowName}
                     onChange={(e) =>
                       actions.updateWorkflowData("workflowName", e.target.value)
