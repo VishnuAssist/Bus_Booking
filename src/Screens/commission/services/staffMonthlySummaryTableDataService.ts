@@ -1,37 +1,44 @@
-import type { StaffCommissionResponseType } from "../../../model/commissionType";
+import type { StaffMonthlySummaryResponseType } from "../../../model/commissionType";
 
 export const staffMonthlySummaryTableDataService = (
-  staffCommissions: StaffCommissionResponseType[] | undefined
+  staffCommissions: StaffMonthlySummaryResponseType[] | undefined
 ) => {
   const HistoryColumns = [
-    { id: "username", label: "UserName" },
-    { id: "payout", label: "PayOut" },
-    { id: "store", label: "Store" },
-    { id: "sales", label: "Sales" },
-    { id: "workingDays", label: "Total No of Working Day" },
-    { id: "date", label: "Date" },
-    { id: "remarks", label: "Remarks" },
+    { id: "id", label: "ID" },
+    { id: "userId", label: "User ID" },
+    { id: "year", label: "Year" },
+    { id: "month", label: "Month" },
+    { id: "target", label: "Target" },
+    { id: "achivement", label: "Achivement" },
+    { id: "totalPayout", label: "Total Payout" },
+    { id: "totalWorkingDays", label: "Total Working Days" },
+    { id: "leaveDays", label: "Leave Days" },
+    { id: "ruleId", label: "Rule ID" },
+    { id: "userGroupId", label: "User Group ID" },
+    { id: "groupTargetAchieved", label: "Group Target Achieved" },
+    { id: "totalGroupTarget", label: "Total Group Target" },
+    { id: "status", label: "Status" },
+    { id: "note", label: "Note" },
   ];
 
   const rows = staffCommissions
-    ? staffCommissions.map((commission: StaffCommissionResponseType) => {
-        const workingDaysMatch = commission.note.match(/Working Days: (\d+)/);
-        const salesMatch = commission.note.match(/Total Sales: \$([\d.]+)/);
-
+    ? staffCommissions.map((commission: StaffMonthlySummaryResponseType) => {
         return {
-          username: commission.userName,
-          position: null,
-          target: null,
-          sales: salesMatch ? parseFloat(salesMatch[1]) : 0,
-          payout: commission.payout,
-          store: commission.storeName || commission.storeId || null,
-          targetAchivement: null,
-          storeKpi: null,
-          mcDays: null,
-          workingDays: workingDaysMatch ? parseInt(workingDaysMatch[1]) : 0,
-          date: commission.commissinDate,
-          totalPayout: commission.payout,
-          remarks: commission.note,
+          id: commission.id,
+          userId: commission.userId,
+          year: commission.year,
+          month: commission.month,
+          target: commission.target,
+          achivement: commission.achivement,
+          totalPayout: commission.totalPayout,
+          totalWorkingDays: commission.totalWorkingDays,
+          leaveDays: commission.leaveDays,
+          ruleId: commission.ruleId,
+          userGroupId: commission.userGroupId,
+          groupTargetAchieved: commission.groupTargetAchieved,
+          totalGroupTarget: commission.totalGroupTarget,
+          status: commission.status,
+          note: commission.note,
         };
       })
     : [];

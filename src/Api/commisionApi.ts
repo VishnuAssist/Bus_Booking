@@ -5,6 +5,7 @@ import type {
   ProcessMonthlySummaryPayload,
   StaffCommissionResponseType,
   MonthlySummarriesQueryParamsType,
+  StaffMonthlySummaryResponseType,
 } from "../model/commissionType";
 
 export const commissionApi = createApi({
@@ -24,15 +25,16 @@ export const commissionApi = createApi({
       }),
     }),
 
-    getMonthlySummarries: builder.query<void, MonthlySummarriesQueryParamsType>(
-      {
-        query: (args) => ({
-          method: "GET",
-          url: "/Staff/summarries",
-          params: args,
-        }),
-      }
-    ),
+    getMonthlySummarries: builder.query<
+      StaffMonthlySummaryResponseType[],
+      MonthlySummarriesQueryParamsType
+    >({
+      query: (args) => ({
+        method: "GET",
+        url: "/Staff/summaries",
+        params: args,
+      }),
+    }),
 
     processStaffCommission: builder.mutation<
       void,
