@@ -9,19 +9,12 @@ export interface MonthlySummarriesQueryParamsType {
 export interface StaffCommissionResponseType {
   id: number;
   userId: string;
+  payout: number;
+  note: string;
+  commissionTypeId: number | null;
+  ruleId: number;
   year: number;
   month: number;
-  target: number;
-  achivement: number;
-  totalPayout: number;
-  totalWorkingDays: number;
-  leaveDays: number;
-  ruleId: number;
-  userGroupId: number;
-  groupTargetAchieved: number;
-  totalGroupTarget: number | null;
-  status: number;
-  note: string;
 }
 
 export interface StaffMonthlySummaryResponseType {
