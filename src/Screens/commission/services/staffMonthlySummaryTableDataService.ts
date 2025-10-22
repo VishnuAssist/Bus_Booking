@@ -5,7 +5,6 @@ export const staffMonthlySummaryTableDataService = (
 ) => {
   const HistoryColumns = [
     { id: "id", label: "ID" },
-    { id: "userId", label: "User ID" },
     { id: "year", label: "Year" },
     { id: "month", label: "Month" },
     { id: "target", label: "Target" },
@@ -25,7 +24,6 @@ export const staffMonthlySummaryTableDataService = (
     ? staffCommissions.map((commission: StaffMonthlySummaryResponseType) => {
         return {
           id: commission.id,
-          userId: commission.userId,
           year: commission.year,
           month: commission.month,
           target: commission.target,

@@ -5,7 +5,6 @@ export const staffCommissionsTableDataService = (
 ) => {
   const HistoryColumns = [
     { id: "id", label: "ID" },
-    { id: "userId", label: "User ID" },
     { id: "payout", label: "PayOut" },
     { id: "note", label: "Note" },
     { id: "commissionTypeId", label: "Commission Type ID" },
@@ -18,7 +17,6 @@ export const staffCommissionsTableDataService = (
     ? staffCommissions.map((commission: StaffCommissionResponseType) => {
         return {
           id: commission.id,
-          userId: commission.userId,
           payout: commission.payout,
           note: commission.note,
           commissionTypeId: commission.commissionTypeId,
