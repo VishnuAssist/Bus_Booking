@@ -1,57 +1,21 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Card,
-  CardContent,
-} from "@mui/material";
-
-interface AttendanceRecord {
-  id: number;
-  clockIn: string;
-  clockOut: string;
-  shiftId: string;
-  note: string;
-  date: string;
-}
-
-
-const dummyRecords: AttendanceRecord[] = [
-  {
-    id: 1,
-    clockIn: "09:00 AM",
-    clockOut: "06:00 PM",
-    shiftId: "Shift-101",
-    note: "Morning shift",
-    date: "2025-10-03",
-  },
-  {
-    id: 2,
-    clockIn: "10:00 AM",
-    clockOut: "07:00 PM",
-    shiftId: "Shift-102",
-    note: "Late shift",
-    date: "2025-10-04",
-  },
-  {
-    id: 3,
-    clockIn: "10:00 AM",
-    clockOut: "07:00 PM",
-    shiftId: "Shift-103",
-    note: "mide shift",
-    date: "2025-10-05",
-  },
-
-];
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardContent, Typography } from "@mui/material";
+import { useGetAllAttendanceQuery } from "../../../Api/AttendanceApi"; 
+import type { attendanceType } from "../../../model/attendanceType";
+import NoDataCard from "../../../Component/NoDataCard";
+import TableSkeleton from "../../../Component/Skeletons/TableSkeleton";
 
 const AttendanceList = () => {
+  const { data, isLoading } = useGetAllAttendanceQuery({}); 
+console.log("attendance",data)
   return (
-    <>
-      <Card sx={{ height: "100%" }}>
-        <CardContent>
+    <Card sx={{ height: "100%" }}>
+      <CardContent>
+        {isLoading &&
+        <TableSkeleton/>}
+        
+        
+        {data?.items?.length === 0 && <NoDataCard sx={{ height: "100%", minHeight: 100 ,}} text="No attendance records"/>}
+        { data?.items && data?.items?.length > 0 && (
           <TableContainer>
             <Table>
               <TableHead>
@@ -64,21 +28,23 @@ const AttendanceList = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {dummyRecords.map((record) => (
+                {data?.items.map((record: attendanceType) => (
                   <TableRow key={record.id}>
-                    <TableCell>{record.clockIn}</TableCell>
-                    <TableCell>{record.clockOut}</TableCell>
+                    <TableCell>{record.checkInTime}</TableCell>
+                    <TableCell>{record.checkOutTime}</TableCell>
                     <TableCell>{record.shiftId}</TableCell>
-                    <TableCell>{record.note}</TableCell>
-                    <TableCell>{record.date}</TableCell>
+                    <TableCell>{record.notes}</TableCell>
+                    
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-        </CardContent>
-      </Card>
-    </>
+        )}
+
+        
+      </CardContent>
+    </Card>
   );
 };
 
