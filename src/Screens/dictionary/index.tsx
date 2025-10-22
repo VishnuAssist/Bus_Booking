@@ -91,7 +91,6 @@ const DictionaryPage = () => {
     },
   ];
 
-  console.log("select", selectedDictionary);
   const handleView = (row: dictionarytype) => console.log("View", row);
   const handleEdit = (row: dictionarytype) => {
     setSelectedDictionary(row);

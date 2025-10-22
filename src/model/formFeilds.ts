@@ -27,25 +27,25 @@ export interface FormFieldProps<T> {
   label?: string;
   tooltip?: string;
   type?:
-  | "text"
-  | "textarea"
-  | "number"
-  | "password"
-  | "select"
-  | "checkbox"
-  | "radio"
-  | "autocomplete"
-  | "D&DUpload"
-  | "file"
-  | "date"
-  | "multiDate"
-  | "time"
-  | "TimePicker"
-  | "datetime-local"
-  | "map"
-  | "autocompletemultiple"
-  | "D&DUploadImage"
-  | "skipDates";
+    | "text"
+    | "textarea"
+    | "number"
+    | "password"
+    | "select"
+    | "checkbox"
+    | "radio"
+    | "autocomplete"
+    | "D&DUpload"
+    | "file"
+    | "date"
+    | "multiDate"
+    | "time"
+    | "TimePicker"
+    | "datetime-local"
+    | "map"
+    | "autocompletemultiple"
+    | "D&DUploadImage"
+    | "skipDates";
 
   skipDates?: Array<{ startDate: string; endDate: string }>;
 
