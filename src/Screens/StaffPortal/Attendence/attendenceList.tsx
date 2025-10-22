@@ -1,21 +1,39 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardContent, Typography } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardContent,  } from "@mui/material";
 import { useGetAllAttendanceQuery } from "../../../Api/AttendanceApi"; 
 import type { attendanceType } from "../../../model/attendanceType";
 import NoDataCard from "../../../Component/NoDataCard";
 import TableSkeleton from "../../../Component/Skeletons/TableSkeleton";
+import { useAppDispatch, useAppSelector } from "../../../Store/StoreConfig";
+import AppPagination from "../../../Component/AppPagination";
+import { setAttendanceParams, setDictionaryParams } from "../../../Store/slice/ParamsSlice";
+import { getAxiosParamsA } from "../../../Api/util";
+import AttendanceSearch from "./AttendenceSearch";
 
 const AttendanceList = () => {
-  const { data, isLoading } = useGetAllAttendanceQuery({}); 
-console.log("attendance",data)
+
+   const dispatch = useAppDispatch();
+  
+      const attendanceParams = useAppSelector((state) => state.auth.Params.AttendanceParams);
+  
+  
+    const { data: attendanceData ,isLoading} = useGetAllAttendanceQuery(
+        getAxiosParamsA({ ...attendanceParams, PageSize: 5 })
+      );
+console.log("attendance",attendanceData)
+
   return (
     <Card sx={{ height: "100%" }}>
+      <AttendanceSearch
+       params={attendanceParams}
+                    setParams={(p) => dispatch(setAttendanceParams(p))}/>
       <CardContent>
+
         {isLoading &&
         <TableSkeleton/>}
         
         
-        {data?.items?.length === 0 && <NoDataCard sx={{ height: "100%", minHeight: 100 ,}} text="No attendance records"/>}
-        { data?.items && data?.items?.length > 0 && (
+        {attendanceData?.items?.length === 0 && <NoDataCard sx={{ height: "100%", minHeight: 100 ,}} text="No attendance records"/>}
+        { attendanceData?.items && attendanceData?.items?.length > 0 && (
           <TableContainer>
             <Table>
               <TableHead>
@@ -28,7 +46,7 @@ console.log("attendance",data)
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data?.items.map((record: attendanceType) => (
+                {attendanceData?.items.map((record: attendanceType) => (
                   <TableRow key={record.id}>
                     <TableCell>{record.checkInTime}</TableCell>
                     <TableCell>{record.checkOutTime}</TableCell>
@@ -41,9 +59,17 @@ console.log("attendance",data)
             </Table>
           </TableContainer>
         )}
+ 
 
-        
       </CardContent>
+       {attendanceData?.metaData && (
+              <AppPagination
+                metaData={attendanceData?.metaData}
+                onPageChange={(page: number) =>
+                  dispatch(setAttendanceParams({ PageNumber: page }))
+                }
+              />
+            )}
     </Card>
   );
 };

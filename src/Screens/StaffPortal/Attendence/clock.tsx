@@ -21,7 +21,7 @@ const ShiftClockMUI: React.FC = () => {
   const [clockInTime, setClockInTime] = useState("");
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
   const [addEditAttendance, { isLoading,  }] = useAddEditAttendanceMutation();
-const { data: stores, isLoading: storesLoading, error: storesError } = useGetAllStoresQuery({});
+const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
 
   const { user } = useSelector((state: RootState) => state.auth.account);
   
@@ -76,7 +76,7 @@ const { data: stores, isLoading: storesLoading, error: storesError } = useGetAll
       toast.error("User or store information is missing. Please log in again.");
       return;
     }
-
+ 
     const clockOut = formatDateToTimeSpan(new Date());
     const shiftData: attendanceType = {
       checkInTime: clockInTime,
@@ -131,7 +131,7 @@ const { data: stores, isLoading: storesLoading, error: storesError } = useGetAll
 <FormControl fullWidth sx={{ mb: 2 }} disabled={isRunning || storesLoading}>
         <InputLabel id="store-select-label">Select Store</InputLabel>
         <Select
-        sx={{mt:1}}
+        
           labelId="store-select-label"
           value={selectedStoreId || ""}
           label="Select Store"
