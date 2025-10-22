@@ -7,6 +7,8 @@ import type {
   MonthlySummarriesQueryParamsType,
   StaffMonthlySummaryResponseType,
 } from "../model/commissionType";
+import type { MetaData } from "../model/common";
+import { dataWithMeta } from "../Lib/ApiUtil";
 
 export const commissionApi = createApi({
   reducerPath: "commissionApi",
@@ -15,7 +17,7 @@ export const commissionApi = createApi({
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
     getStaffCommissions: builder.query<
-      StaffCommissionResponseType[],
+      { items: StaffCommissionResponseType[]; metaData: MetaData },
       MonthlySummarriesQueryParamsType
     >({
       query: (args) => ({
@@ -23,10 +25,15 @@ export const commissionApi = createApi({
         url: "/Staff/commissions",
         params: args,
       }),
+      transformResponse: (
+        response: StaffCommissionResponseType[],
+        meta: MetaData
+      ) =>
+        dataWithMeta<StaffCommissionResponseType[], MetaData>(response, meta),
     }),
 
     getMonthlySummarries: builder.query<
-      StaffMonthlySummaryResponseType[],
+      { items: StaffMonthlySummaryResponseType[]; metaData: MetaData },
       MonthlySummarriesQueryParamsType
     >({
       query: (args) => ({
@@ -34,6 +41,14 @@ export const commissionApi = createApi({
         url: "/Staff/summaries",
         params: args,
       }),
+      transformResponse: (
+        response: StaffMonthlySummaryResponseType[],
+        meta: MetaData
+      ) =>
+        dataWithMeta<StaffMonthlySummaryResponseType[], MetaData>(
+          response,
+          meta
+        ),
     }),
 
     processStaffCommission: builder.mutation<

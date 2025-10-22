@@ -76,10 +76,10 @@ const Commission = () => {
                     />
                   </TabList>
                 </Box>
-                <TabPanel value="staff-commission">
+                <TabPanel value="staff-commission" sx={{ padding: 0 }}>
                   <StaffCommissionTable />
                 </TabPanel>
-                <TabPanel value="staff-monthly-summary">
+                <TabPanel value="staff-monthly-summary" sx={{ padding: 0 }}>
                   <StaffSummaryTable />
                 </TabPanel>
               </TabContext>

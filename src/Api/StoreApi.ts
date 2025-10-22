@@ -5,19 +5,19 @@ import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
 import type { StoreDto } from "../model/storeType";
 import type { QueryParamsType } from "../Dto/formDto";
-import type { ProcessKPIRequest, ProcessStoreTargetRequest, StoreKPIDto, StoreMonthlyTargetDto } from "../model/storeTargetType";
-
-
-
-
+import type {
+  ProcessKPIRequest,
+  ProcessStoreTargetRequest,
+  StoreKPIDto,
+  StoreMonthlyTargetDto,
+} from "../model/storeTargetType";
 
 export const storeApi = createApi({
   reducerPath: "storeApi",
   baseQuery: APIFetchBase,
-  tagTypes: ["Store","StoreTarget","StoreKPI"],
+  tagTypes: ["Store", "StoreTarget", "StoreKPI"],
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
-    
     getAllStores: builder.query<
       { items: StoreDto[]; metaData: MetaData },
       Partial<QueryParamsType>
@@ -41,7 +41,6 @@ export const storeApi = createApi({
           : [{ type: "Store", id: "LIST" }],
     }),
 
-
     getStoreById: builder.query<StoreDto, number>({
       query: (id) => ({
         method: "GET",
@@ -49,7 +48,6 @@ export const storeApi = createApi({
       }),
       providesTags: (_result, _error, id) => [{ type: "Store", id }],
     }),
-
 
     addStore: builder.mutation<StoreDto, StoreDto>({
       query: (dto) => ({
@@ -60,7 +58,6 @@ export const storeApi = createApi({
       invalidatesTags: [{ type: "Store", id: "LIST" }],
     }),
 
-   
     editStore: builder.mutation<void, StoreDto>({
       query: ({ storeId, ...body }) => ({
         method: "PUT",
@@ -73,7 +70,6 @@ export const storeApi = createApi({
       ],
     }),
 
-    
     deleteStore: builder.mutation<void, number>({
       query: (id) => ({
         method: "DELETE",
@@ -108,7 +104,10 @@ export const storeApi = createApi({
     }),
 
     // Add Store Target
-    addStoreTarget: builder.mutation<StoreMonthlyTargetDto, StoreMonthlyTargetDto>({
+    addStoreTarget: builder.mutation<
+      StoreMonthlyTargetDto,
+      StoreMonthlyTargetDto
+    >({
       query: (dto) => ({
         method: "POST",
         url: "/Store/targets",
@@ -220,10 +219,8 @@ export const storeApi = createApi({
       }),
       invalidatesTags: [{ type: "StoreKPI", id: "LIST" }],
     }),
-  
   }),
 });
-
 
 export const {
   useGetAllStoresQuery,
@@ -231,7 +228,7 @@ export const {
   useAddStoreMutation,
   useEditStoreMutation,
   useDeleteStoreMutation,
-    useGetAllStoreTargetsQuery,
+  useGetAllStoreTargetsQuery,
   useAddStoreTargetMutation,
   useEditStoreTargetMutation,
   useDeleteStoreTargetMutation,

@@ -1,9 +1,9 @@
 export interface MonthlySummarriesQueryParamsType {
-  year: number;
-  month: number;
-  userId: string;
-  storeId: number;
-  userGroupId: number;
+  year?: number;
+  month?: number;
+  userId?: string;
+  storeId?: number;
+  userGroupId?: number;
 }
 
 export interface StaffCommissionResponseType {
