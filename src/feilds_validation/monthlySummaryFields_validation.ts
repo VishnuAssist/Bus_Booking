@@ -21,7 +21,8 @@ export const MonthlySummaryFormFields: FormFieldProps<ProcessMonthlySummaryPaylo
       label: "Store",
       name: "storeId",
       type: "autocomplete",
-      size: { sm: 12, md: 6, lg: 6 },
+  
+            size: { sm: 12, md: 6, lg: 6 },
       baseurl: "Store",
       autocompletelabel: {
         optionvalue: { id: "storeId" },
@@ -71,15 +72,15 @@ export const MonthlySummaryFormFields: FormFieldProps<ProcessMonthlySummaryPaylo
   ];
 
 export const monthlySummaryFormValidationSchema = yup.object().shape({
-  userId: yup.string().trim().required("User is required"),
+  userId: yup.mixed().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
 
-  storeId: yup.number().typeError("Store is required"),
+  storeId: yup.mixed().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
 
-  userGroupId: yup.number(),
+  userGroupId: yup.mixed().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
 
   year: yup.string().typeError("Year is required").required("Year is required"),
 
-  brandId: yup.number().typeError("Brand is required"),
+  brandId: yup.mixed().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
 
   ruleIdsToUse: yup
     .array()

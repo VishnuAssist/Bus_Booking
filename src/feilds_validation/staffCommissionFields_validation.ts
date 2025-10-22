@@ -57,13 +57,13 @@ export const StaffCommissionFormFields: FormFieldProps<ProcessStaffCommissionPay
   ];
 
 export const staffCommissionFormValidationSchema = yup.object().shape({
-  userId: yup.string().trim().required("User is required"),
+  userId: yup.string().trim().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
 
-  storeId: yup.number().typeError("Store is required"),
+  storeId: yup.number().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
 
   year: yup.string().typeError("Year is required").required("Year is required"),
 
-  brandId: yup.number().typeError("Brand is required"),
+  brandId: yup.number().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
 
   ruleIdsToUse: yup
     .array()
