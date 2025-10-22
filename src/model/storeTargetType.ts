@@ -29,6 +29,7 @@ export interface ProcessKPIRequest {
   year: number;
   month: number;
   storeId: number;
+  storeTarget: number;
   brandCode: string;
   category: string;
   ruleIdsToUse?: number[];
