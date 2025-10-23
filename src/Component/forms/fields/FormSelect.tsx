@@ -20,8 +20,7 @@ interface Props {
 }
 
 const FormSelect: React.FC<Props> = ({ value, onChange, options, multiple, required, disabled, fullWidth, size, params, Isall, baseUrl }) => {
-  console.log("params", params);
-  console.log("baseUrl", baseUrl);
+
 
   // const { data = [] } = useAutocompletedataQuery({
   //     params: ValidateParams({ ...defaultparams, ...params}),
@@ -30,7 +29,6 @@ const FormSelect: React.FC<Props> = ({ value, onChange, options, multiple, requi
 
   const resolvedOptions = options?.length !== 0 ? options : [];
 
-  console.log("resolvedOptions", resolvedOptions);
   const isValueValid = multiple
     ? Array.isArray(value) &&
     value.every((v) =>

@@ -49,11 +49,11 @@ function Sidebar({
   `
   );
 
-  const { username, token,role, email } = useAuth();
-  console.log("user",username)
-  console.log("token",token)
-  console.log("email",email)
-  console.log("email",role)
+  const { username, token, role, email } = useAuth();
+  // console.log("user",username)
+  // console.log("token",token)
+  // console.log("email",email)
+  // console.log("email",role)
   return (
     <>
       <SidebarWrapper
@@ -76,8 +76,8 @@ function Sidebar({
                   ),
                   0.5
                 )
-              : darken(theme.colors.alpha.black[100], 0.5),
-              // : theme.sidebar.background,
+              : // : darken(theme.colors.alpha.black[100], 0.5),
+                theme.sidebar.background,
           boxShadow:
             theme.palette.mode === "dark" ? theme.sidebar.boxShadow : "none",
         }}
@@ -105,7 +105,9 @@ function Sidebar({
                   mt: 1,
                 }}
               >
-                <IconButton sx={{bgcolor: "secondary.main", borderRadius: "4px" }}>
+                <IconButton
+                  sx={{ bgcolor: "secondary.main", borderRadius: "4px" }}
+                >
                   <FilterTiltShiftIcon />
                 </IconButton>
                 <Box>
@@ -123,7 +125,9 @@ function Sidebar({
                   justifyContent: "center",
                 }}
               >
-                <IconButton sx={{ bgcolor: "secondary.main", borderRadius: "4px" }}>
+                <IconButton
+                  sx={{ bgcolor: "secondary.main", borderRadius: "4px" }}
+                >
                   <FilterTiltShiftIcon />
                 </IconButton>
               </Box>
@@ -161,7 +165,7 @@ function Sidebar({
               }}
             >
               <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
-                  {username?.charAt(0).toUpperCase()}
+                {username?.charAt(0).toUpperCase()}
               </Avatar>
 
               <Box
@@ -187,8 +191,8 @@ function Sidebar({
                 justifyContent: "center",
               }}
             >
-                    <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
-                  {username?.charAt(0).toUpperCase()}
+              <Avatar sx={{ bgcolor: "primary.main", width: 40, height: 40 }}>
+                {username?.charAt(0).toUpperCase()}
               </Avatar>
             </Box>
           )}

@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import APIFetchBase from "../Store/ApiConfig";
 import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
-import type { Shift, ShiftType } from "../model/shiftType";
+import type { Shift } from "../model/shiftType";
 
 export const shiftApi = createApi({
   reducerPath: "shiftApi",
@@ -15,6 +15,14 @@ export const shiftApi = createApi({
         method: "POST",
         url: "/ShiftSchedule",
         body: args,
+      }),
+      invalidatesTags: ["ShiftApi"],
+    }),
+    putShift: builder.mutation<Shift,  { id: string }>({
+      query:  ({ id, ...body }) => ({
+        method: "PUT",
+        url: `/ShiftSchedule/${id}`,
+        body,
       }),
       invalidatesTags: ["ShiftApi"],
     }),
@@ -40,5 +48,5 @@ export const
  { 
   usePostShiftMutation,
   useGetallshiftQuery,
-
+  usePutShiftMutation,
  } = shiftApi;

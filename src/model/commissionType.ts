@@ -1,4 +1,6 @@
-export interface MonthlySummarriesQueryParamsType {
+import type { PaginationOptionsDto } from "../Dto/paginationOptionsDto";
+
+export interface MonthlySummarriesQueryParamsType extends PaginationOptionsDto {
   year?: number;
   month?: number;
   userId?: string;
