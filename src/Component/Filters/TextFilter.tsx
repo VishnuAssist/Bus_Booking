@@ -1,5 +1,5 @@
 import { Box, InputAdornment, TextField, InputLabel } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDebounce } from "../../hooks/useDebounce";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 
@@ -29,15 +29,19 @@ const TextFilter = ({
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
   const debouncedSearchTerm = useDebounce(localSearchTerm, debounceDelay);
 
+  // Use ref to store the latest onSearchChange function
+  const onSearchChangeRef = useRef(onSearchChange);
+  onSearchChangeRef.current = onSearchChange;
+
   // Update local state when searchTerm prop changes
   useEffect(() => {
     setLocalSearchTerm(searchTerm);
   }, [searchTerm]);
 
-  // Call onSearchChange when debounced value changes
+  // Call onSearchChange when debounced value changes (without onSearchChange in deps)
   useEffect(() => {
-    onSearchChange(debouncedSearchTerm);
-  }, [debouncedSearchTerm, onSearchChange]);
+    onSearchChangeRef.current(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

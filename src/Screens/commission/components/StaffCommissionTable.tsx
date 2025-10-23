@@ -18,13 +18,7 @@ const StaffCommissionTable = () => {
   const handleQueryParamsChange = (
     newQueryParams: MonthlySummarriesQueryParamsType
   ) => {
-    if (
-      queryParams.year !== newQueryParams.year ||
-      queryParams.month !== newQueryParams.month ||
-      queryParams.SearchTerm !== newQueryParams.SearchTerm
-    ) {
-      setQueryParams(newQueryParams);
-    }
+    setQueryParams(newQueryParams);
   };
 
   const { data: staffCommissions } = useGetStaffCommissionsQuery(queryParams);
