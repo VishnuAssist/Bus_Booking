@@ -1,17 +1,21 @@
 import { useFormContext, useFieldArray, Controller } from "react-hook-form";
-import { Box, Button, TextField,IconButton } from "@mui/material";
+import { Box, Button, TextField, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 interface Props {
   name: string;
   disabled?: boolean;
 }
-const SkipDates: React.FC<Props> = ({ name,disabled }) => {
-  const { control } = useFormContext();
+
+const SkipDates: React.FC<Props> = ({ name, disabled }) => {
+  const { control, watch } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
     control,
     name,
   });
+
+  const skipDates = watch(name);
 
   return (
     <Box>
@@ -22,8 +26,8 @@ const SkipDates: React.FC<Props> = ({ name,disabled }) => {
             display: "flex",
             gap: 2,
             alignItems: "center",
-            marginBottom: 1,
-            marginTop: 1,
+            mb: 1,
+            mt: 1,
           }}
         >
           <Controller
@@ -61,6 +65,7 @@ const SkipDates: React.FC<Props> = ({ name,disabled }) => {
           </IconButton>
         </Box>
       ))}
+
       <Button
         variant="contained"
         onClick={() => append({ startDate: "", endDate: "" })}

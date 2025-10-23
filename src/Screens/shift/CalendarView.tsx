@@ -24,9 +24,10 @@ import {
 } from "@mui/material";
 import { ChevronLeft, ChevronRight, Today } from "@mui/icons-material";
 import { useDrag, useDrop } from "react-dnd";
+import type { Shift, ShiftCal } from "../../model/shiftType";
 
 interface CalendarViewProps {
-  shifts: any[];
+  shifts: ShiftCal[];
   onEditShift?: (shift: any) => void;
   onDropShift?: (shiftId: number, newDate: Date, employeeId?: string) => void;
 }
@@ -35,37 +36,97 @@ type ViewMode = "day" | "week" | "month" | "year";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const employees = [
-  { id: "1", name: "John Doe", avatar: "/default-avator.png" },
-  { id: "2", name: "Jane Smith", avatar: "/default-avator.png" },
-  { id: "3", name: "Mike Johnson", avatar: "/default-avator.png" },
-  { id: "4", name: "Sarah Wilson", avatar: "/default-avator.png" },
-];
+const getEmployeesFromShifts = (shifts: ShiftCal[]) => {
+  const employeeMap = new Map();
+
+  shifts.forEach((shift) => {
+    if (shift.users && Array.isArray(shift.users)) {
+      shift.users.forEach((user) => {
+        if (!employeeMap.has(user.id)) {
+          employeeMap.set(user.id, {
+            id: user.id,
+            name: user.fullName || user.userName,
+            userName: user.userName,
+            email: user.email,
+            employeeCode: user.employeeCode,
+          });
+        }
+      });
+    }
+  });
+
+  return Array.from(employeeMap.values());
+};
 
 const ItemTypes = {
   SHIFT: "shift",
 };
 
+const formatTimeDisplay = (time: string) => {
+  if (!time) return "00:00";
+  return time.slice(0, 5);
+};
+
+const isDateInShiftRange = (date: Date, shift: Shift) => {
+  const checkDate = new Date(date);
+  checkDate.setHours(0, 0, 0, 0);
+
+  const startDate = new Date(shift.startDate);
+  startDate.setHours(0, 0, 0, 0);
+
+  const endDate = new Date(shift.endDate);
+  endDate.setHours(0, 0, 0, 0);
+
+  return checkDate >= startDate && checkDate <= endDate;
+};
+
+const isDateSkipped = (date: Date, shift: Shift) => {
+  if (!shift.skipDates || shift.skipDates === "[]") return false;
+
+  try {
+    const skipDates = JSON.parse(shift.skipDates);
+    return skipDates.some((skipDate: any) => {
+      const skipStart = new Date(skipDate.startDate);
+      skipStart.setHours(0, 0, 0, 0);
+
+      const skipEnd = new Date(skipDate.endDate);
+      skipEnd.setHours(0, 0, 0, 0);
+
+      const checkDate = new Date(date);
+      checkDate.setHours(0, 0, 0, 0);
+
+      return checkDate >= skipStart && checkDate <= skipEnd;
+    });
+  } catch (error) {
+    console.error("Error parsing skipDates:", error);
+    return false;
+  }
+};
+
 const DraggableShiftCard = ({
   shift,
+  user,
   onEditShift,
 }: {
   shift: any;
+  user?: any;
   onEditShift?: (shift: any) => void;
 }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.SHIFT,
-    item: { shift },
+    item: { shift, user },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   }));
 
+  const shiftTitle = user ? user.name : shift.shiftType;
+
   return (
     <Card
       ref={drag as unknown as React.Ref<HTMLDivElement>}
       variant="outlined"
-      onClick={() => onEditShift?.(shift.original || shift)}
+      onClick={() => onEditShift?.(shift)}
       sx={{
         mb: 0.75,
         borderRadius: 1.5,
@@ -84,21 +145,30 @@ const DraggableShiftCard = ({
           fontWeight={700}
           sx={{ color: "primary.main" }}
         >
-          {shift.name}
+          {shiftTitle}
         </Typography>
         <Typography
           variant="caption"
           display="block"
           sx={{ opacity: 0.95, color: "primary.main" }}
         >
-          {shift.title}
+          {shift.shiftType}
         </Typography>
         <Typography
           variant="caption"
           sx={{ opacity: 0.85, color: "primary.main" }}
         >
-          {shift.startTime} - {shift.endTime}
+          {formatTimeDisplay(shift.startTime)} -{" "}
+          {formatTimeDisplay(shift.endTime)}
         </Typography>
+        {user && (
+          <Typography
+            variant="caption"
+            sx={{ opacity: 0.7, color: "primary.main", fontStyle: "italic" }}
+          >
+            {user.employeeCode}
+          </Typography>
+        )}
       </CardContent>
     </Card>
   );
@@ -117,7 +187,7 @@ const DropTargetCell = ({
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.SHIFT,
-    drop: (item: { shift: any }) => {
+    drop: (item: { shift: any; user?: any }) => {
       onDrop(item.shift.id, date, employeeId);
     },
     collect: (monitor) => ({
@@ -219,14 +289,20 @@ export default function CalendarView({
   const [view, setView] = useState<ViewMode>("week");
   const [searchTerm, setSearchTerm] = useState("");
 
+  const employees = useMemo(() => getEmployeesFromShifts(shifts), [shifts]);
+
   const filteredEmployees = useMemo(
     () =>
-      employees.filter((e) =>
-        e.name.toLowerCase().includes(searchTerm.toLowerCase())
-      ),
-    [searchTerm]
+      searchTerm
+        ? employees.filter(
+            (e) =>
+              e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              e.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              e.employeeCode?.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        : employees,
+    [employees, searchTerm]
   );
-
   const weekDates = useMemo(() => getWeekDates(currentDate), [currentDate]);
   const monthMatrix = useMemo(() => getMonthMatrix(currentDate), [currentDate]);
   const today = useMemo(() => new Date(), []);
@@ -253,13 +329,28 @@ export default function CalendarView({
       ? formatMonth(currentDate)
       : formatYear(currentDate).toString();
 
+  const getShiftsForDateAndEmployee = (date: Date, employeeId?: string) => {
+    return shifts.filter((shift) => {
+      if (!isDateInShiftRange(date, shift) || isDateSkipped(date, shift)) {
+        return false;
+      }
+      if (employeeId) {
+        return shift.users?.some((user: any) => user.id === employeeId);
+      }
+
+      return true;
+    });
+  };
+
   const shiftsForDay = (date: Date) => {
     const allowedEmployeeIds = new Set(filteredEmployees.map((e) => e.id));
-    return shifts.filter(
-      (s) =>
-        allowedEmployeeIds.has(s.employeeId) &&
-        isSameDay(new Date(s.start), date)
-    );
+
+    return shifts.filter((shift) => {
+      if (!isDateInShiftRange(date, shift) || isDateSkipped(date, shift)) {
+        return false;
+      }
+      return shift.users?.some((user: any) => allowedEmployeeIds.has(user.id));
+    });
   };
 
   const handleDrop = (shiftId: number, newDate: Date, employeeId?: string) => {
@@ -272,7 +363,6 @@ export default function CalendarView({
     return (
       <Box sx={{ display: "flex", flex: 1, overflow: "auto" }}>
         <Box sx={{ width: 60, flexShrink: 0 }}>
-          {/* Time labels */}
           {hours.map((h) => (
             <Box
               key={h}
@@ -307,7 +397,14 @@ export default function CalendarView({
                       align="center"
                       sx={{ minWidth: 140, bgcolor: "background.paper" }}
                     >
-                      {emp.name}
+                      <Box>
+                        <Typography variant="subtitle2">
+                          {emp.userName}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {emp.employeeCode}
+                        </Typography>
+                      </Box>
                     </TableCell>
                   ))}
                 </TableRow>
@@ -316,13 +413,19 @@ export default function CalendarView({
                 {hours.map((h) => (
                   <TableRow key={h} sx={{ height: 60 }}>
                     {filteredEmployees.map((emp) => {
-                      const empShifts = shifts.filter(
-                        (s) =>
-                          s.employeeId === emp.id &&
-                          new Date(s.start).getHours() <= h &&
-                          new Date(s.end).getHours() > h &&
-                          isSameDay(new Date(s.start), currentDate)
-                      );
+                      const empShifts = getShiftsForDateAndEmployee(
+                        currentDate,
+                        emp.id
+                      ).filter((shift) => {
+                        const shiftStartHour = parseInt(
+                          shift.startTime.split(":")[0]
+                        );
+                        const shiftEndHour = parseInt(
+                          shift.endTime.split(":")[0]
+                        );
+                        return h >= shiftStartHour && h < shiftEndHour;
+                      });
+
                       return (
                         <TableCell
                           key={emp.id + "-" + h}
@@ -334,40 +437,12 @@ export default function CalendarView({
                           }}
                         >
                           {empShifts.map((shift) => (
-                            <Card
+                            <DraggableShiftCard
                               key={shift.id}
-                              variant="outlined"
-                              onClick={() =>
-                                onEditShift?.(shift.original || shift)
-                              }
-                              sx={{
-                                mb: 0.25,
-                                borderRadius: 1.5,
-                                cursor: "pointer",
-                                transition: "0.2s",
-                                "&:hover": {
-                                  boxShadow: 3,
-                                  transform: "scale(1.02)",
-                                },
-                              }}
-                            >
-                              <CardContent sx={{ p: 0.5 }}>
-                                <Typography
-                                  variant="caption"
-                                  fontWeight={700}
-                                  color="primary.main"
-                                >
-                                  {shift.name}
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  display="block"
-                                  sx={{ opacity: 0.85, color: "primary.main" }}
-                                >
-                                  {shift.startTime} - {shift.endTime}
-                                </Typography>
-                              </CardContent>
-                            </Card>
+                              shift={shift}
+                              user={emp}
+                              onEditShift={onEditShift}
+                            />
                           ))}
                         </TableCell>
                       );
@@ -452,11 +527,7 @@ export default function CalendarView({
               {filteredEmployees.map((emp) => (
                 <TableRow key={emp.id} sx={{ height: 84 }}>
                   {weekDates.map((date, j) => {
-                    const empShifts = shifts.filter(
-                      (s) =>
-                        s.employeeId === emp.id &&
-                        isSameDay(new Date(s.start), date)
-                    );
+                    const empShifts = getShiftsForDateAndEmployee(date, emp.id);
                     return (
                       <TableCell
                         key={j}
@@ -481,6 +552,7 @@ export default function CalendarView({
                               <DraggableShiftCard
                                 key={shift.id}
                                 shift={shift}
+                                user={emp}
                                 onEditShift={onEditShift}
                               />
                             ))
@@ -573,13 +645,16 @@ export default function CalendarView({
                               gap: 0.5,
                             }}
                           >
-                            {dayShifts.map((s) => (
-                              <DraggableShiftCard
-                                key={s.id}
-                                shift={s}
-                                onEditShift={onEditShift}
-                              />
-                            ))}
+                            {dayShifts.map((shift) =>
+                              shift.users?.map((user) => (
+                                <DraggableShiftCard
+                                  key={shift.id + "-" + user.id}
+                                  shift={shift}
+                                  user={user}
+                                  onEditShift={onEditShift}
+                                />
+                              ))
+                            )}
                           </Box>
                         )}
                       </DropTargetCell>
@@ -615,9 +690,9 @@ export default function CalendarView({
           );
           const monthShiftCount = shifts.filter(
             (s) =>
-              allowedEmployeeIds.has(s.employeeId) &&
-              new Date(s.start).getFullYear() === monthDate.getFullYear() &&
-              new Date(s.start).getMonth() === monthDate.getMonth()
+              s.users?.some((user: any) => allowedEmployeeIds.has(user.id)) &&
+              isDateInShiftRange(monthDate, s) &&
+              !isDateSkipped(monthDate, s)
           ).length;
 
           return (

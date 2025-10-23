@@ -4,7 +4,7 @@ import '@mui/lab/themeAugmentation';
 
 
 const themeColors = {
-  primary: '#2442AF',
+  primary: 'rgba(54, 83, 186, 1)',
   secondary: '#6E759F',
   success: '#57CA22',
   warning: '#F1a827',
@@ -55,7 +55,7 @@ const colors = {
       bodyBg: '#F8F8F8'
     },
     sidebar: {
-      background: themeColors.white,
+      background: themeColors.black,
       textColor: themeColors.secondary,
       dividerBg: '#f2f5f9',
       menuItemColor: '#242E6F',
