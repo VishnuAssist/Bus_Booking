@@ -97,8 +97,6 @@ const Commission = () => {
         open={monthlySummaryModalOpen}
         onClose={() => setMonthlySummaryModalOpen(false)}
       />
-
-      <Footer />
     </>
   );
 };

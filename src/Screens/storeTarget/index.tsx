@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import CommisionContainer from "../../Component/container";
 import CommonTable from "../../Component/CommenTable";
 import Footer from "../../Component/Footer";
@@ -11,30 +10,38 @@ import {
   useGetAllStoreTargetsQuery,
   useDeleteStoreTargetMutation,
 } from "../../Api/StoreApi";
-import type { QueryParamsType } from "../../Dto/formDto";
-import { ValidateParams } from "../../Lib/utile";
 import AppPagination from "../../Component/AppPagination";
-import type { StoreMonthlyTargetDto } from "../../model/storeTargetType";
+import type {
+  StoreMonthlyTargetDto,
+  StoreTargetQueryParamsType,
+} from "../../model/storeTargetType";
 import { storeTargetTableDataService } from "./services/storeTargetTableDataService";
+import StoreTargetFilter from "./components/StoreTargetFilter";
+import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
 
 const StoreTarget = () => {
-  const [searchParams] = useSearchParams();
-  const storeId = searchParams.get("id");
-
-  const [params, setParams] = useState<QueryParamsType>({});
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStoreTarget, setSelectedStoreTarget] =
     useState<StoreMonthlyTargetDto | null>(null);
   const [processDialogOpen, setProcessDialogOpen] = useState(false);
 
+  const [queryParams, setQueryParams] = useState<StoreTargetQueryParamsType>({
+    ...DEFAULT_PAGINATION_OPTIONS,
+    year: undefined,
+    month: undefined,
+  });
+
+  const handleQueryParamsChange = (
+    newQueryParams: StoreTargetQueryParamsType
+  ) => {
+    setQueryParams(newQueryParams);
+  };
+
   const {
     data: targetsData,
     isLoading,
     error,
-  } = useGetAllStoreTargetsQuery({
-    ...ValidateParams(params),
-    StoreId: storeId ? parseInt(storeId) : undefined,
-  });
+  } = useGetAllStoreTargetsQuery(queryParams);
 
   const { columns, rows } = storeTargetTableDataService(targetsData?.items);
 
@@ -99,13 +106,19 @@ const StoreTarget = () => {
     <>
       <CommisionContainer>
         <PageHeader
-          title={`Store Target ${storeId ? `- Store #${storeId}` : ""}`}
+          title={`Store Target`}
           btntitle="Add Store Target"
           onActionClick={() => setModalOpen(true)}
           btntitle2="Process Target"
           onActionClick2={() => setProcessDialogOpen(true)}
         />
+
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <StoreTargetFilter
+            queryParams={queryParams}
+            onQueryParamsChange={handleQueryParamsChange}
+          />
+
           <CommonTable<StoreMonthlyTargetDto>
             columns={columns}
             rows={rows}
@@ -121,21 +134,18 @@ const StoreTarget = () => {
             <AppPagination
               metaData={targetsData.metaData}
               onPageChange={(page: number) =>
-                setParams({ ...params, PageNumber: page })
+                setQueryParams({ ...queryParams, PageNumber: page })
               }
             />
           )}
         </Paper>
       </CommisionContainer>
 
-      <Footer />
-
       {/* Add/Edit Store Target Dialog */}
       <StoreTargetFormDialog
         open={isModalOpen}
         onClose={handleCloseDialog}
         selectedStoreTarget={selectedStoreTarget}
-        storeId={storeId}
       />
 
       <StoreTargetProcessDialogue

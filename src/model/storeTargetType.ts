@@ -1,3 +1,5 @@
+import type { PaginationOptionsDto } from "../Dto/paginationOptionsDto";
+
 export interface StoreMonthlyTargetDto {
   id?: number;
   brandCode: string;
@@ -25,13 +27,9 @@ export interface ProcessStoreTargetRequest {
   additionalWorkflowJson?: string;
 }
 
-export interface ProcessKPIRequest {
-  year: number;
-  month: number;
-  storeId: number;
-  storeTarget: number;
-  brandCode: string;
-  category: string;
-  ruleIdsToUse?: number[];
-  additionalWorkflowJson?: string;
+export interface StoreTargetQueryParamsType extends PaginationOptionsDto {
+  year?: number;
+  month?: number;
+  storeId?: number;
+  brandCode?: string;
 }

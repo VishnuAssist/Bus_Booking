@@ -158,8 +158,6 @@ const Store = () => {
         </Paper>
       </CommisionContainer>
 
-      <Footer />
-
       <CommonDialog
         open={isModalOpen}
         onClose={() => {

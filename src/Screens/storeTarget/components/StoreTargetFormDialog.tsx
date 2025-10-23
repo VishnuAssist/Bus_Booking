@@ -14,14 +14,12 @@ interface StoreTargetFormDialogProps {
   open: boolean;
   onClose: () => void;
   selectedStoreTarget?: StoreMonthlyTargetDto | null;
-  storeId?: string | null;
 }
 
 const StoreTargetFormDialog = ({
   open,
   onClose,
   selectedStoreTarget,
-  storeId,
 }: StoreTargetFormDialogProps) => {
   const [addStoreTarget] = useAddStoreTargetMutation();
   const [editStoreTarget] = useEditStoreTargetMutation();
@@ -36,7 +34,6 @@ const StoreTargetFormDialog = ({
     try {
       const payload = {
         ...formData,
-        storeId: storeId ? parseInt(storeId) : formData.storeId,
       };
 
       if (selectedStoreTarget?.id) {
