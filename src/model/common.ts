@@ -29,6 +29,8 @@ isAll?: boolean;
   Role?: string;
   startDate?: string;
   endDate?: string;
+  StartDate?: string;
+  EndDate?: string;
   Status?: string | number;
   DateFilter?: number;
   isProfit?: boolean;

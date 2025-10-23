@@ -1,69 +1,80 @@
-import { Suspense, lazy } from 'react';
-import { Navigate, type RouteObject } from 'react-router-dom';
-import LazyLoading from '../Component/Loading/LazyLoading';
-import RouteAuth from '../Auth/RouteAuth';
-import SidebarLayout from '../Layout/AppLayout';
-import BaseLayout from '../Layout/BaseLayout';
+import { Suspense, lazy } from "react";
+import { Navigate, type RouteObject } from "react-router-dom";
+import LazyLoading from "../Component/Loading/LazyLoading";
+import RouteAuth from "../Auth/RouteAuth";
+import SidebarLayout from "../Layout/AppLayout";
+import BaseLayout from "../Layout/BaseLayout";
+import RuleList from "../Screens/intellisenseBuilder/components/RuleList";
+import IntellisenseBuilder from "../Screens/intellisenseBuilder/components/IntellisenseBuilder";
 
 const Loader = (Component: any) => (props: any) =>
-(
-  <Suspense fallback={<LazyLoading />}>
-    <Component {...props} />
-  </Suspense>
-);
+  (
+    <Suspense fallback={<LazyLoading />}>
+      <Component {...props} />
+    </Suspense>
+  );
 
 // OverView
-const Login = Loader(lazy(() => import('../Screens/auth')));
-const Dashboard = Loader(lazy(() => import('../Screens/dashboard/index')));
-const Commission = Loader(lazy(() => import('../Screens/commission/index')));
-const LeaderBoard = Loader(lazy(() => import('../Screens/LeaderBoard')));
-const Profile = Loader(lazy(() => import('../Screens/Profile')));
-const Calender = Loader(lazy(() => import('../Screens/Calender')));
+const Login = Loader(lazy(() => import("../Screens/auth")));
+const Dashboard = Loader(lazy(() => import("../Screens/dashboard/index")));
+const Commission = Loader(lazy(() => import("../Screens/commission/index")));
+const LeaderBoard = Loader(lazy(() => import("../Screens/LeaderBoard")));
+const Profile = Loader(lazy(() => import("../Screens/Profile")));
+const Calender = Loader(lazy(() => import("../Screens/calender")));
 
 // Staff Portal
-const Attendence = Loader(lazy(() => import('../Screens/StaffPortal/Attendence')));
-const LeaveRequest = Loader(lazy(() => import('../Screens/StaffPortal/LeaveRequest')));
-const Achievements = Loader(lazy(() => import('../Screens/StaffPortal/Achievements')));
+const Attendence = Loader(
+  lazy(() => import("../Screens/StaffPortal/Attendence"))
+);
+const LeaveRequest = Loader(
+  lazy(() => import("../Screens/StaffPortal/LeaveRequest"))
+);
+const Achievements = Loader(
+  lazy(() => import("../Screens/StaffPortal/Achievements"))
+);
 
 // Management
-const TeamOverview = Loader(lazy(() => import('../Screens/Management/TeamOverview')));
-const Coaching = Loader(lazy(() => import('../Screens/Management/Coaching')));
-const Performence = Loader(lazy(() => import('../Screens/Management/Performence')))
+const TeamOverview = Loader(
+  lazy(() => import("../Screens/Management/TeamOverview"))
+);
+const Coaching = Loader(lazy(() => import("../Screens/Management/Coaching")));
+const Performence = Loader(
+  lazy(() => import("../Screens/Management/Performence"))
+);
 
 // Admin
 
-const Shift = Loader(lazy(() => import('../Screens/shift/index')));
-const AdminSystemOverview = Loader(lazy(() => import('../Screens/Admin/SyestemOverview')));
-const AdminAttendance = Loader(lazy(() => import('../Screens/Admin/Attendance')));
-const AdminAchievement = Loader(lazy(() => import('../Screens/Admin/Achievements')));
-const RuleEngine = Loader(lazy(() => import('../Screens/Admin/RuleEngine')));
-const ReportAndAnalytics = Loader(lazy(() => import('../Screens/Admin/ReportsAndAnalytics')));
-
-const Dictionary = Loader(lazy(() => import('../Screens/dictionary/index')));
-const Store = Loader(lazy(() => import('../Screens/store/index')));
-const StoreTarget = Loader(lazy(() => import('../Screens/storeTarget/index')));
-const Sales = Loader(lazy(() => import('../Screens/sales/index')));
-
-
-
-
-
-const Reports = Loader(lazy(() => import('../Screens/Reports/Index')));
-
-
-const Status404 = Loader(
-  lazy(() => import('../Component/Status/Status404'))
+const Shift = Loader(lazy(() => import("../Screens/shift/index")));
+const AdminSystemOverview = Loader(
+  lazy(() => import("../Screens/Admin/SyestemOverview"))
 );
-const Status500 = Loader(
-  lazy(() => import('../Component/Status/Status500'))
-); const Status401 = Loader(
-  lazy(() => import('../Component/Status/Status401'))
+const AdminAttendance = Loader(
+  lazy(() => import("../Screens/Admin/Attendance"))
 );
+const AdminAchievement = Loader(
+  lazy(() => import("../Screens/Admin/Achievements"))
+);
+const RuleEngine = Loader(lazy(() => import("../Screens/Admin/RuleEngine")));
+const ReportAndAnalytics = Loader(
+  lazy(() => import("../Screens/Admin/ReportsAndAnalytics"))
+);
+
+const Dictionary = Loader(lazy(() => import("../Screens/dictionary/index")));
+const Store = Loader(lazy(() => import("../Screens/store/index")));
+const StoreTarget = Loader(lazy(() => import("../Screens/storeTarget")));
+const StoreKPI= Loader(lazy(() => import("../Screens/storeTarget/storeKPI")));
+const Sales = Loader(lazy(() => import("../Screens/sales/index")));
+
+const Reports = Loader(lazy(() => import("../Screens/Reports/Index")));
+
+const Status404 = Loader(lazy(() => import("../Component/Status/Status404")));
+const Status500 = Loader(lazy(() => import("../Component/Status/Status500")));
+const Status401 = Loader(lazy(() => import("../Component/Status/Status401")));
 const StatusComingSoon = Loader(
-  lazy(() => import('../Component/Status/ComingSoon'))
+  lazy(() => import("../Component/Status/ComingSoon"))
 );
 const StatusMaintenance = Loader(
-  lazy(() => import('../Component/Status/Maintenance'))
+  lazy(() => import("../Component/Status/Maintenance"))
 );
 
 const routes: RouteObject[] = [
@@ -224,6 +235,18 @@ const routes: RouteObject[] = [
             element: <RuleEngine />,
           },
           {
+            path: "rulesList",
+            element: <RuleList />,
+          },
+          {
+            path: "intellisenseBuilder",
+            element: <IntellisenseBuilder />,
+          },
+          {
+            path: "intellisenseBuilder/:ruleId/edit",
+            element: <IntellisenseBuilder />,
+          },
+          {
             path: "reportandAnalytics",
             element: <ReportAndAnalytics />,
           },
@@ -263,6 +286,10 @@ const routes: RouteObject[] = [
           {
             path: "storeTarget",
             element: <StoreTarget />,
+          },
+           {
+            path: "storeKPI",
+            element: <StoreKPI />,
           },
           {
             path: "sales",

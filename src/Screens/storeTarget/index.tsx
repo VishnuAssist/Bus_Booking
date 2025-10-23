@@ -1,239 +1,251 @@
 import { useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import CommisionContainer from "../../Component/container";
 import CommonTable from "../../Component/CommenTable";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
-import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Typography, type SelectChangeEvent } from "@mui/material";
-import CurrentYearTarget from "./CurrentYearTarget";
+import {
+
+  Typography,
+  Paper,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 import PageHeader from "../../Component/commonPageHeader";
-import { StoreTargetFormFields, storeTargetFormValidationSchema } from "../../feilds_validation/storeTargetFieldsValidation";
+import {
+  ProcessStoreTargetFormFields,
+  ProcessStoreTargetFormValidationSchema,
+  StoreTargetFormFields,
+  storeTargetFormValidationSchema,
+} from "../../feilds_validation/storeTargetFieldsValidation";
+import {
+  useGetAllStoreTargetsQuery,
+  useAddStoreTargetMutation,
+  useEditStoreTargetMutation,
+  useDeleteStoreTargetMutation,
+  useProcessStoreTargetMutation,
+
+} from "../../Api/StoreApi";
+import type { QueryParamsType } from "../../Dto/formDto";
+import { ValidateParams } from "../../Lib/utile";
+import AppPagination from "../../Component/AppPagination";
+import type { ProcessStoreTargetRequest, StoreMonthlyTargetDto } from "../../model/storeTargetType";
+import { toast } from "react-toastify";
 
 const StoreTarget = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const storeId = searchParams.get("id");
+ 
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [isModalOpen, setModalOpen] = useState(false);
-    const [selectedStoreTarget, setSelectedStoreTarget] = useState<any>(null);
-    const [Generate, setGenerate] = useState(false);
-    const [selectedRule, setSelectedRule] = useState("");
+  const [params, setParams] = useState<QueryParamsType>({});
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedStoreTarget, setSelectedStoreTarget] = useState<StoreMonthlyTargetDto | null>(null);
+  const [processDialogOpen, setProcessDialogOpen] = useState(false);
 
-    const StoreTargetColumns = [
-        { id: "id", label: "ID" },
-        { id: "year", label: "Year" },
-        { id: "month", label: "Month" },
-        { id: "targetAmount", label: "Target Amount" },
-        { id: "storeKPITraget", label: "StoreKPITarget" },
-        { id: "storeKPIAchievement", label: "StoreKPIAchievement" },
-        { id: "targetAchievement", label: "StoreTargetAchievement" },
-        { id: "status", label: "Status" },
-    ];
 
-    const StoreTargetSampleData = [
-        {
-            id: 1,
-            year: "2025",
-            month: "January",
-            targetAmount: "₹1,50,000",
-            storeKPITraget: "80%",
-            storeKPIAchievement: "78%",
-            targetAchievement: "₹1,45,000",
-            status: "Achieved",
-        },
-        {
-            id: 2,
-            year: "2025",
-            month: "February",
-            targetAmount: "₹1,70,000",
-            storeKPITraget: "85%",
-            storeKPIAchievement: "82%",
-            targetAchievement: "₹1,60,000",
-            status: "Achieved",
-        },
-        {
-            id: 3,
-            year: "2025",
-            month: "March",
-            targetAmount: "₹1,80,000",
-            storeKPITraget: "88%",
-            storeKPIAchievement: "79%",
-            targetAchievement: "₹1,45,000",
-            status: "Partially Achieved",
-        },
-        {
-            id: 4,
-            year: "2025",
-            month: "April",
-            targetAmount: "₹2,00,000",
-            storeKPITraget: "90%",
-            storeKPIAchievement: "70%",
-            targetAchievement: "₹1,40,000",
-            status: "Not Achieved",
-        },
-        {
-            id: 5,
-            year: "2025",
-            month: "May",
-            targetAmount: "₹2,20,000",
-            storeKPITraget: "92%",
-            storeKPIAchievement: "94%",
-            targetAchievement: "₹2,25,000",
-            status: "Achieved",
-        },
-        {
-            id: 6,
-            year: "2025",
-            month: "June",
-            targetAmount: "₹2,10,000",
-            storeKPITraget: "85%",
-            storeKPIAchievement: "80%",
-            targetAchievement: "₹1,90,000",
-            status: "Partially Achieved",
-        },
-        {
-            id: 7,
-            year: "2025",
-            month: "July",
-            targetAmount: "₹2,30,000",
-            storeKPITraget: "88%",
-            storeKPIAchievement: "91%",
-            targetAchievement: "₹2,40,000",
-            status: "Achieved",
-        },
-        {
-            id: 8,
-            year: "2025",
-            month: "August",
-            targetAmount: "₹2,50,000",
-            storeKPITraget: "90%",
-            storeKPIAchievement: "85%",
-            targetAchievement: "₹2,10,000",
-            status: "Partially Achieved",
-        },
-        {
-            id: 9,
-            year: "2025",
-            month: "September",
-            targetAmount: "₹2,40,000",
-            storeKPITraget: "93%",
-            storeKPIAchievement: "96%",
-            targetAchievement: "₹2,55,000",
-            status: "Achieved",
-        },
-        {
-            id: 10,
-            year: "2025",
-            month: "October",
-            targetAmount: "₹2,60,000",
-            storeKPITraget: "95%",
-            storeKPIAchievement: "88%",
-            targetAchievement: "₹2,30,000",
-            status: "Partially Achieved",
-        },
-    ];
 
-    const onSubmit = async (formData: any) => {
-        console.log("Store Form Data", formData);
-        setModalOpen(false);
-        setSelectedStoreTarget(null);
+  
+  const { data: targetsData, isLoading, error } = useGetAllStoreTargetsQuery({
+    ...ValidateParams(params),
+    StoreId: storeId ? parseInt(storeId) : undefined,
+  });
+
+  const [addStoreTarget] = useAddStoreTargetMutation();
+  const [editStoreTarget] = useEditStoreTargetMutation();
+  const [deleteStoreTarget] = useDeleteStoreTargetMutation();
+  const [processStoreTarget] = useProcessStoreTargetMutation();
+
+  const StoreTargetColumns = [
+    { id: "id", label: "ID" },
+    { id: "year", label: "Year" },
+    { id: "month", label: "Month" },
+    { id: "brandCode", label: "Brand Code" },
+    { id: "targetAmount", label: "Target Amount", format: (value: number) => `₹${value.toLocaleString()}` },
+  ];
+
+  const onSubmit = async (formData: StoreMonthlyTargetDto) => {
+    try {
+      const payload = {
+        ...formData,
+        storeId: storeId ? parseInt(storeId) : formData.storeId,
+      };
+
+      if (selectedStoreTarget?.id) {
+        await editStoreTarget({ ...payload, id: selectedStoreTarget.id }).unwrap();
+        alert("Store Target updated successfully");
+      } else {
+        await addStoreTarget(payload).unwrap();
+        alert("Store Target added successfully");
+      }
+      setModalOpen(false);
+      setSelectedStoreTarget(null);
+    } catch (err) {
+      console.error("Failed to save store target:", err);
+      alert("Failed to save store target");
+    }
+  };
+
+  const handleDelete = async (row: StoreMonthlyTargetDto) => {
+    if (row.id && window.confirm("Are you sure you want to delete this store target?")) {
+      try {
+        await deleteStoreTarget(row.id).unwrap();
+        alert("Store Target deleted successfully");
+      } catch (err) {
+        console.error("Failed to delete:", err);
+        alert("Failed to delete store target");
+      }
+    }
+  };
+
+  const handleViewKPIs = (row: StoreMonthlyTargetDto) => {
+    navigate(`/settings/storeKPI?targetId=${row.id}&storeId=${storeId}`);
+  };
+
+  const handleProcessTarget = async (formData:ProcessStoreTargetRequest) => {
+    if (!storeId) {
+      toast.error("Store ID is required");
+      return;
+    }
+
+  
+    try {
+      const [yearStr, monthStr] = formData.year.toString().split("-");
+    const year = parseInt(yearStr, 10);
+    const month = parseInt(monthStr, 10);
+
+    const updatedFormData = {
+      ...formData,
+      year,
+      month,
+      storeId: parseInt(storeId)
+    
+
     };
+    console.log("Processing with data:", updatedFormData);
 
-    const storeTargetFields = () => {
-        const fields = [...StoreTargetFormFields];
-        const roleField = fields.find((f) => f.name === "role");
-        if (roleField) {
-            roleField.options = [
-                { id: "1", name: "Store Manger" },
-                { id: "2", name: "Sales Executive" },
-                { id: "3", name: "Assistant Manager" },
-                { id: "4", name: "Cashier" },
-            ];
-        }
-        return fields;
-    };
+  const res=    await processStoreTarget(updatedFormData).unwrap();
+console.log("Process result:", res);
+   
+      setProcessDialogOpen(false);
+   
+    } catch (err) {
+      console.error("Failed to process store target:", err);
+      
+    }
+  };
 
-    const handelGenrateView = () => {
-        setGenerate(true);
-    };
+  const storeTargetFields = () => {
+    const fields = [...StoreTargetFormFields];
+    // Add storeId if not in URL
+    if (!storeId) {
+      fields.unshift({
+        name: "storeId",
+        label: "Store ID",
+        type: "number",
+        required: true,
+      });
+    }
+    return fields;
+  };
 
-    const handleSelectChange = (event: SelectChangeEvent<string>) => {
-        setSelectedRule(event.target.value);
-    };
-
+  if (isLoading) {
     return (
-        <>
-            <CommisionContainer>
-                <PageHeader title="Store Target" btntitle="Add Store Target" onActionClick={() => setModalOpen(true)} />
-                <Grid container spacing={2}>
-                    <Grid size={12}>
-                        <CurrentYearTarget />
-                    </Grid>
-                    <Grid size={12}>
-                        <CommonTable
-                            columns={StoreTargetColumns}
-                            rows={StoreTargetSampleData}
-                            page={page}
-                            rowsPerPage={rowsPerPage}
-                            onPageChange={setPage}
-                            onRowsPerPageChange={setRowsPerPage}
-                            approval={{
-                                onConform: (row) => console.log("Approved", row),
-                                onReject: (row) => console.log("Rejected", row)
-                            }}
-                            custombutton={{
-                                onAction: handelGenrateView
-                            }}
-                        />
-                    </Grid>
-                </Grid>
-            </CommisionContainer>
+      <CommisionContainer>
+        <PageHeader
+          title="Store Target"
+          btntitle="Add Store Target"
+          onActionClick={() => setModalOpen(true)}
+        />
+        <div style={{ padding: "20px", textAlign: "center" }}>
+          <CircularProgress />
+          <Typography sx={{ mt: 2 }}>Loading store targets...</Typography>
+        </div>
+      </CommisionContainer>
+    );
+  }
 
-            <Footer />
+  if (error) {
+    return (
+      <CommisionContainer>
+        <PageHeader
+          title="Store Target"
+          btntitle="Add Store Target"
+          onActionClick={() => setModalOpen(true)}
+        />
+        <Alert severity="error">Error loading store targets. Please try again.</Alert>
+      </CommisionContainer>
+    );
+  }
 
-            <CommonDialog
-                open={isModalOpen}
-                onClose={() => {
-                    setModalOpen(false);
-                    setSelectedStoreTarget(null);
-                }}
-                onSubmit={onSubmit}
-                title={selectedStoreTarget ? "Edit StoreTraget" : "Add StoreTraget"}
-                validationSchema={storeTargetFormValidationSchema}
-                fields={storeTargetFields()}
-                defaultValues={
-                    selectedStoreTarget || {
-                        year: "",
-                        month: "",
-                        targetAmount: "",
-                    }
-                }
+  return (
+    <>
+      <CommisionContainer>
+        <PageHeader
+          title={`Store Target ${storeId ? `- Store #${storeId}` : ''}`}
+          btntitle="Add Store Target"
+          onActionClick={() => setModalOpen(true)}
+          btntitle2="Process Target"
+          onActionClick2={() => setProcessDialogOpen(true)}
+        />
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <CommonTable
+            columns={StoreTargetColumns}
+            rows={targetsData?.items || []}
+            actions={{
+              onView: handleViewKPIs,
+              onEdit: (row) => {
+                setSelectedStoreTarget(row);
+                setModalOpen(true);
+              },
+              onDelete: handleDelete,
+            }}
+          />
+          {targetsData?.metaData && (
+            <AppPagination
+              metaData={targetsData.metaData}
+              onPageChange={(page: number) => setParams({ ...params, PageNumber: page })}
             />
+          )}
+        </Paper>
+      </CommisionContainer>
 
-            <Dialog open={Generate} fullWidth maxWidth="sm">
-                <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Typography variant="h6" fontWeight={600}>Select Rule</Typography>
-                    <Button color="error" onClick={() => setGenerate(false)} >close</Button>
-                </DialogTitle>
-                <DialogContent>
-                    <Box sx={{ my: 1 }}>
-                        <FormControl fullWidth size="small">
-                            <InputLabel id="rule-select-label">Select Rules</InputLabel>
-                            <Select
-                                labelId="rule-select-label"
-                                value={selectedRule}
-                                onChange={handleSelectChange}
-                            >
-                                <MenuItem value="rule1">Rule 1 - Basic Rule</MenuItem>
-                                <MenuItem value="rule2">Rule 2 - Advanced Rule</MenuItem>
-                                <MenuItem value="rule3">Rule 3 - Custom Rule</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-                    <Box sx={{ textAlign: "end" }}>
-                        <Button variant="contained" color="success" size="small">Select</Button>
-                    </Box>
-                </DialogContent>
-            </Dialog>
-        </>
-    )
-}
+      <Footer />
+
+      {/* Add/Edit Store Target Dialog */}
+      <CommonDialog
+        open={isModalOpen}
+        onClose={() => {
+          setModalOpen(false);
+          setSelectedStoreTarget(null);
+        }}
+        onSubmit={onSubmit}
+        title={selectedStoreTarget ? "Edit Store Target" : "Add Store Target"}
+        validationSchema={storeTargetFormValidationSchema}
+        fields={storeTargetFields()}
+        defaultValues={
+          selectedStoreTarget || {
+            storeId: storeId ? parseInt(storeId) : undefined,
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            brandCode: "",
+            targetAmount: 0,
+          }
+        }
+      />
+  <CommonDialog
+     open={processDialogOpen}
+      onClose={() => setProcessDialogOpen(false)}
+      onSubmit={handleProcessTarget}
+      title="Store Target Process"
+      validationSchema={ProcessStoreTargetFormValidationSchema}
+      fields={ProcessStoreTargetFormFields}
+      defaultValues={{}}
+    />
+      
+  
+    </>
+  );
+};
+
 export default StoreTarget;

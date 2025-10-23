@@ -1,220 +1,250 @@
-import { useState } from "react";
-import CommonTable from "../../Component/CommenTable";
-import CommisionContainer from "../../Component/container";
-import Footer from "../../Component/Footer";
-import { CommonDialog } from "../../Component/forms/FormDialog";
-import { salesFormValidationSchema, SalesFormFields } from "../../feilds_validation/salesFieldsValidation";
-import PageHeader from "../../Component/commonPageHeader";
+  import { useState } from "react";
+  import CommonTable from "../../Component/CommenTable";
+  import CommisionContainer from "../../Component/container";
+  import Footer from "../../Component/Footer";
+  import { CommonDialog } from "../../Component/forms/FormDialog";
+  import {
+    salesFormValidationSchema,
+    SalesFormFields,
+  } from "../../feilds_validation/salesFieldsValidation";
+  import PageHeader from "../../Component/commonPageHeader";
+  import {
+    useAddEditSaleMutation,
+    useBulkImportSalesMutation,
+    useDeleteSaleMutation,
+    useGetAllSalesQuery,
+  } from "../../Api/salesApi";
 
-const Sales = () => {
+  import type { SalesType } from "../../model/salesType";
+  import { toast } from "react-toastify";
+  import { useGetalldictionaryQuery } from "../../Api/dictionaryApi";
+  import BulkImportDialog from "./salesBulkImport";
+  import AppPagination from "../../Component/AppPagination";
+  import { setSalesParams } from "../../Store/slice/ParamsSlice";
+  import {
+    useAppDispatch,
+    useAppSelector,
+    type RootState,
+  } from "../../Store/StoreConfig";
+  import { getAxiosParamsA } from "../../Api/util";
+  import SalesSearch from "./salesSearch";
+  import { Paper } from "@mui/material";
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+  const Sales = () => {
+    const dispatch = useAppDispatch();
+
+    const salesParams = useAppSelector((state) => state.auth.Params.SalesParams);
+
     const [isModalOpen, setModalOpen] = useState(false);
-    const [selectedSales, setSelectedSales] = useState<any>(null);
+    const [selectedSales, setSelectedSales] = useState<SalesType | null>(null);
+
+    // API hooks
+    //   const { data: salesData } = useGetAllSalesQuery({});
+
+    const { data: salesData } = useGetAllSalesQuery(
+      getAxiosParamsA({ ...salesParams, PageSize: 5 })
+    );
+    console.log("sales", salesData);
+    const [addEditSale] = useAddEditSaleMutation();
+    const [deleteSale] = useDeleteSaleMutation();
+
+    const { data: salesIdData } = useGetalldictionaryQuery({ Category: 2 });
+    const { data: departmentsData } = useGetalldictionaryQuery({ Category: 3 });
+    const { data: brandsData } = useGetalldictionaryQuery({ Category: 4 });
+    const { data: categoriesData } = useGetalldictionaryQuery({ Category: 7 });
+    const { data: subcategoriesData } = useGetalldictionaryQuery({ Category: 8 });
+    const { data: subsubcategoriesData } = useGetalldictionaryQuery({
+      Category: 9,
+    });
+
+    // Extract items from dictionary responses
+    const sales = salesIdData?.items || [];
+    const departments = departmentsData?.items || [];
+    const brands = brandsData?.items || [];
+    const categories = categoriesData?.items || [];
+    const subcategories = subcategoriesData?.items || [];
+    const subsubcategories = subsubcategoriesData?.items || [];
+
+    console.log("category", categories);
+
+    const [isBulkDialogOpen, setBulkDialogOpen] = useState(false);
+    const [bulkImportSales] = useBulkImportSalesMutation();
+
+    const handleBulkImport = async (file: File) => {
+      await bulkImportSales(file).unwrap();
+    };
 
     const SalesColumns = [
-        { id: "category", label: "Commision Category" },
-        { id: "name", label: "Employee Name" },
-        { id: "role", label: "Employee Role" },
-        { id: "code", label: "Employee Code" },
-        { id: "date", label: "Sales Date" },
-        { id: "store", label: "Store" },
-        { id: "Brand", label: "Brand" },
-        { id: "product", label: "Product Name" },
-        { id: "productType", label: "Product Type" },
+      { id: "id", label: "ID", minWidth: 50 },
+      { id: "invoiceNumber", label: "Invoice Number", minWidth: 120 },
+      { id: "itemNumber", label: "Item Number", minWidth: 120 },
+      { id: "quantity", label: "Quantity", minWidth: 80 },
+      { id: "productPrice", label: "Product Price", minWidth: 100 },
+      { id: "saleAmount", label: "Sale Amount", minWidth: 100 },
+      { id: "tax", label: "Tax", minWidth: 80 },
+      { id: "discount", label: "Discount", minWidth: 80 },
     ];
 
-    const SalesSampleData = [
-        {
-            category: "Electronics",
-            name: "John Doe",
-            role: "Sales Executive",
-            code: "EMP001",
-            date: "2025-09-01",
-            store: "Downtown SuperMart",
-            Brand: "Samsung",
-            product: "Galaxy S23",
-            productType: "Smartphone",
-        },
-        {
-            category: "Fashion",
-            name: "Jane Smith",
-            role: "Store Manager",
-            code: "EMP002",
-            date: "2025-09-02",
-            store: "Sunrise Fashion Hub",
-            Brand: "Zara",
-            product: "Denim Jacket",
-            productType: "Clothing",
-        },
-        {
-            category: "Appliances",
-            name: "Michael Lee",
-            role: "Sales Associate",
-            code: "EMP003",
-            date: "2025-09-03",
-            store: "Galaxy Appliances",
-            Brand: "LG",
-            product: "Refrigerator 300L",
-            productType: "Home Appliance",
-        },
-        {
-            category: "Books",
-            name: "Emily Davis",
-            role: "Cashier",
-            code: "EMP004",
-            date: "2025-09-04",
-            store: "Oceanic Bookstore",
-            Brand: "Penguin",
-            product: "The Alchemist",
-            productType: "Novel",
-        },
-        {
-            category: "Furniture",
-            name: "Chris Johnson",
-            role: "Floor Supervisor",
-            code: "EMP005",
-            date: "2025-09-05",
-            store: "Prime Furniture",
-            Brand: "Ikea",
-            product: "Office Chair",
-            productType: "Furniture",
-        },
-        {
-            category: "Toys",
-            name: "Sophia Martinez",
-            role: "Sales Executive",
-            code: "EMP006",
-            date: "2025-09-06",
-            store: "Happy Kids Toys",
-            Brand: "Lego",
-            product: "Lego City Set",
-            productType: "Toy",
-        },
-        {
-            category: "Sports",
-            name: "Daniel Wilson",
-            role: "Sales Associate",
-            code: "EMP007",
-            date: "2025-09-07",
-            store: "City Sports Arena",
-            Brand: "Nike",
-            product: "Running Shoes",
-            productType: "Sportswear",
-        },
-        {
-            category: "Grocery",
-            name: "Olivia Brown",
-            role: "Cashier",
-            code: "EMP008",
-            date: "2025-09-08",
-            store: "Metro Grocery",
-            Brand: "Nestle",
-            product: "Cornflakes",
-            productType: "Food",
-        },
-    ];
+    const handleModalClose = () => {
+      setModalOpen(false);
+      setSelectedSales(null);
+    };
 
     const onSubmit = async (formData: any) => {
-        console.log("Sales Form Data", formData);
-        setModalOpen(false);
-        setSelectedSales(null);
+      console.log("sales", formData);
+      try {
+        const finalData = {
+          ...formData,
+          id: selectedSales?.id || null,
+        };
+        await addEditSale(finalData).unwrap();
+        toast.success(
+          selectedSales
+            ? "Sale updated successfully"
+            : "Sale created successfully"
+        );
+        handleModalClose();
+      } catch (error) {
+        toast.error("Error saving sale");
+        console.error("Sales form error:", error);
+      }
+    };
+
+    const handleEdit = (row: SalesType) => {
+      setSelectedSales(row);
+      setModalOpen(true);
+    };
+
+    const handleDelete = async (row: SalesType) => {
+      await deleteSale(row?.id || 0);
+      console.log("row", row);
     };
 
     const SalesFields = () => {
-        const fields = [...SalesFormFields];
-        const categoryFields = fields.find((f) => f.name === "category");
-        if (categoryFields) {
-            categoryFields.options = [
-                { id: "1", name: "Base Commission" },
-                { id: "2", name: "Performance Bonus" },
-                { id: "3", name: "Tier Multiplier" },
-                { id: "4", name: "Cap Limit" },
-            ];
-        }
+      const fields = [...SalesFormFields];
 
-        const role = fields.find((f) => f.name === "role");
-        if (role) {
-            role.options = [
-                { id: "1", name: "Staff" },
-                { id: "2", name: "Manager" },
-                { id: "3", name: "Admin" },
-            ];
-        }
+      // sales field
+      const salesField = fields.find((f) => f.name === "saleTypeId");
+      if (salesField) {
+        salesField.options = sales.map((item) => ({
+          id: item?.id?.toString(),
+          name: item.name,
+        }));
+      }
+      // Department field
+      const departmentField = fields.find((f) => f.name === "departmentId");
+      if (departmentField) {
+        departmentField.options = departments.map((item) => ({
+          id: item?.id?.toString(),
+          name: item.name,
+        }));
+      }
 
-        const store = fields.find((f) => f.name === "store");
-        if (store) {
-            store.options = [
-                { id: "1", name: "India" },
-                { id: "1", name: "Japan" },
-                { id: "1", name: "Canada" },
-            ]
-        }
+      // Brand field
+      const brandField = fields.find((f) => f.name === "brandId");
+      if (brandField) {
+        brandField.options = brands.map((item) => ({
+          id: item?.id?.toString(),
+          name: item.name,
+        }));
+      }
 
-        const brand = fields.find((f) => f.name === "brand");
-        if (brand) {
-            brand.options = [
-                { id: "1", name: "Samsung" },
-                { id: "1", name: "Apple" },
-                { id: "1", name: "Nestle" },
-            ]
-        }
+      // Category field
+      const categoryField = fields.find((f) => f.name === "categoryId");
+      if (categoryField) {
+        categoryField.options = categories.map((item) => ({
+          id: item?.id?.toString(),
+          name: item.name,
+        }));
+      }
 
-        const product = fields.find((f) => f.name === "product");
-        if (product) {
-            product.options = [
-                { id: "1", name: "Galaxy S23" },
-                { id: "1", name: "Rolex Watch" },
-                { id: "1", name: "MacBook Pro" },
-            ]
-        }
-        return fields;
+      // Subcategory field
+      const subcategoryField = fields.find((f) => f.name === "subCategoryId");
+      if (subcategoryField) {
+        subcategoryField.options = subcategories.map((item) => ({
+          id: item?.id?.toString(),
+          name: item.name,
+        }));
+      }
+
+      // Subsubcategory field
+      const subsubcategoryField = fields.find(
+        (f) => f.name === "subSubCategoryId"
+      );
+      if (subsubcategoryField) {
+        subsubcategoryField.options = subsubcategories.map((item) => ({
+          id: item?.id?.toString(),
+          name: item.name,
+        }));
+      }
+
+      return fields;
     };
 
     return (
-        <>
-            <CommisionContainer>
-                <PageHeader title="Sales" btntitle="Add Sales" onActionClick={() => setModalOpen(true)} />
-                    
-                <CommonTable
-                    columns={SalesColumns}
-                    rows={SalesSampleData}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    onPageChange={setPage}
-                    onRowsPerPageChange={setRowsPerPage}
-                    actions={{
-                        onEdit: (row) => {
-                            setSelectedSales(row);
-                            setModalOpen(true);
-                        },
-                        onDelete: (row) => console.log("delete", row),
-                    }}
-                />
-            </CommisionContainer>
+      <>
+        <CommisionContainer>
+          <PageHeader
+            title="Sales"
+            btntitle="Add Sales"
+            btntitle2="Bulk import"
+            onActionClick2={() => setBulkDialogOpen(true)}
+            onActionClick={() => setModalOpen(true)}
+          />
 
-            <Footer />
-
-            <CommonDialog
-                open={isModalOpen}
-                onClose={() => {
-                    setModalOpen(false);
-                    setSelectedSales(null);
-                }}
-                onSubmit={onSubmit}
-                title={selectedSales ? "Edit Sales" : "Add Sales"}
-                validationSchema={salesFormValidationSchema}
-                fields={SalesFields()}
-                defaultValues={
-                    selectedSales || {
-                        storeName: "",
-                        storeCode: "",
-                        countryCode: "",
-                    }
-                }
+          <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            <SalesSearch
+              params={salesParams}
+              setParams={(p) => dispatch(setSalesParams(p))}
             />
-        </>
-    )
-};
-export default Sales;
+            <CommonTable
+              columns={SalesColumns}
+              rows={salesData?.items || []}
+              actions={{
+                onEdit: handleEdit,
+                onDelete: handleDelete,
+              }}
+            />
+            {salesData?.metaData && (
+              <AppPagination
+                metaData={salesData?.metaData}
+                onPageChange={(page: number) =>
+                  dispatch(setSalesParams({ PageNumber: page }))
+                }
+              />
+            )}
+          </Paper>
+        </CommisionContainer>
+
+        <Footer />
+
+        <CommonDialog
+          open={isModalOpen}
+          onClose={handleModalClose}
+          onSubmit={onSubmit}
+          title={selectedSales ? "Edit Sales" : "Add Sales"}
+          validationSchema={salesFormValidationSchema}
+          fields={SalesFields()}
+          defaultValues={selectedSales || {}}
+        />
+    
+     
+<BulkImportDialog
+  open={isBulkDialogOpen}
+  onClose={() => setBulkDialogOpen(false)}
+  onUpload={handleBulkImport}
+  sales={sales}
+  departments={departments}
+  brands={brands}
+  categories={categories}
+  subcategories={subcategories}
+  subsubcategories={subsubcategories}
+  
+/>
+      </>
+    );
+  };
+
+  export default Sales;
+
+  //test

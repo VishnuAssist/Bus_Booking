@@ -6,160 +6,163 @@ import { CommonDialog } from "../../Component/forms/FormDialog";
 import { StoreFormFields, storeFormValidationSchema } from "../../feilds_validation/storeFieldsValidation";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../../Component/commonPageHeader";
+import {
+  useGetAllStoresQuery,
+  useAddStoreMutation,
+  useEditStoreMutation,
+  useDeleteStoreMutation,
+} from "../../Api/StoreApi";
+import type { StoreDto } from "../../model/storeType";
+import type { QueryParamsType } from "../../Dto/formDto";
+import { ValidateParams } from "../../Lib/utile";
+import AppPagination from "../../Component/AppPagination";
+import { Paper } from "@mui/material";
 
 const Store = () => {
+  const [params, setParams] = useState<QueryParamsType>({});
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedStore, setSelectedStore] = useState<StoreDto | null>(null);
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [isModalOpen, setModalOpen] = useState(false);
-    const [selectedStore, setSelectedStore] = useState<any>(null);
+  const navi = useNavigate();
 
-    const navi = useNavigate();
+  // API hooks
+  const { data: storesData, isLoading, error } = useGetAllStoresQuery(ValidateParams(params));
 
-    const StoreColumns = [
-        { id: "id", label: "Store ID" },
-        { id: "name", label: "Store Name" },
-        { id: "code", label: "Store Code" },
-        { id: "countryCode", label: "CountryCode" },
-    ];
+  const [addStore] = useAddStoreMutation();
+  const [editStore] = useEditStoreMutation();
+  const [deleteStore] = useDeleteStoreMutation();
 
-    const StoreSampleData = [
-        {
-            id: 1,
-            name: "Downtown SuperMart",
-            code: "STM001",
-            countryCode: "United States",
-        },
-        {
-            id: 2,
-            name: "Greenfield Electronics",
-            code: "STM002",
-            countryCode: "India",
-        },
-        {
-            id: 3,
-            name: "Sunrise Fashion Hub",
-            code: "STM003",
-            countryCode: "United Kingdom",
-        },
-        {
-            id: 4,
-            name: "Tech World",
-            code: "STM004",
-            countryCode: "Canada",
-        },
-        {
-            id: 5,
-            name: "Metro Grocery",
-            code: "STM005",
-            countryCode: "Australia",
-        },
-        {
-            id: 6,
-            name: "Oceanic Bookstore",
-            code: "STM006",
-            countryCode: "Singapore",
-        },
-        {
-            id: 7,
-            name: "Prime Furniture",
-            code: "STM007",
-            countryCode: "United Arab Emirates",
-        },
-        {
-            id: 8,
-            name: "Happy Kids Toys",
-            code: "STM008",
-            countryCode: "Germany",
-        },
-        {
-            id: 9,
-            name: "City Sports Arena",
-            code: "STM009",
-            countryCode: "France",
-        },
-        {
-            id: 10,
-            name: "Galaxy Appliances",
-            code: "STM010",
-            countryCode: "Japan",
-        },
-    ];
+  const StoreColumns = [
+    { id: "storeId", label: "Store ID" },
+    { id: "name", label: "Store Name" },
+    { id: "code", label: "Store Code" },
+    { id: "countryCode", label: "Country Code" },
+  ];
 
+  const onSubmit = async (formData: StoreDto) => {
+    try {
+      if (selectedStore?.storeId) {
+        await editStore({
+          ...formData,
+          storeId: selectedStore.storeId,
+        }).unwrap();
+        console.log("Store updated successfully");
+      } else {
+        await addStore(formData).unwrap();
+      }
+      setModalOpen(false);
+      setSelectedStore(null);
+    } catch (err) {
+      console.error("Failed to save store:", err);
+    }
+  };
 
-    const onSubmit = async (formData: any) => {
-        console.log("Store Form Data", formData);
-        setModalOpen(false);
-        setSelectedStore(null);
-    };
+  const handleDelete = async (row: StoreDto) => {
+    if (row.storeId && window.confirm("Are you sure you want to delete this store?")) {
+      try {
+        await deleteStore(row.storeId).unwrap();
+      } catch (err) {
+        console.error("Failed to delete:", err);
+      }
+    }
+  };
 
-    const storeFields = () => {
-        const fields = [...StoreFormFields];
-        const countryField = fields.find((f) => f.name === "countryCode");
-        if (countryField) {
-            countryField.options = [
-                { id: "1", name: "United States" },
-                { id: "2", name: "India" },
-                { id: "3", name: "Japan" },
-                { id: "4", name: "France" },
-                { id: "5", name: "Germany" },
-                { id: "6", name: "United Arab Emirates" },
-                { id: "7", name: "Singapore" },
-                { id: "8", name: "Australia" },
-                { id: "9", name: "Canada" },
-                { id: "10", name: "United Kingdom" },
-            ];
-        }
-        return fields;
-    };
+  const storeFields = () => {
+    const fields = [...StoreFormFields];
+    const countryField = fields.find((f) => f.name === "countryCode");
+    if (countryField) {
+      countryField.options = [
+        { id: "US", name: "United States" },
+        { id: "IN", name: "India" },
+        { id: "JP", name: "Japan" },
+        { id: "FR", name: "France" },
+        { id: "DE", name: "Germany" },
+        { id: "AE", name: "United Arab Emirates" },
+        { id: "SG", name: "Singapore" },
+        { id: "AU", name: "Australia" },
+        { id: "CA", name: "Canada" },
+        { id: "GB", name: "United Kingdom" },
+      ];
+    }
+    return fields;
+  };
 
-    const handelView = () => {
-        navi(`/settings/storeTarget`)
-    };
+  const handleViewTargets = (row: StoreDto) => {
+    navi(`/settings/storeTarget?id=${row.storeId}`);
+  };
 
+  console.log("storesData", storesData);
+
+  if (isLoading) {
     return (
-        <>
-            <CommisionContainer>
-                <PageHeader title="Store" btntitle="Add Store" onActionClick={() => setModalOpen(true)} />
-                <CommonTable
-                    columns={StoreColumns}
-                    rows={StoreSampleData}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    onPageChange={setPage}
-                    onRowsPerPageChange={setRowsPerPage}
-                    actions={{
-                        onView: handelView,
-                        onEdit: (row) => {
-                            setSelectedStore(row);
-                            setModalOpen(true);
-                        },
-                        onDelete: (row) => console.log("delete", row),
-                    }}
-                />
-            </CommisionContainer>
+      <CommisionContainer>
+        <PageHeader title="Store" btntitle="Add Store" onActionClick={() => setModalOpen(true)} />
+        <div style={{ padding: "20px", textAlign: "center" }}>Loading stores...</div>
+      </CommisionContainer>
+    );
+  }
 
-            <Footer />
+  if (error) {
+    return (
+      <CommisionContainer>
+        <PageHeader title="Store" btntitle="Add Store" onActionClick={() => setModalOpen(true)} />
+        <div style={{ padding: "20px", textAlign: "center", color: "red" }}>
+          Error loading stores. Please try again.
+        </div>
+      </CommisionContainer>
+    );
+  }
 
-            <CommonDialog
-                open={isModalOpen}
-                onClose={() => {
-                    setModalOpen(false);
-                    setSelectedStore(null);
-                }}
-                onSubmit={onSubmit}
-                title={selectedStore ? "Edit Store" : "Add Store"}
-                validationSchema={storeFormValidationSchema}
-                fields={storeFields()}
-                defaultValues={
-                    selectedStore || {
-                        storeName: "",
-                        storeCode: "",
-                        countryCode: "",
-                    }
-                }
+  return (
+    <>
+      <CommisionContainer>
+        <PageHeader title="Store" btntitle="Add Store" onActionClick={() => setModalOpen(true)} />
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <CommonTable
+            columns={StoreColumns}
+            rows={storesData?.items || []}
+            actions={{
+              onView: handleViewTargets,
+              onEdit: (row) => {
+                setSelectedStore(row);
+                setModalOpen(true);
+              },
+              onDelete: handleDelete,
+            }}
+          />
+          {storesData?.metaData && (
+            <AppPagination
+              metaData={storesData?.metaData}
+              onPageChange={(page: number) =>
+                setParams({ ...params, PageNumber: page })
+              }
             />
-        </>
-    )
+          )}
+        </Paper>
+      </CommisionContainer>
+
+      <Footer />
+
+      <CommonDialog
+        open={isModalOpen}
+        onClose={() => {
+          setModalOpen(false);
+          setSelectedStore(null);
+        }}
+        onSubmit={onSubmit}
+        title={selectedStore ? "Edit Store" : "Add Store"}
+        validationSchema={storeFormValidationSchema}
+        fields={storeFields()}
+        defaultValues={
+          selectedStore || {
+            name: "",
+            code: "",
+            countryCode: "",
+          }
+        }
+      />
+    </>
+  );
 };
+
 export default Store;
