@@ -3,49 +3,41 @@ import { useGetMonthlySummarriesQuery } from "../../../Api/commisionApi";
 import { staffMonthlySummaryTableDataService } from "../services/staffMonthlySummaryTableDataService";
 import AppPagination from "../../../Component/AppPagination";
 import { useState } from "react";
-import type { QueryParamsType } from "../../../Dto/formDto";
 import type { MonthlySummarriesQueryParamsType } from "../../../model/commissionType";
-import MonthFilter from "../../../Component/Filters/MonthFilter";
-import YearFilter from "../../../Component/Filters/YearFilter";
+import StaffCommissionFilter from "./StaffCommissionFilter";
+import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 
 const StaffSummaryTable = () => {
-  const [selectedYear, setSelectedYear] = useState<number | null>();
-  const [selectedMonth, setSelectedMonth] = useState<number | null>();
-  const [params, setParams] = useState<QueryParamsType>({});
+  const [queryParams, setQueryParams] =
+    useState<MonthlySummarriesQueryParamsType>({
+      ...DEFAULT_PAGINATION_OPTIONS,
+      PageSize: DEFAULT_PAGINATION_OPTIONS.PageSize || 5,
+      year: undefined,
+      month: undefined,
+    });
 
-  const queryParams: MonthlySummarriesQueryParamsType = {
-    year: selectedYear || undefined,
-    month: selectedMonth || undefined,
+  const handleQueryParamsChange = (
+    newQueryParams: MonthlySummarriesQueryParamsType
+  ) => {
+    if (
+      queryParams.year !== newQueryParams.year ||
+      queryParams.month !== newQueryParams.month ||
+      queryParams.SearchTerm !== newQueryParams.SearchTerm
+    ) {
+      setQueryParams(newQueryParams);
+    }
   };
+
   const { data: monthlySummarries } = useGetMonthlySummarriesQuery(queryParams);
   const { columns, rows } = staffMonthlySummaryTableDataService(
     monthlySummarries?.items
   );
 
-  const handleYearChange = (year: number | null) => {
-    setSelectedYear(year);
-  };
-
-  const handleMonthChange = (month: number | null) => {
-    setSelectedMonth(month);
-  };
-
   return (
     <>
-      <YearFilter
-        value={selectedYear || null}
-        onChange={handleYearChange}
-        label="Select Year"
-        showLabel={false}
-        // minWidth={150}
-      />
-
-      <MonthFilter
-        value={selectedMonth || null}
-        onChange={handleMonthChange}
-        label="Select Month"
-        showLabel={false}
-        // minWidth={180}
+      <StaffCommissionFilter
+        queryParams={queryParams}
+        onQueryParamsChange={handleQueryParamsChange}
       />
 
       <CommonTable columns={columns} rows={rows} />
@@ -53,7 +45,7 @@ const StaffSummaryTable = () => {
         <AppPagination
           metaData={monthlySummarries?.metaData}
           onPageChange={(page: number) =>
-            setParams({ ...params, PageNumber: page })
+            setQueryParams({ ...queryParams, PageNumber: page })
           }
         />
       )}
