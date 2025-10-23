@@ -5,13 +5,7 @@ import CommonTable from "../../Component/CommenTable";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
 import {
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  TextField,
+
   Typography,
   Paper,
   Alert,
@@ -19,6 +13,8 @@ import {
 } from "@mui/material";
 import PageHeader from "../../Component/commonPageHeader";
 import {
+  ProcessStoreTargetFormFields,
+  ProcessStoreTargetFormValidationSchema,
   StoreTargetFormFields,
   storeTargetFormValidationSchema,
 } from "../../feilds_validation/storeTargetFieldsValidation";
@@ -33,27 +29,23 @@ import {
 import type { QueryParamsType } from "../../Dto/formDto";
 import { ValidateParams } from "../../Lib/utile";
 import AppPagination from "../../Component/AppPagination";
-import type { StoreMonthlyTargetDto } from "../../model/storeTargetType";
+import type { ProcessStoreTargetRequest, StoreMonthlyTargetDto } from "../../model/storeTargetType";
+import { toast } from "react-toastify";
 
 const StoreTarget = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const storeId = searchParams.get("id");
+ 
 
   const [params, setParams] = useState<QueryParamsType>({});
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStoreTarget, setSelectedStoreTarget] = useState<StoreMonthlyTargetDto | null>(null);
   const [processDialogOpen, setProcessDialogOpen] = useState(false);
 
-  // Process form state
-  const [processForm, setProcessForm] = useState({
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    brandCode: "",
-    ruleIds: "",
-  });
 
-  // API hooks
+
+  
   const { data: targetsData, isLoading, error } = useGetAllStoreTargetsQuery({
     ...ValidateParams(params),
     StoreId: storeId ? parseInt(storeId) : undefined,
@@ -62,7 +54,7 @@ const StoreTarget = () => {
   const [addStoreTarget] = useAddStoreTargetMutation();
   const [editStoreTarget] = useEditStoreTargetMutation();
   const [deleteStoreTarget] = useDeleteStoreTargetMutation();
-  const [processStoreTarget, { isLoading: isProcessing }] = useProcessStoreTargetMutation();
+  const [processStoreTarget] = useProcessStoreTargetMutation();
 
   const StoreTargetColumns = [
     { id: "id", label: "ID" },
@@ -110,41 +102,36 @@ const StoreTarget = () => {
     navigate(`/settings/storeKPI?targetId=${row.id}&storeId=${storeId}`);
   };
 
-  const handleProcessTarget = async () => {
+  const handleProcessTarget = async (formData:ProcessStoreTargetRequest) => {
     if (!storeId) {
-      alert("Store ID is required");
+      toast.error("Store ID is required");
       return;
     }
 
-    if (!processForm.brandCode) {
-      alert("Brand Code is required");
-      return;
-    }
-
+  
     try {
-      const ruleIdsArray = processForm.ruleIds
-        ? processForm.ruleIds.split(",").map((id) => parseInt(id.trim())).filter((id) => !isNaN(id))
-        : undefined;
+      const [yearStr, monthStr] = formData.year.toString().split("-");
+    const year = parseInt(yearStr, 10);
+    const month = parseInt(monthStr, 10);
 
-      await processStoreTarget({
-        year: processForm.year,
-        month: processForm.month,
-        storeId: parseInt(storeId),
-        brandCode: processForm.brandCode,
-        ruleIdsToUse: ruleIdsArray,
-      }).unwrap();
+    const updatedFormData = {
+      ...formData,
+      year,
+      month,
+      storeId: parseInt(storeId)
+    
 
-      alert("Store Target processed successfully!");
+    };
+    console.log("Processing with data:", updatedFormData);
+
+  const res=    await processStoreTarget(updatedFormData).unwrap();
+console.log("Process result:", res);
+   
       setProcessDialogOpen(false);
-      setProcessForm({
-        year: new Date().getFullYear(),
-        month: new Date().getMonth() + 1,
-        brandCode: "",
-        ruleIds: "",
-      });
+   
     } catch (err) {
       console.error("Failed to process store target:", err);
-      alert("Failed to process store target");
+      
     }
   };
 
@@ -246,91 +233,17 @@ const StoreTarget = () => {
           }
         }
       />
-
+  <CommonDialog
+     open={processDialogOpen}
+      onClose={() => setProcessDialogOpen(false)}
+      onSubmit={handleProcessTarget}
+      title="Store Target Process"
+      validationSchema={ProcessStoreTargetFormValidationSchema}
+      fields={ProcessStoreTargetFormFields}
+      defaultValues={{}}
+    />
       
-      <Dialog open={processDialogOpen} fullWidth maxWidth="sm">
-        <DialogTitle
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h6" fontWeight={600}>
-            Process Store Target
-          </Typography>
-          <Button color="error" onClick={() => setProcessDialogOpen(false)}>
-            Close
-          </Button>
-        </DialogTitle>
-        <DialogContent>
-          <Box sx={{ my: 2 }}>
-            <Grid container spacing={2}>
-              <Grid size={{xs:12, sm:6}}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="number"
-                  label="Year"
-                  value={processForm.year}
-                  onChange={(e) =>
-                    setProcessForm({ ...processForm, year: parseInt(e.target.value) })
-                  }
-                />
-              </Grid>
-              <Grid size={{xs:12, sm:6}}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="number"
-                  label="Month"
-                  value={processForm.month}
-                  onChange={(e) =>
-                    setProcessForm({ ...processForm, month: parseInt(e.target.value) })
-                  }
-                  inputProps={{ min: 1, max: 12 }}
-                />
-              </Grid>
-              <Grid size={{xs:12}} >
-                <TextField
-                  fullWidth
-                  size="small"
-                  label="Brand Code"
-                  value={processForm.brandCode}
-                  onChange={(e) =>
-                    setProcessForm({ ...processForm, brandCode: e.target.value })
-                  }
-                  required
-                />
-              </Grid>
-              <Grid size={{xs:12}} >
-                <TextField
-                  fullWidth
-                  size="small"
-                  label="Rule IDs (comma-separated)"
-                  placeholder="e.g., 1,2,3"
-                  value={processForm.ruleIds}
-                  onChange={(e) =>
-                    setProcessForm({ ...processForm, ruleIds: e.target.value })
-                  }
-                  helperText="Optional: Enter rule IDs separated by commas"
-                />
-              </Grid>
-            </Grid>
-          </Box>
-          <Box sx={{ textAlign: "end", mt: 2 }}>
-            <Button
-              variant="contained"
-              color="success"
-              size="small"
-              onClick={handleProcessTarget}
-              disabled={isProcessing || !processForm.brandCode}
-            >
-              {isProcessing ? <CircularProgress size={20} /> : "Process"}
-            </Button>
-          </Box>
-        </DialogContent>
-      </Dialog>
+  
     </>
   );
 };

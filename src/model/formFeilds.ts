@@ -47,7 +47,7 @@ export interface FormFieldProps<T> {
     | "D&DUploadImage"
     | "skipDates";
 
-  skipDates?: Array<{ startDate: string; endDate: string }>;
+    skipDates?: { startDate: string; endDate: string }[] | string;
 
   baseurl?: string;
   name: string;
