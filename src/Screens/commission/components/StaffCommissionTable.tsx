@@ -11,7 +11,6 @@ const StaffCommissionTable = () => {
   const [queryParams, setQueryParams] =
     useState<MonthlySummarriesQueryParamsType>({
       ...DEFAULT_PAGINATION_OPTIONS,
-      PageSize: DEFAULT_PAGINATION_OPTIONS.PageSize || 5,
       year: undefined,
       month: undefined,
     });
