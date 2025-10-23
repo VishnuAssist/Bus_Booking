@@ -73,6 +73,13 @@ const MonthFilter: React.FC<MonthFilterProps> = ({
                 fullWidth: fullWidth,
                 placeholder: "All Months",
               },
+              popper: {
+                sx: {
+                  "& .MuiDateCalendar-root": {
+                    height: "282px",
+                  },
+                },
+              },
             }}
           />
         </Box>
