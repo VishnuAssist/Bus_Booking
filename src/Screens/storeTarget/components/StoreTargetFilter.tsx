@@ -37,9 +37,11 @@ const StoreTargetFilter = ({
   return (
     <Box
       sx={{
+        margin: 2,
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
+        gap: 2,
       }}
     >
       <TextFilter

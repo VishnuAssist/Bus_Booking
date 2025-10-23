@@ -51,11 +51,8 @@ const YearFilter: React.FC<YearFilterProps> = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
-        margin={2}
         sx={{
-          float: "right",
           display: "flex",
-          gap: 2,
           minWidth: minWidth,
         }}
         className={className}

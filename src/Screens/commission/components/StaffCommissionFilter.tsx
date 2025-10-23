@@ -36,11 +36,12 @@ const StaffCommissionFilter = ({
 
   return (
     <Box
-      margin={2}
       sx={{
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
+        gap: 2,
+        margin: 2,
       }}
     >
       <TextFilter

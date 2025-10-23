@@ -113,7 +113,13 @@ const StoreTarget = () => {
           onActionClick2={() => setProcessDialogOpen(true)}
         />
 
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <Paper
+          sx={{
+            width: "100%",
+            overflow: "hidden",
+            flexDirection: "column",
+          }}
+        >
           <StoreTargetFilter
             queryParams={queryParams}
             onQueryParamsChange={handleQueryParamsChange}

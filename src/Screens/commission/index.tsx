@@ -1,11 +1,10 @@
-import { Grid } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import PageFilter from "./PageFilter";
 import Cards from "./Cards";
 import Structure from "./Structure";
 import Breakdown from "./Breakdown";
 import MonthlyHistory from "./MonthlyHistory";
 import CommisionContainer from "../../Component/container";
-import Footer from "../../Component/Footer";
 import PageHeader from "../../Component/commonPageHeader";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import StaffSummaryTable from "./components/StaffSummaryTable";
@@ -62,28 +61,30 @@ const Commission = () => {
             <Structure />
           </Grid>
           <Grid size={12}>
-            <Box sx={{ width: "100%", typography: "body1" }}>
-              <TabContext value={value}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                  <TabList
-                    onChange={handleChange}
-                    aria-label="lab API tabs example"
-                  >
-                    <Tab label="Staff Commission" value="staff-commission" />
-                    <Tab
-                      label="Staff Monthly Summary"
-                      value="staff-monthly-summary"
-                    />
-                  </TabList>
-                </Box>
-                <TabPanel value="staff-commission" sx={{ padding: 0 }}>
-                  <StaffCommissionTable />
-                </TabPanel>
-                <TabPanel value="staff-monthly-summary" sx={{ padding: 0 }}>
-                  <StaffSummaryTable />
-                </TabPanel>
-              </TabContext>
-            </Box>
+            <Paper sx={{ width: "100%", overflow: "hidden" }}>
+              <Box sx={{ width: "100%", typography: "body1" }}>
+                <TabContext value={value}>
+                  <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <TabList
+                      onChange={handleChange}
+                      aria-label="lab API tabs example"
+                    >
+                      <Tab label="Staff Commission" value="staff-commission" />
+                      <Tab
+                        label="Staff Monthly Summary"
+                        value="staff-monthly-summary"
+                      />
+                    </TabList>
+                  </Box>
+                  <TabPanel value="staff-commission" sx={{ padding: 0 }}>
+                    <StaffCommissionTable />
+                  </TabPanel>
+                  <TabPanel value="staff-monthly-summary" sx={{ padding: 0 }}>
+                    <StaffSummaryTable />
+                  </TabPanel>
+                </TabContext>
+              </Box>
+            </Paper>
           </Grid>
         </Grid>
       </CommisionContainer>
