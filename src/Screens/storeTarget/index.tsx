@@ -1,7 +1,6 @@
 import { useState } from "react";
 import CommisionContainer from "../../Component/container";
 import CommonTable from "../../Component/CommenTable";
-import Footer from "../../Component/Footer";
 import StoreTargetFormDialog from "./components/StoreTargetFormDialog";
 import StoreTargetProcessDialogue from "./components/StoreTargetProcessDialogue";
 import { Typography, Paper, Alert, CircularProgress } from "@mui/material";
