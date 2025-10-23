@@ -4,16 +4,28 @@ import { staffCommissionsTableDataService } from "../services/staffCommissionsTa
 import AppPagination from "../../../Component/AppPagination";
 import { useState } from "react";
 import type { MonthlySummarriesQueryParamsType } from "../../../model/commissionType";
-import YearFilter from "../../../Component/Filters/YearFilter";
-import MonthFilter from "../../../Component/Filters/MonthFilter";
+import StaffCommissionFilter from "./StaffCommissionFilter";
+import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 
 const StaffCommissionTable = () => {
-  const [selectedYear, setSelectedYear] = useState<number | null>();
-  const [selectedMonth, setSelectedMonth] = useState<number | null>();
+  const [queryParams, setQueryParams] =
+    useState<MonthlySummarriesQueryParamsType>({
+      ...DEFAULT_PAGINATION_OPTIONS,
+      PageSize: DEFAULT_PAGINATION_OPTIONS.PageSize || 5,
+      year: undefined,
+      month: undefined,
+    });
 
-  const queryParams: MonthlySummarriesQueryParamsType = {
-    year: selectedYear || undefined,
-    month: selectedMonth || undefined,
+  const handleQueryParamsChange = (
+    newQueryParams: MonthlySummarriesQueryParamsType
+  ) => {
+    if (
+      queryParams.year !== newQueryParams.year ||
+      queryParams.month !== newQueryParams.month ||
+      queryParams.SearchTerm !== newQueryParams.SearchTerm
+    ) {
+      setQueryParams(newQueryParams);
+    }
   };
 
   const { data: staffCommissions } = useGetStaffCommissionsQuery(queryParams);
@@ -21,39 +33,20 @@ const StaffCommissionTable = () => {
     staffCommissions?.items
   );
 
-  const handleYearChange = (year: number | null) => {
-    setSelectedYear(year);
-  };
-
-  const handleMonthChange = (month: number | null) => {
-    setSelectedMonth(month);
-  };
-
   return (
     <>
-      <YearFilter
-        value={selectedYear || null}
-        onChange={handleYearChange}
-        label="Select Year"
-        showLabel={false}
-        // minWidth={150}
-      />
-
-      <MonthFilter
-        value={selectedMonth || null}
-        onChange={handleMonthChange}
-        label="Select Month"
-        showLabel={false}
-        // minWidth={180}
+      <StaffCommissionFilter
+        queryParams={queryParams}
+        onQueryParamsChange={handleQueryParamsChange}
       />
 
       <CommonTable columns={columns} rows={rows} />
+
       {staffCommissions?.metaData && (
         <AppPagination
           metaData={staffCommissions?.metaData}
           onPageChange={(page: number) => {
-            // Handle pagination if needed
-            console.log("Page changed to:", page);
+            setQueryParams({ ...queryParams, PageNumber: page });
           }}
         />
       )}

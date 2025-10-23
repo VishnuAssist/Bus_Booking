@@ -1,7 +1,25 @@
 import { Box, InputAdornment, TextField, InputLabel } from "@mui/material";
 import { useState, useEffect } from "react";
-import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import { useDebounce } from "../../hooks/useDebounce";
+import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
+import type { FormFieldProps } from "../../model/formFeilds";
+import CommonForm from "../forms/Form";
+import * as yup from "yup";
+
+const TextFilterField: FormFieldProps<any>[] = [
+  {
+    label: "Search",
+    name: "searchTerm",
+    type: "text",
+    required: true,
+    size: { sm: 12, md: 6, lg: 6 },
+    placeholder: "Search...",
+  },
+];
+
+const textFilterValidationSchema = yup.object().shape({
+  searchTerm: yup.string().trim().required("Search is required"),
+});
 
 interface TextFilterProps {
   searchTerm: string;
@@ -50,7 +68,6 @@ const TextFilter = ({
       sx={{
         float: "right",
         display: "flex",
-        gap: 2,
         minWidth: minWidth,
       }}
       className={className}
@@ -76,6 +93,11 @@ const TextFilter = ({
           onChange={handleInputChange}
           placeholder={placeholder}
         />
+
+        {/* <CommonForm
+          fields={TextFilterField}
+          validationSchema={textFilterValidationSchema}
+        /> */}
       </Box>
     </Box>
   );

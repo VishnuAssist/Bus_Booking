@@ -49,7 +49,6 @@ const MonthFilter: React.FC<MonthFilterProps> = ({
       <Box
         margin={2}
         sx={{
-          float: "right",
           display: "flex",
           gap: 2,
           minWidth: minWidth,
