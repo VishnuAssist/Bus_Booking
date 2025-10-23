@@ -351,15 +351,6 @@ export function CommonFormDialog<T>({
                 </Grid>
               )}
             </Grid>
-            {mode === "edit" && (
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={{ mt: 1, display: "block" }}
-              >
-                Assignment type cannot be changed in edit mode
-              </Typography>
-            )}
           </Box>
         )}
 

@@ -9,7 +9,11 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
     type: "autocompletemultiple",
     required: true,
     multiple: true,
+    baseurl: "Account/all",
     size: { sm: 12, md: 12, lg: 12 },
+     optionLabel: (e) => {
+        return e?.userName || "";
+      },
   },
   {
     label: "Assign Group",
