@@ -171,10 +171,7 @@ const UserGroupDialog: React.FC<{
                       primary={`${user.firstName} ${user.lastName}`}
                       secondary={user.email}
                     />
-                    <ListItemText
-                      primary={user.roleName}
-                      secondary={user.designation}
-                    />
+                 
                   </ListItem>
                 );
               })}
