@@ -24,7 +24,7 @@
   import {
     useAppDispatch,
     useAppSelector,
-    type RootState,
+    
   } from "../../Store/StoreConfig";
   import { getAxiosParamsA } from "../../Api/util";
   import SalesSearch from "./salesSearch";

@@ -6,6 +6,7 @@ interface ParamsState {
   SalesParams: QueryParamsType;
   DictionaryParams: QueryParamsType;
   AttendanceParams: QueryParamsType;
+  UserGroupParams: QueryParamsType;
 }
 
 function initParams(status?: number): QueryParamsType {
@@ -24,6 +25,7 @@ const initialState: ParamsState = {
   SalesParams: initParams(),
   DictionaryParams :initParams(),
   AttendanceParams :initParams(),
+  UserGroupParams :initParams(),
 };
 
 export const Paramsslice = createSlice({
@@ -39,6 +41,9 @@ export const Paramsslice = createSlice({
     setAttendanceParams :(state ,action : PayloadAction<Partial<QueryParamsType>>) =>{
       state.AttendanceParams = {...state.AttendanceParams,...action.payload};
     },
+    setUserGroupParams :(state ,action : PayloadAction<Partial<QueryParamsType>>) =>{
+      state.UserGroupParams = {...state.UserGroupParams,...action.payload};
+    },
     resetSalesParams: (state) => { 
       state.SalesParams = initParams(); 
     },
@@ -49,6 +54,7 @@ export const {
   setSalesParams,
   setDictionaryParams,
   setAttendanceParams,
+  setUserGroupParams,
   resetSalesParams,
 } = Paramsslice.actions;
 
