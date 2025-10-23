@@ -19,9 +19,9 @@ export const shiftApi = createApi({
       invalidatesTags: ["ShiftApi"],
     }),
     putShift: builder.mutation<Shift,  { id: string }>({
-      query:  ({ id, ...body }) => ({
+      query:  ({ ...body }) => ({
         method: "PUT",
-        url: `/ShiftSchedule/${id}`,
+        url: `/ShiftSchedule/${body.id}`,
         body,
       }),
       invalidatesTags: ["ShiftApi"],
