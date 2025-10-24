@@ -1,5 +1,5 @@
 import { CommonDialog } from "../../../Component/forms/FormDialog";
-import type { StoreMonthlyTargetDto } from "../../../model/storeTargetType";
+import type { StoreTargetDto } from "../../../model/storeTargetType";
 import {
   useAddStoreTargetMutation,
   useEditStoreTargetMutation,
@@ -13,7 +13,7 @@ import {
 interface StoreTargetFormDialogProps {
   open: boolean;
   onClose: () => void;
-  selectedStoreTarget?: StoreMonthlyTargetDto | null;
+  selectedStoreTarget?: StoreTargetDto | null;
 }
 
 const StoreTargetFormDialog = ({
@@ -29,7 +29,7 @@ const StoreTargetFormDialog = ({
     return fields;
   };
 
-  const onSubmit = async (formData: StoreMonthlyTargetDto) => {
+  const onSubmit = async (formData: StoreTargetDto) => {
     try {
       const payload = {
         ...formData,
@@ -52,6 +52,23 @@ const StoreTargetFormDialog = ({
     }
   };
 
+  // Transform response data to form data
+  const transformResponseToFormData = (responseData: StoreTargetDto) => {
+    if (!responseData) return null;
+
+    const { stores, users, ...restData } = responseData;
+
+    return {
+      ...restData,
+      storeIds: stores ? stores.map((store) => store.id) : [],
+      userIds: users ? users.map((user) => user.id) : [],
+    };
+  };
+
+  const editData = selectedStoreTarget
+    ? transformResponseToFormData(selectedStoreTarget)
+    : null;
+
   return (
     <CommonDialog
       open={open}
@@ -61,7 +78,7 @@ const StoreTargetFormDialog = ({
       validationSchema={storeTargetFormValidationSchema}
       fields={storeTargetFields()}
       defaultValues={
-        selectedStoreTarget || {
+        editData || {
           storeIds: [],
           year: new Date().getFullYear(),
           month: new Date().getMonth() + 1,

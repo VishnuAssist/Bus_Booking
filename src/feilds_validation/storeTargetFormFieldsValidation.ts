@@ -81,11 +81,11 @@ export const storeTargetFormValidationSchema = yup.object({
 
   month: yup.number().required("Month is required"),
 
-  brandCodes: yup
-    .array()
-    .optional()
-    .transform((curr, orig) => (orig === "" ? [] : curr))
-    .of(yup.number()),
+  // brandCodes: yup
+  //   .array()
+  //   .optional()
+  //   .transform((curr, orig) => (orig === "" ? [] : curr))
+  //   .of(yup.number()),
 
   targetAmount: yup
     .number()

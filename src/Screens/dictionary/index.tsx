@@ -82,6 +82,7 @@ const DictionaryPage = () => {
   const columns = [
     { id: "categoryId", label: "Category ID", minWidth: 50 },
     { id: "name", label: "Name", minWidth: 100 },
+    { id: "code", label: "Code", minWidth: 100 },
     { id: "description", label: "Description", minWidth: 150 },
     {
       id: "isActive",

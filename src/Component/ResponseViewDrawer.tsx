@@ -36,22 +36,32 @@ const ResponseViewDrawer = <T,>({
       .trim();
   };
 
-  const formatValue = (value: unknown): string => {
+  const formatValue = (value: unknown) => {
     if (value === null || value === undefined) {
       return "N/A";
     }
 
     if (Array.isArray(value)) {
-      return value
-        .map((item) => {
-          if (typeof item === "object" && item !== null) {
-            return Object.entries(item)
-              .map(([key, val]) => `${key}: ${val}`)
-              .join(", ");
-          }
-          return String(item);
-        })
-        .join("\n");
+      return (
+        <Box>
+          {value.map((item, index) => (
+            <Box key={index}>
+              {typeof item === "object" && item !== null ? (
+                <Box sx={{ mb: 1 }}>
+                  {Object.entries(item).map(([key, val]) => (
+                    <Typography key={key} variant="body2" sx={{ ml: 1 }}>
+                      {key}: {String(val)}
+                    </Typography>
+                  ))}
+                </Box>
+              ) : (
+                <Typography variant="body2">{JSON.stringify(item)}</Typography>
+              )}
+              {index < value.length - 1 && <Divider sx={{ my: 1 }} />}
+            </Box>
+          ))}
+        </Box>
+      );
     }
 
     return String(value);
@@ -59,8 +69,6 @@ const ResponseViewDrawer = <T,>({
 
   const getFieldsToRender = () => {
     if (!data || typeof data !== "object") return [];
-
-    // Always use data object keys to show all fields from response
     return Object.keys(data);
   };
 
@@ -122,16 +130,21 @@ const ResponseViewDrawer = <T,>({
                           <Typography
                             variant="subtitle2"
                             sx={{
-                              fontWeight: 600,
                               color: "text.secondary",
                               mb: 0.5,
+                              fontWeight: 400,
+                              fontSize: "0.875rem",
                             }}
                           >
                             {label}
                           </Typography>
-                          <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                            {formatValue(value)}
-                          </Typography>
+                          {typeof formatValue(value) === "string" ? (
+                            <Typography variant="body1">
+                              {formatValue(value)}
+                            </Typography>
+                          ) : (
+                            formatValue(value)
+                          )}
                         </Box>
                       </Grid>
                     );

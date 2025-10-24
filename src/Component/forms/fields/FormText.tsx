@@ -44,7 +44,6 @@ const FormText: React.FC<Props> = ({
     type={type}
     value={value || ""}
     onChange={(e) => {
-      console.log("hello", e.target.value);
       onChange(e.target.value);
     }}
     required={required}

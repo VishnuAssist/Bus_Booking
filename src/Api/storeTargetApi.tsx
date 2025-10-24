@@ -24,7 +24,7 @@ export const storeTargetApi = createApi({
         url: "/Targets",
         params,
       }),
-      transformResponse: (response: StoreTargetDto[], meta: any) =>
+      transformResponse: (response: StoreTargetDto[], meta: MetaData) =>
         dataWithMeta<StoreTargetDto[], MetaData>(response, meta),
       providesTags: (result) =>
         result

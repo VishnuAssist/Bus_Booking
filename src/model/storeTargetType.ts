@@ -8,9 +8,19 @@ export interface StoreTargetDto {
   description: string;
   userIds: number[];
   storeIds: number[];
-  brandCodes: number[];
-  ruleIdsToUse: number[];
-  additionalWorkflowJson: string;
+  brandCodes: string[];
+
+  // Following fields are for response data
+  stores?: {
+    id: number;
+    name: string;
+    code: string;
+  }[];
+  users?: {
+    id: string;
+    userName: string;
+    employeeCode: string;
+  }[];
 }
 
 export interface ProcessStoreTargetRequest {
