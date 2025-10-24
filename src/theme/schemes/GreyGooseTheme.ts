@@ -851,6 +851,7 @@ export const GreyGooseTheme = createTheme({
             paddingLeft: 20,
             paddingRight: 20,
             marginRight: 4,
+            fontWeight: 400,
           },
           "&.Mui-selected, &.Mui-selected:hover": {
             color: colors.alpha.white[100],
