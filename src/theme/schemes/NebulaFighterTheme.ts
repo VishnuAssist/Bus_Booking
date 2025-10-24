@@ -979,7 +979,7 @@ export const NebulaFighterTheme = createTheme({
           borderBottomColor: colors.alpha.black[10],
           fontSize: 14,
           "&.MuiTableCell-head": {
-            fontWeight: 600,
+            fontWeight: 500,
           },
         },
         head: {
@@ -1152,7 +1152,6 @@ export const NebulaFighterTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          fontSize: 20,
           fontWeight: 500,
         },
         gutterBottom: {
