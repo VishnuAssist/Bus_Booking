@@ -989,6 +989,7 @@ export const GreyGooseTheme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         root: {
+          padding: "8px 16px",
           borderBottomColor: colors.alpha.black[10],
           fontSize: 14,
           "&.MuiTableCell-head": {

@@ -76,6 +76,11 @@ const TextFilter = ({
           }}
           onChange={handleInputChange}
           placeholder={placeholder}
+          sx={{
+            "& .MuiInputBase-input::placeholder": {
+              fontSize: "12px", // Adjust font size here
+            },
+          }}
         />
       </Box>
     </Box>
