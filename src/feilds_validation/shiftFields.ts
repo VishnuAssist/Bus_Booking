@@ -9,12 +9,16 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
     type: "autocompletemultiple",
     required: true,
     multiple: true,
+    baseurl: "Account/all",
     size: { sm: 12, md: 12, lg: 12 },
+     optionLabel: (e) => {
+        return e?.userName || "";
+      },
   },
   {
     label: "Assign Group",
     name: "groupIds",
-    type: "select",
+    type: "autocompletemultiple",
     required: true,
     multiple: true,
     size: {  sm: 12, md: 12, lg: 12 },
@@ -62,18 +66,18 @@ export const ShiftFormFields: FormFieldProps<Shift>[] = [
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
+    label: "Notes",
+    name: "notes",
+    type: "text",
+    required: false,
+    size: { sm: 12, md: 12, lg: 12 },
+  },
+  {
     label: "Skip Dates",
     name: "skipDates",
     type: "skipDates",
     required: true,
     multiple: true,
-    size: { sm: 12, md: 12, lg: 12 },
-  },
-  {
-    label: "Notes",
-    name: "notes",
-    type: "text",
-    required: false,
     size: { sm: 12, md: 12, lg: 12 },
   },
 ];
@@ -89,7 +93,15 @@ export const shiftFormValidationSchema = yup.object().shape({
   shiftType: yup.string().required("Shift type is required"),
   startDate: yup.date().required("Start date is required"),
   endDate: yup.date().required("End date is required"),
-  skipDates: yup.date().required("Skip date is required"),
+  skipDates: yup
+    .array()
+    .of(
+      yup.object({
+        startDate: yup.date().required("Start date is required"),
+        endDate: yup.date().required("End date is required"),
+      })
+    )
+    .default([]),
   notes: yup.string().nullable(),
   storeId: yup.number().nullable(),
 });

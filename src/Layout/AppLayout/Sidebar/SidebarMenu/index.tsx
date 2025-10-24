@@ -31,7 +31,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-
+import GroupsIcon from "@mui/icons-material/Groups";
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
   .MuiList-root {
@@ -170,9 +170,21 @@ function SidebarMenu({
             hide: true,
           },
           {
+            label: "Target",
+            link: "/settings/target",
+            icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
             label: "Sales",
             link: "/settings/sales",
             icon: <SellIcon />,
+            hide: true,
+          },
+          {
+            label: "UserGroup",
+            link: "/settings/UserGroup",
+            icon: <GroupsIcon />,
             hide: true,
           },
         ],
@@ -188,7 +200,7 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "LeaveRequest",
+            label: "Staff Services",
             link: "/staff/leaveRequest",
             icon: <DescriptionOutlinedIcon />,
             hide: true,

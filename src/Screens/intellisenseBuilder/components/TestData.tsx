@@ -33,6 +33,7 @@ import {
 } from "@mui/icons-material";
 import { useAppSelector, useAppDispatch } from "../../../Store/StoreConfig";
 import { useTestRuleMutation } from "../../../Api/rulesApi";
+import { DataDrawer } from "../ui";
 import {
   updateBasicInfo,
   updateUser,
@@ -92,8 +93,12 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
     index: number;
     data: any;
   } | null>(null);
+
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [showJsonView, setShowJsonView] = useState(false);
+  const [apiResponse, setApiResponse] = useState<any>(null);
+  const [showApiResponse, setShowApiResponse] = useState(false);
+
   const [testRuleMutation, { isLoading: isTestLoading }] =
     useTestRuleMutation();
 
@@ -118,7 +123,7 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
       }
 
       // Get the current test data (excluding workflowJson)
-      const { workflowJson, ...testDataWithoutWorkflow } = testData;
+      const { workflowJson: _, ...testDataWithoutWorkflow } = testData;
 
       // Prepare the test data with the local workflowJson
       const testPayload = {
@@ -130,10 +135,18 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
 
       const result = await testRuleMutation({ data: testPayload }).unwrap();
       console.log("Test API result:", result);
-      alert("Test API called successfully! Check console for results.");
+
+      // Store the API response and show it in drawer
+      setApiResponse(result);
+      setShowApiResponse(true);
     } catch (error) {
       console.error("Test API error:", error);
-      alert("Failed to call test API. Check console for details.");
+      // Store error response and show it in drawer
+      setApiResponse({
+        error:
+          error instanceof Error ? error.message : "Failed to call test API",
+      });
+      setShowApiResponse(true);
     }
   };
 
@@ -654,33 +667,25 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
         </Card>
       </Box>
 
-      {/* Right Sidebar - JSON View */}
-      {showJsonView && (
-        <Box sx={{ width: 400, borderLeft: 1, borderColor: "divider" }}>
-          <Card sx={{ height: "100%", borderRadius: 0 }}>
-            <CardHeader
-              title="JSON Preview"
-              action={
-                <IconButton onClick={() => setShowJsonView(false)} size="small">
-                  ×
-                </IconButton>
-              }
-            />
-            <CardContent sx={{ height: "calc(100% - 80px)", overflow: "auto" }}>
-              <pre style={{ fontSize: "12px", margin: 0 }}>
-                {JSON.stringify(
-                  {
-                    ...testData,
-                    workflowJson: localWorkflowJson,
-                  },
-                  null,
-                  2
-                )}
-              </pre>
-            </CardContent>
-          </Card>
-        </Box>
-      )}
+      {/* JSON Preview Drawer */}
+      <DataDrawer
+        isOpen={showJsonView}
+        onClose={() => setShowJsonView(false)}
+        data={{
+          ...testData,
+          workflowJson: localWorkflowJson,
+        }}
+        type="json"
+      />
+
+      {/* API Response Drawer */}
+      <DataDrawer
+        isOpen={showApiResponse}
+        onClose={() => setShowApiResponse(false)}
+        data={apiResponse}
+        type="api"
+        showActions={true}
+      />
 
       {/* Edit Dialog */}
       {renderEditDialog()}

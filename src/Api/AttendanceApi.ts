@@ -1,0 +1,69 @@
+import { createApi } from "@reduxjs/toolkit/query/react";
+import APIFetchBase from "../Store/ApiConfig";
+import type { MetaData } from "../model/common";
+import { dataWithMeta } from "../Lib/ApiUtil";
+import type { attendanceType } from "../model/attendanceType";
+
+export const attendanceApi = createApi({
+  reducerPath: "attendanceApi",
+  baseQuery: APIFetchBase,
+  tagTypes: ["Attendance"],
+  keepUnusedDataFor: 300,
+  endpoints: (builder) => ({
+    
+    getAllAttendance: builder.query<
+      { items: attendanceType[]; metaData: MetaData },
+      any
+    >({
+      query: (args) => ({
+        method: "GET",
+        url: "/Attendance",
+        params: {
+          ...args,
+        },
+      }),
+      transformResponse: (response, metaData) =>
+        dataWithMeta<attendanceType[], MetaData>(
+          response as attendanceType[],
+          metaData as any
+        ),
+      providesTags: ["Attendance"],
+    }),
+
+    
+    getAttendanceById: builder.query<attendanceType, number>({
+      query: (id) => ({
+        method: "GET",
+        url: `/Attendance/${id}`,
+      }),
+      providesTags: (result, error, id) => [{ type: "Attendance", id }],
+    }),
+
+    
+    addEditAttendance: builder.mutation<any, attendanceType>({
+      query: (args) => ({
+        method: args?.id ? "PUT" : "POST",
+        url: "/Attendance",
+        body: args,
+      }),
+      invalidatesTags: ["Attendance"],
+    }),
+  
+
+    
+    deleteAttendance: builder.mutation<void, number>({
+      query: (id) => ({
+        method: "DELETE",
+        url: `/Attendance/${id}`,
+      }),
+      invalidatesTags: ["Attendance"],
+    }),
+  }),
+});
+
+export const {
+  useGetAllAttendanceQuery,
+  useGetAttendanceByIdQuery,
+  useAddEditAttendanceMutation,
+  useDeleteAttendanceMutation,
+} = attendanceApi;

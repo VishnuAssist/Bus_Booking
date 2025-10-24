@@ -14,20 +14,73 @@ export const generateWorkflowJSON = (
         const baseRule = {
           RuleName: rule.ruleName,
           Expression: rule.expression,
+          RuleExpressionType: "LambdaExpression",
         };
 
         // Only include Actions if there are action groups
-        if (rule.actionGroups.length > 0 && rule.actionGroups[0]?.actionType) {
+        if (rule.actionGroups.length > 0) {
+          const actions: {
+            OnSuccess?: {
+              Name: string;
+              Context: { Expression: string };
+            };
+            OnFailure?: {
+              Name: string;
+              Context: { Expression: string };
+            };
+            OnError?: {
+              Name: string;
+              Context: { Expression: string };
+            };
+          } = {};
+
+          // Process all action groups and group them by action type
+          rule.actionGroups.forEach((actionGroup) => {
+            if (actionGroup.actionType && actionGroup.expression) {
+              const actionType = actionGroup.actionType;
+              const actionName = actionGroup.actionName || actionType;
+
+              // Map action types to the correct structure
+              switch (actionType) {
+                case "onSuccess":
+                  actions.OnSuccess = {
+                    Name: actionName,
+                    Context: {
+                      Expression: actionGroup.expression,
+                    },
+                  };
+                  break;
+                case "onFailure":
+                  actions.OnFailure = {
+                    Name: actionName,
+                    Context: {
+                      Expression: actionGroup.expression,
+                    },
+                  };
+                  break;
+                case "onError":
+                  actions.OnError = {
+                    Name: actionName,
+                    Context: {
+                      Expression: actionGroup.expression,
+                    },
+                  };
+                  break;
+                default:
+                  // For any other action type, default to OnSuccess
+                  actions.OnSuccess = {
+                    Name: actionName,
+                    Context: {
+                      Expression: actionGroup.expression,
+                    },
+                  };
+              }
+            }
+          });
+
           return {
             ...baseRule,
-            Actions: {
-              OnSuccess: {
-                Name: rule.actionGroups[0].actionType,
-                Context: {
-                  Expression: rule.actionGroups[0]?.expression || "",
-                },
-              },
-            },
+            Actions: actions,
           };
         }
 

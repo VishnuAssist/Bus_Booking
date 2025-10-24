@@ -1,4 +1,4 @@
-import { FormHelperText, InputLabel, } from "@mui/material";
+import { FormHelperText, InputLabel } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import FormText from "./FormText";
 import FormSelect from "./FormSelect";
@@ -10,8 +10,8 @@ import FormAutocompleteMulitple from "./AutocompleteMulitpleInput";
 // import FormUploadImage from "./uploadImage";
 import SkipDates from "./skipDateField";
 import type { FormFieldProps } from "../../../Dto/formDto";
-
-
+import YearPicker from "./YearPicker";
+import MonthPicker from "./MonthPicker";
 
 const FormField = <T,>(props: FormFieldProps<T>) => {
   const {
@@ -33,18 +33,29 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
     optionLabel,
     startInput,
     endInput,
-    valueName, tooltip,
-    min, max, excludeValues,
+    valueName,
+    tooltip,
+    min,
+    max,
+    excludeValues,
   } = props;
 
-  const { control, formState: { errors } } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
-  const error = (errors[name]?.message ?? errors[name]?.root?.message) as string | undefined;
-
+  const error = (errors[name]?.message ?? errors[name]?.root?.message) as
+    | string
+    | undefined;
 
   return (
     <div style={{ marginBottom: "4px", ...style }}>
-      {label && type !== "checkbox" && <InputLabel sx={{ fontSize: 11 }} ><b>{label}</b> {required && <span>*</span>}</InputLabel>}
+      {label && type !== "checkbox" && (
+        <InputLabel sx={{ fontSize: 11 }}>
+          <b>{label}</b> {required && <span>*</span>}
+        </InputLabel>
+      )}
 
       <Controller
         name={name}
@@ -67,7 +78,7 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
                   size={inputsize}
                 />
               );
-              
+
             case "checkbox":
               return (
                 <FormCheckbox
@@ -137,6 +148,28 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
                 />
               );
 
+            case "yearpicker":
+              return (
+                <YearPicker
+                  value={value}
+                  onChange={onChange}
+                  fullWidth={fullWidth}
+                  disabled={disabled}
+                  required={required}
+                />
+              );
+
+            case "monthpicker":
+              return (
+                <MonthPicker
+                  value={value}
+                  onChange={onChange}
+                  fullWidth={fullWidth}
+                  disabled={disabled}
+                  required={required}
+                />
+              );
+
             // case "D&DUpload":
             //   return <FormUpload onChange={onChange} allowFile={allowFile} />;
             // case "D&DUploadImage":
@@ -149,8 +182,18 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
             //   );
 
             default:
-              const validTextTypes = ["number", "text", "password", "date", "datetime-local", "dateTime", "time"] as const;
-              const safeType = validTextTypes.includes(type as any) ? (type as (typeof validTextTypes)[number]) : "text";
+              const validTextTypes = [
+                "number",
+                "text",
+                "password",
+                "date",
+                "datetime-local",
+                "dateTime",
+                "time",
+              ] as const;
+              const safeType = validTextTypes.includes(type as any)
+                ? (type as (typeof validTextTypes)[number])
+                : "text";
               return (
                 <FormText
                   value={value}
@@ -170,10 +213,11 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
                 />
               );
           }
-
         }}
       />
-      <FormHelperText sx={{ color: "red", fontSize: 11 }}>{error}</FormHelperText>
+      <FormHelperText sx={{ color: "red", fontSize: 11 }}>
+        {error}
+      </FormHelperText>
     </div>
   );
 };

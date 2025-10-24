@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-
+import Footer from "../../Component/Footer";
 
 interface SidebarLayoutProps {
   children?: ReactNode;
@@ -15,7 +15,6 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
 
   return (
     <>
@@ -65,6 +64,7 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
           <Box display="block" sx={{ pb: isMobile ? "56px" : 0 }}>
             <Outlet />
           </Box>
+          <Footer />
         </Box>
       </Box>
     </>

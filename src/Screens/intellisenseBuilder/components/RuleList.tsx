@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardActions,
   Typography,
-  TextField,
   IconButton,
   Tooltip,
   Stack,
@@ -15,23 +14,19 @@ import {
   Alert,
   Chip,
 } from "@mui/material";
-import { Add, Edit, Delete, Search, Refresh } from "@mui/icons-material";
+import { Add, Edit, Delete, Refresh } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { GradientButton } from "../ui";
 import { useGetRulesQuery, useDeleteRuleMutation } from "../../../Api/rulesApi";
 
 const RuleList: React.FC = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
   const [deleteRule] = useDeleteRuleMutation();
 
   const { data: rules = [], isLoading, error, refetch } = useGetRulesQuery({});
 
-  // Debug logging
-  console.log("RuleList - API Response:", { rules, isLoading, error });
-
   const handleEdit = (ruleId: string | number) => {
-    navigate(`/Admin/intellisenseBuilder?editRuleId=${ruleId}`);
+    navigate(`/Admin/intellisenseBuilder/${ruleId}/edit`);
   };
 
   const handleCreate = () => {
@@ -45,16 +40,9 @@ const RuleList: React.FC = () => {
         refetch();
       } catch (error) {
         console.error("Failed to delete rule:", error);
-        alert("Failed to delete rule. Please try again.");
       }
     }
   };
-
-  const filteredRules = rules.filter(
-    (rule) =>
-      rule.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      rule.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   if (isLoading) {
     return (
@@ -94,144 +82,105 @@ const RuleList: React.FC = () => {
             Manage commission calculation rules and policies
           </Typography>
         </Box>
-        <GradientButton
-          gradientVariant="green"
+
+        <Button
+          sx={{ mt: { xs: 2, md: 0 } }}
+          variant="contained"
           startIcon={<Add />}
           onClick={handleCreate}
         >
           Create Rule
-        </GradientButton>
+        </Button>
       </Box>
 
-      {/* Search */}
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <TextField
-            fullWidth
-            placeholder="Search rules by name or description..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <Search sx={{ mr: 1, color: "text.secondary" }} />
-              ),
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+          gap: 2,
+        }}
+      >
+        {rules.map((rule) => (
+          <Card
+            key={rule.id}
+            variant="outlined"
+            sx={{
+              transition: "all 0.2s",
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: 3,
+              },
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
             }}
-          />
-        </CardContent>
-      </Card>
+          >
+            <CardHeader
+              title={
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography variant="subtitle1" fontWeight={600} noWrap>
+                    {rule.name || "Untitled Rule"}
+                  </Typography>
+                  <Chip
+                    size="small"
+                    label={`#${rule.id}`}
+                    variant="outlined"
+                    color="primary"
+                  />
+                </Stack>
+              }
+              action={
+                <Stack direction="row" spacing={0.5}>
+                  <Tooltip title="Edit Rule">
+                    <IconButton
+                      size="small"
+                      onClick={() => handleEdit(rule.id!)}
+                      color="primary"
+                    >
+                      <Edit fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete Rule">
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(rule.id!)}
+                      color="error"
+                    >
+                      <Delete fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </Stack>
+              }
+            />
+            <CardContent sx={{ flex: 1 }}>
+              <Typography
+                color="text.secondary"
+                variant="body2"
+                sx={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
+                {rule.description || "No description provided"}
+              </Typography>
+            </CardContent>
 
-      {/* Rules List */}
-      {filteredRules.length === 0 ? (
-        <Card>
-          <CardContent sx={{ textAlign: "center", py: 4 }}>
-            <Typography variant="h6" color="text.secondary" gutterBottom>
-              {searchTerm ? "No rules found" : "No rules created yet"}
-            </Typography>
-            <Typography color="text.secondary" sx={{ mb: 2 }}>
-              {searchTerm
-                ? "Try adjusting your search terms"
-                : "Click 'Create Rule' to get started"}
-            </Typography>
-            {!searchTerm && (
+            <CardActions sx={{ p: 2, pt: 0 }}>
               <GradientButton
                 gradientVariant="green"
-                startIcon={<Add />}
-                onClick={handleCreate}
+                size="small"
+                startIcon={<Edit />}
+                onClick={() => handleEdit(rule.id!)}
+                sx={{ flex: 1 }}
               >
-                Create Your First Rule
+                Edit Rule
               </GradientButton>
-            )}
-          </CardContent>
-        </Card>
-      ) : (
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: 2,
-          }}
-        >
-          {filteredRules.map((rule) => (
-            <Card
-              key={rule.id}
-              variant="outlined"
-              sx={{
-                transition: "all 0.2s",
-                "&:hover": {
-                  transform: "translateY(-2px)",
-                  boxShadow: 3,
-                },
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <CardHeader
-                title={
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <Typography variant="subtitle1" fontWeight={600} noWrap>
-                      {rule.name || "Untitled Rule"}
-                    </Typography>
-                    <Chip
-                      size="small"
-                      label={`#${rule.id}`}
-                      variant="outlined"
-                      color="primary"
-                    />
-                  </Stack>
-                }
-                action={
-                  <Stack direction="row" spacing={0.5}>
-                    <Tooltip title="Edit Rule">
-                      <IconButton
-                        size="small"
-                        onClick={() => handleEdit(rule.id!)}
-                        color="primary"
-                      >
-                        <Edit fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete Rule">
-                      <IconButton
-                        size="small"
-                        onClick={() => handleDelete(rule.id!)}
-                        color="error"
-                      >
-                        <Delete fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  </Stack>
-                }
-              />
-              <CardContent sx={{ flex: 1 }}>
-                <Typography
-                  color="text.secondary"
-                  variant="body2"
-                  sx={{
-                    display: "-webkit-box",
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                  }}
-                >
-                  {rule.description || "No description provided"}
-                </Typography>
-              </CardContent>
-              <CardActions sx={{ p: 2, pt: 0 }}>
-                <GradientButton
-                  gradientVariant="green"
-                  size="small"
-                  startIcon={<Edit />}
-                  onClick={() => handleEdit(rule.id!)}
-                  sx={{ flex: 1 }}
-                >
-                  Edit Rule
-                </GradientButton>
-              </CardActions>
-            </Card>
-          ))}
-        </Box>
-      )}
+            </CardActions>
+          </Card>
+        ))}
+      </Box>
     </Box>
   );
 };

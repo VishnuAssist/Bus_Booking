@@ -20,7 +20,7 @@ const Dashboard = Loader(lazy(() => import("../Screens/dashboard/index")));
 const Commission = Loader(lazy(() => import("../Screens/commission/index")));
 const LeaderBoard = Loader(lazy(() => import("../Screens/LeaderBoard")));
 const Profile = Loader(lazy(() => import("../Screens/Profile")));
-const Calender = Loader(lazy(() => import("../Screens/Calender")));
+const Calender = Loader(lazy(() => import("../Screens/calender")));
 
 // Staff Portal
 const Attendence = Loader(
@@ -61,8 +61,9 @@ const ReportAndAnalytics = Loader(
 
 const Dictionary = Loader(lazy(() => import("../Screens/dictionary/index")));
 const Store = Loader(lazy(() => import("../Screens/store/index")));
-const StoreTarget = Loader(lazy(() => import("../Screens/storeTarget/index")));
+const StoreTarget = Loader(lazy(() => import("../Screens/storeTarget")));
 const Sales = Loader(lazy(() => import("../Screens/sales/index")));
+const UserGroup = Loader(lazy(() => import("../Screens/UserGroup")));
 
 const Reports = Loader(lazy(() => import("../Screens/Reports/Index")));
 
@@ -242,6 +243,10 @@ const routes: RouteObject[] = [
             element: <IntellisenseBuilder />,
           },
           {
+            path: "intellisenseBuilder/:ruleId/edit",
+            element: <IntellisenseBuilder />,
+          },
+          {
             path: "reportandAnalytics",
             element: <ReportAndAnalytics />,
           },
@@ -279,12 +284,20 @@ const routes: RouteObject[] = [
             element: <Store />,
           },
           {
+            path: "target",
+            element: <StoreTarget />,
+          },
+          {
             path: "storeTarget",
             element: <StoreTarget />,
           },
           {
             path: "sales",
             element: <Sales />,
+          },
+          {
+            path: "UserGroup",
+            element: <UserGroup />,
           },
         ],
       },

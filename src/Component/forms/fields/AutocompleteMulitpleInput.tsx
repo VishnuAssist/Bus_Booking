@@ -4,15 +4,15 @@ import { Autocomplete, TextField, Checkbox, Chip, CircularProgress } from "@mui/
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank"
 import CheckBoxIcon from "@mui/icons-material/CheckBox"
 import * as React from "react"
-
-import { useAutocompletedataQuery } from "../../../Api/AutocompleteApi";
-import type { OptionType, QueryParamsType } from "../../../Dto/formDto"
+import type { OptionType, QueryParamsType } from "../../../Dto/formDto";
+import { useAutocompletedataQuery } from "../../../Api/AutocompleteApi"
 import { ValidateParams } from "../../../Lib/utile"
 import { defaultparams } from "../../../Constant/defaultValues"
 
 
 
 
+// Icon for the checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 
@@ -99,7 +99,7 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
         missingIds.some((id) => String(getOptionId(opt)) === String(id))
       );
 
-      // If we still have missing values, create placeholder options
+   
       const remainingMissingIds = missingIds.filter(
         (id) =>
           !cachedOptionsForMissingIds.some(
@@ -182,7 +182,7 @@ React.useEffect(()=>{
 },[Params])
   const combinedOptions = React.useMemo(() => {
     if (!multiple) {
-      return data?.filter((opt) => !excludeValues.includes(opt?.name||"")) || []
+      return data?.filter((opt) => !excludeValues.includes(opt?.name??"")) || []
     }
     
     const allOptions = [...(data || [])]
@@ -205,11 +205,11 @@ React.useEffect(()=>{
       
       return allOptions.filter((opt) => {
         const optId = String(getOptionId(opt));
-        return selectedIds.includes(optId) && !excludeValues.includes(opt.name||"");
+        return selectedIds.includes(optId) && !excludeValues.includes(opt.name??"");
       });
     }
 
-    return allOptions.filter((opt) => !excludeValues.includes(opt.name||""))
+    return allOptions.filter((opt) => !excludeValues.includes(opt.name??""))
   }, [data, cachedSelectedOptions, multiple, excludeValues, readonlyallowdelete, selectedValues])
   
 
@@ -233,7 +233,7 @@ React.useEffect(()=>{
         String(getOptionId(option)) === String(getOptionId(value))
       }
       filterOptions={(options, state) => {
-        // If readonlyallowdelete is true, don't allow filtering/searching for new options
+       
         if (readonlyallowdelete) {
           return options;
         }

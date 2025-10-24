@@ -1,45 +1,17 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { QueryParamsType } from "../Dto/formDto";
 import APIFetchBase from "../Store/ApiConfig";
-
-// Define types for Rules API
-export interface RuleType {
-  id?: string | number;
-  name?: string;
-  description?: string;
-  isActive?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-  [key: string]: any;
-}
-
-export interface RuleSchemaType {
-  name?: string;
-  type?: string;
-}
-
-export interface CommissionType {
-  id?: string | number;
-  name?: string;
-  value?: number;
-  [key: string]: any;
-}
-
-export interface CountryType {
-  code?: string;
-  name?: string;
-}
-
-export interface ProcessRequestType {
-  ruleId?: string | number;
-  data?: any;
-  [key: string]: any;
-}
+import type {
+  RuleType,
+  RuleSchemaType,
+  CountryType,
+  ProcessRequestType,
+} from "../model/rulesType";
 
 export const rulesApi = createApi({
   reducerPath: "rulesApi",
   baseQuery: APIFetchBase,
-  tagTypes: ["Rules", "RuleSchema", "Commissions"],
+  tagTypes: ["Rules", "RuleSchema"],
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
     // Get all rules
@@ -102,19 +74,6 @@ export const rulesApi = createApi({
       providesTags: ["RuleSchema"],
     }),
 
-    // Get commissions
-    getCommissions: builder.query<
-      CommissionType[],
-      { params?: QueryParamsType }
-    >({
-      query: (args) => ({
-        method: "GET",
-        url: "/Rules/commissions",
-        params: args?.params,
-      }),
-      providesTags: ["Commissions"],
-    }),
-
     // Process rule
     processRule: builder.mutation<any, { data: ProcessRequestType }>({
       query: (args) => ({
@@ -153,7 +112,6 @@ export const {
   useUpdateRuleMutation,
   useDeleteRuleMutation,
   useGetRuleSchemaQuery,
-  useGetCommissionsQuery,
   useProcessRuleMutation,
   useTestRuleMutation,
   useGetCountriesQuery,

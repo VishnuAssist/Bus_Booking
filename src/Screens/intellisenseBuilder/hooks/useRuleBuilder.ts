@@ -104,23 +104,33 @@ export const useRuleBuilder = (initialState?: Partial<RuleBuilderState>) => {
 
   // Add action group to rule
   const addActionGroup = useCallback((ruleId: string) => {
-    const newActionGroup: ActionGroup = {
-      id: generateActionId(),
-      actionType: "",
-      expression: "",
-    };
+    setState((prev) => {
+      const rule = prev.ruleGroups.find((r) => r.id === ruleId);
 
-    setState((prev) => ({
-      ...prev,
-      ruleGroups: prev.ruleGroups.map((rule) =>
-        rule.id === ruleId
-          ? {
-              ...rule,
-              actionGroups: [...rule.actionGroups, newActionGroup],
-            }
-          : rule
-      ),
-    }));
+      // Check if maximum limit reached (3 action groups)
+      if (rule && rule.actionGroups.length >= 3) {
+        return prev; // Don't add if limit reached
+      }
+
+      const newActionGroup: ActionGroup = {
+        id: generateActionId(),
+        actionType: "",
+        actionName: "",
+        expression: "",
+      };
+
+      return {
+        ...prev,
+        ruleGroups: prev.ruleGroups.map((rule) =>
+          rule.id === ruleId
+            ? {
+                ...rule,
+                actionGroups: [...rule.actionGroups, newActionGroup],
+              }
+            : rule
+        ),
+      };
+    });
   }, []);
 
   // Update action group
@@ -128,16 +138,28 @@ export const useRuleBuilder = (initialState?: Partial<RuleBuilderState>) => {
     (ruleId: string, actionId: string, updates: Partial<ActionGroup>) => {
       setState((prev) => ({
         ...prev,
-        ruleGroups: prev.ruleGroups.map((rule) =>
-          rule.id === ruleId
-            ? {
-                ...rule,
-                actionGroups: rule.actionGroups.map((action) =>
-                  action.id === actionId ? { ...action, ...updates } : action
-                ),
-              }
-            : rule
-        ),
+        ruleGroups: prev.ruleGroups.map((rule) => {
+          if (rule.id !== ruleId) return rule;
+
+          // Check for duplicate action types when updating actionType
+          if (updates.actionType) {
+            const existingActionTypes = rule.actionGroups
+              .filter((action) => action.id !== actionId)
+              .map((action) => action.actionType);
+
+            if (existingActionTypes.includes(updates.actionType)) {
+              // Don't update if duplicate action type exists
+              return rule;
+            }
+          }
+
+          return {
+            ...rule,
+            actionGroups: rule.actionGroups.map((action) =>
+              action.id === actionId ? { ...action, ...updates } : action
+            ),
+          };
+        }),
       }));
     },
     []

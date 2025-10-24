@@ -17,15 +17,12 @@ import {
 import RuleExpressionEditor from "./RuleExpressionEditor";
 import { type ActionGroup, actionTypes } from "../types";
 import { IconActionButton } from "../ui";
-import {
-  PLACEHOLDER_TEXT,
-  HELPER_TEXT,
-  VALIDATION_MESSAGES,
-} from "../constants";
+import { PLACEHOLDER_TEXT, HELPER_TEXT } from "../constants";
 
 interface ActionGroupComponentProps {
   actionGroup: ActionGroup;
   ruleId: string;
+  allActionGroups: ActionGroup[]; // All action groups in the same rule
   onUpdate: (
     ruleId: string,
     actionId: string,
@@ -37,6 +34,7 @@ interface ActionGroupComponentProps {
 const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
   actionGroup,
   ruleId,
+  allActionGroups,
   onUpdate,
   onDelete,
 }) => {
@@ -47,10 +45,38 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
     [ruleId, actionGroup.id, onUpdate]
   );
 
+  // Get available action types (filter out already used ones)
+  const getAvailableActionTypes = useCallback(() => {
+    const usedActionTypes = allActionGroups
+      .filter((ag) => ag.id !== actionGroup.id && ag.actionType)
+      .map((ag) => ag.actionType);
+
+    return actionTypes.filter((type) => !usedActionTypes.includes(type.value));
+  }, [allActionGroups, actionGroup.id]);
+
+  // Check if current action type is duplicate
+  const isDuplicateActionType = useCallback(() => {
+    const otherActionTypes = allActionGroups
+      .filter((ag) => ag.id !== actionGroup.id)
+      .map((ag) => ag.actionType);
+
+    return Boolean(
+      actionGroup.actionType &&
+        otherActionTypes.includes(actionGroup.actionType)
+    );
+  }, [allActionGroups, actionGroup.id, actionGroup.actionType]);
+
+  // Error detection logic
+  const hasActionErrors =
+    !actionGroup.actionType?.trim() ||
+    !actionGroup.expression?.trim() ||
+    isDuplicateActionType();
+
   const style = {
-    border: "1px solid grey",
-    boxShadow:
-      "0px 9px 16px rgba(159, 162, 191, .18), 0px 2px 2px rgba(159, 162, 191, 0.32)",
+    border: hasActionErrors ? "2px solid #f44336" : "1px solid grey",
+    boxShadow: hasActionErrors
+      ? "0px 9px 16px rgba(244, 67, 54, 0.2), 0px 2px 2px rgba(244, 67, 54, 0.3)"
+      : "0px 9px 16px rgba(159, 162, 191, .18), 0px 2px 2px rgba(159, 162, 191, 0.32)",
   };
 
   return (
@@ -63,8 +89,9 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
             Action Group:
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ flex: 1 }}>
-            OnSuccess Action
+            {actionGroup.actionType || "OnSuccess Action"}
           </Typography>
+
           <IconActionButton
             tooltip="Delete Action Group"
             icon={<DeleteIcon fontSize="small" />}
@@ -78,44 +105,54 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
       </AccordionSummary>
 
       <AccordionDetails>
-        {/* Single Row Layout for Action Type and Action Name */}
         <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-          {/* Action Type Autocomplete */}
           <Box sx={{ flex: 1 }}>
             <Autocomplete
               size="small"
-              options={actionTypes}
+              options={getAvailableActionTypes()}
               getOptionLabel={(option) => option.label || ""}
               value={
                 actionTypes.find(
                   (type) => type.value === actionGroup.actionType
                 ) || null
               }
-              onChange={(_, newValue) =>
+              onChange={(_, newValue) => {
+                const actionType = newValue ? newValue.value : "";
+                let actionName = "";
+
+                if (actionType === "onSuccess") {
+                  actionName = "OutputExpression";
+                } else if (actionType === "onError") {
+                  actionName = "EvaluateRule";
+                } else if (actionType === "onFailure") {
+                  actionName = "EvaluateRule";
+                }
+
                 onUpdate(ruleId, actionGroup.id, {
-                  actionType: newValue ? newValue.value : "",
-                })
-              }
+                  actionType,
+                  actionName,
+                });
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Action Name *"
+                  label="Action Type *"
                   variant="outlined"
-                  placeholder={PLACEHOLDER_TEXT.ACTION_NAME}
+                  placeholder="Enter action name..."
                   required
-                  error={!actionGroup.actionType.trim()}
+                  error={
+                    !actionGroup.actionType?.trim() || isDuplicateActionType()
+                  }
                   helperText={
-                    !actionGroup.actionType.trim()
-                      ? VALIDATION_MESSAGES.ACTION_TYPE_REQUIRED
+                    !actionGroup.actionType?.trim()
+                      ? "Action type is required"
+                      : isDuplicateActionType()
+                      ? `Action type "${actionGroup.actionType}" is already used in this rule`
                       : ""
                   }
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      backgroundColor: "white",
                       fontSize: "0.75rem",
-                      "& .MuiOutlinedInput-input": {
-                        color: "#333",
-                      },
                     },
                     "& .MuiInputLabel-root": {
                       fontSize: "0.75rem",
@@ -130,31 +167,28 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
             />
           </Box>
 
-          {/* Expression */}
           <TextField
-            label="Expression"
-            value={actionGroup.expression || ""}
-            onChange={(e) =>
-              onUpdate(ruleId, actionGroup.id, {
-                expression: e.target.value,
-              })
-            }
+            label="Action Name"
+            value={actionGroup.actionName || ""}
+            // onChange={(e) =>
+            //   onUpdate(ruleId, actionGroup.id, {
+            //     actionName: e.target.value,
+            //   })
+            // }
             size="small"
             sx={{
               flex: 1,
               "& .MuiOutlinedInput-root": {
-                backgroundColor: "white",
                 fontSize: "0.75rem",
-                "& .MuiOutlinedInput-input": {
-                  color: "#333",
-                },
               },
               "& .MuiInputLabel-root": {
                 fontSize: "0.75rem",
                 color: "#666",
               },
             }}
+            disabled={true}
             placeholder={PLACEHOLDER_TEXT.ACTION_EXPRESSION}
+            // style={{ display: "none" }}
           />
         </Stack>
 
@@ -171,7 +205,7 @@ const ActionGroupComponent: React.FC<ActionGroupComponentProps> = ({
           />
           {!actionGroup.expression?.trim() && (
             <FormHelperText error sx={{ mt: 0.5 }}>
-              {VALIDATION_MESSAGES.ACTION_EXPRESSION_REQUIRED}
+              Action expression is required
             </FormHelperText>
           )}
           <Typography

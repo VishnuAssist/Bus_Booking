@@ -16,6 +16,7 @@ const Attendance = () => {
             <ClockInButton />
           </Grid>
           <Grid size={{ sm: 12, md: 8 }}>
+            
             <AttendanceList />
           </Grid>
         </Grid>

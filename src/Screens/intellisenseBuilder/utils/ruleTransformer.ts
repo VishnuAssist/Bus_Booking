@@ -52,13 +52,39 @@ export const transformApiRuleToBuilderState = (
         };
 
         // Transform actions if they exist
-        if (rule.Actions?.OnSuccess) {
-          const actionGroup: ActionGroup = {
-            id: `action_${Date.now()}_${index}`,
-            actionType: rule.Actions.OnSuccess.Name || "onSuccess",
-            expression: rule.Actions.OnSuccess.Context?.Expression || "",
-          };
-          ruleGroup.actionGroups.push(actionGroup);
+        if (rule.Actions) {
+          // Handle OnSuccess action
+          if (rule.Actions.OnSuccess) {
+            const actionGroup: ActionGroup = {
+              id: `action_${Date.now()}_${index}_success`,
+              actionType: "onSuccess",
+              actionName: rule.Actions.OnSuccess.Name || "OnSuccess Action",
+              expression: rule.Actions.OnSuccess.Context?.Expression || "",
+            };
+            ruleGroup.actionGroups.push(actionGroup);
+          }
+
+          // Handle OnFailure action
+          if (rule.Actions.OnFailure) {
+            const actionGroup: ActionGroup = {
+              id: `action_${Date.now()}_${index}_failure`,
+              actionType: "onFailure",
+              actionName: rule.Actions.OnFailure.Name || "OnFailure Action",
+              expression: rule.Actions.OnFailure.Context?.Expression || "",
+            };
+            ruleGroup.actionGroups.push(actionGroup);
+          }
+
+          // Handle OnError action
+          if (rule.Actions.OnError) {
+            const actionGroup: ActionGroup = {
+              id: `action_${Date.now()}_${index}_error`,
+              actionType: "onError",
+              actionName: rule.Actions.OnError.Name || "OnError Action",
+              expression: rule.Actions.OnError.Context?.Expression || "",
+            };
+            ruleGroup.actionGroups.push(actionGroup);
+          }
         }
 
         return ruleGroup;
@@ -104,20 +130,69 @@ export const transformBuilderStateToApiRule = (
           };
 
           // Add actions if they exist
-          if (
-            ruleGroup.actionGroups.length > 0 &&
-            ruleGroup.actionGroups[0]?.actionType
-          ) {
+          if (ruleGroup.actionGroups.length > 0) {
+            const actions: {
+              OnSuccess?: {
+                Name: string;
+                Context: { Expression: string };
+              };
+              OnFailure?: {
+                Name: string;
+                Context: { Expression: string };
+              };
+              OnError?: {
+                Name: string;
+                Context: { Expression: string };
+              };
+            } = {};
+
+            // Process all action groups and group them by action type
+            ruleGroup.actionGroups.forEach((actionGroup) => {
+              if (actionGroup.actionType && actionGroup.expression) {
+                const actionType = actionGroup.actionType;
+                const actionName = actionGroup.actionName || actionType;
+
+                // Map action types to the correct structure
+                switch (actionType) {
+                  case "onSuccess":
+                    actions.OnSuccess = {
+                      Name: actionName,
+                      Context: {
+                        Expression: actionGroup.expression,
+                      },
+                    };
+                    break;
+                  case "onFailure":
+                    actions.OnFailure = {
+                      Name: actionName,
+                      Context: {
+                        Expression: actionGroup.expression,
+                      },
+                    };
+                    break;
+                  case "onError":
+                    actions.OnError = {
+                      Name: actionName,
+                      Context: {
+                        Expression: actionGroup.expression,
+                      },
+                    };
+                    break;
+                  default:
+                    // For any other action type, default to OnSuccess
+                    actions.OnSuccess = {
+                      Name: actionName,
+                      Context: {
+                        Expression: actionGroup.expression,
+                      },
+                    };
+                }
+              }
+            });
+
             return {
               ...baseRule,
-              Actions: {
-                OnSuccess: {
-                  Name: ruleGroup.actionGroups[0].actionType,
-                  Context: {
-                    Expression: ruleGroup.actionGroups[0]?.expression || "",
-                  },
-                },
-              },
+              Actions: actions,
             };
           }
 
@@ -150,18 +225,4 @@ export const isValidRuleForEditing = (apiRule: RuleType): boolean => {
   } catch {
     return false;
   }
-};
-
-/**
- * Extract rule ID from URL parameters
- */
-export const extractRuleIdFromUrl = (
-  searchParams: URLSearchParams
-): string | number | null => {
-  const ruleId = searchParams.get("editRuleId");
-  if (!ruleId) return null;
-
-  // Try to parse as number first, fallback to string
-  const numericId = Number(ruleId);
-  return isNaN(numericId) ? ruleId : numericId;
 };

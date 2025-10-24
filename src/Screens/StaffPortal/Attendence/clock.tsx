@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useAddEditAttendanceMutation } from "../../../Api/AttendanceApi";
+import type { attendanceType } from "../../../model/attendanceType";
+import type { RootState } from "../../../Store/StoreConfig";
+import { toast } from "react-toastify";
+import { useGetAllStoresQuery } from "../../../Api/StoreApi";
 
-interface ShiftData {
-  shiftId: string;
-  note: string;
-  date: string;
-  clockIn: string;
-  clockOut: string;
-  duration: string;
+interface Store {
+  storeId: number;
+  name: string;
+  code: string;
+  countryCode: string;
 }
 
 const ShiftClockMUI: React.FC = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [seconds, setSeconds] = useState(0);
-  //   const [shiftId, setShiftId] = useState("");
   const [note, setNote] = useState("");
   const [clockInTime, setClockInTime] = useState("");
-  const [date] = useState(() => new Date().toISOString().slice(0, 10));
+  const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
+  const [addEditAttendance, { isLoading,  }] = useAddEditAttendanceMutation();
+const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
+
+  const { user } = useSelector((state: RootState) => state.auth.account);
+  
+  const userId = user?.uid || null;
+
+  
+  console.log("userId", userId);
 
   // Timer effect
   useEffect(() => {
@@ -25,94 +37,118 @@ const ShiftClockMUI: React.FC = () => {
       timer = setInterval(() => {
         setSeconds((prev) => prev + 1);
       }, 1000);
-    } else {
-      if (timer) clearInterval(timer);
     }
     return () => {
       if (timer) clearInterval(timer);
     };
   }, [isRunning]);
 
-  // useEffect(() => {
-  //   let timer: NodeJS.Timeout | null = null;
-  //   if (isRunning) {
-  //     timer = setInterval(() => {
-  //       setSeconds((prev) => prev + 1);
-  //     }, 1000);
-  //   } else {
-  //     if (timer) clearInterval(timer);
-  //   }
-  //   return () => {
-  //     if (timer) clearInterval(timer);
-  //   };
-  // }, [isRunning]);
-
   const formatTime = (totalSeconds: number) => {
     const hrs = Math.floor(totalSeconds / 3600);
     const mins = Math.floor((totalSeconds % 3600) / 60);
     const secs = totalSeconds % 60;
-    return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(
-      2,
-      "0"
-    )}:${String(secs).padStart(2, "0")}`;
+    return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  };
+
+  const formatDateToTimeSpan = (date: Date) => {
+    const hrs = String(date.getHours()).padStart(2, "0");
+    const mins = String(date.getMinutes()).padStart(2, "0");
+    const secs = String(date.getSeconds()).padStart(2, "0");
+    return `${hrs}:${mins}:${secs}`;
   };
 
   const handleClockIn = () => {
-    // if (!shiftId) {
-    //   alert("Please enter Shift ID first");
-    //   return;
-    // }
-    setClockInTime(new Date().toLocaleTimeString());
+    if (!selectedStoreId || !userId) {
+      toast.error("User or store information is missing. Please log in again.");
+      return;
+    }
+    setClockInTime(formatDateToTimeSpan(new Date()));
     setIsRunning(true);
     setSeconds(0);
   };
 
-  const handleEndShift = () => {
+  const handleEndShift = async () => {
     if (note === "") {
-      alert("please enter the note")
+      toast.error("Please enter a note");
+      return;
     }
-    else {
-      const clockOut = new Date().toLocaleTimeString();
-      const shiftData: ShiftData = {
-        shiftId: "1",
-        note,
-        date,
-        clockIn: clockInTime,
-        clockOut,
-        duration: formatTime(seconds),
-      };
-      console.log("Shift Data Submitted:", shiftData);
+    if (!selectedStoreId || !userId) {
+      toast.error("User or store information is missing. Please log in again.");
+      return;
+    }
+ 
+    const clockOut = formatDateToTimeSpan(new Date());
+    const shiftData: attendanceType = {
+      checkInTime: clockInTime,
+      checkOutTime: clockOut,
+      workingHours: formatTime(seconds),
+      attendanceStatus: 1,
+      shiftId: 1,
+      notes: note,
+      storeId : selectedStoreId,
+      userId,
+    };
 
-      // Reset
+    console.log("shiftData", shiftData);
+
+    try {
+      
+      await addEditAttendance( shiftData ).unwrap();
+      console.log("Attendance submitted successfully:", shiftData);
+      
       setIsRunning(false);
       setSeconds(0);
       setClockInTime("");
       setNote("");
+    } catch (err) {
+      console.error("Failed to submit attendance:", err);
+      toast.error("Failed to submit attendance. Please try again.");
     }
-
   };
 
   return (
     <Box
       sx={{
-        // maxWidth: 400,
         mx: "auto",
-        // mt: 4,
         bgcolor: "white",
         p: 2,
         border: "1px solid #ddd",
         borderRadius: 2,
         textAlign: "center",
-        height: "100%"
+        height: "100%",
       }}
     >
       <Typography variant="h4" gutterBottom>
         Shift Clock
       </Typography>
 
+      {/* {error && (
+        <Typography color="error" sx={{ mb: 2 }}>
+          Error: {JSON.stringify(error)}
+        </Typography>
+      )} */}
+
+<FormControl fullWidth sx={{ mb: 2 }} disabled={isRunning || storesLoading}>
+        <InputLabel id="store-select-label">Select Store</InputLabel>
+        <Select
+        
+          labelId="store-select-label"
+          value={selectedStoreId || ""}
+          label="Select Store"
+          onChange={(e) => setSelectedStoreId(Number(e.target.value))}
+        >
+          {storesLoading && <MenuItem value="">Loading stores...</MenuItem>}
+          {stores?.items && stores?.items?.map((store: Store) => (
+            <MenuItem key={store.storeId} value={store.storeId}>
+              {store.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       <Button
         onClick={handleClockIn}
-        disabled={isRunning}
+        disabled={isRunning || isLoading}
         sx={{
           backgroundColor: "#1976d2",
           color: "white",
@@ -138,10 +174,7 @@ const ShiftClockMUI: React.FC = () => {
             <Typography variant="caption" sx={{ color: "white" }}>
               Time On
             </Typography>
-            <Typography
-              variant="h2"
-              sx={{ fontWeight: "bold", color: "white" }}
-            >
+            <Typography variant="h2" sx={{ fontWeight: "bold", color: "white" }}>
               {formatTime(seconds)}
             </Typography>
           </>
@@ -167,8 +200,9 @@ const ShiftClockMUI: React.FC = () => {
             color="error"
             fullWidth
             onClick={handleEndShift}
+            disabled={isLoading}
           >
-            End Shift
+            {isLoading ? "Submitting..." : "End Shift"}
           </Button>
         </>
       )}

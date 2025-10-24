@@ -11,60 +11,34 @@ import {
 } from "../../feilds_validation/dictionaryFields_validation";
 import CommonTable from "../../Component/CommenTable";
 import PageHeader from "../../Component/commonPageHeader";
-import { useAddEditdictionaryMutation, useGetalldictionaryQuery, useGetcategoriesQuery } from "../../Api/dictionaryApi";
+import {
+  useAddEditdictionaryMutation,
+  useDeleteDictionaryMutation,
+  useGetalldictionaryQuery,
+  useGetcategoriesQuery,
+} from "../../Api/dictionaryApi";
 import { createFormData } from "../../Lib/ApiUtil";
+import { Paper } from "@mui/material";
+import AppPagination from "../../Component/AppPagination";
+import { setDictionaryParams } from "../../Store/slice/ParamsSlice";
+import { getAxiosParamsA } from "../../Api/util";
+import { useAppDispatch, useAppSelector } from "../../Store/StoreConfig";
+import DictionarySearch from "./DictionarySearch";
 
 const DictionaryPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedDictionary, setSelectedDictionary] =
     useState<dictionarytype | null>(null);
+  const dispatch = useAppDispatch();
+  const DictionaryParams = useAppSelector(
+    (state) => state.auth.Params.DictionaryParams
+  );
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4);
-
-  const { data: dicData } = useGetalldictionaryQuery({})
+  // const { data: dicData } = useGetalldictionaryQuery({});
+  const { data: dicData } = useGetalldictionaryQuery(
+    getAxiosParamsA({ ...DictionaryParams, PageSize: 5 })
+  );
   const { data: categorys } = useGetcategoriesQuery();
-  
-  console.log("dicData", dicData);
-  console.log("categorys", categorys);
-
-  // const [dictionaries, setDictionaries] = useState<dictionarytype[]>([
-  //   {
-  //     id: 1,
-  //     categoryId: 1,
-  //     name: "Store",
-  //     description: "Physical or online shop",
-  //     isActive: true,
-  //   },
-  //   {
-  //     id: 2,
-  //     categoryId: 2,
-  //     name: "Brand",
-  //     description: "Brand information",
-  //     isActive: true,
-  //   },
-  //   {
-  //     id: 3,
-  //     categoryId: 3,
-  //     name: "Department",
-  //     description: "Internal department",
-  //     isActive: false,
-  //   },
-  //   {
-  //     id: 4,
-  //     categoryId: 4,
-  //     name: "It",
-  //     description: "Internal tec",
-  //     isActive: false,
-  //   },
-  //   {
-  //     id: 5,
-  //     categoryId: 5,
-  //     name: "mec",
-  //     description: "Internal development",
-  //     isActive: false,
-  //   },
-  // ]);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -79,12 +53,6 @@ const DictionaryPage = () => {
         id: item.id,
         name: item.name,
       }));
-
-      //   [
-      //   { id: "1", name: "Store" },
-      //   { id: "2", name: "Brand" },
-      //   { id: "3", name: "Department" },
-      // ];
     }
 
     const statusField = fields.find((f) => f.name === "isActive");
@@ -98,15 +66,17 @@ const DictionaryPage = () => {
   };
   const [addEditForm] = useAddEditdictionaryMutation();
 
+  const [deleteDictionary] = useDeleteDictionaryMutation();
+
   const onSubmit = async (formData: dictionarytype) => {
     console.log("formData", formData);
-  try {
-    const finalData = { ...formData, id: selectedDictionary?.id || null };
-    await addEditForm(createFormData(finalData)).unwrap();
-    handleModalClose();
-  } catch (error) {
-    toast.error("Error saving entry");
-  }
+    try {
+      const finalData = { ...formData, id: selectedDictionary?.id || null };
+      await addEditForm(createFormData(finalData)).unwrap();
+      handleModalClose();
+    } catch (error) {
+      toast.error("Error saving entry");
+    }
   };
 
   const columns = [
@@ -121,14 +91,15 @@ const DictionaryPage = () => {
     },
   ];
 
-  console.log("select",selectedDictionary)
+  console.log("select", selectedDictionary);
   const handleView = (row: dictionarytype) => console.log("View", row);
   const handleEdit = (row: dictionarytype) => {
     setSelectedDictionary(row);
     setModalOpen(true);
   };
-  const handleDelete = (row: dictionarytype) => {
-    // setDictionaries((prev) => prev.filter((d) => d.id !== row.id));
+
+  const handleDelete = async (row: dictionarytype) => {
+    await deleteDictionary(row?.id || 0);
     console.log("row", row);
   };
 
@@ -140,20 +111,29 @@ const DictionaryPage = () => {
           btntitle="Add Dictionary"
           onActionClick={() => setModalOpen(true)}
         />
-
-        <CommonTable
-          columns={columns}
-          rows={dicData?.items || []}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onPageChange={setPage}
-          onRowsPerPageChange={setRowsPerPage}
-          actions={{
-            onView: handleView,
-            onEdit: handleEdit,
-            onDelete: handleDelete,
-          }}
-        />
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <DictionarySearch
+            params={DictionaryParams}
+            setParams={(p) => dispatch(setDictionaryParams(p))}
+          />
+          <CommonTable
+            columns={columns}
+            rows={dicData?.items || []}
+            actions={{
+              onView: handleView,
+              onEdit: handleEdit,
+              onDelete: handleDelete,
+            }}
+          />
+          {dicData?.metaData && (
+            <AppPagination
+              metaData={dicData?.metaData}
+              onPageChange={(page: number) =>
+                dispatch(setDictionaryParams({ PageNumber: page }))
+              }
+            />
+          )}
+        </Paper>
       </CommisionContainer>
 
       <Footer />
@@ -165,8 +145,7 @@ const DictionaryPage = () => {
         title={selectedDictionary ? "Edit Dictionary" : "Add Dictionary"}
         validationSchema={dictionaryFormValidationSchema}
         fields={getDictionaryFields()}
-        defaultValues={selectedDictionary || {}
-        }
+        defaultValues={selectedDictionary || {}}
       />
     </>
   );

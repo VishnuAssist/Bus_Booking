@@ -45,7 +45,14 @@ export const dictionaryApi = createApi({
       }),
       invalidatesTags: ["DictionaryApi"],
     }),
+    deleteDictionary: builder.mutation<any, number>({
+      query: (id) => ({
+        method: "DELETE",
+        url: `/Dictionary/${id}`,
+      }),
+      invalidatesTags: ["DictionaryApi"],
+    }),
   }),
 });
 
-export const { useGetalldictionaryQuery,useGetcategoriesQuery,useAddEditdictionaryMutation } = dictionaryApi;
+export const { useGetalldictionaryQuery,useGetcategoriesQuery,useAddEditdictionaryMutation,useDeleteDictionaryMutation } = dictionaryApi;

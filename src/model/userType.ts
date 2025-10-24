@@ -19,5 +19,13 @@ export interface UserType {
   dateJoined?: string; 
   dateOfBirth?: string;
 }
-export type UserList = UserType [];
-
+export interface UserList {
+  id: string;
+  userName?: string;
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  employeeCode?: string;
+  userType?: UserType[]; 
+}
