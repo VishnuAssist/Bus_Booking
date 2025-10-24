@@ -42,7 +42,16 @@ const ResponseViewDrawer = <T,>({
     }
 
     if (Array.isArray(value)) {
-      return JSON.stringify(value, null, 2);
+      return value
+        .map((item) => {
+          if (typeof item === "object" && item !== null) {
+            return Object.entries(item)
+              .map(([key, val]) => `${key}: ${val}`)
+              .join(", ");
+          }
+          return String(item);
+        })
+        .join("\n");
     }
 
     return String(value);
