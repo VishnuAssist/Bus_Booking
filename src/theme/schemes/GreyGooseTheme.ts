@@ -1165,7 +1165,6 @@ export const GreyGooseTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          fontSize: 20,
           fontWeight: 500,
         },
         gutterBottom: {
