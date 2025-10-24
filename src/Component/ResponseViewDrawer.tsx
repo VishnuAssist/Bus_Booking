@@ -89,7 +89,8 @@ const ResponseViewDrawer = <T,>({
       >
         <Box
           sx={{
-            p: 2,
+            px: 3,
+            py: 1,
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -99,7 +100,6 @@ const ResponseViewDrawer = <T,>({
           <Typography
             variant="h6"
             sx={{
-              fontSize: "1.25rem",
               display: "flex",
               alignItems: "center",
               gap: 1,

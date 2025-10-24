@@ -59,6 +59,9 @@ function CommonTable<T>({
                 key={column.id}
                 align={column.align}
                 style={{ minWidth: column.minWidth }}
+                sx={{
+                  whiteSpace: "nowrap",
+                }}
               >
                 {column.label}
               </TableCell>
@@ -77,7 +80,13 @@ function CommonTable<T>({
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    sx={{ fontSize: "0.875rem", fontWeight: 300 }}
+                    sx={{
+                      fontSize: "0.875rem",
+                      fontWeight: 300,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
                   >
                     {column.format ? column.format(value) : value}
                   </TableCell>

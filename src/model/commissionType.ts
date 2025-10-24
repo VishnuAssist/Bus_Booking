@@ -59,3 +59,34 @@ export interface ProcessMonthlySummaryPayload {
   ruleIdsToUse: number[];
   additionalWorkflowJson: string;
 }
+
+// Staff Group Summary Response API Types
+export interface PayoutType {
+  commissionTypeId: number | null;
+  commissionTypeName: string;
+  amount: number;
+  date: string;
+  note: string;
+}
+
+export interface UserSummaryType {
+  userId: string;
+  userName: string;
+  employeeCode: string;
+  designation: string;
+  target: number;
+  achievement: number;
+  totalPayout: number;
+  workingDays: number;
+  leaveDays: number;
+  payouts: PayoutType[];
+}
+
+export interface StaffGroupSummaryResponseType {
+  id: number;
+  groupName: string;
+  description: string;
+  year: number;
+  month: number;
+  users: UserSummaryType[];
+}
