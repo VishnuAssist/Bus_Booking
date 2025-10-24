@@ -1,5 +1,11 @@
-
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Divider,
+} from "@mui/material";
 import CommonForm from "./Form";
 import * as React from "react";
 import * as yup from "yup";
@@ -10,12 +16,12 @@ interface CommonDialogProps<T> {
   title: string;
   fields: any[];
   defaultValues?: T | undefined;
-  onSubmit: (data: any) => Promise<void>
+  onSubmit: (data: any) => Promise<void>;
   renderSubmitButton?: React.ReactNode;
-  buttonName?: string
+  buttonName?: string;
   validationSchema?: yup.ObjectSchema<any>;
-  isLoading?: boolean
-  watchFields?: { name: string; callback: (value: any) => void }[]
+  isLoading?: boolean;
+  watchFields?: { name: string; callback: (value: any) => void }[];
 }
 
 export function CommonDialog<T>({
@@ -31,19 +37,23 @@ export function CommonDialog<T>({
   isLoading,
   watchFields = [],
 }: CommonDialogProps<T>) {
-
   return (
     <Dialog open={open} fullWidth maxWidth="sm">
-      <DialogTitle fontSize={12}>{title}</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
+      <Divider />
       <DialogContent>
-        {open && <CommonForm
-          fields={fields}
-          onSubmit={onSubmit}
-          defaultValues={defaultValues}
-          validationSchema={validationSchema}
-          watchFields={watchFields}
-        />}
+        {open && (
+          <CommonForm
+            fields={fields}
+            onSubmit={onSubmit}
+            defaultValues={defaultValues}
+            validationSchema={validationSchema}
+            watchFields={watchFields}
+          />
+        )}
       </DialogContent>
+      <Divider />
+
       <DialogActions>
         <Button
           onClick={onClose}
@@ -73,6 +83,4 @@ export function CommonDialog<T>({
       </DialogActions>
     </Dialog>
   );
-};
-
-
+}

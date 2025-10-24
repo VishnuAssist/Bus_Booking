@@ -57,6 +57,7 @@ const PageHeader = ({
               variant="contained"
               startIcon={icon}
               onClick={onActionClick}
+              size="small"
             >
               {btntitle}
             </Button>
@@ -67,6 +68,7 @@ const PageHeader = ({
               variant="contained"
               startIcon={icon2}
               onClick={onActionClick2}
+              size="small"
             >
               {btntitle2}
             </Button>

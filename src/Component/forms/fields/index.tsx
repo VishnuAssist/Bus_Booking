@@ -50,10 +50,10 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
     | undefined;
 
   return (
-    <div style={{ marginBottom: "4px", ...style }}>
+    <div style={{ ...style }}>
       {label && type !== "checkbox" && (
-        <InputLabel sx={{ fontSize: 11 }}>
-          <b>{label}</b> {required && <span>*</span>}
+        <InputLabel>
+          {label} {required && <span>*</span>}
         </InputLabel>
       )}
 

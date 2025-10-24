@@ -1,5 +1,4 @@
-import { Box,  Link, Typography, styled } from '@mui/material';
-
+import { Box, Link, Typography, styled } from "@mui/material";
 
 const FooterWrapper = styled(Box)(
   ({ theme }) => `
@@ -11,26 +10,28 @@ const FooterWrapper = styled(Box)(
 
 function Footer() {
   return (
-    <FooterWrapper >
+    <FooterWrapper>
       <Box
         pb={4}
-        display={{ xs: 'block', md: 'flex' }}
+        display={{ xs: "block", md: "flex" }}
         alignItems="center"
-        textAlign={{ xs: 'center', md: 'left' }}
+        textAlign={{ xs: "center", md: "left" }}
         justifyContent="space-between"
       >
         <Box>
-          <Typography variant="subtitle1">
+          <Typography sx={{ fontSize: "small", fontWeight: 300 }}>
             &copy; 2025 - Commision Assist
           </Typography>
         </Box>
         <Typography
           sx={{
-            pt: { xs: 2, md: 0 }
+            pt: { xs: 2, md: 0 },
+            fontSize: "small",
+            fontWeight: 300,
           }}
           variant="subtitle1"
         >
-          Powered by{' '}
+          Powered by{" "}
           <Link
             href="http://assist360.com.sg"
             target="_blank"
