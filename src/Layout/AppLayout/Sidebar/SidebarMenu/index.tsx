@@ -205,54 +205,12 @@ function SidebarMenu({
             icon: <DescriptionOutlinedIcon />,
             hide: true,
           },
-          {
-            label: "Achievements",
-            link: "/staff/achievements",
-            icon: <GradeOutlinedIcon />,
-            hide: true,
-          },
-        ],
-      },
-      {
-        title: "Management",
-        icon: <GroupIcon />,
-        items: [
-          {
-            label: "Team Overview",
-            link: "/management/teamOverview",
-            icon: <AccessTimeIcon />,
-            hide: true,
-          },
-          {
-            label: "Shift",
-            link: "/Admin/shift",
-            icon: <FilterTiltShiftIcon />,
-            hide: true,
-          },
-          {
-            label: "Coaching",
-            link: "/management/coaching",
-            icon: <GradeOutlinedIcon />,
-            hide: true,
-          },
-          {
-            label: "Performance",
-            link: "/management/performance",
-            icon: <GradeOutlinedIcon />,
-            hide: true,
-          },
         ],
       },
       {
         title: "Admin",
         icon: <AdminPanelSettingsOutlinedIcon />,
         items: [
-          {
-            label: "System Overview",
-            link: "/Admin/systemOverview",
-            icon: <AdminPanelSettingsIcon />,
-            hide: true,
-          },
           {
             label: "Shift",
             link: "/Admin/shift",
@@ -268,12 +226,6 @@ function SidebarMenu({
           {
             label: "Achievement",
             link: "/Admin/achievement",
-            icon: <AdminPanelSettingsIcon />,
-            hide: true,
-          },
-          {
-            label: "RuleEngine",
-            link: "/Admin/ruleEngine",
             icon: <AdminPanelSettingsIcon />,
             hide: true,
           },

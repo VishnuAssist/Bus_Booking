@@ -238,8 +238,6 @@ const LeaveRequest = () => {
           </Grid>
         </Grid>
       </CommisionContainer>
-
-      <Footer />
     </>
   );
 };

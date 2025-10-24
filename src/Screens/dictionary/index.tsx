@@ -136,8 +136,6 @@ const DictionaryPage = () => {
         </Paper>
       </CommisionContainer>
 
-      <Footer />
-
       <CommonDialog
         open={isModalOpen}
         onClose={handleModalClose}

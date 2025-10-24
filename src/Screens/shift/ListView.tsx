@@ -304,8 +304,6 @@ const ListView = () => {
         </DndProvider>
       )}
 
-      <Footer />
-
       <CommonFormDialog
         open={isModalOpen}
         onClose={() => {
