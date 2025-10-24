@@ -24,6 +24,7 @@ import { storeApi } from "../Api/StoreApi";
 import { attendanceApi } from "../Api/AttendanceApi";
 import { commissionApi } from "../Api/commisionApi";
 import { userGroupApi } from "../Api/userGroupApi";
+import { storeTargetApi } from "../Api/storeTargetApi";
 
 const rootAuthReducer = combineReducers({
   account: accountReducer,
@@ -49,6 +50,7 @@ export const store = configureStore({
     [shiftApi.reducerPath]: shiftApi.reducer,
     [autocompleteApi.reducerPath]: autocompleteApi.reducer,
     [storeApi.reducerPath]: storeApi.reducer,
+    [storeTargetApi.reducerPath]: storeTargetApi.reducer,
     [attendanceApi.reducerPath]: attendanceApi.reducer,
     [rulesApi.reducerPath]: rulesApi.reducer,
     [commissionApi.reducerPath]: commissionApi.reducer,
@@ -67,6 +69,7 @@ export const store = configureStore({
       shiftApi.middleware,
       autocompleteApi.middleware,
       storeApi.middleware,
+      storeTargetApi.middleware,
       attendanceApi.middleware,
       rulesApi.middleware,
       commissionApi.middleware,

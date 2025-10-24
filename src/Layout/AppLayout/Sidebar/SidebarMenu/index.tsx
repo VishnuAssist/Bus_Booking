@@ -73,6 +73,7 @@ const SubMenuWrapper = styled(Box)(
         background-color: transparent;
         width: 100%;
         justify-content: flex-start;
+        font-weight: 500;
         padding: ${theme.spacing(1.2, 3)};
         .MuiButton-startIcon {
           color: ${theme.colors.alpha.trueWhite[30]};

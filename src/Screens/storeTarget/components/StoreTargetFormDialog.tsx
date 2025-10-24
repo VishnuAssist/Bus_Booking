@@ -3,12 +3,12 @@ import type { StoreMonthlyTargetDto } from "../../../model/storeTargetType";
 import {
   useAddStoreTargetMutation,
   useEditStoreTargetMutation,
-} from "../../../Api/StoreApi";
+} from "../../../Api/storeTargetApi";
 import { toast } from "react-toastify";
 import {
   StoreTargetFormFields,
   storeTargetFormValidationSchema,
-} from "../../../feilds_validation/storeTargetFieldsValidation";
+} from "../../../feilds_validation/storeTargetFormFieldsValidation";
 
 interface StoreTargetFormDialogProps {
   open: boolean;
@@ -23,7 +23,6 @@ const StoreTargetFormDialog = ({
 }: StoreTargetFormDialogProps) => {
   const [addStoreTarget] = useAddStoreTargetMutation();
   const [editStoreTarget] = useEditStoreTargetMutation();
-
   // Field function for form dialog
   const storeTargetFields = () => {
     const fields = [...StoreTargetFormFields];
@@ -63,11 +62,12 @@ const StoreTargetFormDialog = ({
       fields={storeTargetFields()}
       defaultValues={
         selectedStoreTarget || {
-          storeId: [],
+          storeIds: [],
           year: new Date().getFullYear(),
           month: new Date().getMonth() + 1,
-          brandCode: [],
+          brandCodes: [],
           targetAmount: 0,
+          userIds: [],
         }
       }
     />

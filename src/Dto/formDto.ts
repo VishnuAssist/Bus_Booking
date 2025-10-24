@@ -8,6 +8,7 @@ export interface QueryParamsType {
   endDate?: string;
   IsActive?: string | boolean | null;
   Status?: string | number;
+  Ids?: string;
 }
 
 export interface OptionType {

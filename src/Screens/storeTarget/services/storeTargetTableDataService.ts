@@ -1,32 +1,24 @@
-import type { StoreMonthlyTargetDto } from "../../../model/storeTargetType";
+import type { StoreTargetDto } from "../../../model/storeTargetType";
 
 export const storeTargetTableDataService = (
-  storeTargets: StoreMonthlyTargetDto[] | undefined
+  storeTargets: StoreTargetDto[] | undefined
 ) => {
   const StoreTargetColumns = [
     { id: "id", label: "ID" },
+    { id: "name", label: "Name" },
     { id: "year", label: "Year" },
     { id: "month", label: "Month" },
-    { id: "brandCode", label: "Brand Code" },
+    { id: "type", label: "Type" },
+    { id: "status", label: "Status" },
     {
       id: "targetAmount",
       label: "Target Amount",
       format: (value: number) => `₹${value.toLocaleString()}`,
     },
+    { id: "description", label: "Description" },
   ];
 
-  const rows = storeTargets
-    ? storeTargets.map((target: StoreMonthlyTargetDto) => {
-        return {
-          id: target.id,
-          storeId: target.storeId,
-          year: target.year,
-          month: target.month,
-          brandCode: target.brandCode,
-          targetAmount: target.targetAmount,
-        };
-      })
-    : [];
+  const rows = storeTargets || [];
 
   return { columns: StoreTargetColumns, rows };
 };

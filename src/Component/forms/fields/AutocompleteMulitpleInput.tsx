@@ -1,20 +1,23 @@
-"use client"
+"use client";
 
-import { Autocomplete, TextField, Checkbox, Chip, CircularProgress } from "@mui/material"
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank"
-import CheckBoxIcon from "@mui/icons-material/CheckBox"
-import * as React from "react"
+import {
+  Autocomplete,
+  TextField,
+  Checkbox,
+  Chip,
+  CircularProgress,
+} from "@mui/material";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import * as React from "react";
 import type { OptionType, QueryParamsType } from "../../../Dto/formDto";
-import { useAutocompletedataQuery } from "../../../Api/AutocompleteApi"
-import { ValidateParams } from "../../../Lib/utile"
-import { defaultparams } from "../../../Constant/defaultValues"
-
-
-
+import { useAutocompletedataQuery } from "../../../Api/AutocompleteApi";
+import { ValidateParams } from "../../../Lib/utile";
+import { defaultparams } from "../../../Constant/defaultValues";
 
 // Icon for the checkbox
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
-const checkedIcon = <CheckBoxIcon fontSize="small" />
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface Props {
   value?: (string | number)[] | string | number;
@@ -66,7 +69,7 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
       ...Params,
       SearchTerm: searchParams,
 
-      ...(multiple && value && Array.isArray(value) ? { ids: value } : {}),
+      ...(multiple && value && Array.isArray(value) ? { Ids: value } : {}),
     }),
     baseurl: baseUrl || "/dictionary",
   });
@@ -99,7 +102,6 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
         missingIds.some((id) => String(getOptionId(opt)) === String(id))
       );
 
-   
       const remainingMissingIds = missingIds.filter(
         (id) =>
           !cachedOptionsForMissingIds.some(
@@ -130,7 +132,6 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
       );
       if (matchInCached) return matchInCached;
 
-
       return value
         ? { id: value, name: `Loading... (${value})`, isPlaceholder: true }
         : null;
@@ -138,7 +139,6 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
 
     return multiple ? [] : null;
   }, [value, data, multiple, cachedSelectedOptions]);
-
 
   React.useEffect(() => {
     if (selectedValues) {
@@ -175,43 +175,52 @@ const FormAutocompleteMulitple: React.FC<Props> = ({
       }
     }
   }, [selectedValues, multiple, cachedSelectedOptions]);
-React.useEffect(()=>{
-  if(Params){
-    setCachedSelectedOptions([])
-  }
-},[Params])
+  React.useEffect(() => {
+    if (Params) {
+      setCachedSelectedOptions([]);
+    }
+  }, [Params]);
   const combinedOptions = React.useMemo(() => {
     if (!multiple) {
-      return data?.filter((opt) => !excludeValues.includes(opt?.name??"")) || []
+      return (
+        data?.filter((opt) => !excludeValues.includes(opt?.name ?? "")) || []
+      );
     }
-    
-    const allOptions = [...(data || [])]
-    
+
+    const allOptions = [...(data || [])];
+
     cachedSelectedOptions?.forEach((cachedOpt) => {
       if (
         !allOptions.some(
           (opt) => String(getOptionId(opt)) === String(getOptionId(cachedOpt))
         )
       ) {
-        allOptions.push(cachedOpt)
+        allOptions.push(cachedOpt);
       }
-    })
-  
-   
+    });
+
     if (readonlyallowdelete) {
-      const selectedIds = Array.isArray(selectedValues) 
+      const selectedIds = Array.isArray(selectedValues)
         ? selectedValues.map((opt) => String(getOptionId(opt)))
         : [];
-      
+
       return allOptions.filter((opt) => {
         const optId = String(getOptionId(opt));
-        return selectedIds.includes(optId) && !excludeValues.includes(opt.name??"");
+        return (
+          selectedIds.includes(optId) && !excludeValues.includes(opt.name ?? "")
+        );
       });
     }
 
-    return allOptions.filter((opt) => !excludeValues.includes(opt.name??""))
-  }, [data, cachedSelectedOptions, multiple, excludeValues, readonlyallowdelete, selectedValues])
-  
+    return allOptions.filter((opt) => !excludeValues.includes(opt.name ?? ""));
+  }, [
+    data,
+    cachedSelectedOptions,
+    multiple,
+    excludeValues,
+    readonlyallowdelete,
+    selectedValues,
+  ]);
 
   return (
     <Autocomplete
@@ -233,7 +242,6 @@ React.useEffect(()=>{
         String(getOptionId(option)) === String(getOptionId(value))
       }
       filterOptions={(options, state) => {
-       
         if (readonlyallowdelete) {
           return options;
         }
@@ -307,7 +315,7 @@ React.useEffect(()=>{
           onChange(selectedArray, newValue);
         } else {
           const selectedId = newValue ? getOptionId(newValue) : "";
-         
+
           const currentValues = Array.isArray(value)
             ? value
             : value
@@ -326,7 +334,9 @@ React.useEffect(()=>{
           size={size}
           variant={variant}
           fullWidth={fullWidth}
-          placeholder={readonlyallowdelete ? "Only deletion allowed" : placeholder}
+          placeholder={
+            readonlyallowdelete ? "Only deletion allowed" : placeholder
+          }
           InputProps={{
             ...params.InputProps,
             readOnly: readonlyallowdelete,
@@ -345,4 +355,4 @@ React.useEffect(()=>{
   );
 };
 
-export default FormAutocompleteMulitple
+export default FormAutocompleteMulitple;
