@@ -82,6 +82,9 @@ export const ProcessStoreTargetFormFields: FormFieldProps<StoreMonthlyTargetDto>
       type: "autocomplete",
       size: { sm: 12, md: 6, lg: 6 },
       baseurl: "/Dictionary?Category=11",
+      autocompletelabel: {
+        optionvalue: { id: "id" },
+      },
     },
   ];
 
@@ -93,7 +96,7 @@ export const ProcessStoreTargetFormValidationSchema = yup.object().shape({
     .nullable(),
 
   year: yup.string().typeError("Year is required").required("Year is required"),
-
+  type: yup.number().optional().required("Type is required"),
   month: yup
     .number()
     .typeError("Month is required")

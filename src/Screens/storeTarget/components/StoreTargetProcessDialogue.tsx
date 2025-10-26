@@ -41,7 +41,7 @@ const StoreTargetProcessDialogue = ({
       defaultValues={{
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1,
-        type: 0,
+        type: null,
       }}
     />
   );
