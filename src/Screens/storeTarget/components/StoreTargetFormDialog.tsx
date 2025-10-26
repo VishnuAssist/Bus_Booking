@@ -69,6 +69,8 @@ const StoreTargetFormDialog = ({
     ? transformResponseToFormData(selectedStoreTarget)
     : null;
 
+  console.log("Edit Data:", editData);
+
   return (
     <CommonDialog
       open={open}

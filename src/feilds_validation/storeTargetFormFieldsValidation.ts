@@ -84,7 +84,7 @@ export const StoreTargetFormFields: FormFieldProps<StoreTargetDto>[] = [
     size: { sm: 12, md: 6, lg: 6 },
     baseurl: "/Dictionary?Category=11",
     autocompletelabel: {
-      optionvalue: { id: "code" },
+      optionvalue: { id: "id" },
     },
   },
 ];
@@ -98,8 +98,9 @@ export const storeTargetFormValidationSchema = yup.object({
 
   year: yup.number().required("Year is required"),
   name: yup.string().required("Name is required"),
-
   month: yup.number().required("Month is required"),
+
+  type: yup.number().optional().required("Type is required"),
 
   // brandCodes: yup
   //   .array()
