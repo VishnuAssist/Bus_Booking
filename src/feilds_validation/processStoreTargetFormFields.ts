@@ -66,6 +66,23 @@ export const ProcessStoreTargetFormFields: FormFieldProps<StoreMonthlyTargetDto>
       min: "10",
       size: { sm: 12, md: 12, lg: 12 },
     },
+    {
+      name: "countryCode",
+      label: "Country Code",
+      type: "autocomplete",
+      size: { sm: 12, md: 6, lg: 6 },
+      baseurl: "/Common/GetCountries",
+      autocompletelabel: {
+        optionvalue: { id: "code" },
+      },
+    },
+    {
+      name: "type",
+      label: "Type",
+      type: "autocomplete",
+      size: { sm: 12, md: 6, lg: 6 },
+      baseurl: "/Dictionary?Category=11",
+    },
   ];
 
 export const ProcessStoreTargetFormValidationSchema = yup.object().shape({

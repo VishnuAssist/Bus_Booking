@@ -85,6 +85,7 @@ const StoreTargetFormDialog = ({
           brandCodes: [],
           targetAmount: 0,
           userIds: [],
+          type: null,
         }
       }
     />
