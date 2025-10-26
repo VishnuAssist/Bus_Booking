@@ -1,92 +1,91 @@
 import * as yup from "yup";
 import type { FormFieldProps } from "../model/formFeilds";
-import type { StoreMonthlyTargetDto } from "../model/storeTargetType";
+import type { StoreTargetDto } from "../model/storeTargetType";
 
-export const ProcessStoreTargetFormFields: FormFieldProps<StoreMonthlyTargetDto>[] =
-  [
-    {
-      name: "year",
-      label: "Year",
-      type: "yearpicker",
-      required: true,
-      size: { sm: 12, md: 6, lg: 6 },
+export const ProcessStoreTargetFormFields: FormFieldProps<StoreTargetDto>[] = [
+  {
+    name: "year",
+    label: "Year",
+    type: "yearpicker",
+    required: true,
+    size: { sm: 12, md: 6, lg: 6 },
+  },
+  {
+    name: "month",
+    label: "Month",
+    type: "monthpicker",
+    required: true,
+    size: { sm: 12, md: 6, lg: 6 },
+  },
+  {
+    label: "Brand",
+    name: "brandCodes",
+    type: "autocompletemultiple",
+    size: { sm: 12, md: 6, lg: 6 },
+    Params: { Category: "Brand" },
+    autocompletelabel: {
+      optionvalue: { id: "code" },
     },
-    {
-      name: "month",
-      label: "Month",
-      type: "monthpicker",
-      required: true,
-      size: { sm: 12, md: 6, lg: 6 },
-    },
-    {
-      label: "Brand",
-      name: "brandCodes",
-      type: "autocompletemultiple",
-      size: { sm: 12, md: 6, lg: 6 },
-      Params: { Category: "Brand" },
-      autocompletelabel: {
-        optionvalue: { id: "code" },
-      },
-    },
+  },
 
-    {
-      label: "Employee",
-      name: "employeeCodes",
-      type: "autocompletemultiple",
-      size: { sm: 12, md: 6, lg: 6 },
-      baseurl: "Account/all",
-      autocompletelabel: {
-        optionvalue: { id: "employeeCode" },
-      },
-      optionLabel: (e) => {
-        return e?.userName || "";
-      },
+  {
+    label: "Employee",
+    name: "employeeCodes",
+    type: "autocompletemultiple",
+    size: { sm: 12, md: 6, lg: 6 },
+    baseurl: "Account/all",
+    autocompletelabel: {
+      optionvalue: { id: "employeeCode" },
     },
-    {
-      label: "Store",
-      name: "storeCodes",
-      type: "autocompletemultiple",
-      size: { sm: 12, md: 6, lg: 6 },
-      baseurl: "Store",
-      autocompletelabel: {
-        optionvalue: { id: "code" },
-      },
+    optionLabel: (e) => {
+      return e?.userName || "";
     },
-    {
-      label: "Rules to Use",
-      name: "ruleIdsToUse",
-      type: "autocompletemultiple",
-      size: { sm: 12, md: 6, lg: 6 },
-      baseurl: "Rules",
+  },
+  {
+    label: "Store",
+    name: "storeCodes",
+    type: "autocompletemultiple",
+    size: { sm: 12, md: 6, lg: 6 },
+    baseurl: "Store",
+    autocompletelabel: {
+      optionvalue: { id: "code" },
     },
-    {
-      label: "Additional Workflow JSON",
-      name: "additionalWorkflowJson",
-      type: "textarea",
-      min: "10",
-      size: { sm: 12, md: 12, lg: 12 },
+  },
+  {
+    label: "Rules to Use",
+    name: "ruleIdsToUse",
+    type: "autocompletemultiple",
+    size: { sm: 12, md: 6, lg: 6 },
+    baseurl: "Rules",
+  },
+  {
+    label: "Additional Workflow JSON",
+    name: "additionalWorkflowJson",
+    type: "textarea",
+    min: "10",
+    size: { sm: 12, md: 12, lg: 12 },
+  },
+  {
+    name: "countryCode",
+    label: "Country Code",
+    type: "autocomplete",
+    size: { sm: 12, md: 6, lg: 6 },
+    baseurl: "/Common/GetCountries",
+    autocompletelabel: {
+      optionvalue: { id: "code" },
     },
-    {
-      name: "countryCode",
-      label: "Country Code",
-      type: "autocomplete",
-      size: { sm: 12, md: 6, lg: 6 },
-      baseurl: "/Common/GetCountries",
-      autocompletelabel: {
-        optionvalue: { id: "code" },
-      },
+  },
+  {
+    name: "type",
+    label: "Type",
+    type: "autocomplete",
+    size: { sm: 12, md: 6, lg: 6 },
+    baseurl: "/Dictionary?Category=11",
+    autocompletelabel: {
+      optionvalue: { id: "id" },
     },
-    {
-      name: "type",
-      label: "Type",
-      type: "autocomplete",
-      size: { sm: 12, md: 6, lg: 6 },
-      baseurl: "/Dictionary?Category=11",
-      autocompletelabel: {
-        optionvalue: { id: "id" },
-      },
-    },
-  ];
+  },
+];
 
 export const ProcessStoreTargetFormValidationSchema = yup.object().shape({
   storeCodes: yup
