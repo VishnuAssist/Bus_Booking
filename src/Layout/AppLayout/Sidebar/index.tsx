@@ -99,10 +99,11 @@ function Sidebar({
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "space-evenly",
+                  // justifyContent: "space-evenly",
                   alignItems: "center",
-                  textAlign: "center",
+                  // textAlign: "center",
                   mt: 1,
+                  gap: 1,
                 }}
               >
                 <IconButton
@@ -111,10 +112,12 @@ function Sidebar({
                   <FilterTiltShiftIcon />
                 </IconButton>
                 <Box>
-                  <Typography fontSize={16} fontWeight={700}>
+                  <Typography fontSize={16} fontWeight={500}>
                     Zone Commission
                   </Typography>
-                  <Typography fontSize={12}>Performance Platform</Typography>
+                  <Typography fontSize={12} fontWeight={300}>
+                    Performance Platform
+                  </Typography>
                 </Box>
               </Box>
             ) : (

@@ -239,7 +239,7 @@ export const GreyGooseTheme = createTheme({
     menuItemHeadingColor: colors.layout.sidebar.menuItemHeadingColor,
     boxShadow:
       "2px 0 3px rgba(159, 162, 191, .18), 1px 0 1px rgba(159, 162, 191, 0.32)",
-    width: "290px",
+    width: "230px",
   },
   header: {
     height: "80px",
