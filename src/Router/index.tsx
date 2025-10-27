@@ -29,6 +29,9 @@ const Attendence = Loader(
 const LeaveRequest = Loader(
   lazy(() => import("../Screens/StaffPortal/LeaveRequest"))
 );
+const RequestApproval = Loader(
+  lazy(() => import("../Screens/Admin/RequestApproval"))
+);
 const Achievements = Loader(
   lazy(() => import("../Screens/StaffPortal/Achievements"))
 );
@@ -226,6 +229,10 @@ const routes: RouteObject[] = [
           {
             path: "attendance",
             element: <AdminAttendance />,
+          },
+          {
+            path: "request",
+            element: <RequestApproval />,
           },
           {
             path: "achievement",

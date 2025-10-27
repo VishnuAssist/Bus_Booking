@@ -13,12 +13,14 @@ import {
   usePostShiftMutation,
   useGetallshiftQuery,
   usePutShiftMutation,
+  useDeleteShiftMutation,
 } from "../../Api/shiftApi";
 import type { Shift } from "../../model/shiftType";
 import { useGetallAccountQuery } from "../../Api/authApi";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { CommonFormDialog } from "../../Component/forms/AssignForm";
+import ShiftPreviewDialog from "./ShiftPreview";
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -42,13 +44,14 @@ const shiftColumns = [
 const ListView = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<any | null>(null);
-
+  const [isPreviewOpen, setPreviewOpen] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [tabValue, setTabValue] = useState(0);
 
   const [postShift] = usePostShiftMutation();
   const [updateShift] = usePutShiftMutation();
+  const [deleteShift] = useDeleteShiftMutation();
 
   const [searchQuery, setSearchQuery] = useState({
     IsAll: "true",
@@ -249,6 +252,16 @@ const ListView = () => {
     }
   };
 
+  const handleDelete = async (row: Shift) => {
+      await deleteShift(row?.id || 0);
+      console.log("row", row);
+    };
+
+    const handlePreview = (row: Shift) => {
+    setSelectedShift(row);
+    setPreviewOpen(true);
+  };
+
   return (
     <>
       <PageHeader
@@ -278,12 +291,13 @@ const ListView = () => {
             onPageChange={setPage}
             onRowsPerPageChange={setRowsPerPage}
             actions={{
-              onView: (row) => console.log("view", row),
+              onView: handlePreview,
               onEdit: (row) => {
                 console.log("edit", row);
                 setSelectedShift(row);
                 setModalOpen(true);
               },
+              onDelete: handleDelete,
             }}
           />
         </Box>
@@ -320,6 +334,16 @@ const ListView = () => {
         showAssignmentType={true}
         mode={selectedShift ? "edit" : "create"}
       />
+
+      <ShiftPreviewDialog
+        open={isPreviewOpen}
+        onClose={() => {
+          setPreviewOpen(false);
+          setSelectedShift(null);
+        }}
+        shift={selectedShift}
+      />
+      
     </>
   );
 };

@@ -41,6 +41,13 @@ export const shiftApi = createApi({
             ),
           providesTags: ["ShiftApi"],
         }),
+      deleteShift: builder.mutation<any, number>({
+      query: (id) => ({
+        method: "DELETE",
+        url: `/ShiftSchedule/${id}`,
+      }),
+      invalidatesTags: ["ShiftApi"],
+    }),  
   }),
 });
 
@@ -49,4 +56,5 @@ export const
   usePostShiftMutation,
   useGetallshiftQuery,
   usePutShiftMutation,
+  useDeleteShiftMutation,
  } = shiftApi;
