@@ -5,7 +5,7 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CardActions,
+  // CardActions,
   Typography,
   IconButton,
   Tooltip,
@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { Add, Edit, Delete, Refresh } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { GradientButton } from "../ui";
+// import { GradientButton } from "../ui";
 import { useGetRulesQuery, useDeleteRuleMutation } from "../../../Api/rulesApi";
 
 const RuleList: React.FC = () => {
@@ -167,7 +167,7 @@ const RuleList: React.FC = () => {
               </Typography>
             </CardContent>
 
-            <CardActions sx={{ p: 2, pt: 0 }}>
+            {/* <CardActions sx={{ p: 2, pt: 0 }}>
               <GradientButton
                 gradientVariant="green"
                 size="small"
@@ -177,7 +177,7 @@ const RuleList: React.FC = () => {
               >
                 Edit Rule
               </GradientButton>
-            </CardActions>
+            </CardActions> */}
           </Card>
         ))}
       </Box>
