@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -20,9 +20,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
-import { useAddEditUserGroupMutation,  } from "../../Api/userGroupApi";
+import { useAddEditUserGroupMutation } from "../../Api/userGroupApi";
 import { useGetallAccountQuery } from "../../Api/authApi";
 import type { UserType } from "../../model/userType";
+import type { userGroupType } from "../../model/userGroup";
 
 interface UserGroupFormType {
   id?: number;
@@ -35,7 +36,8 @@ interface UserGroupFormType {
 const UserGroupDialog: React.FC<{
   open: boolean;
   onClose: () => void;
-}> = ({ open, onClose }) => {
+  group?: userGroupType | null;
+}> = ({ open, onClose, group }) => {
   const { handleSubmit, control, reset } = useForm<UserGroupFormType>({
     defaultValues: {
       groupName: "",
@@ -47,11 +49,35 @@ const UserGroupDialog: React.FC<{
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
-  
   const { data: accountsData, isLoading } = useGetallAccountQuery({});
 
-  
-  const [addEditUserGroup, { isLoading: isSubmitting }] = useAddEditUserGroupMutation();
+  const [addEditUserGroup, { isLoading: isSubmitting }] =
+    useAddEditUserGroupMutation();
+
+  useEffect(() => {
+    if (group) {
+      const memberIds =
+        group.members?.map((m) => m.userId) || group.memberUserIds || [];
+
+      reset({
+        id: group.id,
+        groupName: group.groupName,
+        description: group.description || "",
+        isActive: group.isActive,
+        memberUserIds: memberIds,
+      });
+
+      setSelectedUsers(memberIds);
+    } else {
+      reset({
+        groupName: "",
+        description: "",
+        isActive: true,
+        memberUserIds: [],
+      });
+      setSelectedUsers([]);
+    }
+  }, [group, reset]);
 
   const onSubmit = async (data: UserGroupFormType) => {
     try {
@@ -81,10 +107,12 @@ const UserGroupDialog: React.FC<{
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Create User Group</DialogTitle>
+      <DialogTitle>
+        {group ? "Edit User Group" : "Create User Group"}
+      </DialogTitle>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent dividers>
-          
           <Controller
             name="groupName"
             control={control}
@@ -151,30 +179,30 @@ const UserGroupDialog: React.FC<{
                 borderRadius: 1,
               }}
             >
-              {users && users?.map((user:UserType) => {
-                const checked = selectedUsers.includes(user?.id ?? "");
-                return (
-                  <ListItem
-                    key={user.id}
-                    secondaryAction={
-                      <Checkbox
-                        edge="end"
-                        checked={checked}
-                        onChange={() => handleUserToggle(user?.id ?? "")}
+              {users &&
+                users?.map((user: UserType) => {
+                  const checked = selectedUsers.includes(user?.id ?? "");
+                  return (
+                    <ListItem
+                      key={user.id}
+                      secondaryAction={
+                        <Checkbox
+                          edge="end"
+                          checked={checked}
+                          onChange={() => handleUserToggle(user?.id ?? "")}
+                        />
+                      }
+                    >
+                      <ListItemAvatar>
+                        <Avatar>{user.firstName?.charAt(0)}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={`${user.firstName} ${user.lastName}`}
+                        secondary={user.email}
                       />
-                    }
-                  >
-                    <ListItemAvatar>
-                      <Avatar>{user.firstName?.charAt(0)}</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={`${user.firstName} ${user.lastName}`}
-                      secondary={user.email}
-                    />
-                 
-                  </ListItem>
-                );
-              })}
+                    </ListItem>
+                  );
+                })}
             </List>
           )}
         </DialogContent>
@@ -184,7 +212,11 @@ const UserGroupDialog: React.FC<{
             Cancel
           </Button>
           <Button type="submit" variant="contained" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Create Group"}
+            {isSubmitting
+              ? "Saving..."
+              : group
+              ? "Update Group"
+              : "Create Group"}
           </Button>
         </DialogActions>
       </form>
@@ -193,4 +225,3 @@ const UserGroupDialog: React.FC<{
 };
 
 export default UserGroupDialog;
-

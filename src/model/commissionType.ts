@@ -4,6 +4,15 @@ export interface MonthlySummarriesQueryParamsType extends PaginationOptionsDto {
   year?: number;
   month?: number;
   userId?: string;
+  IsAll?: string;
+  storeId?: number;
+  userGroupId?: number;
+}
+export interface ShiftQueryParamsType extends PaginationOptionsDto {
+  StartDate?: number;
+  EndDate?: number;
+  userId?: string;
+  IsAll?: string;
   storeId?: number;
   userGroupId?: number;
 }

@@ -19,6 +19,10 @@ import type { QueryParamsType } from "../../Dto/formDto";
 import { ValidateParams } from "../../Lib/utile";
 import AppPagination from "../../Component/AppPagination";
 import { Paper } from "@mui/material";
+import StaffCommissionFilter from "../commission/components/StaffCommissionFilter";
+import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
+import type { MonthlySummarriesQueryParamsType } from "../../model/commissionType";
+import StoreFilter from "./StoreFilter";
 
 const Store = () => {
   const [params, setParams] = useState<QueryParamsType>({});
@@ -26,11 +30,25 @@ const Store = () => {
   const [selectedStore, setSelectedStore] = useState<StoreDto | null>(null);
 
   // API hooks
+
+  const [queryParams, setQueryParams] =
+    useState<MonthlySummarriesQueryParamsType>({
+      ...DEFAULT_PAGINATION_OPTIONS,
+      PageSize: DEFAULT_PAGINATION_OPTIONS.PageSize || 5,
+    });
+
+  const handleQueryParamsChange = (
+    newQueryParams: MonthlySummarriesQueryParamsType
+  ) => {
+    {
+      setQueryParams(newQueryParams);
+    }
+  };
   const {
     data: storesData,
     isLoading,
     error,
-  } = useGetAllStoresQuery(ValidateParams(params));
+  } = useGetAllStoresQuery(ValidateParams(queryParams));
 
   const [addStore] = useAddStoreMutation();
   const [editStore] = useEditStoreMutation();
@@ -135,6 +153,11 @@ const Store = () => {
           onActionClick={() => setModalOpen(true)}
         />
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <StoreFilter
+            queryParams={queryParams}
+            onQueryParamsChange={handleQueryParamsChange}
+          />
+
           <CommonTable
             columns={StoreColumns}
             rows={storesData?.items || []}
@@ -151,7 +174,7 @@ const Store = () => {
             <AppPagination
               metaData={storesData?.metaData}
               onPageChange={(page: number) =>
-                setParams({ ...params, PageNumber: page })
+                setQueryParams({ ...queryParams, PageNumber: page })
               }
             />
           )}

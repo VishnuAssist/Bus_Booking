@@ -12,8 +12,12 @@ import {
   useGetallLeavesQuery,
 } from "../../../Api/StaffservicesApi";
 import AppPagination from "../../../Component/AppPagination";
-import type { MonthlySummarriesQueryParamsType } from "../../../model/commissionType";
+import type {
+  MonthlySummarriesQueryParamsType,
+  ShiftQueryParamsType,
+} from "../../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
+import ShiftFilter from "../../shift/ShiftFilter";
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -29,12 +33,21 @@ const LeaveView = () => {
   const [selectedLeaveRequest, setSelectedLeaveRequest] =
     useState<leaverequesttype | null>(null);
 
-  const [queryParams, setQueryParams] =
-    useState<MonthlySummarriesQueryParamsType>({
-      ...DEFAULT_PAGINATION_OPTIONS,
-      year: undefined,
-      month: undefined,
-    });
+  const [queryParams, setQueryParams] = useState<ShiftQueryParamsType>({
+    ...DEFAULT_PAGINATION_OPTIONS,
+    StartDate: undefined,
+    EndDate: undefined,
+  });
+
+  const handleQueryParamsChange = (newQueryParams: ShiftQueryParamsType) => {
+    if (
+      queryParams.StartDate !== newQueryParams.StartDate ||
+      queryParams.EndDate !== newQueryParams.EndDate ||
+      queryParams.SearchTerm !== newQueryParams.SearchTerm
+    ) {
+      setQueryParams(newQueryParams);
+    }
+  };
 
   const { data: leaveData } = useGetallLeavesQuery(queryParams);
 
@@ -99,6 +112,10 @@ const LeaveView = () => {
           <Card sx={{ mt: 2 }}>
             <CardHeader title="Recent Requests" />
             <CardContent>
+              <ShiftFilter
+                queryParams={queryParams}
+                onQueryParamsChange={handleQueryParamsChange}
+              />
               <CommonTable
                 columns={columns as any}
                 rows={leaveData?.items || []}

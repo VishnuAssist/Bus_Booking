@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Card,
@@ -7,12 +7,14 @@ import {
   Chip,
   Stack,
   IconButton,
-  
   Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { userGroupType } from "../../model/userGroup";
 import { useDeleteUserGroupMutation } from "../../Api/userGroupApi";
+import EditSquareIcon from "@mui/icons-material/EditSquare";
+import UserGroupDialog from "./UserGroupForm";
+import { useGetUserGroupByIdQuery } from "../../Api/userGroupApi";
 
 interface Props {
   groups: userGroupType[];
@@ -21,9 +23,23 @@ interface Props {
 }
 
 const UserGroupCard: React.FC<Props> = ({ groups, loading, error }) => {
-  const [deleteUserGroup, { isLoading: deleting }] = useDeleteUserGroupMutation();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
 
-  
+  const [deleteUserGroup, { isLoading: deleting }] =
+    useDeleteUserGroupMutation();
+
+  const { data: userData, isFetching } = useGetUserGroupByIdQuery(
+    selectedGroupId!,
+    {
+      skip: !selectedGroupId,
+    }
+  );
+  const handleEdit = (group: userGroupType) => {
+    setSelectedGroupId(group.id);
+    setOpenDialog(true);
+  };
+
   const handleDelete = async (id: number | undefined) => {
     if (!id) return;
     // const confirmDelete = window.confirm("Are you sure you want to delete this group?");
@@ -38,72 +54,95 @@ const UserGroupCard: React.FC<Props> = ({ groups, loading, error }) => {
   };
 
   if (loading) return <Typography>Loading user groups...</Typography>;
-  if (error) return <Typography color="error">Failed to load groups.</Typography>;
+  if (error)
+    return <Typography color="error">Failed to load groups.</Typography>;
   if (!groups.length) return <Typography>No user groups found.</Typography>;
 
   return (
-    <Grid container spacing={2} sx={{px:1,}}>
-      {groups.map((group) => (
-        <Grid size={{xs:12,sm:6,md:4}} key={group.id}>
-          <Card
-            sx={{
-              
-              borderRadius: 3,
-              boxShadow: "3px 3px solid black",
-              position: "relative",
-              
-              transition: "all 0.2s ease-in-out",
-            }}
-          >
-            <CardContent>
-              <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
-                <Typography variant="h6" fontWeight="bold">
-                  {group.groupName}
-                </Typography>
+    <>
+      <Grid container spacing={2} sx={{ px: 1 }}>
+        {groups.map((group) => (
+          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={group.id}>
+            <Card
+              sx={{
+                borderRadius: 3,
+                boxShadow: "3px 3px solid black",
+                position: "relative",
 
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Chip
-                    label={group.isActive ? "Active" : "Inactive"}
-                    color={group.isActive ? "success" : "error"}
-                    size="small"
-                  />
+                transition: "all 0.2s ease-in-out",
+              }}
+            >
+              <CardContent>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mb={1}
+                >
+                  <Typography variant="h6" fontWeight="bold">
+                    {group.groupName}
+                  </Typography>
 
-                  <Tooltip title="Delete Group">
-                    <span>
-                      <IconButton
-                        size="small"
-                        color="error"
-                        onClick={() => handleDelete(group.id)}
-                        disabled={deleting}
-                      >
-                        {/* {deleting ? (
-                          <CircularProgress size={18} color="error" />
-                        ) : ( */}
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <Chip
+                      label={group.isActive ? "Active" : "Inactive"}
+                      color={group.isActive ? "success" : "error"}
+                      size="small"
+                    />
+
+                    <Tooltip title="Delete Group">
+                      <span>
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => handleDelete(group.id)}
+                          disabled={deleting}
+                        >
                           <DeleteIcon fontSize="small" />
-                        {/* )} */}
-                      </IconButton>
-                    </span>
-                  </Tooltip>
+                        </IconButton>
+                      </span>
+                    </Tooltip>
+                    <Tooltip title="Edit Group">
+                      <span>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleEdit(group)}
+                          color="primary"
+                        >
+                          <EditSquareIcon fontSize="small" />
+                        </IconButton>
+                      </span>
+                    </Tooltip>
+                  </Stack>
                 </Stack>
-              </Stack>
 
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                {group.description || "No description"}
-              </Typography>
-
-              <Stack direction="row" justifyContent="space-between" mt={2}>
-                <Typography variant="body2">
-                  👤 Members: <strong>{group.memberCount}</strong>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  {group.description || "No description"}
                 </Typography>
-                <Typography variant="caption" color="text.secondary">
+
+                <Stack direction="row" justifyContent="space-between" mt={2}>
+                  <Typography variant="body2">
+                    👤 Members: <strong>{group.memberCount}</strong>
+                  </Typography>
+                  {/* <Typography variant="caption" color="text.secondary">
                   {group.creatorName ? `By ${group.creatorName}` : "System"}
-                </Typography>
-              </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+                </Typography> */}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      <UserGroupDialog
+        open={openDialog}
+        onClose={() => {
+          setOpenDialog(false);
+          setSelectedGroupId(null);
+        }}
+        group={userData || null}
+      />
+    </>
   );
 };
 
