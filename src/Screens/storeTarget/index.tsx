@@ -108,7 +108,7 @@ const StoreTarget = () => {
     <>
       <CommisionContainer>
         <PageHeader
-          title={`Store Target`}
+          title={`Target`}
           btntitle="Add Store Target"
           onActionClick={() => setModalOpen(true)}
           btntitle2="Process Target"

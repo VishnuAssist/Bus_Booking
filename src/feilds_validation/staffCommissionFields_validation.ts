@@ -54,6 +54,16 @@ export const StaffCommissionFormFields: FormFieldProps<ProcessStaffCommissionPay
       min: "10",
       size: { sm: 12, md: 12, lg: 12 },
     },
+      {
+    name: "commissionTypeId",
+    label: "Type",
+    type: "autocomplete",
+    size: { sm: 12, md: 6, lg: 6 },
+    baseurl: "/Dictionary?Category=1",
+    autocompletelabel: {
+      optionvalue: { id: "id" },
+    },
+  },
   ];
 
 export const staffCommissionFormValidationSchema = yup.object().shape({

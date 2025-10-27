@@ -28,6 +28,16 @@ const baseQuery = fetchBaseQuery({
     }
     return headers;
   },
+  responseHandler: async (response) => {
+    const text = await response.text();
+    try {
+      
+      return text ? JSON.parse(text) : response;
+    } catch {
+     
+      return text;
+    }
+  },
 });
 
 const APIFetchBase: BaseQueryFn<FetchArgs, unknown, unknown> = async (

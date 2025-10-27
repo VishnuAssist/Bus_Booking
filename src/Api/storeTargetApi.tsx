@@ -77,7 +77,7 @@ export const storeTargetApi = createApi({
     processStoreTarget: builder.mutation<void, ProcessStoreTargetRequest>({
       query: (request) => ({
         method: "POST",
-        url: "/Targets/process-store-target",
+        url: "/Targets/process-target",
         body: request,
       }),
       invalidatesTags: [{ type: "StoreTarget", id: "LIST" }],

@@ -8,7 +8,7 @@ import type {
 } from "../../../model/commissionType";
 import StaffCommissionFilter from "./StaffCommissionFilter";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
-import { staffGroupSummaryTableDataService } from "../services/staffGroupSummaryTableDataService";
+import { useStaffGroupSummaryTableData } from "../services/staffGroupSummaryTableDataService";
 import ResponseViewDrawer from "../../../Component/ResponseViewDrawer";
 
 const StaffGroupSummaryTable = () => {
@@ -32,10 +32,12 @@ const StaffGroupSummaryTable = () => {
 
   const { data: staffGroupSummaries } =
     useGetStaffGroupSummariesQuery(queryParams);
-  const { columns, rows } = staffGroupSummaryTableDataService(
+  
+  const { columns, rows } = useStaffGroupSummaryTableData(
     staffGroupSummaries?.items
   );
 
+  console.log("columns", columns);
   console.log("rows", rows);
 
   return (
@@ -45,12 +47,12 @@ const StaffGroupSummaryTable = () => {
         onQueryParamsChange={handleQueryParamsChange}
       />
 
-      <CommonTable<Partial<StaffGroupSummaryResponseType>>
+      <CommonTable<any>
         columns={columns}
         rows={rows}
         actions={{
           onView: (row) => {
-            setSelectedStaffGroupSummary(row);
+            setSelectedStaffGroupSummary(row._fullData || row);
             setResponseDrawerOpen(true);
           },
         }}
@@ -76,4 +78,5 @@ const StaffGroupSummaryTable = () => {
     </>
   );
 };
+
 export default StaffGroupSummaryTable;
