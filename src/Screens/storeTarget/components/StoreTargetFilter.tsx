@@ -2,17 +2,17 @@ import { Box } from "@mui/material";
 import TextFilter from "../../../Component/Filters/TextFilter";
 import YearFilter from "../../../Component/Filters/YearFilter";
 import MonthFilter from "../../../Component/Filters/MonthFilter";
-import type { MonthlySummarriesQueryParamsType } from "../../../model/commissionType";
+import type { StoreTargetQueryParamsType } from "../../../model/storeTargetType";
 
-interface StaffCommissionFilterProps {
-  queryParams: MonthlySummarriesQueryParamsType;
-  onQueryParamsChange: (queryParams: MonthlySummarriesQueryParamsType) => void;
+interface StoreTargetFilterProps {
+  queryParams: StoreTargetQueryParamsType;
+  onQueryParamsChange: (queryParams: StoreTargetQueryParamsType) => void;
 }
 
-const StaffCommissionFilter = ({
+const StoreTargetFilter = ({
   queryParams,
   onQueryParamsChange,
-}: StaffCommissionFilterProps) => {
+}: StoreTargetFilterProps) => {
   const handleYearChange = (year: number | null) => {
     onQueryParamsChange({
       ...queryParams,
@@ -37,11 +37,11 @@ const StaffCommissionFilter = ({
   return (
     <Box
       sx={{
+        margin: 2,
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
         gap: 2,
-        margin: 2,
       }}
     >
       <TextFilter
@@ -70,4 +70,4 @@ const StaffCommissionFilter = ({
   );
 };
 
-export default StaffCommissionFilter;
+export default StoreTargetFilter;

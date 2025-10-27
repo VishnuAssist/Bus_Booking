@@ -3,8 +3,10 @@ import CommonTable from "../../Component/CommenTable";
 import CommisionContainer from "../../Component/container";
 import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
-import { StoreFormFields, storeFormValidationSchema } from "../../feilds_validation/storeFieldsValidation";
-import { useNavigate } from "react-router-dom";
+import {
+  StoreFormFields,
+  storeFormValidationSchema,
+} from "../../feilds_validation/storeFieldsValidation";
 import PageHeader from "../../Component/commonPageHeader";
 import {
   useGetAllStoresQuery,
@@ -23,10 +25,12 @@ const Store = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<StoreDto | null>(null);
 
-  const navi = useNavigate();
-
   // API hooks
-  const { data: storesData, isLoading, error } = useGetAllStoresQuery(ValidateParams(params));
+  const {
+    data: storesData,
+    isLoading,
+    error,
+  } = useGetAllStoresQuery(ValidateParams(params));
 
   const [addStore] = useAddStoreMutation();
   const [editStore] = useEditStoreMutation();
@@ -58,7 +62,10 @@ const Store = () => {
   };
 
   const handleDelete = async (row: StoreDto) => {
-    if (row.storeId && window.confirm("Are you sure you want to delete this store?")) {
+    if (
+      row.storeId &&
+      window.confirm("Are you sure you want to delete this store?")
+    ) {
       try {
         await deleteStore(row.storeId).unwrap();
       } catch (err) {
@@ -87,17 +94,19 @@ const Store = () => {
     return fields;
   };
 
-  const handleViewTargets = (row: StoreDto) => {
-    navi(`/settings/storeTarget?id=${row.storeId}`);
-  };
-
   console.log("storesData", storesData);
 
   if (isLoading) {
     return (
       <CommisionContainer>
-        <PageHeader title="Store" btntitle="Add Store" onActionClick={() => setModalOpen(true)} />
-        <div style={{ padding: "20px", textAlign: "center" }}>Loading stores...</div>
+        <PageHeader
+          title="Store"
+          btntitle="Add Store"
+          onActionClick={() => setModalOpen(true)}
+        />
+        <div style={{ padding: "20px", textAlign: "center" }}>
+          Loading stores...
+        </div>
       </CommisionContainer>
     );
   }
@@ -105,7 +114,11 @@ const Store = () => {
   if (error) {
     return (
       <CommisionContainer>
-        <PageHeader title="Store" btntitle="Add Store" onActionClick={() => setModalOpen(true)} />
+        <PageHeader
+          title="Store"
+          btntitle="Add Store"
+          onActionClick={() => setModalOpen(true)}
+        />
         <div style={{ padding: "20px", textAlign: "center", color: "red" }}>
           Error loading stores. Please try again.
         </div>
@@ -116,13 +129,17 @@ const Store = () => {
   return (
     <>
       <CommisionContainer>
-        <PageHeader title="Store" btntitle="Add Store" onActionClick={() => setModalOpen(true)} />
+        <PageHeader
+          title="Store"
+          btntitle="Add Store"
+          onActionClick={() => setModalOpen(true)}
+        />
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <CommonTable
             columns={StoreColumns}
             rows={storesData?.items || []}
             actions={{
-              onView: handleViewTargets,
+              // onView: handleViewTargets,
               onEdit: (row) => {
                 setSelectedStore(row);
                 setModalOpen(true);
@@ -140,8 +157,6 @@ const Store = () => {
           )}
         </Paper>
       </CommisionContainer>
-
-      <Footer />
 
       <CommonDialog
         open={isModalOpen}

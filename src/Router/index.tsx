@@ -65,7 +65,6 @@ const ReportAndAnalytics = Loader(
 const Dictionary = Loader(lazy(() => import("../Screens/dictionary/index")));
 const Store = Loader(lazy(() => import("../Screens/store/index")));
 const StoreTarget = Loader(lazy(() => import("../Screens/storeTarget")));
-const StoreKPI= Loader(lazy(() => import("../Screens/storeTarget/storeKPI")));
 const Sales = Loader(lazy(() => import("../Screens/sales/index")));
 const UserGroup = Loader(lazy(() => import("../Screens/UserGroup")));
 
@@ -292,12 +291,12 @@ const routes: RouteObject[] = [
             element: <Store />,
           },
           {
-            path: "storeTarget",
+            path: "target",
             element: <StoreTarget />,
           },
-           {
-            path: "storeKPI",
-            element: <StoreKPI />,
+          {
+            path: "storeTarget",
+            element: <StoreTarget />,
           },
           {
             path: "sales",

@@ -47,10 +47,8 @@ const MonthFilter: React.FC<MonthFilterProps> = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
-        margin={2}
         sx={{
           display: "flex",
-          gap: 2,
           minWidth: minWidth,
         }}
         className={className}
@@ -72,6 +70,13 @@ const MonthFilter: React.FC<MonthFilterProps> = ({
                 size: "small",
                 fullWidth: fullWidth,
                 placeholder: "All Months",
+              },
+              popper: {
+                sx: {
+                  "& .MuiDateCalendar-root": {
+                    height: "282px",
+                  },
+                },
               },
             }}
           />

@@ -37,8 +37,6 @@ const YearFilter: React.FC<YearFilterProps> = ({
   className,
   fullWidth = false,
   disabled = false,
-  startYear = new Date().getFullYear() - 10,
-  endYear = new Date().getFullYear() + 5,
 }) => {
   const handleDateChange = (newValue: Dayjs | null) => {
     if (newValue) {
@@ -53,11 +51,8 @@ const YearFilter: React.FC<YearFilterProps> = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
-        margin={2}
         sx={{
-          float: "right",
           display: "flex",
-          gap: 2,
           minWidth: minWidth,
         }}
         className={className}
@@ -78,11 +73,17 @@ const YearFilter: React.FC<YearFilterProps> = ({
               textField: {
                 size: "small",
                 fullWidth: fullWidth,
-                placeholder: "All Years",
+                placeholder: "Selact Year",
+              },
+              popper: {
+                sx: {
+                  "& .MuiDateCalendar-root": {
+                    height: "282px",
+                  },
+                },
               },
             }}
-            minDate={dayjs().year(startYear)}
-            maxDate={dayjs().year(endYear)}
+            openTo="year"
           />
         </Box>
       </Box>

@@ -49,9 +49,9 @@ const UserGroupCard: React.FC<Props> = ({ groups, loading, error }) => {
             sx={{
               
               borderRadius: 3,
-              boxShadow: 3,bgcolor:"lightGray",
+              boxShadow: "3px 3px solid black",
               position: "relative",
-              "&:hover": { boxShadow: 6, transform: "scale(1.01)" },
+              
               transition: "all 0.2s ease-in-out",
             }}
           >

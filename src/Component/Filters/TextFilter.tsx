@@ -50,9 +50,7 @@ const TextFilter = ({
 
   return (
     <Box
-      margin={2}
       sx={{
-        float: "right",
         display: "flex",
         minWidth: minWidth,
       }}

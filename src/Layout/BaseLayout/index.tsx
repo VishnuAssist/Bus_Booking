@@ -1,9 +1,8 @@
+import { Outlet } from "react-router-dom";
 
-import { Outlet } from 'react-router-dom';
-
-import { Box } from '@mui/material';
-import * as PropTypes from 'prop-types';
-import type { FC, ReactNode } from 'react';
+import { Box } from "@mui/material";
+import * as PropTypes from "prop-types";
+import type { FC, ReactNode } from "react";
 
 interface BaseLayoutProps {
   children?: ReactNode;
@@ -14,7 +13,7 @@ const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
     <Box
       sx={{
         flex: 1,
-        height: '100%'
+        height: "100%",
       }}
     >
       {children || <Outlet />}
@@ -23,7 +22,7 @@ const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
 };
 
 BaseLayout.propTypes = {
-  children: PropTypes.node as any
+  children: PropTypes.node as any,
 };
 
 export default BaseLayout;

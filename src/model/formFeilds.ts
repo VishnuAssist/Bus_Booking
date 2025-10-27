@@ -45,9 +45,11 @@ export interface FormFieldProps<T> {
     | "map"
     | "autocompletemultiple"
     | "D&DUploadImage"
-    | "skipDates";
+    | "skipDates"
+    | "yearpicker"
+    | "monthpicker";
 
-    skipDates?: { startDate: string; endDate: string }[] | string;
+  skipDates?: { startDate: string; endDate: string }[] | string;
 
   baseurl?: string;
   name: string;
