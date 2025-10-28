@@ -53,13 +53,13 @@ const StaffGroupSummaryTable = () => {
         <div key={`${groupName}-${index}`} style={{ marginBottom: "2rem" }}>
           <div
             style={{
-              fontSize: "1rem",
+              fontSize: "0.9rem",
               fontWeight: 500,
               padding: "0.5rem 1rem",
               textTransform: "uppercase",
             }}
           >
-            {groupName}
+            Group Name : {groupName}
           </div>
 
           <CommonTable<StaffGroupSummaryRowType>
