@@ -29,6 +29,7 @@ import { useGetstatusQuery } from "../../../Api/dictionaryApi";
 
 const RequestView = () => {
   const { data: request } = useGetallLeavesQuery({});
+
   const { data: statusData } = useGetstatusQuery({});
   const [updateLeave] = usePutLeavesMutation();
 

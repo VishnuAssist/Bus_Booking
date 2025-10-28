@@ -43,13 +43,17 @@ export const dictionaryApi = createApi({
       }),
     }),
     getstatus: builder.query<StatusResponse,
-      void
+      any
     >({
-      query: () => ({
+      query: (args) => ({
         method: "GET",
         url: "/Dictionary/statuses",
+         params: {
+                      ...args,
+                    },
       }),
     }),
+      
     addEditdictionary: builder.mutation<dictionarytype, FormData>({
       query: (args) => ({
         method: args?.get("id") ? `PUT` : "POST",
