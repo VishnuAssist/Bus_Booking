@@ -45,7 +45,6 @@ interface CommonTableProps<T> {
 function CommonTable<T>({
   columns,
   rows,
-
   actions,
   approval,
   custombutton,
@@ -60,6 +59,9 @@ function CommonTable<T>({
                 key={column.id}
                 align={column.align}
                 style={{ minWidth: column.minWidth }}
+                sx={{
+                  whiteSpace: "nowrap",
+                }}
               >
                 {column.label}
               </TableCell>
@@ -75,7 +77,17 @@ function CommonTable<T>({
               {columns.map((column) => {
                 const value = (row as any)[column.id];
                 return (
-                  <TableCell key={column.id} align={column.align}>
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    sx={{
+                      fontSize: "0.875rem",
+                      fontWeight: 300,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
                     {column.format ? column.format(value) : value}
                   </TableCell>
                 );
@@ -107,18 +119,27 @@ function CommonTable<T>({
                 <TableCell align="center">
                   <Stack direction="row" spacing={1} justifyContent="center">
                     {actions.onView && (
-                      <IconButton onClick={() => actions.onView!(row)}>
-                        <VisibilityIcon color="primary" />
+                      <IconButton
+                        size="small"
+                        onClick={() => actions.onView!(row)}
+                      >
+                        <VisibilityIcon color="primary" fontSize="small" />
                       </IconButton>
                     )}
                     {actions.onEdit && (
-                      <IconButton onClick={() => actions.onEdit!(row)}>
-                        <EditIcon color="secondary" />
+                      <IconButton
+                        size="small"
+                        onClick={() => actions.onEdit!(row)}
+                      >
+                        <EditIcon color="secondary" fontSize="small" />
                       </IconButton>
                     )}
                     {actions.onDelete && (
-                      <IconButton onClick={() => actions.onDelete!(row)}>
-                        <DeleteIcon color="error" />
+                      <IconButton
+                        size="small"
+                        onClick={() => actions.onDelete!(row)}
+                      >
+                        <DeleteIcon color="error" fontSize="small" />
                       </IconButton>
                     )}
                   </Stack>

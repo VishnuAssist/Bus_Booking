@@ -6,11 +6,13 @@ import CommisionContainer from "../../Component/container";
 import PageHeader from "../../Component/commonPageHeader";
 
 const Index = () => {
-
   return (
     <>
       <CommisionContainer>
-        <PageHeader title="My Profile" subtitle="Manage your account and preferences" />
+        <PageHeader
+          title="My Profile"
+          subtitle="Manage your account and preferences"
+        />
 
         <Grid
           container
@@ -25,11 +27,8 @@ const Index = () => {
           </Grid>
         </Grid>
       </CommisionContainer>
-
-      <Footer />
-
     </>
-  )
-}
+  );
+};
 
 export default Index;

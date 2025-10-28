@@ -18,6 +18,7 @@ import { useState } from "react";
 import StaffCommissionDialogue from "./components/StaffCommissionDialogue";
 import MonthlySummaryDialogue from "./components/MonthlySummaryDialogue";
 import StaffCommissionTable from "./components/StaffCommissionTable";
+import StaffGroupSummaryTable from "./components/StaffGroupSummaryTable";
 
 const Commission = () => {
   const [staffCommissionModalOpen, setStaffCommissionModalOpen] =
@@ -74,6 +75,10 @@ const Commission = () => {
                         label="Staff Monthly Summary"
                         value="staff-monthly-summary"
                       />
+                      <Tab
+                        label="Staff Group Summary"
+                        value="staff-group-summary"
+                      />
                     </TabList>
                   </Box>
                   <TabPanel value="staff-commission" sx={{ padding: 0 }}>
@@ -81,6 +86,9 @@ const Commission = () => {
                   </TabPanel>
                   <TabPanel value="staff-monthly-summary" sx={{ padding: 0 }}>
                     <StaffSummaryTable />
+                  </TabPanel>
+                  <TabPanel value="staff-group-summary" sx={{ padding: 0 }}>
+                    <StaffGroupSummaryTable />
                   </TabPanel>
                 </TabContext>
               </Box>

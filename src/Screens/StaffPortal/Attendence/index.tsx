@@ -9,20 +9,20 @@ const Attendance = () => {
   return (
     <>
       <CommisionContainer>
-        <PageHeader title="Attendance" subtitle="Manage your attendance and work activities" />
+        <PageHeader
+          title="Attendance"
+          subtitle="Manage your attendance and work activities"
+        />
 
         <Grid container spacing={2}>
           <Grid size={{ sm: 12, md: 4 }}>
             <ClockInButton />
           </Grid>
           <Grid size={{ sm: 12, md: 8 }}>
-            
             <AttendanceList />
           </Grid>
         </Grid>
       </CommisionContainer>
-
-      <Footer />
     </>
   );
 };

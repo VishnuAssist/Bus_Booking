@@ -8,20 +8,23 @@ import PageHeader from "../../Component/commonPageHeader";
 import {
   useGetAllStoreTargetsQuery,
   useDeleteStoreTargetMutation,
-} from "../../Api/StoreApi";
+} from "../../Api/storeTargetApi";
 import AppPagination from "../../Component/AppPagination";
 import type {
-  StoreMonthlyTargetDto,
+  StoreTargetDto,
   StoreTargetQueryParamsType,
 } from "../../model/storeTargetType";
 import { storeTargetTableDataService } from "./services/storeTargetTableDataService";
 import StoreTargetFilter from "./components/StoreTargetFilter";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
+import ResponseViewDrawer from "../../Component/ResponseViewDrawer";
+import { StoreTargetFormFields } from "../../feilds_validation/storeTargetFormFieldsValidation";
 
 const StoreTarget = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isResponseDrawerOpen, setResponseDrawerOpen] = useState(false);
   const [selectedStoreTarget, setSelectedStoreTarget] =
-    useState<StoreMonthlyTargetDto | null>(null);
+    useState<StoreTargetDto | null>(null);
   const [processDialogOpen, setProcessDialogOpen] = useState(false);
 
   const [queryParams, setQueryParams] = useState<StoreTargetQueryParamsType>({
@@ -51,7 +54,7 @@ const StoreTarget = () => {
     setSelectedStoreTarget(null);
   };
 
-  const handleDelete = async (row: StoreMonthlyTargetDto) => {
+  const handleDelete = async (row: StoreTargetDto) => {
     if (
       row.id &&
       window.confirm("Are you sure you want to delete this store target?")
@@ -105,7 +108,7 @@ const StoreTarget = () => {
     <>
       <CommisionContainer>
         <PageHeader
-          title={`Store Target`}
+          title={`Target`}
           btntitle="Add Store Target"
           onActionClick={() => setModalOpen(true)}
           btntitle2="Process Target"
@@ -124,10 +127,14 @@ const StoreTarget = () => {
             onQueryParamsChange={handleQueryParamsChange}
           />
 
-          <CommonTable<StoreMonthlyTargetDto>
+          <CommonTable<StoreTargetDto>
             columns={columns}
             rows={rows}
             actions={{
+              onView: (row) => {
+                setSelectedStoreTarget(row);
+                setResponseDrawerOpen(true);
+              },
               onEdit: (row) => {
                 setSelectedStoreTarget(row);
                 setModalOpen(true);
@@ -157,6 +164,16 @@ const StoreTarget = () => {
         open={processDialogOpen}
         onClose={handleCloseProcessDialog}
       />
+
+      {selectedStoreTarget && (
+        <ResponseViewDrawer<StoreTargetDto>
+          isOpen={isResponseDrawerOpen}
+          onClose={() => setResponseDrawerOpen(false)}
+          data={selectedStoreTarget}
+          title="Store Target Response"
+          formFields={StoreTargetFormFields}
+        />
+      )}
     </>
   );
 };

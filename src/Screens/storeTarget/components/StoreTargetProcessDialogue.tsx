@@ -1,11 +1,11 @@
 import { CommonDialog } from "../../../Component/forms/FormDialog";
 import type { ProcessStoreTargetRequest } from "../../../model/storeTargetType";
-import { useProcessStoreTargetMutation } from "../../../Api/StoreApi";
+import { useProcessStoreTargetMutation } from "../../../Api/storeTargetApi";
 import { toast } from "react-toastify";
 import {
   ProcessStoreTargetFormFields,
   ProcessStoreTargetFormValidationSchema,
-} from "../../../feilds_validation/storeTargetFieldsValidation";
+} from "../../../feilds_validation/processStoreTargetFormFields";
 
 interface StoreTargetProcessDialogueProps {
   open: boolean;
@@ -41,6 +41,8 @@ const StoreTargetProcessDialogue = ({
       defaultValues={{
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1,
+        type: null,
+        employeeCodes:[]
       }}
     />
   );

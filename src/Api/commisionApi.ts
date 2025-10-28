@@ -6,6 +6,7 @@ import type {
   StaffCommissionResponseType,
   MonthlySummarriesQueryParamsType,
   StaffMonthlySummaryResponseType,
+  StaffGroupSummaryResponseType,
 } from "../model/commissionType";
 import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
@@ -51,6 +52,22 @@ export const commissionApi = createApi({
         ),
     }),
 
+    getStaffGroupSummaries: builder.query<
+      { items: StaffGroupSummaryResponseType[]; metaData: MetaData },
+      MonthlySummarriesQueryParamsType
+    >({
+      query: (args) => ({
+        method: "GET",
+        url: "/Staff/group-summaries",
+        params: args,
+      }),
+      transformResponse: (
+        response: StaffGroupSummaryResponseType[],
+        meta: MetaData
+      ) =>
+        dataWithMeta<StaffGroupSummaryResponseType[], MetaData>(response, meta),
+    }),
+
     processStaffCommission: builder.mutation<
       void,
       ProcessStaffCommissionPayload
@@ -79,6 +96,7 @@ export const commissionApi = createApi({
 export const {
   useGetStaffCommissionsQuery,
   useGetMonthlySummarriesQuery,
+  useGetStaffGroupSummariesQuery,
   useProcessStaffCommissionMutation,
   useProcessMonthlySummaryMutation,
 } = commissionApi;

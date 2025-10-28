@@ -1,29 +1,31 @@
-
 import * as yup from "yup";
 import type { dictionarytype } from "../model/Dictionary";
 import type { FormFieldProps } from "../model/formFeilds";
-// 
+//
 export const DictionaryFormFields: FormFieldProps<dictionarytype>[] = [
   {
     label: "Category",
     name: "categoryId",
     type: "select",
     Params: { Category: "category" },
-    required: true,
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
     label: "Name",
     name: "name",
     type: "text",
-    required: true,
+    size: { sm: 12, md: 6, lg: 6 },
+  },
+  {
+    label: "Code",
+    name: "code",
+    type: "text",
     size: { sm: 12, md: 6, lg: 6 },
   },
   {
     label: "Description",
     name: "description",
     type: "text",
-    required: true,
     size: { sm: 12, md: 6, lg: 6 },
   },
 
@@ -31,7 +33,6 @@ export const DictionaryFormFields: FormFieldProps<dictionarytype>[] = [
     label: "Status",
     name: "isActive",
     type: "select",
-    required: true,
     size: { sm: 12, md: 6, lg: 6 },
   },
 ];
@@ -43,6 +44,11 @@ export const dictionaryFormValidationSchema = yup.object().shape({
     .required("Category is required"),
 
   name: yup.string().trim().required("Name is required"),
+  code: yup
+    .string()
+    .trim()
+    .required("Code is required")
+    .max(10, "Code must be less than 10 characters"),
 
   description: yup.string().trim().required("Description is required"),
 
@@ -51,4 +57,3 @@ export const dictionaryFormValidationSchema = yup.object().shape({
     .typeError("Status is required")
     .required("Status is required"),
 });
-  

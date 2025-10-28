@@ -1,21 +1,26 @@
 import type { PaginationOptionsDto } from "../Dto/paginationOptionsDto";
-
-export interface StoreMonthlyTargetDto {
+export interface StoreTargetDto {
   id?: number;
-  brandCode: string;
-  storeId: number;
   year: number;
   month: number;
   targetAmount: number;
-}
+  name: string;
+  description: string;
+  userIds: number[];
+  storeIds: number[];
+  brandCodes: string[];
 
-export interface StoreKPIDto {
-  id?: number;
-  storeTargetId: number;
-  kpiName: string;
-  kpiTarget?: number;
-  kpiAchievement?: number;
-  ruleId?: number;
+  // Following fields are for response data
+  stores?: {
+    id: number;
+    name: string;
+    code: string;
+  }[];
+  users?: {
+    id: string;
+    userName: string;
+    employeeCode: string;
+  }[];
 }
 
 export interface ProcessStoreTargetRequest {

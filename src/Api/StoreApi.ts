@@ -5,6 +5,7 @@ import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
 import type { StoreDto } from "../model/storeType";
 import type { QueryParamsType } from "../Dto/formDto";
+
 import type {
   ProcessStoreTargetRequest,
   StoreKPIDto,
@@ -14,7 +15,7 @@ import type {
 export const storeApi = createApi({
   reducerPath: "storeApi",
   baseQuery: APIFetchBase,
-  tagTypes: ["Store", "StoreTarget", "StoreKPI"],
+  tagTypes: ["Store"],
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
     getAllStores: builder.query<
@@ -56,7 +57,6 @@ export const storeApi = createApi({
       }),
       invalidatesTags: [{ type: "Store", id: "LIST" }],
     }),
-
     editStore: builder.mutation<void, StoreDto>({
       query: ({ storeId, ...body }) => ({
         method: "PUT",
@@ -68,7 +68,6 @@ export const storeApi = createApi({
         { type: "Store", id: "LIST" },
       ],
     }),
-
     deleteStore: builder.mutation<void, number>({
       query: (id) => ({
         method: "DELETE",
@@ -227,14 +226,4 @@ export const {
   useAddStoreMutation,
   useEditStoreMutation,
   useDeleteStoreMutation,
-  useGetAllStoreTargetsQuery,
-  useAddStoreTargetMutation,
-  useEditStoreTargetMutation,
-  useDeleteStoreTargetMutation,
-  useProcessStoreTargetMutation,
-  useGetStoreKPIsQuery,
-  useAddStoreKPIMutation,
-  useEditStoreKPIMutation,
-  useDeleteStoreKPIMutation,
-  useProcessStoreKPIMutation,
 } = storeApi;

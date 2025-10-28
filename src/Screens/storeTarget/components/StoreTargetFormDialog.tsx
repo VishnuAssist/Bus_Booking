@@ -1,19 +1,19 @@
 import { CommonDialog } from "../../../Component/forms/FormDialog";
-import type { StoreMonthlyTargetDto } from "../../../model/storeTargetType";
+import type { StoreTargetDto } from "../../../model/storeTargetType";
 import {
   useAddStoreTargetMutation,
   useEditStoreTargetMutation,
-} from "../../../Api/StoreApi";
+} from "../../../Api/storeTargetApi";
 import { toast } from "react-toastify";
 import {
   StoreTargetFormFields,
   storeTargetFormValidationSchema,
-} from "../../../feilds_validation/storeTargetFieldsValidation";
+} from "../../../feilds_validation/storeTargetFormFieldsValidation";
 
 interface StoreTargetFormDialogProps {
   open: boolean;
   onClose: () => void;
-  selectedStoreTarget?: StoreMonthlyTargetDto | null;
+  selectedStoreTarget?: StoreTargetDto | null;
 }
 
 const StoreTargetFormDialog = ({
@@ -23,14 +23,13 @@ const StoreTargetFormDialog = ({
 }: StoreTargetFormDialogProps) => {
   const [addStoreTarget] = useAddStoreTargetMutation();
   const [editStoreTarget] = useEditStoreTargetMutation();
-
   // Field function for form dialog
   const storeTargetFields = () => {
     const fields = [...StoreTargetFormFields];
     return fields;
   };
 
-  const onSubmit = async (formData: StoreMonthlyTargetDto) => {
+  const onSubmit = async (formData: StoreTargetDto) => {
     try {
       const payload = {
         ...formData,
@@ -53,6 +52,25 @@ const StoreTargetFormDialog = ({
     }
   };
 
+  // Transform response data to form data
+  const transformResponseToFormData = (responseData: StoreTargetDto) => {
+    if (!responseData) return null;
+
+    const { stores, users, ...restData } = responseData;
+
+    return {
+      ...restData,
+      storeIds: stores ? stores.map((store) => store.id) : [],
+      userIds: users ? users.map((user) => user.id) : [],
+    };
+  };
+
+  const editData = selectedStoreTarget
+    ? transformResponseToFormData(selectedStoreTarget)
+    : null;
+
+  console.log("Edit Data:", editData);
+
   return (
     <CommonDialog
       open={open}
@@ -62,12 +80,14 @@ const StoreTargetFormDialog = ({
       validationSchema={storeTargetFormValidationSchema}
       fields={storeTargetFields()}
       defaultValues={
-        selectedStoreTarget || {
-          storeId: [],
+        editData || {
+          storeIds: [],
           year: new Date().getFullYear(),
           month: new Date().getMonth() + 1,
-          brandCode: [],
+          brandCodes: [],
           targetAmount: 0,
+          userIds: [],
+          type: null,
         }
       }
     />

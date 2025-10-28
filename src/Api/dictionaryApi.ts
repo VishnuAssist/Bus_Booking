@@ -2,8 +2,12 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import APIFetchBase from "../Store/ApiConfig";
 import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
-import type { dictionarycategoryType, dictionarytype } from "../model/Dictionary";
 import type { StatusResponse } from "../model/LeaveRequest";
+import type {
+  dictionarycategoryType,
+  DictionaryQueryParamsType,
+  dictionarytype,
+} from "../model/Dictionary";
 
 export const dictionaryApi = createApi({
   reducerPath: "dictionaryApi",
@@ -13,7 +17,7 @@ export const dictionaryApi = createApi({
   endpoints: (builder) => ({
     getalldictionary: builder.query<
       { items: dictionarytype[]; metaData: MetaData },
-      any
+      DictionaryQueryParamsType
     >({
       query: (args) => ({
         method: "GET",
@@ -25,7 +29,7 @@ export const dictionaryApi = createApi({
       transformResponse: (response, metaData) =>
         dataWithMeta<dictionarytype[], MetaData>(
           response as dictionarytype[],
-          metaData as any
+          metaData as MetaData
         ),
       providesTags: ["DictionaryApi"],
     }),
@@ -46,7 +50,7 @@ export const dictionaryApi = createApi({
         url: "/Dictionary/statuses",
       }),
     }),
-    addEditdictionary: builder.mutation<any, FormData>({
+    addEditdictionary: builder.mutation<dictionarytype, FormData>({
       query: (args) => ({
         method: args?.get("id") ? `PUT` : "POST",
         url: "/Dictionary",
@@ -54,7 +58,7 @@ export const dictionaryApi = createApi({
       }),
       invalidatesTags: ["DictionaryApi"],
     }),
-    deleteDictionary: builder.mutation<any, number>({
+    deleteDictionary: builder.mutation<void, number>({
       query: (id) => ({
         method: "DELETE",
         url: `/Dictionary/${id}`,
@@ -65,3 +69,4 @@ export const dictionaryApi = createApi({
 });
 
 export const { useGetalldictionaryQuery,useGetcategoriesQuery,useAddEditdictionaryMutation,useDeleteDictionaryMutation,useGetstatusQuery } = dictionaryApi;
+

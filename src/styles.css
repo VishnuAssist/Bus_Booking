@@ -17,10 +17,8 @@
   width: 100%;
   height: 140px;
   border-radius: 10px;
-  box-shadow:
-    1px 4px 8px -2px rgba(0, 0, 0, 0.3),
-    -1px 4px 8px -2px rgba(0, 0, 0, 0.3),
-    0px 6px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 4px 8px -2px rgba(0, 0, 0, 0.3),
+    -1px 4px 8px -2px rgba(0, 0, 0, 0.3), 0px 6px 12px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s ease;
 }
 
@@ -35,7 +33,7 @@
 
 .typography-300px {
   font-weight: bold !important;
-   font-size: 14px !important;
+  font-size: 14px !important;
   max-width: 300px;
   white-space: nowrap;
   overflow: hidden;
@@ -48,8 +46,8 @@
   text-overflow: ellipsis;
   max-width: 50%;
   color: #fff;
-  font-size: 0.875rem; 
-  font-weight: bold !important;    
+  font-size: 0.875rem;
+  font-weight: bold !important;
 }
 
 .typography-maxwidth-70 {
@@ -68,5 +66,5 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-  margin-top: 8px !important; 
+  margin-top: 8px !important;
 }

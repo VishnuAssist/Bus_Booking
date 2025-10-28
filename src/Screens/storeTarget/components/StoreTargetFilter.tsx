@@ -37,7 +37,7 @@ const StoreTargetFilter = ({
   return (
     <Box
       sx={{
-        margin: 2,
+        margin: 1.5,
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",

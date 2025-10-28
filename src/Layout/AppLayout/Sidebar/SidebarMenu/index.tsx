@@ -73,7 +73,8 @@ const SubMenuWrapper = styled(Box)(
         background-color: transparent;
         width: 100%;
         justify-content: flex-start;
-        padding: ${theme.spacing(1.2, 3)};
+        font-weight: 400;
+        padding: "7px 14px";
         .MuiButton-startIcon {
           color: ${theme.colors.alpha.trueWhite[30]};
           font-size: ${theme.typography.pxToRem(20)};
@@ -205,54 +206,12 @@ function SidebarMenu({
             icon: <DescriptionOutlinedIcon />,
             hide: true,
           },
-          {
-            label: "Achievements",
-            link: "/staff/achievements",
-            icon: <GradeOutlinedIcon />,
-            hide: true,
-          },
-        ],
-      },
-      {
-        title: "Management",
-        icon: <GroupIcon />,
-        items: [
-          {
-            label: "Team Overview",
-            link: "/management/teamOverview",
-            icon: <AccessTimeIcon />,
-            hide: true,
-          },
-          {
-            label: "Shift",
-            link: "/Admin/shift",
-            icon: <FilterTiltShiftIcon />,
-            hide: true,
-          },
-          {
-            label: "Coaching",
-            link: "/management/coaching",
-            icon: <GradeOutlinedIcon />,
-            hide: true,
-          },
-          {
-            label: "Performance",
-            link: "/management/performance",
-            icon: <GradeOutlinedIcon />,
-            hide: true,
-          },
         ],
       },
       {
         title: "Admin",
         icon: <AdminPanelSettingsOutlinedIcon />,
         items: [
-          {
-            label: "System Overview",
-            link: "/Admin/systemOverview",
-            icon: <AdminPanelSettingsIcon />,
-            hide: true,
-          },
           {
             label: "Shift",
             link: "/Admin/shift",
@@ -274,12 +233,6 @@ function SidebarMenu({
           {
             label: "Achievement",
             link: "/Admin/achievement",
-            icon: <AdminPanelSettingsIcon />,
-            hide: true,
-          },
-          {
-            label: "RuleEngine",
-            link: "/Admin/ruleEngine",
             icon: <AdminPanelSettingsIcon />,
             hide: true,
           },

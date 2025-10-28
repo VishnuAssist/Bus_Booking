@@ -13,7 +13,7 @@ interface ThemeProviderWrapperProps {
 
 const ThemeProviderWrapper: React.FC<ThemeProviderWrapperProps> = (props) => {
   const curThemeName =
-    localStorage.getItem("LeaseApptheme") || "PureLightTheme";
+    localStorage.getItem("LeaseApptheme") || "GreyGooseTheme";
   const [themeName, _setThemeName] = useState(curThemeName);
   const theme = themeCreator(themeName);
   const setThemeName = (themeName: string): void => {
