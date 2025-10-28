@@ -248,17 +248,15 @@ const IntellisenseBuilder: React.FC<RuleBuilderProps> = ({
           <Box>
             {editMode.isEditMode ? (
               <Box display="flex" alignItems="center" gap={1}>
-                <Typography variant="h4" fontWeight={800}>
-                  Edit Rule{" "}
-                </Typography>
+                <Typography sx={{ fontSize: "18px" }}>Edit Rule </Typography>
               </Box>
             ) : (
-              <Typography variant="h4" fontWeight={800}>
+              <Typography sx={{ fontSize: "18px" }}>
                 Intellisense Rule Builder
               </Typography>
             )}
 
-            <Typography color="text.secondary">
+            <Typography color="text.secondary" fontWeight={400}>
               {editMode.isEditMode
                 ? "Modify existing rule workflow and actions"
                 : "Build complex workflows with rules and actions"}

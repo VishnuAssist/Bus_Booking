@@ -38,7 +38,7 @@ const PageHeader = ({
       >
         <Grid size={{ xs: 6, lg: 8 }}>
           <Typography sx={{ fontSize: "18px" }}>{title}</Typography>
-          <Typography variant="subtitle2" sx={{ fontSize: "15px" }}>
+          <Typography color="text.secondary" fontWeight={400}>
             {subtitle}
           </Typography>
         </Grid>
