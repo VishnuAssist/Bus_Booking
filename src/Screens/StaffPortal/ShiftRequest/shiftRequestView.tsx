@@ -1,23 +1,24 @@
 import PageHeader from "../../../Component/commonPageHeader";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Card, CardContent, Grid } from "@mui/material";
 import { useState } from "react";
 import CommonTable from "../../../Component/CommenTable";
 import type { leaverequesttype } from "../../../model/LeaveRequest";
 import Footer from "../../../Component/Footer";
-import LeaveForm from "./LeaveForm";
+// import LeaveForm from "./LeaveForm";
 import {
   useDeleteLeaveMutation,
   useGetallLeavesQuery,
 } from "../../../Api/StaffservicesApi";
 import AppPagination from "../../../Component/AppPagination";
 import type {
-  MonthlySummarriesQueryParamsType,
+  // MonthlySummarriesQueryParamsType,
   ShiftQueryParamsType,
 } from "../../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 import ShiftFilter from "../../shift/ShiftFilter";
+import ShiftRequestForm from "./shiftRequestForm";
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -28,7 +29,7 @@ const formatDate = (dateStr: string) => {
   });
 };
 
-const LeaveView = () => {
+const ShiftRequestView = () => {
   const [LeaveRequest, setLeaveRequests] = useState(false);
   const [selectedLeaveRequest, setSelectedLeaveRequest] =
     useState<leaverequesttype | null>(null);
@@ -54,7 +55,7 @@ const LeaveView = () => {
   const [deleteLeave] = useDeleteLeaveMutation();
   const columns = [
     { id: "id", label: "ID", minWidth: 50 },
-    { id: "leaveType", label: "Leave Type", minWidth: 120 },
+    { id: "leaveType", label: "Shift Type", minWidth: 120 },
     { id: "startDate", label: "Start Date", minWidth: 100, format: formatDate },
     { id: "endDate", label: "End Date", minWidth: 100, format: formatDate },
     { id: "reason", label: "Reason", minWidth: 200 },
@@ -90,8 +91,8 @@ const LeaveView = () => {
   return (
     <>
       <PageHeader
-        title="Leave Request"
-        subtitle="Manage your Leave requests"
+        title="Shift Request"
+        subtitle="Manage your Shift requests"
         btntitle2="Apply"
         // btntitle="Approval"
         icon={<DescriptionOutlinedIcon />}
@@ -103,7 +104,7 @@ const LeaveView = () => {
       <Grid container spacing={2}>
         {LeaveRequest && (
           <Grid size={{ xs: 12 }}>
-            <LeaveForm
+            <ShiftRequestForm
               selectedLeaveRequest={selectedLeaveRequest}
               onClose={() => setLeaveRequests(false)}
             />
@@ -146,4 +147,4 @@ const LeaveView = () => {
   );
 };
 
-export default LeaveView;
+export default ShiftRequestView;

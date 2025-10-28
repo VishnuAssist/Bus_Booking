@@ -201,7 +201,7 @@ function SidebarMenu({
           },
           {
             label: "Staff Services",
-            link: "/staff/leaveRequest",
+            link: "/staff/services",
             icon: <DescriptionOutlinedIcon />,
             hide: true,
           },
