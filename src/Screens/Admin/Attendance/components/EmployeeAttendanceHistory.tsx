@@ -185,7 +185,6 @@ const EmployeeAttendanceHistory = () => {
                       size="small"
                       sx={{
                         textTransform: "none",
-                        fontSize: "0.75rem",
                       }}
                     >
                       Select
@@ -196,30 +195,26 @@ const EmployeeAttendanceHistory = () => {
                       size="small"
                       color="primary"
                       sx={{
-                        fontSize: "0.75rem",
                         height: 24,
                       }}
                     />
                   )}
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography color="text.secondary">
                     {rowData.start}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2" color="text.secondary">
-                    {rowData.end}
-                  </Typography>
+                  <Typography color="text.secondary">{rowData.end}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography color="text.secondary">
                     {rowData.totalHours}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography
-                    variant="body2"
                     sx={{
                       fontWeight: rowData.dailyTotal !== "--" ? 500 : 400,
                     }}
@@ -232,15 +227,13 @@ const EmployeeAttendanceHistory = () => {
                     <Box
                       sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
                     >
-                      <Typography variant="body2">
-                        {rowData.weeklyTotal}
-                      </Typography>
+                      <Typography>{rowData.weeklyTotal}</Typography>
                       <IconButton size="small" sx={{ p: 0.5 }}>
                         <CheckCircleIcon fontSize="small" color="primary" />
                       </IconButton>
                     </Box>
                   ) : (
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography color="text.secondary">
                       {rowData.weeklyTotal || "--"}
                     </Typography>
                   )}
