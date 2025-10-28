@@ -75,10 +75,8 @@ const RuleList: React.FC = () => {
         mb={3}
       >
         <Box>
-          <Typography variant="h5" fontWeight={600}>
-            Commission Rules
-          </Typography>
-          <Typography color="text.secondary">
+          <Typography sx={{ fontSize: "18px" }}>Commission Rules</Typography>
+          <Typography color="text.secondary" fontWeight={400}>
             Manage commission calculation rules and policies
           </Typography>
         </Box>
