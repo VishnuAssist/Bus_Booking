@@ -9,8 +9,8 @@ export interface MonthlySummarriesQueryParamsType extends PaginationOptionsDto {
   userGroupId?: number;
 }
 export interface ShiftQueryParamsType extends PaginationOptionsDto {
-  StartDate?: number;
-  EndDate?: number;
+  StartDate?:  string | number | null;
+  EndDate?:  string | number | null;
   userId?: string;
   IsAll?: string;
   storeId?: number;

@@ -1,7 +1,7 @@
 import PageHeader from "../../../Component/commonPageHeader";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Card, CardContent, Grid } from "@mui/material";
 import { useState } from "react";
 import CommonTable from "../../../Component/CommenTable";
 import type { leaverequesttype } from "../../../model/LeaveRequest";
@@ -12,10 +12,7 @@ import {
   useGetallLeavesQuery,
 } from "../../../Api/StaffservicesApi";
 import AppPagination from "../../../Component/AppPagination";
-import type {
-  MonthlySummarriesQueryParamsType,
-  ShiftQueryParamsType,
-} from "../../../model/commissionType";
+import type { ShiftQueryParamsType } from "../../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 import ShiftFilter from "../../shift/ShiftFilter";
 

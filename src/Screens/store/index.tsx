@@ -1,7 +1,6 @@
 import { useState } from "react";
 import CommonTable from "../../Component/CommenTable";
 import CommisionContainer from "../../Component/container";
-import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
 import {
   StoreFormFields,
@@ -15,17 +14,14 @@ import {
   useDeleteStoreMutation,
 } from "../../Api/StoreApi";
 import type { StoreDto } from "../../model/storeType";
-import type { QueryParamsType } from "../../Dto/formDto";
 import { ValidateParams } from "../../Lib/utile";
 import AppPagination from "../../Component/AppPagination";
 import { Paper } from "@mui/material";
-import StaffCommissionFilter from "../commission/components/StaffCommissionFilter";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
 import type { MonthlySummarriesQueryParamsType } from "../../model/commissionType";
 import StoreFilter from "./StoreFilter";
 
 const Store = () => {
-  const [params, setParams] = useState<QueryParamsType>({});
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<StoreDto | null>(null);
 

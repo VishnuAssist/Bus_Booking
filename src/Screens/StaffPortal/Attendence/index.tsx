@@ -3,7 +3,6 @@ import ClockInButton from "./clock";
 import AttendanceList from "./attendenceList";
 import CommisionContainer from "../../../Component/container";
 import PageHeader from "../../../Component/commonPageHeader";
-import Footer from "../../../Component/Footer";
 
 const Attendance = () => {
   return (

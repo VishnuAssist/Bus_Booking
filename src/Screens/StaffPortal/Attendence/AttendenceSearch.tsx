@@ -1,33 +1,24 @@
-import {
-  Box,
-  TextField,
-  InputLabel,
-  debounce,
-
-} from "@mui/material";
-
-
+import { Box, TextField, InputLabel, debounce } from "@mui/material";
 
 import type { QueryParamsType } from "../../../model/common";
 import { useState } from "react";
 
-
-
 interface Props {
   params: QueryParamsType;
-  setParams: React.Dispatch<React.SetStateAction<QueryParamsType>>;
+  setParams: (p: Partial<QueryParamsType>) => void;
 }
 
 const AttendanceSearch = ({ params, setParams }: Props) => {
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [searchTerm , setSearchTerm] = useState("")
+  const searchDebounce = debounce(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      console.log("value", event.target.value);
 
-  const searchDebounce = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("value", event.target.value);
-   
-    setParams({ ...params, SearchTerm: searchTerm, PageNumber: 1 });
-  },500)
- 
+      setParams({ ...params, SearchTerm: searchTerm, PageNumber: 1 });
+    },
+    500
+  );
 
   return (
     <Box margin={2} sx={{ float: "right", display: "flex", gap: 2 }}>
@@ -43,7 +34,7 @@ const AttendanceSearch = ({ params, setParams }: Props) => {
           variant="outlined"
           value={searchTerm || ""}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-             setSearchTerm(event.target.value);
+            setSearchTerm(event.target.value);
             searchDebounce(event);
           }}
         />
