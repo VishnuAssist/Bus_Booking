@@ -242,7 +242,7 @@ export const GreyGooseTheme = createTheme({
     width: "230px",
   },
   header: {
-    height: "80px",
+    height: "55px",
     background: colors.alpha.white[100],
     boxShadow: colors.shadows.cardSm,
     textColor: colors.secondary.main,

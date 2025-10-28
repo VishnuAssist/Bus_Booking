@@ -32,9 +32,6 @@ function Header({ expanded, setExpanded }: HeaderProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const HeaderWrapper = styled(Box)(
     ({ theme }) => `
-          height: ${theme.header.height};
-          color: ${theme.header.textColor};
-          padding: ${theme.spacing(0, 2)};
           right: 0;
           z-index: 6;
           background-color: ${alpha(

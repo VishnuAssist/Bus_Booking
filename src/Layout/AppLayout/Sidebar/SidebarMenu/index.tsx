@@ -218,7 +218,7 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "Attendance",
+            label: "Attendance & Shift Request",
             link: "/Admin/attendance",
             icon: <AdminPanelSettingsIcon />,
             hide: true,
