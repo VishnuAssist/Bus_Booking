@@ -23,15 +23,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useAddEditUserGroupMutation } from "../../Api/userGroupApi";
 import { useGetallAccountQuery } from "../../Api/authApi";
 import type { UserType } from "../../model/userType";
-import type { userGroupType } from "../../model/userGroup";
-
-interface UserGroupFormType {
-  id?: number;
-  groupName: string;
-  description: string;
-  isActive: boolean;
-  memberUserIds: string[];
-}
+import type { UserGroupFormType, userGroupType } from "../../model/userGroup";
 
 const UserGroupDialog: React.FC<{
   open: boolean;
@@ -56,8 +48,7 @@ const UserGroupDialog: React.FC<{
 
   useEffect(() => {
     if (group) {
-      const memberIds =
-        group.members?.map((m) => m.userId) || group.memberUserIds || [];
+      const memberIds = group.members?.map((m: any) => m.userId) || [];
 
       reset({
         id: group.id,
