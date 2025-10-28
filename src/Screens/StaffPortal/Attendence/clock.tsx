@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useSelector } from "react-redux";
 import { useAddEditAttendanceMutation } from "../../../Api/AttendanceApi";
 import type { attendanceType } from "../../../model/attendanceType";
@@ -20,14 +30,13 @@ const ShiftClockMUI: React.FC = () => {
   const [note, setNote] = useState("");
   const [clockInTime, setClockInTime] = useState("");
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null);
-  const [addEditAttendance, { isLoading,  }] = useAddEditAttendanceMutation();
-const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
+  const [addEditAttendance, { isLoading }] = useAddEditAttendanceMutation();
+  const { data: stores, isLoading: storesLoading } = useGetAllStoresQuery({});
 
   const { user } = useSelector((state: RootState) => state.auth.account);
-  
+
   const userId = user?.uid || null;
 
-  
   console.log("userId", userId);
 
   // Timer effect
@@ -47,7 +56,10 @@ const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
     const hrs = Math.floor(totalSeconds / 3600);
     const mins = Math.floor((totalSeconds % 3600) / 60);
     const secs = totalSeconds % 60;
-    return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(
+      2,
+      "0"
+    )}:${String(secs).padStart(2, "0")}`;
   };
 
   const formatDateToTimeSpan = (date: Date) => {
@@ -76,7 +88,7 @@ const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
       toast.error("User or store information is missing. Please log in again.");
       return;
     }
- 
+
     const clockOut = formatDateToTimeSpan(new Date());
     const shiftData: attendanceType = {
       checkInTime: clockInTime,
@@ -85,17 +97,16 @@ const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
       attendanceStatus: 1,
       shiftId: 1,
       notes: note,
-      storeId : selectedStoreId,
+      storeId: selectedStoreId,
       userId,
     };
 
     console.log("shiftData", shiftData);
 
     try {
-      
-      await addEditAttendance( shiftData ).unwrap();
+      await addEditAttendance(shiftData).unwrap();
       console.log("Attendance submitted successfully:", shiftData);
-      
+
       setIsRunning(false);
       setSeconds(0);
       setClockInTime("");
@@ -107,12 +118,10 @@ const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
   };
 
   return (
-    <Box
+    <Card
       sx={{
         mx: "auto",
-        bgcolor: "white",
         p: 2,
-        border: "1px solid #ddd",
         borderRadius: 2,
         textAlign: "center",
         height: "100%",
@@ -128,21 +137,27 @@ const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
         </Typography>
       )} */}
 
-<FormControl fullWidth sx={{ mb: 2 }} disabled={isRunning || storesLoading}>
+      <FormControl
+        fullWidth
+        size="small"
+        disabled={isRunning || storesLoading}
+        sx={{ my: 2 }}
+      >
         <InputLabel id="store-select-label">Select Store</InputLabel>
         <Select
-        
           labelId="store-select-label"
           value={selectedStoreId || ""}
           label="Select Store"
           onChange={(e) => setSelectedStoreId(Number(e.target.value))}
+          size="small"
         >
           {storesLoading && <MenuItem value="">Loading stores...</MenuItem>}
-          {stores?.items && stores?.items?.map((store: Store) => (
-            <MenuItem key={store.storeId} value={store.storeId}>
-              {store.name}
-            </MenuItem>
-          ))}
+          {stores?.items &&
+            stores?.items?.map((store: Store) => (
+              <MenuItem key={store.storeId} value={store.storeId}>
+                {store.name}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
 
@@ -174,7 +189,10 @@ const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
             <Typography variant="caption" sx={{ color: "white" }}>
               Time On
             </Typography>
-            <Typography variant="h2" sx={{ fontWeight: "bold", color: "white" }}>
+            <Typography
+              variant="h2"
+              sx={{ fontWeight: "bold", color: "white" }}
+            >
               {formatTime(seconds)}
             </Typography>
           </>
@@ -206,7 +224,7 @@ const { data: stores, isLoading: storesLoading, } = useGetAllStoresQuery({});
           </Button>
         </>
       )}
-    </Box>
+    </Card>
   );
 };
 
