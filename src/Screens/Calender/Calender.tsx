@@ -23,7 +23,9 @@ import {
   Typography,
 } from "@mui/material";
 import { ChevronLeft, ChevronRight, Today } from "@mui/icons-material";
-import CalendarDialog from "./CalenderDialog";
+import CalendarDialog from "../Calender/CalenderDialog";
+import { useAppSelector } from "../../Store/StoreConfig";
+import { useGetallshiftQuery } from "../../Api/shiftApi";
 
 interface CalendarViewProps {
   shifts: any[];
@@ -111,6 +113,14 @@ function formatYear(date: Date) {
 
 export default function CalendarView({ shifts }: CalendarViewProps) {
 
+
+  const userId = useAppSelector((state: any) => state?.auth?.account?.user?.id);
+
+  const { data: shiftData } = useGetallshiftQuery({UserId:userId});
+  
+  console.log("userId", userId);
+  console.log("shiftData", shiftData);
+
     const [selectedShift, setSelectedShift] = useState(null);
   const [open, setOpen] = useState(false);
 
@@ -122,7 +132,7 @@ export default function CalendarView({ shifts }: CalendarViewProps) {
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<ViewMode>("week");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, _setSearchTerm] = useState("");
 
   const rightPaneRef = useRef<HTMLDivElement | null>(null);
   const leftPaneRef = useRef<HTMLDivElement | null>(null);
@@ -242,7 +252,7 @@ export default function CalendarView({ shifts }: CalendarViewProps) {
                         )}
                       </Box>
                     </TableCell>
-                  );
+                  ); 
                 })}
               </TableRow>
             </TableHead>
@@ -267,7 +277,7 @@ export default function CalendarView({ shifts }: CalendarViewProps) {
                       >
                         {empShifts.length === 0 ? (
                           <Typography variant="caption" color="text.disabled">
-                            No shift
+                            No shifts
                           </Typography>
                         ) : (
                           empShifts.map((shift) => (
