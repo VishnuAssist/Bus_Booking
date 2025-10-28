@@ -5,15 +5,12 @@ import { Card, CardContent, Grid } from "@mui/material";
 import { useState } from "react";
 import CommonTable from "../../../Component/CommenTable";
 import type { leaverequesttype } from "../../../model/LeaveRequest";
-import Footer from "../../../Component/Footer";
-// import LeaveForm from "./LeaveForm";
 import {
   useDeleteLeaveMutation,
   useGetallLeavesQuery,
 } from "../../../Api/StaffservicesApi";
 import AppPagination from "../../../Component/AppPagination";
 import type {
-  // MonthlySummarriesQueryParamsType,
   ShiftQueryParamsType,
 } from "../../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
@@ -140,7 +137,6 @@ const ShiftRequestView = () => {
         onClose={() => setLeaveRequests(false)}
         open={LeaveRequest}
       />
-      <Footer />
     </>
   );
 };

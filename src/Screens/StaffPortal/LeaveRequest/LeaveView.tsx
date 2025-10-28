@@ -5,7 +5,6 @@ import { Card, CardContent, Grid } from "@mui/material";
 import { useState } from "react";
 import CommonTable from "../../../Component/CommenTable";
 import type { leaverequesttype } from "../../../model/LeaveRequest";
-import Footer from "../../../Component/Footer";
 import {
   useDeleteLeaveMutation,
   useGetallLeavesQuery,
@@ -136,7 +135,6 @@ const LeaveView = () => {
         onClose={() => setLeaveRequests(false)}
         open={LeaveRequest}
       />
-      <Footer />
     </>
   );
 };
