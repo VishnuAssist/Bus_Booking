@@ -23,7 +23,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ChevronLeft, ChevronRight, Today } from "@mui/icons-material";
-import CalendarDialog from "../Calender/CalenderDialog";
+import CalendarDialog from "../Calender/calenderDialog";
 import { useAppSelector } from "../../Store/StoreConfig";
 import { useGetallshiftQuery } from "../../Api/shiftApi";
 

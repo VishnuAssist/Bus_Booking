@@ -27,7 +27,7 @@ const Attendence = Loader(
   lazy(() => import("../Screens/StaffPortal/Attendence"))
 );
 const LeaveRequest = Loader(
-  lazy(() => import("../Screens/StaffPortal/LeaveRequest"))
+  lazy(() => import("../Screens/StaffPortal/index"))
 );
 const RequestApproval = Loader(
   lazy(() => import("../Screens/Admin/RequestApproval"))
@@ -176,7 +176,7 @@ const routes: RouteObject[] = [
             element: <Attendence />,
           },
           {
-            path: "leaveRequest",
+            path: "services",
             element: <LeaveRequest />,
           },
           {

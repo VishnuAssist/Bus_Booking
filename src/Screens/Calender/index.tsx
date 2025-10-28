@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import PageHeader from "../../Component/commonPageHeader";
-import CalendarView from "../Calender/Calender";
+import CalendarView from "../Calender/calender";
 import CommisionContainer from "../../Component/container";
 
 const sampleShifts = [
