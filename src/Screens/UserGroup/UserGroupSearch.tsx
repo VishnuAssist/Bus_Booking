@@ -11,7 +11,7 @@ import type { QueryParamsType } from "../../model/common";
 
 interface Props {
   params: QueryParamsType;
-  setParams: React.Dispatch<React.SetStateAction<QueryParamsType>>;
+  setParams: (p: Partial<QueryParamsType>) => void;
 }
 
 const UserGroupSearch: React.FC<Props> = ({ params, setParams }) => {

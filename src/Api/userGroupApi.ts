@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import APIFetchBase from "../Store/ApiConfig";
 import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
-import type { userGroupType } from "../model/userGroup";
+import type { UserGroup, userGroupType } from "../model/userGroup";
 
 export const userGroupApi = createApi({
   reducerPath: "userGroupApi",
@@ -30,7 +30,7 @@ export const userGroupApi = createApi({
     }),
 
     
-    getUserGroupById: builder.query<userGroupType, number>({
+    getUserGroupById: builder.query<UserGroup, number>({
       query: (id) => ({
         method: "GET",
         url: `/UserGroup/${id}`,
@@ -39,7 +39,7 @@ export const userGroupApi = createApi({
     }),
 
     
-    addEditUserGroup: builder.mutation<any, userGroupType>({
+    addEditUserGroup: builder.mutation<userGroupType , any>({
       query: (args) => ({
         method: args?.id ? "PUT" : "POST",
         url: "/UserGroup",

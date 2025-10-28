@@ -10,12 +10,12 @@ import {
   Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import type { UserGroup, userGroupType } from "../../model/userGroup";
+import type { userGroupType } from "../../model/userGroup";
 import { useDeleteUserGroupMutation } from "../../Api/userGroupApi";
 import EditSquareIcon from "@mui/icons-material/EditSquare";
 import UserGroupDialog from "./UserGroupForm";
 import { useGetUserGroupByIdQuery } from "../../Api/userGroupApi";
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import UserGroupPreview from "./UserGroupPreview";
 
 interface Props {
@@ -27,27 +27,24 @@ interface Props {
 const UserGroupCard: React.FC<Props> = ({ groups, loading, error }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
-  const [openPreview, setOpenPreview] =  useState(false);
+  const [openPreview, setOpenPreview] = useState(false);
 
   const [deleteUserGroup, { isLoading: deleting }] =
     useDeleteUserGroupMutation();
 
-  const { data: userData, isFetching } = useGetUserGroupByIdQuery(
-    selectedGroupId!,
-    {
-      skip: !selectedGroupId,
-    }
-  );
+  const { data: userData } = useGetUserGroupByIdQuery(selectedGroupId!, {
+    skip: !selectedGroupId,
+  });
   const handleEdit = (group: userGroupType) => {
-    setSelectedGroupId(group.id);
+    setSelectedGroupId(group.id ?? null);
     setOpenDialog(true);
   };
 
-  const handlePreviewOpen = (group: UserGroup) => {
-    setSelectedGroupId(group.id)
-    setOpenPreview(true)
-  }
-  
+  const handlePreviewOpen = async (group: userGroupType) => {
+    setSelectedGroupId(group.id ?? null);
+    setOpenPreview(true);
+  };
+
   const handleDelete = async (id: number | undefined) => {
     if (!id) return;
     // const confirmDelete = window.confirm("Are you sure you want to delete this group?");

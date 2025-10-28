@@ -1,39 +1,51 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardContent,  } from "@mui/material";
-import { useGetAllAttendanceQuery } from "../../../Api/AttendanceApi"; 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Card,
+  CardContent,
+} from "@mui/material";
+import { useGetAllAttendanceQuery } from "../../../Api/AttendanceApi";
 import type { attendanceType } from "../../../model/attendanceType";
 import NoDataCard from "../../../Component/NoDataCard";
 import TableSkeleton from "../../../Component/Skeletons/TableSkeleton";
 import { useAppDispatch, useAppSelector } from "../../../Store/StoreConfig";
 import AppPagination from "../../../Component/AppPagination";
-import { setAttendanceParams, setDictionaryParams } from "../../../Store/slice/ParamsSlice";
+import { setAttendanceParams } from "../../../Store/slice/ParamsSlice";
 import { getAxiosParamsA } from "../../../Api/util";
 import AttendanceSearch from "./AttendenceSearch";
 
 const AttendanceList = () => {
+  const dispatch = useAppDispatch();
 
-   const dispatch = useAppDispatch();
-  
-      const attendanceParams = useAppSelector((state) => state.auth.Params.AttendanceParams);
-  
-  
-    const { data: attendanceData ,isLoading} = useGetAllAttendanceQuery(
-        getAxiosParamsA({ ...attendanceParams, PageSize: 5 })
-      );
-console.log("attendance",attendanceData)
+  const attendanceParams = useAppSelector(
+    (state) => state.auth.Params.AttendanceParams
+  );
+
+  const { data: attendanceData, isLoading } = useGetAllAttendanceQuery(
+    getAxiosParamsA({ ...attendanceParams, PageSize: 5 })
+  );
+  console.log("attendance", attendanceData);
 
   return (
     <Card sx={{ height: "100%" }}>
       <AttendanceSearch
-       params={attendanceParams}
-                    setParams={(p) => dispatch(setAttendanceParams(p))}/>
+        params={attendanceParams}
+        setParams={(p) => dispatch(setAttendanceParams(p))}
+      />
       <CardContent>
+        {isLoading && <TableSkeleton />}
 
-        {isLoading &&
-        <TableSkeleton/>}
-        
-        
-        {attendanceData?.items?.length === 0 && <NoDataCard sx={{ height: "100%", minHeight: 100 ,}} text="No attendance records"/>}
-        { attendanceData?.items && attendanceData?.items?.length > 0 && (
+        {attendanceData?.items?.length === 0 && (
+          <NoDataCard
+            sx={{ height: "100%", minHeight: 100 }}
+            text="No attendance records"
+          />
+        )}
+        {attendanceData?.items && attendanceData?.items?.length > 0 && (
           <TableContainer>
             <Table>
               <TableHead>
@@ -52,24 +64,21 @@ console.log("attendance",attendanceData)
                     <TableCell>{record.checkOutTime}</TableCell>
                     <TableCell>{record.shiftId}</TableCell>
                     <TableCell>{record.notes}</TableCell>
-                    
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
         )}
- 
-
       </CardContent>
-       {attendanceData?.metaData && (
-              <AppPagination
-                metaData={attendanceData?.metaData}
-                onPageChange={(page: number) =>
-                  dispatch(setAttendanceParams({ PageNumber: page }))
-                }
-              />
-            )}
+      {attendanceData?.metaData && (
+        <AppPagination
+          metaData={attendanceData?.metaData}
+          onPageChange={(page: number) =>
+            dispatch(setAttendanceParams({ PageNumber: page }))
+          }
+        />
+      )}
     </Card>
   );
 };

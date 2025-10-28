@@ -4,10 +4,19 @@ export interface userGroupType {
   description: string;
   creatorId: string;
   creatorName: string;
+  members: UserGroupMember[];
   isActive: true;
   memberCount: 0;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface UserGroupFormType {
+  id?: number;
+  groupName: string;
+  description: string;
+  isActive: boolean;
+  memberUserIds: string[];
 }
 
 export interface UserGroupMember {

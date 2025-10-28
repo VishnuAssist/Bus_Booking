@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Box,
   Button,
   Card,
   FormControl,
@@ -16,13 +15,6 @@ import type { attendanceType } from "../../../model/attendanceType";
 import type { RootState } from "../../../Store/StoreConfig";
 import { toast } from "react-toastify";
 import { useGetAllStoresQuery } from "../../../Api/StoreApi";
-
-interface Store {
-  storeId: number;
-  name: string;
-  code: string;
-  countryCode: string;
-}
 
 const ShiftClockMUI: React.FC = () => {
   const [isRunning, setIsRunning] = useState(false);
@@ -152,12 +144,11 @@ const ShiftClockMUI: React.FC = () => {
           size="small"
         >
           {storesLoading && <MenuItem value="">Loading stores...</MenuItem>}
-          {stores?.items &&
-            stores?.items?.map((store: Store) => (
-              <MenuItem key={store.storeId} value={store.storeId}>
-                {store.name}
-              </MenuItem>
-            ))}
+          {stores?.items?.map((store) => (
+            <MenuItem key={store.storeId} value={store.storeId ?? ""}>
+              {store.name ?? "Unnamed Store"}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 

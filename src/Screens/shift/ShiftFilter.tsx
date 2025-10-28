@@ -1,11 +1,5 @@
 import { Box } from "@mui/material";
-import TextFilter from "../../Component/Filters/TextFilter";
-import YearFilter from "../../Component/Filters/YearFilter";
-import MonthFilter from "../../Component/Filters/MonthFilter";
-import type {
-  MonthlySummarriesQueryParamsType,
-  ShiftQueryParamsType,
-} from "../../model/commissionType";
+import type { ShiftQueryParamsType } from "../../model/commissionType";
 import DateFilter from "../../Component/Filters/DateFilter";
 
 interface StaffCommissionFilterProps {
@@ -17,26 +11,26 @@ const ShiftFilter = ({
   queryParams,
   onQueryParamsChange,
 }: StaffCommissionFilterProps) => {
-  const handleStartDateChange = (StartDate: number | null) => {
+  const handleStartDateChange = (StartDate: string | number | null) => {
     onQueryParamsChange({
       ...queryParams,
       StartDate: StartDate || undefined,
     });
   };
 
-  const handleEndDateChange = (EndDate: number | null) => {
+  const handleEndDateChange = (EndDate: string | number | null) => {
     onQueryParamsChange({
       ...queryParams,
       EndDate: EndDate || undefined,
     });
   };
 
-  const handleSearchChange = (searchTerm: string) => {
-    onQueryParamsChange({
-      ...queryParams,
-      SearchTerm: searchTerm || undefined,
-    });
-  };
+  // const handleSearchChange = (searchTerm: string) => {
+  //   onQueryParamsChange({
+  //     ...queryParams,
+  //     SearchTerm: searchTerm || undefined,
+  //   });
+  // };
 
   return (
     <Box

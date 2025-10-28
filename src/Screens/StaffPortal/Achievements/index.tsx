@@ -6,7 +6,6 @@ import AddIcon from "@mui/icons-material/Add";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
-import Footer from "../../../Component/Footer";
 import { CommonDialog } from "../../../Component/forms/FormDialog";
 import {
   StaffAchivement,

@@ -13,7 +13,7 @@ import type { QueryParamsType } from "../../model/common";
 
 interface prop {
   params: QueryParamsType;
-  setParams: React.Dispatch<React.SetStateAction<QueryParamsType>>;
+  setParams: (p: Partial<QueryParamsType>) => void;
 }
 
 const SalesSearch = ({ params, setParams }: prop) => {
