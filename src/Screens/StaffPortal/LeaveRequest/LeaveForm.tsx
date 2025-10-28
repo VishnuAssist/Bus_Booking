@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  Card,
-  CardContent,
-  CardHeader,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   FormControl,
   Grid,
   InputLabel,
@@ -18,12 +19,14 @@ import {
   usePutLeavesMutation,
 } from "../../../Api/StaffservicesApi";
 
-interface LeaveFormProps {
+interface LeaveDialogProps {
+  open: boolean;
   selectedLeaveRequest: leaverequesttype | null;
   onClose: () => void;
 }
 
-const LeaveForm: React.FC<LeaveFormProps> = ({
+const LeaveRequestDialog: React.FC<LeaveDialogProps> = ({
+  open,
   selectedLeaveRequest,
   onClose,
 }) => {
@@ -53,6 +56,11 @@ const LeaveForm: React.FC<LeaveFormProps> = ({
         new Date(selectedLeaveRequest.endDate).toISOString().split("T")[0]
       );
       setReason(selectedLeaveRequest.reason ?? "");
+    } else {
+      setLeaveType(0);
+      setStartDate("");
+      setEndDate("");
+      setReason("");
     }
   }, [selectedLeaveRequest]);
 
@@ -75,25 +83,32 @@ const LeaveForm: React.FC<LeaveFormProps> = ({
           id: selectedLeaveRequest.id,
           ...payload,
         }).unwrap();
-        console.log(" Leave updated:", response);
+        console.log("Leave updated:", response);
       } else {
         const response = await postLeave(payload).unwrap();
-        console.log(" Leave submitted:", response);
+        console.log("Leave submitted:", response);
       }
       onClose();
     } catch (err) {
-      console.error(" Error submitting leave:", err);
+      console.error("Error submitting leave:", err);
     }
   };
 
   return (
-    <Card>
-      <CardHeader
-        title={selectedLeaveRequest ? "Edit Request" : "Add New Request"}
-      />
-      <CardContent>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      aria-labelledby="leave-request-dialog-title"
+    >
+      <DialogTitle id="leave-request-dialog-title">
+        {selectedLeaveRequest ? "Edit Leave Request" : "Add New Leave Request"}
+      </DialogTitle>
+
+      <DialogContent dividers>
         <Box component="form" noValidate autoComplete="off" sx={{ mt: 1 }}>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
                 <InputLabel id="leave-type-label">Request Type</InputLabel>
@@ -111,7 +126,7 @@ const LeaveForm: React.FC<LeaveFormProps> = ({
               </FormControl>
             </Grid>
 
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="date"
@@ -122,7 +137,7 @@ const LeaveForm: React.FC<LeaveFormProps> = ({
               />
             </Grid>
 
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="date"
@@ -133,7 +148,7 @@ const LeaveForm: React.FC<LeaveFormProps> = ({
               />
             </Grid>
 
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12}}>
               <TextField
                 fullWidth
                 multiline
@@ -144,34 +159,25 @@ const LeaveForm: React.FC<LeaveFormProps> = ({
                 onChange={(e) => setReason(e.target.value)}
               />
             </Grid>
-
-            <Grid size={{ xs: 12 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  gap: 2,
-                }}
-              >
-                <Button variant="contained" color="error" onClick={onClose}>
-                  Close
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={isLoading}
-                  onClick={handleSubmit}
-                >
-                  {isLoading ? "Submitting..." : "Submit Request"}
-                </Button>
-              </Box>
-            </Grid>
           </Grid>
         </Box>
-      </CardContent>
-    </Card>
+      </DialogContent>
+
+      <DialogActions>
+        <Button variant="outlined" color="error" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={isLoading}
+          onClick={handleSubmit}
+        >
+          {isLoading ? "Submitting..." : "Submit Request"}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
-export default LeaveForm;
+export default LeaveRequestDialog;
