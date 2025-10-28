@@ -60,6 +60,14 @@ export interface ProcessMonthlySummaryPayload {
   additionalWorkflowJson: string;
 }
 
+export interface StaffGroupSummaryRowType extends UserSummaryType {
+  groupName?: string;
+  id: number;
+  description: string;
+  year: number;
+  month: number;
+}
+
 // Staff Group Summary Response API Types
 export interface PayoutType {
   commissionTypeId: number | null;
@@ -84,7 +92,7 @@ export interface UserSummaryType {
 
 export interface StaffGroupSummaryResponseType {
   id: number;
-  groupName: string;
+  groupName?: string;
   description: string;
   year: number;
   month: number;

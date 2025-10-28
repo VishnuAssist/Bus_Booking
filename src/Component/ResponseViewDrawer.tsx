@@ -42,6 +42,8 @@ const ResponseViewDrawer = <T,>({
     }
 
     if (Array.isArray(value)) {
+      console.log("Formatting value:", value);
+
       return (
         <Box>
           {value.map((item, index) => (
@@ -50,7 +52,7 @@ const ResponseViewDrawer = <T,>({
                 <Box sx={{ mb: 1 }}>
                   {Object.entries(item).map(([key, val]) => (
                     <Typography key={key} variant="body2" sx={{ ml: 1 }}>
-                      {key}: {String(val)}
+                      {key} : {String(val)}
                     </Typography>
                   ))}
                 </Box>

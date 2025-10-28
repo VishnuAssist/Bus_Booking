@@ -5,6 +5,7 @@ import { useState } from "react";
 import type {
   MonthlySummarriesQueryParamsType,
   StaffGroupSummaryResponseType,
+  StaffGroupSummaryRowType,
 } from "../../../model/commissionType";
 import StaffCommissionFilter from "./StaffCommissionFilter";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
@@ -19,7 +20,6 @@ const StaffGroupSummaryTable = () => {
   const [queryParams, setQueryParams] =
     useState<MonthlySummarriesQueryParamsType>({
       ...DEFAULT_PAGINATION_OPTIONS,
-      PageSize: DEFAULT_PAGINATION_OPTIONS.PageSize || 5,
       year: undefined,
       month: undefined,
     });
@@ -32,7 +32,7 @@ const StaffGroupSummaryTable = () => {
 
   const { data: staffGroupSummaries } =
     useGetStaffGroupSummariesQuery(queryParams);
-  
+
   const { columns, rows } = useStaffGroupSummaryTableData(
     staffGroupSummaries?.items
   );
@@ -40,23 +40,40 @@ const StaffGroupSummaryTable = () => {
   console.log("columns", columns);
   console.log("rows", rows);
 
+  // Get unique groups from rows
+  const uniqueGroups = Array.from(new Set(rows.map((row) => row.groupName)));
+
   return (
     <>
       <StaffCommissionFilter
         queryParams={queryParams}
         onQueryParamsChange={handleQueryParamsChange}
       />
+      {uniqueGroups.map((groupName, index) => (
+        <div key={`${groupName}-${index}`} style={{ marginBottom: "2rem" }}>
+          <div
+            style={{
+              fontSize: "1rem",
+              fontWeight: 500,
+              padding: "0.5rem 1rem",
+              textTransform: "uppercase",
+            }}
+          >
+            {groupName}
+          </div>
 
-      <CommonTable<any>
-        columns={columns}
-        rows={rows}
-        actions={{
-          onView: (row) => {
-            setSelectedStaffGroupSummary(row._fullData || row);
-            setResponseDrawerOpen(true);
-          },
-        }}
-      />
+          <CommonTable<StaffGroupSummaryRowType>
+            columns={columns}
+            rows={rows.filter((row) => row.groupName === groupName)}
+            actions={{
+              onView: (row) => {
+                setSelectedStaffGroupSummary(row);
+                setResponseDrawerOpen(true);
+              },
+            }}
+          />
+        </div>
+      ))}
 
       {staffGroupSummaries?.metaData && (
         <AppPagination
