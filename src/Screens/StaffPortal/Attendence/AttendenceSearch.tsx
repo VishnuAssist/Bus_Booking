@@ -23,12 +23,12 @@ const AttendanceSearch = ({ params, setParams }: Props) => {
   return (
     <Box margin={2} sx={{ float: "right", display: "flex", gap: 2 }}>
       <Box>
-        <InputLabel htmlFor="StartDate" className="label-bold">
+        {/* <InputLabel htmlFor="StartDate" className="label-bold">
           Search
-        </InputLabel>
+        </InputLabel> */}
         <TextField
           size="small"
-          placeholder="Search By Notes"
+          placeholder="Search..."
           type="text"
           fullWidth
           variant="outlined"
@@ -40,14 +40,15 @@ const AttendanceSearch = ({ params, setParams }: Props) => {
         />
       </Box>
       <Box>
-        <InputLabel htmlFor="StartDate" className="label-bold">
+        {/* <InputLabel htmlFor="StartDate" className="label-bold">
           Start Date
-        </InputLabel>
+        </InputLabel> */}
         <TextField
           size="small"
           type="date"
           fullWidth
           variant="outlined"
+          placeholder="Start Date"
           value={params?.StartDate || ""}
           onChange={(e) => {
             setParams({ ...params, StartDate: e.target.value, PageNumber: 1 });
@@ -55,14 +56,15 @@ const AttendanceSearch = ({ params, setParams }: Props) => {
         />
       </Box>
       <Box>
-        <InputLabel htmlFor="EndDate" className="label-bold">
+        {/* <InputLabel htmlFor="EndDate" className="label-bold">
           End Date
-        </InputLabel>
+        </InputLabel> */}
         <TextField
           size="small"
           type="date"
           fullWidth
           variant="outlined"
+          placeholder="End Date"
           value={params?.EndDate || ""}
           inputProps={{
             min: params?.StartDate,
