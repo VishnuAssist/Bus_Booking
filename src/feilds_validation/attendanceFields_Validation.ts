@@ -1,17 +1,17 @@
 import * as Yup from "yup";
 import type { FormFieldProps } from "../model/formFeilds";
 import type { attendanceType } from "../model/attendanceType";
-import { useGetAllStoresQuery } from "../Api/StoreApi";
+// import { useGetAllStoresQuery } from "../Api/StoreApi";
 
-interface Store {
-  storeId: number;
-  name: string;
-  code: string;
-  countryCode: string;
-}
+// interface Store {
+//   storeId: number;
+//   name: string;
+//   code: string;
+//   countryCode: string;
+// }
 
 export const AttendanceFormFields = (): FormFieldProps<attendanceType>[] => {
-  const { data: stores } = useGetAllStoresQuery({});
+  // const { data: stores } = useGetAllStoresQuery({});
 
   return [
     {

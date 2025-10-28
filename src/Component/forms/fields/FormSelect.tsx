@@ -16,12 +16,20 @@ interface Props {
   size?: "small" | "medium";
   params?: QueryParamsType;
   Isall?: boolean;
-  baseUrl?: string
+  baseUrl?: string;
 }
 
-const FormSelect: React.FC<Props> = ({ value, onChange, options, multiple, required, disabled, fullWidth, size, params, Isall, baseUrl }) => {
-
-
+const FormSelect: React.FC<Props> = ({
+  value,
+  onChange,
+  options,
+  multiple,
+  required,
+  disabled,
+  fullWidth,
+  size,
+  Isall,
+}) => {
   // const { data = [] } = useAutocompletedataQuery({
   //     params: ValidateParams({ ...defaultparams, ...params}),
   //     baseurl: baseUrl??"/dictionary",
@@ -31,9 +39,9 @@ const FormSelect: React.FC<Props> = ({ value, onChange, options, multiple, requi
 
   const isValueValid = multiple
     ? Array.isArray(value) &&
-    value.every((v) =>
-      resolvedOptions?.some((opt) => String(opt.id) === String(v))
-    )
+      value.every((v) =>
+        resolvedOptions?.some((opt) => String(opt.id) === String(v))
+      )
     : resolvedOptions?.some((opt) => String(opt.id) === String(value));
 
   return (
@@ -41,16 +49,13 @@ const FormSelect: React.FC<Props> = ({ value, onChange, options, multiple, requi
       fullWidth={fullWidth}
       required={required}
       disabled={disabled}
-
       size={size}
       variant="outlined"
     >
       <Select
         value={isValueValid ? value : multiple ? [] : ""}
-
         onChange={(e) => {
           onChange(e.target.value);
-
         }}
         multiple={multiple}
       >
@@ -64,6 +69,5 @@ const FormSelect: React.FC<Props> = ({ value, onChange, options, multiple, requi
       </Select>
     </FormControl>
   );
-
-}
+};
 export default FormSelect;

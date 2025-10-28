@@ -35,7 +35,7 @@ export const userGroupApi = createApi({
         method: "GET",
         url: `/UserGroup/${id}`,
       }),
-      providesTags: (result, error, id) => [{ type: "UserGroup", id }],
+      providesTags: (_result, _error, id) => [{ type: "UserGroup", id }],
     }),
 
     

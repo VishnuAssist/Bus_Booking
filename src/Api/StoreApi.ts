@@ -6,7 +6,6 @@ import { dataWithMeta } from "../Lib/ApiUtil";
 import type { StoreDto } from "../model/storeType";
 import type { QueryParamsType } from "../Dto/formDto";
 import type {
-  ProcessKPIRequest,
   ProcessStoreTargetRequest,
   StoreKPIDto,
   StoreMonthlyTargetDto,
@@ -211,7 +210,7 @@ export const storeApi = createApi({
     }),
 
     // Process Store KPI
-    processStoreKPI: builder.mutation<void, ProcessKPIRequest>({
+    processStoreKPI: builder.mutation<void, ProcessStoreTargetRequest>({
       query: (request) => ({
         method: "POST",
         url: "/Store/process-store-kpi",
