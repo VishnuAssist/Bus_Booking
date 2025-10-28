@@ -4,7 +4,6 @@ import CommisionContainer from "../../../Component/container";
 import HeaderCard from "./HeaderCard";
 import TeamPerformance from "./TeamPerformance";
 import TeamInsights from "./TeamInsights";
-import Footer from "../../../Component/Footer";
 
 const TeamOverview = () => {
   return (

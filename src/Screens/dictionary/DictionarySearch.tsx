@@ -11,7 +11,7 @@ import type { QueryParamsType } from "../../model/common";
 
 interface prop {
   params: QueryParamsType;
-  setParams: React.Dispatch<React.SetStateAction<QueryParamsType>>;
+  setParams: (p: Partial<QueryParamsType>) => void;
 }
 
 const DictionarySearch = ({ params, setParams }: prop) => {
@@ -25,10 +25,10 @@ const DictionarySearch = ({ params, setParams }: prop) => {
   );
 
   return (
-    <Box margin={2} sx={{float:"right", display: "flex", gap: 2 }}>
+    <Box margin={2} sx={{ float: "right", display: "flex", gap: 2 }}>
       <Box sx={{ minWidth: 300 }}>
         <InputLabel htmlFor="Search" className="label-bold">
-          Search 
+          Search
         </InputLabel>
         <TextField
           size="small"

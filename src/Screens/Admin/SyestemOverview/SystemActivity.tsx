@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
@@ -8,7 +7,6 @@ import {
   Chip,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
   Divider,
 } from "@mui/material";

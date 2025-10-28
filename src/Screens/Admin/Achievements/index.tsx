@@ -17,7 +17,6 @@ import { Edit, Delete } from "@mui/icons-material";
 import TargetIcon from "@mui/icons-material/TrackChanges";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import Footer from "../../../Component/Footer";
 
 const AdminAchievement = () => {
   const sampleAchievementData = [

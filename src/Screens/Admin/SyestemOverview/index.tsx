@@ -1,5 +1,4 @@
 import { Box, Grid } from "@mui/material";
-import React from "react";
 import CommonHeader from "./CommonHeader";
 import HeaderCardView from "./HeaderCardView";
 import TeamPerformance from "./TeamPerformance";

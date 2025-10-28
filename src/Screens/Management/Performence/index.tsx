@@ -11,7 +11,6 @@ import ReactApexChart from "react-apexcharts";
 import type { ApexOptions } from "apexcharts";
 import CommisionContainer from "../../../Component/container";
 import PageHeader from "../../../Component/commonPageHeader";
-import Footer from "../../../Component/Footer";
 
 const Performance = () => {
   const revenueChart: { series: any[]; options: ApexOptions } = {

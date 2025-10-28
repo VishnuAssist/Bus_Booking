@@ -1,6 +1,5 @@
 import { Grid } from "@mui/material";
 import ProfileDetail from "./ProfileDetail";
-import Footer from "../../Component/Footer";
 import { AchievementDemo } from "../Acheivement";
 import CommisionContainer from "../../Component/container";
 import PageHeader from "../../Component/commonPageHeader";

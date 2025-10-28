@@ -109,8 +109,7 @@ const LeaveView = () => {
         )}
 
         <Grid size={{ xs: 12 }}>
-          <Card sx={{ mt: 2 }}>
-            <CardHeader title="Recent Requests" />
+          <Card>
             <CardContent>
               <ShiftFilter
                 queryParams={queryParams}

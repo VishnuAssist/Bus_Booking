@@ -15,7 +15,7 @@ import type {
 export const storeApi = createApi({
   reducerPath: "storeApi",
   baseQuery: APIFetchBase,
-  tagTypes: ["Store"],
+  tagTypes: ["Store","StoreTarget","StoreKPI"],
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
     getAllStores: builder.query<

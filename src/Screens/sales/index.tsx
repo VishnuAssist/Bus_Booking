@@ -1,7 +1,6 @@
 import { useState } from "react";
 import CommonTable from "../../Component/CommenTable";
 import CommisionContainer from "../../Component/container";
-import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
 import {
   salesFormValidationSchema,

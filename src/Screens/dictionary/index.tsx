@@ -1,7 +1,6 @@
 import { useState } from "react";
 //import PageHeader from "../../Component/pageHeader";
 import CommisionContainer from "../../Component/container";
-import Footer from "../../Component/Footer";
 import { CommonDialog } from "../../Component/forms/FormDialog";
 import type { dictionarytype } from "../../model/Dictionary";
 import { toast } from "react-toastify";

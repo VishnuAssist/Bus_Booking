@@ -21,8 +21,7 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SellIcon from "@mui/icons-material/Sell";
 import GroupIcon from "@mui/icons-material/Group";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
-import HowToRegIcon from '@mui/icons-material/HowToReg';
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { SidebarContext } from "../../../../Context/SidebarContext";
 import { CalendarIcon, DashboardIcon } from "../../../../Assests/Icons/icons";
 

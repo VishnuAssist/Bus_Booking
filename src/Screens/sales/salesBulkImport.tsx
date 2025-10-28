@@ -66,7 +66,9 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
   });
 
   // Handle file upload and parse CSV
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       try {
@@ -76,11 +78,17 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
             console.log("Parsed CSV data:", result.data);
             const parsedData: SalesType[] = result.data.map((row: any) => ({
               id: parseInt(row.id) || 0,
-              departmentId: row.departmentId ? parseInt(row.departmentId) : undefined,
+              departmentId: row.departmentId
+                ? parseInt(row.departmentId)
+                : undefined,
               brandId: row.brandId ? parseInt(row.brandId) : undefined,
               categoryId: row.categoryId ? parseInt(row.categoryId) : undefined,
-              subCategoryId: row.subCategoryId ? parseInt(row.subCategoryId) : null,
-              subSubCategoryId: row.subSubCategoryId ? parseInt(row.subSubCategoryId) : null,
+              subCategoryId: row.subCategoryId
+                ? parseInt(row.subCategoryId)
+                : null,
+              subSubCategoryId: row.subSubCategoryId
+                ? parseInt(row.subSubCategoryId)
+                : null,
               saleTypeId: row.saleTypeId ? parseInt(row.saleTypeId) : undefined,
               saleAmount: parseFloat(row.saleAmount) || 0,
               productPrice: parseFloat(row.productPrice) || 0,
@@ -125,12 +133,24 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
     try {
       const validatedData: SalesType = {
         ...editRow,
-        departmentId: editRow.departmentId ? parseInt(editRow.departmentId as string) : undefined,
-        brandId: editRow.brandId ? parseInt(editRow.brandId as string) : undefined,
-        categoryId: editRow.categoryId ? parseInt(editRow.categoryId as string) : undefined,
-        subCategoryId: editRow.subCategoryId ? parseInt(editRow.subCategoryId as string) : null,
-        subSubCategoryId: editRow.subSubCategoryId ? parseInt(editRow.subSubCategoryId as string) : null,
-        saleTypeId: editRow.saleTypeId ? parseInt(editRow.saleTypeId as string) : undefined,
+        departmentId: editRow.departmentId
+          ? parseInt(editRow.departmentId as string)
+          : undefined,
+        brandId: editRow.brandId
+          ? parseInt(editRow.brandId as string)
+          : undefined,
+        categoryId: editRow.categoryId
+          ? parseInt(editRow.categoryId as string)
+          : undefined,
+        subCategoryId: editRow.subCategoryId
+          ? parseInt(editRow.subCategoryId as string)
+          : null,
+        subSubCategoryId: editRow.subSubCategoryId
+          ? parseInt(editRow.subSubCategoryId as string)
+          : null,
+        saleTypeId: editRow.saleTypeId
+          ? parseInt(editRow.saleTypeId as string)
+          : undefined,
         saleAmount: parseFloat(editRow.saleAmount as string) || 0,
         productPrice: parseFloat(editRow.productPrice as string) || 0,
         tax: parseFloat(editRow.tax as string) || 0,
@@ -138,7 +158,9 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
         quantity: parseInt(editRow.quantity as string) || 0,
       } as SalesType;
 
-      await salesFormValidationSchema.validate(validatedData, { abortEarly: false });
+      await salesFormValidationSchema.validate(validatedData, {
+        abortEarly: false,
+      });
       const updatedData = [...uploadedData];
       updatedData[index] = validatedData;
       setUploadedData(updatedData);
@@ -174,12 +196,22 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
         await salesFormValidationSchema.validate(
           {
             ...row,
-            departmentId: row.departmentId ? parseInt(row.departmentId as any) : undefined,
+            departmentId: row.departmentId
+              ? parseInt(row.departmentId as any)
+              : undefined,
             brandId: row.brandId ? parseInt(row.brandId as any) : undefined,
-            categoryId: row.categoryId ? parseInt(row.categoryId as any) : undefined,
-            subCategoryId: row.subCategoryId ? parseInt(row.subCategoryId as any) : null,
-            subSubCategoryId: row.subSubCategoryId ? parseInt(row.subSubCategoryId as any) : null,
-            saleTypeId: row.saleTypeId ? parseInt(row.saleTypeId as any) : undefined,
+            categoryId: row.categoryId
+              ? parseInt(row.categoryId as any)
+              : undefined,
+            subCategoryId: row.subCategoryId
+              ? parseInt(row.subCategoryId as any)
+              : null,
+            subSubCategoryId: row.subSubCategoryId
+              ? parseInt(row.subSubCategoryId as any)
+              : null,
+            saleTypeId: row.saleTypeId
+              ? parseInt(row.saleTypeId as any)
+              : undefined,
           },
           { abortEarly: false }
         );
@@ -214,7 +246,9 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
     { id: "actions", label: "Actions" },
   ];
 
-  const fieldOptions: { [key: string]: { id: string | number; name: string }[] } = {
+  const fieldOptions: {
+    [key: string]: { id: string | number; name: string }[];
+  } = {
     departmentId: departments,
     brandId: brands,
     categoryId: categories,
@@ -262,7 +296,9 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
                             </>
                           ) : (
                             <>
-                              <IconButton onClick={() => handleEdit(index, row)}>
+                              <IconButton
+                                onClick={() => handleEdit(index, row)}
+                              >
                                 <Edit />
                               </IconButton>
                               <IconButton onClick={() => handleDelete(index)}>
@@ -273,7 +309,9 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
                         ) : editIndex === index ? (
                           fieldOptions[column.id] ? (
                             <Select
-                              value={editRow[column.id as keyof SalesType] || ""}
+                              value={
+                                editRow[column.id as keyof SalesType] || ""
+                              }
                               onChange={(e) =>
                                 handleInputChange(
                                   column.id as keyof SalesType,
@@ -291,7 +329,9 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
                             </Select>
                           ) : (
                             <TextField
-                              value={editRow[column.id as keyof SalesType] || ""}
+                              value={
+                                editRow[column.id as keyof SalesType] || ""
+                              }
                               onChange={(e) =>
                                 handleInputChange(
                                   column.id as keyof SalesType,
@@ -299,9 +339,13 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
                                 )
                               }
                               type={
-                                ["quantity", "productPrice", "saleAmount", "tax", "discount"].includes(
-                                  column.id
-                                )
+                                [
+                                  "quantity",
+                                  "productPrice",
+                                  "saleAmount",
+                                  "tax",
+                                  "discount",
+                                ].includes(column.id)
                                   ? "number"
                                   : "text"
                               }
@@ -310,11 +354,15 @@ const BulkImportDialog: React.FC<BulkImportDialogProps> = ({
                           )
                         ) : fieldOptions[column.id] ? (
                           fieldOptions[column.id].find(
-                            (opt) => opt.id === row[column.id as keyof SalesType]
-                          )?.name || (
-                            console.log(`No match for ${column.id} with value ${row[column.id as keyof SalesType]}`),
-                            "N/A"
-                          )
+                            (opt) =>
+                              opt.id === row[column.id as keyof SalesType]
+                          )?.name ||
+                          (console.log(
+                            `No match for ${column.id} with value ${
+                              row[column.id as keyof SalesType]
+                            }`
+                          ),
+                          "N/A")
                         ) : (
                           row[column.id as keyof SalesType] || ""
                         )}

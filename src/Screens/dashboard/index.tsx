@@ -6,7 +6,6 @@ import QuickAction from "./QuickAction";
 import Leaderboard from "./Leaderboard.";
 import Achievement from "./Achievements";
 import CommisionContainer from "../../Component/container";
-import Footer from "../../Component/Footer";
 
 const Dashboard = () => {
   return (
