@@ -2,12 +2,14 @@ import {
   Box,
   TextField,
   InputLabel,
+  debounce,
 
 } from "@mui/material";
 
 
 
 import type { QueryParamsType } from "../../../model/common";
+import { useState } from "react";
 
 
 
@@ -17,11 +19,35 @@ interface Props {
 }
 
 const AttendanceSearch = ({ params, setParams }: Props) => {
+
+  const [searchTerm , setSearchTerm] = useState("")
+
+  const searchDebounce = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("value", event.target.value);
+   
+    setParams({ ...params, SearchTerm: searchTerm, PageNumber: 1 });
+  },500)
  
 
   return (
     <Box margin={2} sx={{ float: "right", display: "flex", gap: 2 }}>
-     
+      <Box>
+        <InputLabel htmlFor="StartDate" className="label-bold">
+          Search
+        </InputLabel>
+        <TextField
+          size="small"
+          placeholder="Search By Notes"
+          type="text"
+          fullWidth
+          variant="outlined"
+          value={searchTerm || ""}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+             setSearchTerm(event.target.value);
+            searchDebounce(event);
+          }}
+        />
+      </Box>
       <Box>
         <InputLabel htmlFor="StartDate" className="label-bold">
           Start Date
@@ -55,7 +81,6 @@ const AttendanceSearch = ({ params, setParams }: Props) => {
           }}
         />
       </Box>
-  
     </Box>
   );
 };

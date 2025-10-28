@@ -13,12 +13,22 @@ import {
   usePostShiftMutation,
   useGetallshiftQuery,
   usePutShiftMutation,
+  useDeleteShiftMutation,
 } from "../../Api/shiftApi";
 import type { Shift } from "../../model/shiftType";
 import { useGetallAccountQuery } from "../../Api/authApi";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { CommonFormDialog } from "../../Component/forms/AssignForm";
+import ShiftPreviewDialog from "./ShiftPreview";
+import AppPagination from "../../Component/AppPagination";
+import type {
+  MonthlySummarriesQueryParamsType,
+  ShiftQueryParamsType,
+} from "../../model/commissionType";
+import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
+import StaffCommissionFilter from "../commission/components/StaffCommissionFilter";
+import ShiftFilter from "./ShiftFilter";
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -42,19 +52,30 @@ const shiftColumns = [
 const ListView = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<any | null>(null);
-
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4);
+  const [isPreviewOpen, setPreviewOpen] = useState(false);
   const [tabValue, setTabValue] = useState(0);
 
   const [postShift] = usePostShiftMutation();
   const [updateShift] = usePutShiftMutation();
+  const [deleteShift] = useDeleteShiftMutation();
 
-  const [searchQuery, setSearchQuery] = useState({
+  const [queryParams, setQueryParams] = useState<ShiftQueryParamsType>({
+    ...DEFAULT_PAGINATION_OPTIONS,
+    StartDate: undefined,
+    EndDate: undefined,
     IsAll: "true",
   });
 
-  const { data: shiftData } = useGetallshiftQuery(searchQuery);
+  const handleQueryParamsChange = (newQueryParams: ShiftQueryParamsType) => {
+    if (
+      queryParams.StartDate !== newQueryParams.StartDate ||
+      queryParams.EndDate !== newQueryParams.EndDate ||
+      queryParams.SearchTerm !== newQueryParams.SearchTerm
+    ) {
+      setQueryParams(newQueryParams);
+    }
+  };
+  const { data: shiftData } = useGetallshiftQuery(queryParams);
   const { data: userData } = useGetallAccountQuery({});
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -249,6 +270,16 @@ const ListView = () => {
     }
   };
 
+  const handleDelete = async (row: Shift) => {
+    await deleteShift(row?.id || 0);
+    console.log("row", row);
+  };
+
+  const handlePreview = (row: Shift) => {
+    setSelectedShift(row);
+    setPreviewOpen(true);
+  };
+
   return (
     <>
       <PageHeader
@@ -270,22 +301,32 @@ const ListView = () => {
       </Box>
       {tabValue === 0 && (
         <Box>
+          <ShiftFilter
+            queryParams={queryParams}
+            onQueryParamsChange={handleQueryParamsChange}
+          />
+
           <CommonTable
             columns={shiftColumns}
             rows={shiftData?.items || []}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            onPageChange={setPage}
-            onRowsPerPageChange={setRowsPerPage}
             actions={{
-              onView: (row) => console.log("view", row),
+              onView: handlePreview,
               onEdit: (row) => {
                 console.log("edit", row);
                 setSelectedShift(row);
                 setModalOpen(true);
               },
+              onDelete: handleDelete,
             }}
           />
+          {shiftData?.metaData && (
+            <AppPagination
+              metaData={shiftData?.metaData}
+              onPageChange={(page: number) => {
+                setQueryParams({ ...queryParams, PageNumber: page });
+              }}
+            />
+          )}
         </Box>
       )}
 
@@ -317,6 +358,15 @@ const ListView = () => {
         defaultValues={getDefaultValues(selectedShift)}
         showAssignmentType={true}
         mode={selectedShift ? "edit" : "create"}
+      />
+
+      <ShiftPreviewDialog
+        open={isPreviewOpen}
+        onClose={() => {
+          setPreviewOpen(false);
+          setSelectedShift(null);
+        }}
+        shift={selectedShift}
       />
     </>
   );

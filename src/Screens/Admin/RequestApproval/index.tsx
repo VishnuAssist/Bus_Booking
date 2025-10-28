@@ -1,13 +1,16 @@
 import { Box } from "@mui/material";
-import LeaveView from "./LeaveView";
+import RequestView from "./RequestView";
 import CommisionContainer from "../../../Component/container";
+import PageHeader from "../../../Component/commonPageHeader";
 
 const index = () => {
   return (
     <>
       <CommisionContainer>
-        <Box>
-          <LeaveView />
+        <PageHeader title="Request Approval" />
+
+        <Box sx={{ mt: 2 }}>
+          <RequestView />
         </Box>
       </CommisionContainer>
     </>

@@ -22,7 +22,7 @@ import SellIcon from "@mui/icons-material/Sell";
 import GroupIcon from "@mui/icons-material/Group";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import GradeOutlinedIcon from "@mui/icons-material/GradeOutlined";
-
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { SidebarContext } from "../../../../Context/SidebarContext";
 import { CalendarIcon, DashboardIcon } from "../../../../Assests/Icons/icons";
 
@@ -222,6 +222,12 @@ function SidebarMenu({
             label: "Attendance",
             link: "/Admin/attendance",
             icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "RequestApproval",
+            link: "/Admin/request",
+            icon: <HowToRegIcon />,
             hide: true,
           },
           {

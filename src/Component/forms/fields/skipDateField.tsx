@@ -8,14 +8,12 @@ interface Props {
 }
 
 const SkipDates: React.FC<Props> = ({ name, disabled }) => {
-  const { control, watch } = useFormContext();
+  const { control } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
     control,
     name,
   });
-
-  const skipDates = watch(name);
 
   return (
     <Box>

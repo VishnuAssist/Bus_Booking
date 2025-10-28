@@ -36,7 +36,7 @@ export const attendanceApi = createApi({
         method: "GET",
         url: `/Attendance/${id}`,
       }),
-      providesTags: (result, error, id) => [{ type: "Attendance", id }],
+      providesTags: (_result, _error, id) => [{ type: "Attendance", id }],
     }),
 
     

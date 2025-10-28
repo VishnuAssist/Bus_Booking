@@ -8,7 +8,7 @@ interface Props {
   roles?: string[];
 }
 
-export default function RouteAuth({ roles }: Props) {
+export default function RouteAuth({  }: Props) {
   // console.log("role", roles);
   // const { user } = useAppSelector((state) => state.auth);
   // const location = useLocation();

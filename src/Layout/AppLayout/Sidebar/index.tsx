@@ -49,7 +49,7 @@ function Sidebar({
   `
   );
 
-  const { username, token, role, email } = useAuth();
+  const { username, role } = useAuth();
   // console.log("user",username)
   // console.log("token",token)
   // console.log("email",email)

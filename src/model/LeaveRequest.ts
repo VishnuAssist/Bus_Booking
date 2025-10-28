@@ -1,8 +1,22 @@
 export interface leaverequesttype {
   id: number;
-  requestType: string;
+  leaveDays: number | string;
+  leaveType: string;
   reason: string;
-  date: string;
+  startDate: string;
+  endDate: string;
   upload: string;
-  status: "Pending" | "Approved" | "Rejected";
+  approverComments: string;
+  approvedBy: string;
+  approvedOn: string;
+  status: number;
+}
+
+export interface StatusItem {
+  id: number;
+  name: string;
+}
+
+export interface StatusResponse {
+  statuses: StatusItem[];
 }

@@ -36,7 +36,7 @@ export const salesApi = createApi({
         method: "GET",
         url: `/Sales/${id}`,
       }),
-      providesTags: (result, error, id) => [{ type: "Sales", id }],
+      providesTags: (_result, _error, id) => [{ type: "Sales", id }],
     }),
 
 

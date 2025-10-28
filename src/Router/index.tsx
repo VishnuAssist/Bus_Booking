@@ -20,7 +20,7 @@ const Dashboard = Loader(lazy(() => import("../Screens/dashboard/index")));
 const Commission = Loader(lazy(() => import("../Screens/commission/index")));
 const LeaderBoard = Loader(lazy(() => import("../Screens/LeaderBoard")));
 const Profile = Loader(lazy(() => import("../Screens/Profile")));
-const Calender = Loader(lazy(() => import("../Screens/calender")));
+const Calender = Loader(lazy(() => import("../Screens/Calender")));
 
 // Staff Portal
 const Attendence = Loader(
@@ -28,6 +28,9 @@ const Attendence = Loader(
 );
 const LeaveRequest = Loader(
   lazy(() => import("../Screens/StaffPortal/LeaveRequest"))
+);
+const RequestApproval = Loader(
+  lazy(() => import("../Screens/Admin/RequestApproval"))
 );
 const Achievements = Loader(
   lazy(() => import("../Screens/StaffPortal/Achievements"))
@@ -225,6 +228,10 @@ const routes: RouteObject[] = [
           {
             path: "attendance",
             element: <AdminAttendance />,
+          },
+          {
+            path: "request",
+            element: <RequestApproval />,
           },
           {
             path: "achievement",

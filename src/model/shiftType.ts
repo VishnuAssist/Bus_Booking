@@ -13,7 +13,7 @@ export interface ShiftType {
 export interface Shift {
   id: number;
   userIds?: string[];
-  users?: { id: string; userName?: string; firstName?: string; lastName?: string; fullName?: string }[];
+  users?: User[];
   startTime: string;
   endTime: string;
   duration: string;
@@ -28,6 +28,15 @@ export interface Shift {
   storeId: number;
 }
 
+export interface User {
+  id: string;
+  userName: string;
+  email: string;
+  employeeCode: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+}
 export interface ShiftUser {
   id: string;
   userName: string;

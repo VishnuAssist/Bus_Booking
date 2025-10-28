@@ -24,6 +24,7 @@ import { storeApi } from "../Api/StoreApi";
 import { attendanceApi } from "../Api/AttendanceApi";
 import { commissionApi } from "../Api/commisionApi";
 import { userGroupApi } from "../Api/userGroupApi";
+import { StaffserviceApi } from "../Api/StaffservicesApi";
 import { storeTargetApi } from "../Api/storeTargetApi";
 
 const rootAuthReducer = combineReducers({
@@ -55,6 +56,7 @@ export const store = configureStore({
     [rulesApi.reducerPath]: rulesApi.reducer,
     [commissionApi.reducerPath]: commissionApi.reducer,
     [userGroupApi.reducerPath]: userGroupApi.reducer,
+    [StaffserviceApi.reducerPath]: StaffserviceApi.reducer,
     auth: persistedAuthReducer,
     testData: testDataReducer,
   },
@@ -74,6 +76,7 @@ export const store = configureStore({
       rulesApi.middleware,
       commissionApi.middleware,
       userGroupApi.middleware,
+      StaffserviceApi.middleware,
     ]),
 });
 

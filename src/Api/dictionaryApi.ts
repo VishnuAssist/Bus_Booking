@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import APIFetchBase from "../Store/ApiConfig";
 import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
+import type { StatusResponse } from "../model/LeaveRequest";
 import type {
   dictionarycategoryType,
   DictionaryQueryParamsType,
@@ -41,6 +42,14 @@ export const dictionaryApi = createApi({
         url: "/Dictionary/filters",
       }),
     }),
+    getstatus: builder.query<StatusResponse,
+      void
+    >({
+      query: () => ({
+        method: "GET",
+        url: "/Dictionary/statuses",
+      }),
+    }),
     addEditdictionary: builder.mutation<dictionarytype, FormData>({
       query: (args) => ({
         method: args?.get("id") ? `PUT` : "POST",
@@ -59,9 +68,5 @@ export const dictionaryApi = createApi({
   }),
 });
 
-export const {
-  useGetalldictionaryQuery,
-  useGetcategoriesQuery,
-  useAddEditdictionaryMutation,
-  useDeleteDictionaryMutation,
-} = dictionaryApi;
+export const { useGetalldictionaryQuery,useGetcategoriesQuery,useAddEditdictionaryMutation,useDeleteDictionaryMutation,useGetstatusQuery } = dictionaryApi;
+
