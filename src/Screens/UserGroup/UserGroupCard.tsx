@@ -10,11 +10,13 @@ import {
   Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import type { userGroupType } from "../../model/userGroup";
+import type { UserGroup, userGroupType } from "../../model/userGroup";
 import { useDeleteUserGroupMutation } from "../../Api/userGroupApi";
 import EditSquareIcon from "@mui/icons-material/EditSquare";
 import UserGroupDialog from "./UserGroupForm";
 import { useGetUserGroupByIdQuery } from "../../Api/userGroupApi";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import UserGroupPreview from "./UserGroupPreview";
 
 interface Props {
   groups: userGroupType[];
@@ -25,6 +27,7 @@ interface Props {
 const UserGroupCard: React.FC<Props> = ({ groups, loading, error }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
+  const [openPreview, setOpenPreview] =  useState(false);
 
   const [deleteUserGroup, { isLoading: deleting }] =
     useDeleteUserGroupMutation();
@@ -40,6 +43,11 @@ const UserGroupCard: React.FC<Props> = ({ groups, loading, error }) => {
     setOpenDialog(true);
   };
 
+  const handlePreviewOpen = (group: UserGroup) => {
+    setSelectedGroupId(group.id)
+    setOpenPreview(true)
+  }
+  
   const handleDelete = async (id: number | undefined) => {
     if (!id) return;
     // const confirmDelete = window.confirm("Are you sure you want to delete this group?");
@@ -113,6 +121,17 @@ const UserGroupCard: React.FC<Props> = ({ groups, loading, error }) => {
                         </IconButton>
                       </span>
                     </Tooltip>
+                    <Tooltip title="Preview Group">
+                      <span>
+                        <IconButton
+                          size="small"
+                          onClick={() => handlePreviewOpen(group)}
+                          color="primary"
+                        >
+                          <VisibilityOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </span>
+                    </Tooltip>
                   </Stack>
                 </Stack>
 
@@ -138,6 +157,14 @@ const UserGroupCard: React.FC<Props> = ({ groups, loading, error }) => {
         open={openDialog}
         onClose={() => {
           setOpenDialog(false);
+          setSelectedGroupId(null);
+        }}
+        group={userData || null}
+      />
+      <UserGroupPreview
+        open={openPreview}
+        onClose={() => {
+          setOpenPreview(false);
           setSelectedGroupId(null);
         }}
         group={userData || null}
