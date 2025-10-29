@@ -109,8 +109,8 @@ const ResponseViewDrawer = <T,>({
           >
             {displayTitle}
           </Typography>
-          <IconButton onClick={onClose}>
-            <CloseIcon />
+          <IconButton onClick={onClose} size="small">
+            <CloseIcon fontSize="small" />
           </IconButton>
         </Box>
 

@@ -5,20 +5,17 @@ import { Card, CardContent, Grid } from "@mui/material";
 import { useState } from "react";
 import CommonTable from "../../../Component/CommenTable";
 import type { leaverequesttype } from "../../../model/LeaveRequest";
-import Footer from "../../../Component/Footer";
-// import LeaveForm from "./LeaveForm";
 import {
   useDeleteLeaveMutation,
   useGetallLeavesQuery,
 } from "../../../Api/StaffservicesApi";
 import AppPagination from "../../../Component/AppPagination";
 import type {
-  // MonthlySummarriesQueryParamsType,
   ShiftQueryParamsType,
 } from "../../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 import ShiftFilter from "../../shift/ShiftFilter";
-import ShiftRequestForm from "./shiftRequestForm";
+import ShiftRequestDialog from "./shiftRequestForm";
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -102,14 +99,6 @@ const ShiftRequestView = () => {
       />
 
       <Grid container spacing={2}>
-        {LeaveRequest && (
-          <Grid size={{ xs: 12 }}>
-            <ShiftRequestForm
-              selectedLeaveRequest={selectedLeaveRequest}
-              onClose={() => setLeaveRequests(false)}
-            />
-          </Grid>
-        )}
 
         <Grid size={{ xs: 12 }}>
           <Card>
@@ -142,7 +131,12 @@ const ShiftRequestView = () => {
           </Card>
         </Grid>
       </Grid>
-      <Footer />
+
+      <ShiftRequestDialog
+        selectedLeaveRequest={selectedLeaveRequest}
+        onClose={() => setLeaveRequests(false)}
+        open={LeaveRequest}
+      />
     </>
   );
 };

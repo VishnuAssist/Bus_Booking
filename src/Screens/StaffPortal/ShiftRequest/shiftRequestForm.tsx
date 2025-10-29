@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  Card,
-  CardContent,
-  CardHeader,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   FormControl,
   Grid,
   InputLabel,
@@ -19,11 +20,13 @@ import {
 } from "../../../Api/StaffservicesApi";
 
 interface LeaveFormProps {
+  open: boolean;
   selectedLeaveRequest: leaverequesttype | null;
   onClose: () => void;
 }
 
-const ShiftRequestForm: React.FC<LeaveFormProps> = ({
+const ShiftRequestDialog: React.FC<LeaveFormProps> = ({
+  open,
   selectedLeaveRequest,
   onClose,
 }) => {
@@ -53,6 +56,11 @@ const ShiftRequestForm: React.FC<LeaveFormProps> = ({
         new Date(selectedLeaveRequest.endDate).toISOString().split("T")[0]
       );
       setReason(selectedLeaveRequest.reason ?? "");
+    } else {
+      setLeaveType(0);
+      setStartDate("");
+      setEndDate("");
+      setReason("");
     }
   }, [selectedLeaveRequest]);
 
@@ -75,42 +83,49 @@ const ShiftRequestForm: React.FC<LeaveFormProps> = ({
           id: selectedLeaveRequest.id,
           ...payload,
         }).unwrap();
-        console.log(" Leave updated:", response);
+        console.log("Shift updated:", response);
       } else {
         const response = await postLeave(payload).unwrap();
-        console.log(" Leave submitted:", response);
+        console.log("Shift submitted:", response);
       }
       onClose();
     } catch (err) {
-      console.error(" Error submitting leave:", err);
+      console.error("Error submitting shift:", err);
     }
   };
 
   return (
-    <Card>
-      <CardHeader
-        title={selectedLeaveRequest ? "Edit Request" : "Add New Request"}
-      />
-      <CardContent>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      aria-labelledby="shift-request-dialog-title"
+    >
+      <DialogTitle id="shift-request-dialog-title">
+        {selectedLeaveRequest ? "Edit Shift Request" : "Add New Shift Request"}
+      </DialogTitle>
+
+      <DialogContent dividers>
         <Box component="form" noValidate autoComplete="off" sx={{ mt: 1 }}>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
-                <InputLabel id="leave-type-label">Shift Type</InputLabel>
+                <InputLabel id="shift-type-label">Shift Type</InputLabel>
                 <Select
-                  labelId="leave-type-label"
-                  label="Leave Type"
+                  labelId="shift-type-label"
+                  label="Shift Type"
                   value={leaveType}
                   onChange={(e) => setLeaveType(Number(e.target.value))}
                 >
                   <MenuItem value={1}>Morning Shift</MenuItem>
-                  <MenuItem value={2}>Afternon Shift</MenuItem>
+                  <MenuItem value={2}>Afternoon Shift</MenuItem>
                   <MenuItem value={3}>Evening Shift</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
 
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="date"
@@ -121,7 +136,7 @@ const ShiftRequestForm: React.FC<LeaveFormProps> = ({
               />
             </Grid>
 
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="date"
@@ -138,39 +153,30 @@ const ShiftRequestForm: React.FC<LeaveFormProps> = ({
                 multiline
                 minRows={3}
                 label="Reason"
-                placeholder="Enter your reason for leave..."
+                placeholder="Enter your reason..."
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               />
             </Grid>
-
-            <Grid size={{ xs: 12 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  gap: 2,
-                }}
-              >
-                <Button variant="contained" color="error" onClick={onClose}>
-                  Close
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={isLoading}
-                  onClick={handleSubmit}
-                >
-                  {isLoading ? "Submitting..." : "Submit Request"}
-                </Button>
-              </Box>
-            </Grid>
           </Grid>
         </Box>
-      </CardContent>
-    </Card>
+      </DialogContent>
+
+      <DialogActions>
+        <Button variant="outlined" color="error" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={isLoading}
+          onClick={handleSubmit}
+        >
+          {isLoading ? "Submitting..." : "Submit"}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
-export default ShiftRequestForm;
+export default ShiftRequestDialog;
