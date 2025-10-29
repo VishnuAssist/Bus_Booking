@@ -43,13 +43,15 @@ const Sales = () => {
   const [addEditSale] = useAddEditSaleMutation();
   const [deleteSale] = useDeleteSaleMutation();
 
-  const { data: salesIdData } = useGetalldictionaryQuery({ Category: 2 });
-  const { data: departmentsData } = useGetalldictionaryQuery({ Category: 3 });
-  const { data: brandsData } = useGetalldictionaryQuery({ Category: 4 });
-  const { data: categoriesData } = useGetalldictionaryQuery({ Category: 7 });
-  const { data: subcategoriesData } = useGetalldictionaryQuery({ Category: 8 });
+  const { data: salesIdData } = useGetalldictionaryQuery({ category: "2" });
+  const { data: departmentsData } = useGetalldictionaryQuery({ category: "3" });
+  const { data: brandsData } = useGetalldictionaryQuery({ category: "4" });
+  const { data: categoriesData } = useGetalldictionaryQuery({ category: "7" });
+  const { data: subcategoriesData } = useGetalldictionaryQuery({
+    category: "8",
+  });
   const { data: subsubcategoriesData } = useGetalldictionaryQuery({
-    Category: 9,
+    category: "9",
   });
 
   // Extract items from dictionary responses
