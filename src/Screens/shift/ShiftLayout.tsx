@@ -80,7 +80,6 @@ const ShiftLayout: React.FC<ShiftLayoutProps> = ({
         />
       </Box>
 
-      {/* List Section */}
       <Box sx={{ flex: 1, overflowY: "auto" }}>
         {isLoading ? (
           <Box
@@ -105,13 +104,6 @@ const ShiftLayout: React.FC<ShiftLayoutProps> = ({
                   sx={{
                     borderBottom: 1,
                     borderColor: "divider",
-                    "&.Mui-selected": {
-                      backgroundColor: (theme) => theme.palette.primary.light,
-                      color: (theme) => theme.palette.primary.main,
-                      "& .MuiAvatar-root": {
-                        bgcolor: "primary.main",
-                      },
-                    },
                   }}
                 >
                   <Avatar

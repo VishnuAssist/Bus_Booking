@@ -103,6 +103,26 @@ const isDateSkipped = (date: Date, shift: Shift) => {
   }
 };
 
+const getShiftColor = (shift: any) => {
+  if (!shift) return "grey.300";
+
+  const type = shift.shiftType || shift.type || shift.name || "";
+  const normalizedType = type.toLowerCase();
+
+  if (normalizedType.includes("morning")) return "rgba(33, 150, 243, 0.15)";
+  if (normalizedType.includes("afternoon")) return "rgba(16, 189, 0, 0.25)";
+  if (normalizedType.includes("night")) return "rgba(244, 67, 54, 0.25)";
+
+  if (shift.startTime) {
+    const hour = parseInt(shift.startTime.split(":")[0]);
+    if (hour < 12) return "rgba(33, 150, 243, 0.15)";
+    if (hour < 18) return "rgba(255, 193, 7, 0.25)";
+    return "rgba(244, 67, 54, 0.25)";
+  }
+
+  return "rgba(158, 158, 158, 0.25)";
+};
+
 const DraggableShiftCard = ({
   shift,
   user,
@@ -120,57 +140,54 @@ const DraggableShiftCard = ({
     }),
   }));
 
-  const shiftTitle = user ? user.name : shift.shiftType;
+  const shiftColor = getShiftColor(shift);
 
   return (
-    <Card
+    <Box
       ref={drag as unknown as React.Ref<HTMLDivElement>}
-      variant="outlined"
       onClick={() => onEditShift?.(shift)}
       sx={{
-        mb: 0.75,
+        mb: 0.5,
+        p: 0.75,
         borderRadius: 1.5,
         cursor: "grab",
-        transition: "0.2s",
+        backgroundColor: shiftColor,
         opacity: isDragging ? 0.5 : 1,
+        transition: "0.2s ease",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
         "&:hover": {
-          boxShadow: 3,
-          transform: "scale(1.02)",
+          boxShadow: 2,
+          transform: "scale(1.03)",
         },
       }}
     >
-      <CardContent sx={{ p: 1.0, "&:last-child": { pb: 1.0 } }}>
+      <Typography
+        variant="caption"
+        fontWeight={600}
+        sx={{
+          color: "text.primary",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+      >
+        {user?.name || user?.userName || "Unnamed"}
+      </Typography>
+      {user?.employeeCode && (
         <Typography
           variant="caption"
-          fontWeight={700}
-          sx={{ color: "primary.main" }}
+          sx={{
+            color: "text.secondary",
+            fontSize: "0.7rem",
+            ml: 0.5,
+          }}
         >
-          {shiftTitle}
+          {user.employeeCode}
         </Typography>
-        <Typography
-          variant="caption"
-          display="block"
-          sx={{ opacity: 0.95, color: "primary.main" }}
-        >
-          {shift.shiftType}
-        </Typography>
-        <Typography
-          variant="caption"
-          sx={{ opacity: 0.85, color: "primary.main" }}
-        >
-          {formatTimeDisplay(shift.startTime)} -{" "}
-          {formatTimeDisplay(shift.endTime)}
-        </Typography>
-        {user && (
-          <Typography
-            variant="caption"
-            sx={{ opacity: 0.7, color: "primary.main", fontStyle: "italic" }}
-          >
-            {user.employeeCode}
-          </Typography>
-        )}
-      </CardContent>
-    </Card>
+      )}
+    </Box>
   );
 };
 
@@ -817,9 +834,9 @@ export default function CalendarView({
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
         overflow: "hidden",
         p: 0,
+        height: "100%",
         borderRadius: 2,
       }}
     >

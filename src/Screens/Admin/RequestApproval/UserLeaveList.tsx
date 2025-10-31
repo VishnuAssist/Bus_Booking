@@ -24,8 +24,7 @@ const UserLeaveList = () => {
     <>
       <CommisionContainer>
         <PageHeader
-          title="Approved Time Off"
-          subtitle="Track your earnings and performance"
+          title="Requested Leave Details"
           icon={<AccessTimeOutlinedIcon />}
           btntitle="Add Time Off"
           icon2={<AccessTimeOutlinedIcon />}
@@ -61,7 +60,7 @@ const UserLeaveList = () => {
                     </TableCell>
                   </TableRow>
                   <TableRow key="2">
-                    <TableCell>John Doe</TableCell>
+                    <TableCell>Will smith</TableCell>
                     <TableCell>100.00 Hours</TableCell>
                     <TableCell>196.00 hrs</TableCell>
                     <TableCell>
@@ -74,7 +73,7 @@ const UserLeaveList = () => {
                     </TableCell>
                   </TableRow>
                   <TableRow key="3">
-                    <TableCell>John Doe</TableCell>
+                    <TableCell>Jack</TableCell>
                     <TableCell>100.00 Hours</TableCell>
                     <TableCell>196.00 hrs</TableCell>
                     <TableCell>
@@ -100,7 +99,7 @@ const UserLeaveList = () => {
                     </TableCell>
                   </TableRow>
                   <TableRow key="5">
-                    <TableCell>John Doe</TableCell>
+                    <TableCell>Johnson</TableCell>
                     <TableCell>100.00 Hours</TableCell>
                     <TableCell>196.00 hrs</TableCell>
                     <TableCell>
