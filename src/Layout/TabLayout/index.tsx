@@ -27,9 +27,9 @@ const TabLayout: FC<TabLayoutProps> = ({ tabs, children }) => {
           display: "flex",
           borderBottom: 1,
           borderColor: "divider",
+          borderRadius: 0,
           mx: 3,
           mt: 3,
-          borderRadius: 0,
         }}
       >
         {tabs.map((tab) => {
@@ -43,7 +43,8 @@ const TabLayout: FC<TabLayoutProps> = ({ tabs, children }) => {
                 mt: { xs: 2, md: 0 },
                 fontWeight: isActive ? 600 : 400,
                 bgcolor: isActive ? "primary.light" : "",
-
+                // display: "flex",
+                // flexGrow: 1,
                 borderBottomLeftRadius: 0,
                 borderBottomRightRadius: 0,
               }}
