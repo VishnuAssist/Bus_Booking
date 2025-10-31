@@ -1,13 +1,13 @@
 import { useState } from "react";
-import Footer from "../../Component/Footer";
-import { CommonDialog } from "../../Component/forms/FormDialog";
+// import Footer from "../../Component/Footer";
+// import { CommonDialog } from "../../Component/forms/FormDialog";
 import {
   ShiftFormFields,
   shiftFormValidationSchema,
 } from "../../feilds_validation/shiftFields";
-import CommonTable from "../../Component/CommenTable";
+// import CommonTable from "../../Component/CommenTable";
 import PageHeader from "../../Component/commonPageHeader";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Grid, Tab, Tabs } from "@mui/material";
 import CalendarView from "./CalendarView";
 import {
   usePostShiftMutation,
@@ -21,43 +21,46 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { CommonFormDialog } from "../../Component/forms/AssignForm";
 import ShiftPreviewDialog from "./ShiftPreview";
-import AppPagination from "../../Component/AppPagination";
+// import AppPagination from "../../Component/AppPagination";
 import type {
   MonthlySummarriesQueryParamsType,
   ShiftQueryParamsType,
 } from "../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
-import StaffCommissionFilter from "../commission/components/StaffCommissionFilter";
-import ShiftFilter from "./ShiftFilter";
+import ShiftLayout from "./ShiftLayout";
+// import StaffCommissionFilter from "../commission/components/StaffCommissionFilter";
+// import ShiftFilter from "./ShiftFilter";
 
-const formatDate = (dateStr: string) => {
-  if (!dateStr) return "";
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
+// const formatDate = (dateStr: string) => {
+//   if (!dateStr) return "";
+//   return new Date(dateStr).toLocaleDateString("en-US", {
+//     year: "numeric",
+//     month: "long",
+//     day: "numeric",
+//   });
+// };
 
-const shiftColumns = [
-  { id: "startTime", label: "Start Time" },
-  { id: "endTime", label: "End Time" },
-  { id: "shiftType", label: "Shift Type" },
-  { id: "startDate", label: "Start Date", format: formatDate },
-  { id: "endDate", label: "End Date", format: formatDate },
-  { id: "notes", label: "Notes" },
-  { id: "storeId", label: "Store ID" },
-];
+// const shiftColumns = [
+//   { id: "startTime", label: "Start Time" },
+//   { id: "endTime", label: "End Time" },
+//   { id: "shiftType", label: "Shift Type" },
+//   { id: "startDate", label: "Start Date", format: formatDate },
+//   { id: "endDate", label: "End Date", format: formatDate },
+//   { id: "notes", label: "Notes" },
+//   { id: "storeId", label: "Store ID" },
+// ];
 
 const ListView = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<any | null>(null);
   const [isPreviewOpen, setPreviewOpen] = useState(false);
-  const [tabValue, setTabValue] = useState(0);
+  const [selectedShiftId, setSelectedShiftId] = useState<number | null>(null);
+
+  // const [tabValue, setTabValue] = useState(0);
 
   const [postShift] = usePostShiftMutation();
   const [updateShift] = usePutShiftMutation();
-  const [deleteShift] = useDeleteShiftMutation();
+  // const [deleteShift] = useDeleteShiftMutation();
 
   const [queryParams, setQueryParams] = useState<ShiftQueryParamsType>({
     ...DEFAULT_PAGINATION_OPTIONS,
@@ -66,21 +69,21 @@ const ListView = () => {
     IsAll: "true",
   });
 
-  const handleQueryParamsChange = (newQueryParams: ShiftQueryParamsType) => {
-    if (
-      queryParams.StartDate !== newQueryParams.StartDate ||
-      queryParams.EndDate !== newQueryParams.EndDate ||
-      queryParams.SearchTerm !== newQueryParams.SearchTerm
-    ) {
-      setQueryParams(newQueryParams);
-    }
-  };
+  // const handleQueryParamsChange = (newQueryParams: ShiftQueryParamsType) => {
+  //   if (
+  //     queryParams.StartDate !== newQueryParams.StartDate ||
+  //     queryParams.EndDate !== newQueryParams.EndDate ||
+  //     queryParams.SearchTerm !== newQueryParams.SearchTerm
+  //   ) {
+  //     setQueryParams(newQueryParams);
+  //   }
+  // };
   const { data: shiftData } = useGetallshiftQuery(queryParams);
   const { data: userData } = useGetallAccountQuery({});
 
-  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
+  // const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+  //   setTabValue(newValue);
+  // };
 
   const shiftFields = () => {
     const fields = [...ShiftFormFields];
@@ -270,15 +273,15 @@ const ListView = () => {
     }
   };
 
-  const handleDelete = async (row: Shift) => {
-    await deleteShift(row?.id || 0);
-    console.log("row", row);
-  };
+  // const handleDelete = async (row: Shift) => {
+  //   await deleteShift(row?.id || 0);
+  //   console.log("row", row);
+  // };
 
-  const handlePreview = (row: Shift) => {
-    setSelectedShift(row);
-    setPreviewOpen(true);
-  };
+  // const handlePreview = (row: Shift) => {
+  //   setSelectedShift(row);
+  //   setPreviewOpen(true);
+  // };
 
   return (
     <>
@@ -288,7 +291,34 @@ const ListView = () => {
         onActionClick={() => setModalOpen(true)}
       />
 
-      <Box sx={{ mb: 2 }}>
+
+{/* <Grid container spacing={2}>
+  <Grid size={{ xs: 12, md: 3 }}>
+    <Box>
+      <ShiftLayout onSelectShift={setSelectedShiftId} />
+    </Box>
+  </Grid>
+  <Grid size={{ xs: 12, md: 9 }}>
+     {shiftData?.items && ( 
+    <DndProvider backend={HTML5Backend}>
+      <Box sx={{ mt: 2 }}>
+        <CalendarView
+          shifts={shiftData?.items}
+          onEditShift={(shift) => {
+            setSelectedShift(shift);
+            setModalOpen(true);
+          }}
+          onDropShift={handleDropShift}
+          selectedShiftId={selectedShiftId}
+        />
+      </Box>
+    </DndProvider>
+     )}
+  </Grid>
+</Grid> */}
+
+
+      {/* <Box sx={{ mb: 2 }}>
         <Tabs
           value={tabValue}
           onChange={handleTabChange}
@@ -298,8 +328,8 @@ const ListView = () => {
           <Tab label="List View" />
           <Tab label="Calendar View" />
         </Tabs>
-      </Box>
-      {tabValue === 0 && (
+      </Box> */}
+      {/* {tabValue === 0 && (
         <Box>
           <ShiftFilter
             queryParams={queryParams}
@@ -328,11 +358,11 @@ const ListView = () => {
             />
           )}
         </Box>
-      )}
+      )} */}
 
-      {tabValue === 1 && shiftData?.items && (
+     {shiftData?.items && ( 
         <DndProvider backend={HTML5Backend}>
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ mt: 2, height: 'calc(100vh - 200px)' }}>
             <CalendarView
               shifts={shiftData?.items}
               onEditShift={(shift) => {
@@ -340,6 +370,7 @@ const ListView = () => {
                 setModalOpen(true);
               }}
               onDropShift={handleDropShift}
+              selectedShiftId={selectedShiftId}
             />
           </Box>
         </DndProvider>

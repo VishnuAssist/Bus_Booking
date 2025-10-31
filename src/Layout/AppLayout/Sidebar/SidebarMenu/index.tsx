@@ -193,12 +193,12 @@ function SidebarMenu({
         title: "Staff Portal",
         icon: <GroupIcon />,
         items: [
-          {
-            label: "Attendence",
-            link: "/staff/attendence",
-            icon: <AccessTimeIcon />,
-            hide: true,
-          },
+          // {
+          //   label: "Attendence",
+          //   link: "/staff/attendence",
+          //   icon: <AccessTimeIcon />,
+          //   hide: true,
+          // },
           {
             label: "Staff Services",
             link: "/staff/services",
