@@ -1,7 +1,10 @@
+import type { PaginationOptionsDto } from "../Dto/paginationOptionsDto";
 
-export interface attendanceType
-{
+export interface AttendanceType {
   id?: number;
+  firstName: string;
+  type: string;
+  shift: string;
   checkInTime: string;
   checkOutTime: string;
   workingHours: string;
@@ -10,4 +13,9 @@ export interface attendanceType
   notes: string;
   storeId: number | null;
   userId: string;
+}
+
+export interface AttendanceQueryParamsType extends PaginationOptionsDto {
+  StartDate?: string;
+  EndDate?: string;
 }

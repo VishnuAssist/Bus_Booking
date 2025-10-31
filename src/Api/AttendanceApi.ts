@@ -3,6 +3,7 @@ import APIFetchBase from "../Store/ApiConfig";
 import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
 import type { attendanceType } from "../model/attendanceType";
+import type { AttendanceQueryParamsType } from "../model/attendanceType";
 
 export const attendanceApi = createApi({
   reducerPath: "attendanceApi",
@@ -10,10 +11,9 @@ export const attendanceApi = createApi({
   tagTypes: ["Attendance"],
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
-    
     getAllAttendance: builder.query<
       { items: attendanceType[]; metaData: MetaData },
-      any
+      AttendanceQueryParamsType
     >({
       query: (args) => ({
         method: "GET",
@@ -25,12 +25,11 @@ export const attendanceApi = createApi({
       transformResponse: (response, metaData) =>
         dataWithMeta<attendanceType[], MetaData>(
           response as attendanceType[],
-          metaData as any
+          metaData as MetaData
         ),
       providesTags: ["Attendance"],
     }),
 
-    
     getAttendanceById: builder.query<attendanceType, number>({
       query: (id) => ({
         method: "GET",
@@ -38,9 +37,7 @@ export const attendanceApi = createApi({
       }),
       providesTags: (_result, _error, id) => [{ type: "Attendance", id }],
     }),
-
-    
-    addEditAttendance: builder.mutation<any, attendanceType>({
+    addEditAttendance: builder.mutation<attendanceType, attendanceType>({
       query: (args) => ({
         method: args?.id ? "PUT" : "POST",
         url: "/Attendance",
@@ -48,9 +45,6 @@ export const attendanceApi = createApi({
       }),
       invalidatesTags: ["Attendance"],
     }),
-  
-
-    
     deleteAttendance: builder.mutation<void, number>({
       query: (id) => ({
         method: "DELETE",
