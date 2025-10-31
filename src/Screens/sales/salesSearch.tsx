@@ -17,11 +17,11 @@ interface prop {
 }
 
 const SalesSearch = ({ params, setParams }: prop) => {
-   const [searchterm, setSearchTerm] = useState(params.SearchTerm);
+  const [searchterm, setSearchTerm] = useState(params.SearchTerm);
 
   const debouncedSearch = debounce(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setParams({ ...params, SearchTerm: event.target.value,PageNumber:1 });
+      setParams({ ...params, SearchTerm: event.target.value, PageNumber: 1 });
     },
     500
   );
@@ -51,38 +51,37 @@ const SalesSearch = ({ params, setParams }: prop) => {
         />
       </Box>
       <Box>
-        
-          <InputLabel htmlFor="From" className="label-bold">
-                Start Date
-              </InputLabel>
-              <TextField
-                size="small"
-                type="date"
-                fullWidth
-                variant="outlined"
-                value={params?.StartDate}
-                onChange={(e) => {
-                  setParams({ ...params, StartDate: e.target.value ,PageNumber:1});
-                }}
-              />
+        <InputLabel htmlFor="From" className="label-bold">
+          Start Date
+        </InputLabel>
+        <TextField
+          size="small"
+          type="date"
+          fullWidth
+          variant="outlined"
+          value={params?.StartDate}
+          onChange={(e) => {
+            setParams({ ...params, StartDate: e.target.value, PageNumber: 1 });
+          }}
+        />
       </Box>
       <Box>
-          <InputLabel htmlFor="From" className="label-bold">
-                End Date
-              </InputLabel>
-              <TextField
-                size="small"
-                type="date"
-                fullWidth
-                variant="outlined"
-                value={params?.EndDate}
-                inputProps={{
-                  min: params?.startDate,
-                }}
-                 onChange={(e) => {
-                  setParams({ ...params, EndDate: e.target.value ,PageNumber:1});
-                }}
-              />
+        <InputLabel htmlFor="From" className="label-bold">
+          End Date
+        </InputLabel>
+        <TextField
+          size="small"
+          type="date"
+          fullWidth
+          variant="outlined"
+          value={params?.EndDate}
+          inputProps={{
+            min: params?.startDate,
+          }}
+          onChange={(e) => {
+            setParams({ ...params, EndDate: e.target.value, PageNumber: 1 });
+          }}
+        />
       </Box>
     </Box>
   );

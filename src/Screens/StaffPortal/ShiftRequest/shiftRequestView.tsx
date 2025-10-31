@@ -37,13 +37,7 @@ const ShiftRequestView = () => {
   });
 
   const handleQueryParamsChange = (newQueryParams: ShiftQueryParamsType) => {
-    if (
-      queryParams.StartDate !== newQueryParams.StartDate ||
-      queryParams.EndDate !== newQueryParams.EndDate ||
-      queryParams.SearchTerm !== newQueryParams.SearchTerm
-    ) {
-      setQueryParams(newQueryParams);
-    }
+    setQueryParams(newQueryParams);
   };
 
   const { data: leaveData } = useGetallLeavesQuery(queryParams);
@@ -79,7 +73,6 @@ const ShiftRequestView = () => {
 
   const handleDelete = async (row: leaverequesttype) => {
     await deleteLeave(row?.id || 0);
-    console.log("row", row);
   };
 
   const handleView = (row: leaverequesttype) => console.log("View", row);
