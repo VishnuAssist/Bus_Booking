@@ -18,7 +18,7 @@ const QuickAction = () => {
   const navigate = useNavigate();
 
   const actions = [
-    { icon: <Bolt />, label: "Log Sale", path: "/settings/sales" },
+    { icon: <Bolt />, label: "Log Sale", path: "/sts/sales" },
     { icon: <CardGiftcard />, label: "View Rewards", path: "" },
     {
       icon: <Leaderboard />,

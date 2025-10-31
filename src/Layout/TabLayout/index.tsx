@@ -25,11 +25,14 @@ const TabLayout: FC<TabLayoutProps> = ({ tabs, children }) => {
         variant="text"
         sx={{
           display: "flex",
+          // alighnItems: "center",
+          // justifyContent: "center",
           borderBottom: 1,
           borderColor: "divider",
+          borderRadius: 0,
+          borderBottomLeftRadius: 10,
           mx: 3,
           mt: 3,
-          borderRadius: 0,
         }}
       >
         {tabs.map((tab) => {
@@ -42,14 +45,22 @@ const TabLayout: FC<TabLayoutProps> = ({ tabs, children }) => {
               sx={{
                 mt: { xs: 2, md: 0 },
                 fontWeight: isActive ? 600 : 400,
-                bgcolor: isActive ? "primary.light" : "",
+                bgcolor: (theme) =>
+                  isActive
+                    ? theme.palette.mode === "dark"
+                      ? theme.palette.primary.dark // e.g., #5a5099
+                      : theme.palette.primary.dark // e.g., #1976d2
+                    : "",
 
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
+                // display: "flex",
+                // flexGrow: 1,
+                // borderBottomLeftRadius: 0,
+                // borderBottomRightRadius: 0,
+                borderRadius: 0.5,
               }}
               variant="contained"
               startIcon={tab.icon ? tab.icon : null}
-              size="small"
+              size="medium"
               onClick={() => navigate(tab.path)}
             >
               {tab.label}

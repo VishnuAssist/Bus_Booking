@@ -10,12 +10,11 @@ import {
   useGetallLeavesQuery,
 } from "../../../Api/StaffservicesApi";
 import AppPagination from "../../../Component/AppPagination";
-import type {
-  ShiftQueryParamsType,
-} from "../../../model/commissionType";
+import type { ShiftQueryParamsType } from "../../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 import ShiftFilter from "../../shift/ShiftFilter";
 import LeaveRequestDialog from "./LeaveForm";
+import CommisionContainer from "../../../Component/container";
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -86,7 +85,7 @@ const LeaveView = () => {
   const handleView = (row: leaverequesttype) => console.log("View", row);
 
   return (
-    <>
+    <CommisionContainer>
       <PageHeader
         title="Leave Request"
         subtitle="Manage your Leave requests"
@@ -135,7 +134,7 @@ const LeaveView = () => {
         onClose={() => setLeaveRequests(false)}
         open={LeaveRequest}
       />
-    </>
+    </CommisionContainer>
   );
 };
 

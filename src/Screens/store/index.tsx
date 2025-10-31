@@ -108,8 +108,6 @@ const Store = () => {
     return fields;
   };
 
-  console.log("storesData", storesData);
-
   if (isLoading) {
     return (
       <CommisionContainer>
@@ -144,7 +142,8 @@ const Store = () => {
     <>
       <CommisionContainer>
         <PageHeader
-          // title="Store"
+          title="Store"
+          subtitle="Manage your stores"
           btntitle="Add Store"
           onActionClick={() => setModalOpen(true)}
         />

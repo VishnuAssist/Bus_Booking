@@ -206,7 +206,7 @@ function SidebarMenu({
           // },
           {
             label: "Staff Services",
-            link: "/staff/services",
+            link: "/staff-service",
             icon: <DescriptionOutlinedIcon />,
             hide: true,
           },
@@ -229,7 +229,7 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "RequestApproval",
+            label: "Leave Request",
             link: "/Admin/request",
             icon: <HowToRegIcon />,
             hide: true,

@@ -181,7 +181,8 @@ const Sales = () => {
     <>
       <CommisionContainer>
         <PageHeader
-          // title="Sales"
+          title="Sales"
+          subtitle="Manage your sales"
           btntitle="Add Sales"
           btntitle2="Bulk import"
           onActionClick2={() => setBulkDialogOpen(true)}

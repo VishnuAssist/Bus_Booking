@@ -10,12 +10,11 @@ import {
   useGetallLeavesQuery,
 } from "../../../Api/StaffservicesApi";
 import AppPagination from "../../../Component/AppPagination";
-import type {
-  ShiftQueryParamsType,
-} from "../../../model/commissionType";
+import type { ShiftQueryParamsType } from "../../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 import ShiftFilter from "../../shift/ShiftFilter";
 import ShiftRequestDialog from "./shiftRequestForm";
+import CommisionContainer from "../../../Component/container";
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -86,7 +85,7 @@ const ShiftRequestView = () => {
   const handleView = (row: leaverequesttype) => console.log("View", row);
 
   return (
-    <>
+    <CommisionContainer>
       <PageHeader
         title="Shift Request"
         subtitle="Manage your Shift requests"
@@ -99,7 +98,6 @@ const ShiftRequestView = () => {
       />
 
       <Grid container spacing={2}>
-
         <Grid size={{ xs: 12 }}>
           <Card>
             <CardContent>
@@ -137,7 +135,7 @@ const ShiftRequestView = () => {
         onClose={() => setLeaveRequests(false)}
         open={LeaveRequest}
       />
-    </>
+    </CommisionContainer>
   );
 };
 

@@ -7,6 +7,9 @@ import BaseLayout from "../Layout/BaseLayout";
 import RuleList from "../Screens/intellisenseBuilder/components/RuleList";
 import IntellisenseBuilder from "../Screens/intellisenseBuilder/components/IntellisenseBuilder";
 import STS from "../Screens/sts";
+import Attendance from "../Screens/StaffPortal/Attendence";
+import LeaveView from "../Screens/StaffPortal/LeaveRequest/LeaveView";
+import ShiftRequestView from "../Screens/StaffPortal/ShiftRequest/shiftRequestView";
 
 const Loader = (Component: any) => (props: any) =>
   (
@@ -164,27 +167,65 @@ const routes: RouteObject[] = [
     ],
   },
   {
-    element: <SidebarLayout />,
+    element: <RouteAuth />,
     children: [
       {
-        path: "sts",
-        element: <STS />,
+        element: <SidebarLayout />,
         children: [
           {
-            index: true,
-            element: <Navigate to="sales" replace />,
+            path: "sts",
+            element: <STS />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="sales" replace />,
+              },
+              {
+                path: "sales",
+                element: <Sales />,
+              },
+              {
+                path: "target",
+                element: <StoreTarget />,
+              },
+              {
+                path: "store",
+                element: <Store />,
+              },
+            ],
           },
+        ],
+      },
+    ],
+  },
+
+  {
+    element: <RouteAuth />,
+    children: [
+      {
+        element: <SidebarLayout />,
+        children: [
           {
-            path: "sales",
-            element: <Sales />,
-          },
-          {
-            path: "target",
-            element: <StoreTarget />,
-          },
-          {
-            path: "store",
-            element: <Store />,
+            path: "staff-service",
+            element: <LeaveRequest />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="attendance" replace />,
+              },
+              {
+                path: "attendance",
+                element: <Attendance />,
+              },
+              {
+                path: "shift-request",
+                element: <ShiftRequestView />,
+              },
+              {
+                path: "leave-request",
+                element: <LeaveView />,
+              },
+            ],
           },
         ],
       },
