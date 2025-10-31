@@ -18,43 +18,39 @@ export const shiftApi = createApi({
       }),
       invalidatesTags: ["ShiftApi"],
     }),
-    putShift: builder.mutation<Shift,  { id: string }>({
-      query:  ({ ...body }) => ({
+    putShift: builder.mutation<Shift, { id: string }>({
+      query: ({ ...body }) => ({
         method: "PUT",
         url: `/ShiftSchedule/${body.id}`,
         body,
       }),
       invalidatesTags: ["ShiftApi"],
     }),
-     getallshift: builder.query<{ items: Shift[]; metaData: MetaData },any>({
-          query: (args) => ({
-            method: "GET",
-            url: "/ShiftSchedule",
-            params: {
-              ...args,
-            },
-          }),
-          transformResponse: (response, metaData) =>
-            dataWithMeta<Shift[], MetaData>(
-              response as Shift[],
-              metaData as any
-            ),
-          providesTags: ["ShiftApi"],
-        }),
-      deleteShift: builder.mutation<any, number>({
+    getallshift: builder.query<{ items: Shift[]; metaData: MetaData }, any>({
+      query: (args) => ({
+        method: "GET",
+        url: "/ShiftSchedule",
+        params: {
+          ...args,
+        },
+      }),
+      transformResponse: (response, metaData) =>
+        dataWithMeta<Shift[], MetaData>(response as Shift[], metaData as any),
+      providesTags: ["ShiftApi"],
+    }),
+    deleteShift: builder.mutation<any, number>({
       query: (id) => ({
         method: "DELETE",
         url: `/ShiftSchedule/${id}`,
       }),
       invalidatesTags: ["ShiftApi"],
-    }),  
+    }),
   }),
 });
 
-export const
- { 
+export const {
   usePostShiftMutation,
   useGetallshiftQuery,
   usePutShiftMutation,
   useDeleteShiftMutation,
- } = shiftApi;
+} = shiftApi;

@@ -1,11 +1,12 @@
+import type { PaginationOptionsDto } from "../Dto/paginationOptionsDto";
 export interface ShiftType {
   id?: number;
   startTime: string;
-  endTime: string; 
-  shiftType: number; 
+  endTime: string;
+  shiftType: number;
   startDate: string;
-  endDate: string; 
-  skipDate: string; 
+  endDate: string;
+  skipDate: string;
   notes: string;
   storeId: number;
 }
@@ -19,8 +20,8 @@ export interface Shift {
   duration: string;
   groupIds?: string[] | undefined;
   shiftType: string;
-  startDate: string; 
-  endDate: string; 
+  startDate: string;
+  endDate: string;
   skipDates: string;
   notes: string;
   reason: string;
@@ -51,7 +52,7 @@ export interface ShiftResponse {
   duration: string;
   shiftType: string;
   startDate: string;
-  endDate: string;  
+  endDate: string;
   skipDates: string;
   notes: string;
   reason: string;
@@ -60,7 +61,6 @@ export interface ShiftResponse {
 }
 
 export type ShiftList = ShiftResponse[];
-
 
 export interface ShiftUser {
   id: string;
@@ -75,21 +75,45 @@ export interface ShiftUser {
 export interface ShiftCal {
   id: number;
   users: ShiftUser[];
-  startTime: string; 
-  endTime: string;   
-  duration: string;  
+  startTime: string;
+  endTime: string;
+  duration: string;
   shiftType: string;
-  startDate: string; 
-  endDate: string;   
-  skipDates: string; 
+  startDate: string;
+  endDate: string;
+  skipDates: string;
   notes: string;
   reason: string;
   status: number;
   statusText: string;
   storeId: number;
   storeName: string;
-  createdOn: string; 
+  createdOn: string;
   createdBy: string;
   lastModifiedOn: string | null;
   lastModifiedBy: string | null;
+}
+
+export interface ShiftRequestType {
+  id?: number;
+  userName: string;
+  shiftType: string;
+  startDate: string;
+  endDate: string;
+  note: string;
+  reason: string;
+}
+
+export interface ShiftRequestType {
+  id?: number;
+  userName: string;
+  shiftType: string;
+  startDate: string;
+  endDate: string;
+  note: string;
+  reason: string;
+}
+export interface ShiftRequestQueryParamsType extends PaginationOptionsDto {
+  StartDate?: string;
+  EndDate?: string;
 }
