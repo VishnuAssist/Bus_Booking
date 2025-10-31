@@ -1,21 +1,24 @@
 import { Box, TextField, debounce } from "@mui/material";
-
-import type { QueryParamsType } from "../../../../model/common";
 import { useState } from "react";
+import type { AttendanceQueryParamsType } from "../../../../model/attendanceType";
 
 interface Props {
-  params: QueryParamsType;
-  setParams: (p: Partial<QueryParamsType>) => void;
+  queryParams: AttendanceQueryParamsType;
+  onQueryParamsChange: (queryParams: AttendanceQueryParamsType) => void;
 }
 
-const AttendenceFilter = ({ params, setParams }: Props) => {
+const AttendenceFilter = ({ queryParams, onQueryParamsChange }: Props) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const searchDebounce = debounce(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       console.log("value", event.target.value);
 
-      setParams({ ...params, SearchTerm: searchTerm, PageNumber: 1 });
+      onQueryParamsChange({
+        ...queryParams,
+        SearchTerm: searchTerm,
+        PageNumber: 1,
+      });
     },
     500
   );
@@ -43,9 +46,13 @@ const AttendenceFilter = ({ params, setParams }: Props) => {
           fullWidth
           variant="outlined"
           placeholder="Start Date"
-          value={params?.StartDate || ""}
+          value={queryParams?.StartDate || ""}
           onChange={(e) => {
-            setParams({ ...params, StartDate: e.target.value, PageNumber: 1 });
+            onQueryParamsChange({
+              ...queryParams,
+              StartDate: e.target.value,
+              PageNumber: 1,
+            });
           }}
         />
       </Box>
@@ -56,12 +63,16 @@ const AttendenceFilter = ({ params, setParams }: Props) => {
           fullWidth
           variant="outlined"
           placeholder="End Date"
-          value={params?.EndDate || ""}
+          value={queryParams?.EndDate || ""}
           inputProps={{
-            min: params?.StartDate,
+            min: queryParams?.StartDate,
           }}
           onChange={(e) => {
-            setParams({ ...params, EndDate: e.target.value, PageNumber: 1 });
+            onQueryParamsChange({
+              ...queryParams,
+              EndDate: e.target.value,
+              PageNumber: 1,
+            });
           }}
         />
       </Box>

@@ -1,17 +1,17 @@
 import PageHeader from "../../../Component/commonPageHeader";
 import CommisionContainer from "../../../Component/container";
-import AdminAttendanceList from "./components/AdminAttendanceList";
+import CurrentLoginUserList from "./components/CurrentLoginUserList";
 // import AttendanceDashboard from "./components/AttendanceDashboard";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import CommonDrawer from "./components/CommonDrawer";
 import { useState } from "react";
 import { ViewIcon } from "../../../Assests/Icons/icons";
 import ShiftRequestList from "./components/ShiftRequestList";
-import AttendanceRequestList from "./components/AttendanceRequestList";
 
 const AdminAttendance = () => {
   const [attendanceRequests, setAttendanceRequests] = useState(false);
   const [shiftRequests, setShiftRequests] = useState(false);
+
   return (
     <>
       <CommisionContainer>
@@ -27,7 +27,7 @@ const AdminAttendance = () => {
         />
 
         {/* <AttendanceDashboard /> */}
-        <AdminAttendanceList />
+        <CurrentLoginUserList />
       </CommisionContainer>
 
       <CommonDrawer
@@ -35,7 +35,7 @@ const AdminAttendance = () => {
         isOpen={attendanceRequests}
         onClose={() => setAttendanceRequests(false)}
         title="Attendance Request List"
-        children={<AttendanceRequestList />}
+        children={<ShiftRequestList />}
       />
 
       <CommonDrawer
