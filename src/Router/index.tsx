@@ -164,27 +164,32 @@ const routes: RouteObject[] = [
     ],
   },
   {
-    element: <SidebarLayout />,
+    element: <RouteAuth />,
     children: [
       {
-        path: "sts",
-        element: <STS />,
+        element: <SidebarLayout />,
         children: [
           {
-            index: true,
-            element: <Navigate to="sales" replace />,
-          },
-          {
-            path: "sales",
-            element: <Sales />,
-          },
-          {
-            path: "target",
-            element: <StoreTarget />,
-          },
-          {
-            path: "store",
-            element: <Store />,
+            path: "sts",
+            element: <STS />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="sales" replace />,
+              },
+              {
+                path: "sales",
+                element: <Sales />,
+              },
+              {
+                path: "target",
+                element: <StoreTarget />,
+              },
+              {
+                path: "store",
+                element: <Store />,
+              },
+            ],
           },
         ],
       },
