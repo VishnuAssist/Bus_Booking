@@ -54,7 +54,7 @@ const ListView = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<any | null>(null);
   const [isPreviewOpen, setPreviewOpen] = useState(false);
-  const [selectedShiftId, setSelectedShiftId] = useState<number | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
 
   // const [tabValue, setTabValue] = useState(0);
 
@@ -80,6 +80,8 @@ const ListView = () => {
   // };
   const { data: shiftData } = useGetallshiftQuery(queryParams);
   const { data: userData } = useGetallAccountQuery({});
+
+  const employees = userData?.items || [];
 
   // const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
   //   setTabValue(newValue);
@@ -283,6 +285,13 @@ const ListView = () => {
   //   setPreviewOpen(true);
   // };
 
+  const filteredShifts =
+    selectedEmployee && shiftData?.items
+      ? shiftData.items.filter((s: any) =>
+          s.users?.some((u: any) => u.id?.toString() === selectedEmployee)
+        )
+      : shiftData?.items || [];
+
   return (
     <>
       <PageHeader
@@ -291,32 +300,34 @@ const ListView = () => {
         onActionClick={() => setModalOpen(true)}
       />
 
-
-{/* <Grid container spacing={2}>
-  <Grid size={{ xs: 12, md: 3 }}>
-    <Box>
-      <ShiftLayout onSelectShift={setSelectedShiftId} />
-    </Box>
-  </Grid>
-  <Grid size={{ xs: 12, md: 9 }}>
-     {shiftData?.items && ( 
-    <DndProvider backend={HTML5Backend}>
-      <Box sx={{ mt: 2 }}>
-        <CalendarView
-          shifts={shiftData?.items}
-          onEditShift={(shift) => {
-            setSelectedShift(shift);
-            setModalOpen(true);
-          }}
-          onDropShift={handleDropShift}
-          selectedShiftId={selectedShiftId}
-        />
-      </Box>
-    </DndProvider>
-     )}
-  </Grid>
-</Grid> */}
-
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Box>
+            <ShiftLayout
+              employees={employees || []}
+              selectedEmployee={selectedEmployee}
+              onEmployeeSelect={setSelectedEmployee}
+            />
+          </Box>
+        </Grid>
+        <Grid size={{ xs: 12, md: 9 }}>
+          {filteredShifts.length > 0 && (
+            <DndProvider backend={HTML5Backend}>
+              <Box sx={{ height: "calc(100vh - 200px)" }}>
+                <CalendarView
+                  shifts={filteredShifts}
+                  onEditShift={(shift) => {
+                    setSelectedShift(shift);
+                    setModalOpen(true);
+                  }}
+                  onDropShift={handleDropShift}
+                  selectedShiftId={null}
+                />
+              </Box>
+            </DndProvider>
+          )}
+        </Grid>
+      </Grid>
 
       {/* <Box sx={{ mb: 2 }}>
         <Tabs
@@ -360,9 +371,9 @@ const ListView = () => {
         </Box>
       )} */}
 
-     {shiftData?.items && ( 
+      {/* {shiftData?.items && (
         <DndProvider backend={HTML5Backend}>
-          <Box sx={{ mt: 2, height: 'calc(100vh - 200px)' }}>
+          <Box sx={{ mt: 2, height: "calc(100vh - 200px)" }}>
             <CalendarView
               shifts={shiftData?.items}
               onEditShift={(shift) => {
@@ -374,7 +385,7 @@ const ListView = () => {
             />
           </Box>
         </DndProvider>
-      )}
+      )} */}
 
       <CommonFormDialog
         open={isModalOpen}

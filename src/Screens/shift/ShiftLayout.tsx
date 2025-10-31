@@ -3,15 +3,15 @@ import {
   Box,
   List,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Typography,
-  Divider,
   Paper,
   TextField,
   Avatar,
+  InputAdornment,
+  CircularProgress,
 } from "@mui/material";
-import { People, Search } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 
 interface Employee {
   id: string;
@@ -25,12 +25,14 @@ interface ShiftLayoutProps {
   employees: Employee[];
   selectedEmployee: string | null;
   onEmployeeSelect: (employeeId: string | null) => void;
+  isLoading?: boolean;
 }
 
-const ShiftLayout: React.FC<ShiftLayoutProps> = ({ 
-  employees, 
-  selectedEmployee, 
-  onEmployeeSelect 
+const ShiftLayout: React.FC<ShiftLayoutProps> = ({
+  employees,
+  selectedEmployee,
+  onEmployeeSelect,
+  isLoading = false,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -49,101 +51,103 @@ const ShiftLayout: React.FC<ShiftLayoutProps> = ({
 
   return (
     <Paper
-      elevation={3}
+      elevation={1}
       sx={{
-        p: 2,
-        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
         height: "calc(100vh - 200px)",
-        overflowY: "auto",
+        borderRadius: 2,
+        overflow: "hidden",
       }}
     >
-      <Typography variant="h6" fontWeight="bold" mb={2}>
-        Employees
-      </Typography>
-      
-      <TextField
-        fullWidth
-        size="small"
-        placeholder="Search employees..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        InputProps={{
-          startAdornment: <Search sx={{ color: 'text.secondary', mr: 1 }} />,
-        }}
-        sx={{ mb: 2 }}
-      />
-      
-      <Divider sx={{ mb: 2 }} />
-
-      <List>
-        <ListItemButton
-          selected={selectedEmployee === null}
-          onClick={() => handleSelect(null)}
-          sx={{
-            borderRadius: 2,
-            mb: 1,
-            '&.Mui-selected': {
-              backgroundColor: (theme) => theme.palette.primary.light,
-              color: (theme) => theme.palette.primary.main,
-              '&:hover': {
-                backgroundColor: (theme) => theme.palette.primary.light,
-              },
-              '& .MuiListItemIcon-root': {
-                color: (theme) => theme.palette.primary.main,
-              },
-            },
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+        <Typography variant="h6" fontWeight="bold" mb={1}>
+          Employees
+        </Typography>
+        <TextField
+          fullWidth
+          size="small"
+          placeholder="Search employees..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search sx={{ color: "text.secondary" }} />
+              </InputAdornment>
+            ),
           }}
-        >
-          <ListItemIcon>
-            <People />
-          </ListItemIcon>
-          <ListItemText 
-            primary="All Employees" 
-            primaryTypographyProps={{ 
-              fontWeight: selectedEmployee === null ? 600 : 400 
-            }}
-          />
-        </ListItemButton>
+        />
+      </Box>
 
-        {filteredEmployees.map((employee) => (
-          <ListItemButton
-            key={employee.id}
-            selected={selectedEmployee === employee.id}
-            onClick={() => handleSelect(employee.id)}
-            sx={{
-              borderRadius: 2,
-              mb: 1,
-              '&.Mui-selected': {
-                backgroundColor: (theme) => theme.palette.primary.light,
-                color: (theme) => theme.palette.primary.main,
-                '&:hover': {
-                  backgroundColor: (theme) => theme.palette.primary.light,
-                },
-              },
-            }}
+      {/* List Section */}
+      <Box sx={{ flex: 1, overflowY: "auto" }}>
+        {isLoading ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ height: "100%", p: 4 }}
           >
-            <Avatar 
-              sx={{ 
-                width: 32, 
-                height: 32, 
-                mr: 2,
-                bgcolor: selectedEmployee === employee.id ? 'primary.main' : 'grey.400'
-              }}
-            >
-              {employee.name?.charAt(0) || employee.userName?.charAt(0)}
-            </Avatar>
-            <ListItemText 
-              primary={employee.name || employee.userName}
-              secondary={employee.employeeCode}
-              primaryTypographyProps={{ 
-                fontWeight: selectedEmployee === employee.id ? 600 : 400,
-                fontSize: '0.9rem'
-              }}
-              secondaryTypographyProps={{ fontSize: '0.75rem' }}
-            />
-          </ListItemButton>
-        ))}
-      </List>
+            <CircularProgress size={24} />
+            <Typography variant="body2" sx={{ ml: 1 }}>
+              Loading employees...
+            </Typography>
+          </Box>
+        ) : (
+          <List disablePadding>
+            {filteredEmployees.length > 0 ? (
+              filteredEmployees.map((employee) => (
+                <ListItemButton
+                  key={employee.id}
+                  selected={selectedEmployee === employee.id}
+                  onClick={() => handleSelect(employee.id)}
+                  sx={{
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    "&.Mui-selected": {
+                      backgroundColor: (theme) => theme.palette.primary.light,
+                      color: (theme) => theme.palette.primary.main,
+                      "& .MuiAvatar-root": {
+                        bgcolor: "primary.main",
+                      },
+                    },
+                  }}
+                >
+                  <Avatar
+                    sx={{
+                      width: 32,
+                      height: 32,
+                      mr: 2,
+                      bgcolor:
+                        selectedEmployee === employee.id
+                          ? "primary.main"
+                          : "grey.400",
+                    }}
+                  >
+                    {employee.name?.[0]?.toUpperCase() ||
+                      employee.userName?.[0]?.toUpperCase() ||
+                      "?"}
+                  </Avatar>
+                  <ListItemText
+                    primary={employee.name || employee.userName}
+                    secondary={employee.employeeCode}
+                    primaryTypographyProps={{
+                      fontWeight: selectedEmployee === employee.id ? 600 : 400,
+                      fontSize: "0.9rem",
+                    }}
+                    secondaryTypographyProps={{ fontSize: "0.75rem" }}
+                  />
+                </ListItemButton>
+              ))
+            ) : (
+              <Box sx={{ p: 3, textAlign: "center", color: "text.secondary" }}>
+                <Typography variant="body2">No employees found.</Typography>
+              </Box>
+            )}
+          </List>
+        )}
+      </Box>
     </Paper>
   );
 };
