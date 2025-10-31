@@ -86,7 +86,6 @@ const Sales = () => {
   };
 
   const onSubmit = async (formData: any) => {
-    console.log("sales", formData);
     try {
       const finalData = {
         ...formData,
@@ -180,7 +179,7 @@ const Sales = () => {
     <>
       <CommisionContainer>
         <PageHeader
-          title="Sales"
+          // title="Sales"
           btntitle="Add Sales"
           btntitle2="Bulk import"
           onActionClick2={() => setBulkDialogOpen(true)}

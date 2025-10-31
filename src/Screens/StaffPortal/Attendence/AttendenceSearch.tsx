@@ -1,4 +1,4 @@
-import { Box, TextField, InputLabel, debounce } from "@mui/material";
+import { Box, TextField, debounce } from "@mui/material";
 
 import type { QueryParamsType } from "../../../model/common";
 import { useState } from "react";

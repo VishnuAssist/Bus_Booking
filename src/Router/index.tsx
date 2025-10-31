@@ -6,6 +6,7 @@ import SidebarLayout from "../Layout/AppLayout";
 import BaseLayout from "../Layout/BaseLayout";
 import RuleList from "../Screens/intellisenseBuilder/components/RuleList";
 import IntellisenseBuilder from "../Screens/intellisenseBuilder/components/IntellisenseBuilder";
+import STS from "../Screens/sts";
 
 const Loader = (Component: any) => (props: any) =>
   (
@@ -26,9 +27,7 @@ const Calender = Loader(lazy(() => import("../Screens/Calender")));
 const Attendence = Loader(
   lazy(() => import("../Screens/StaffPortal/Attendence"))
 );
-const LeaveRequest = Loader(
-  lazy(() => import("../Screens/StaffPortal/index"))
-);
+const LeaveRequest = Loader(lazy(() => import("../Screens/StaffPortal/index")));
 const RequestApproval = Loader(
   lazy(() => import("../Screens/Admin/RequestApproval"))
 );
@@ -165,6 +164,33 @@ const routes: RouteObject[] = [
     ],
   },
   {
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: "sts",
+        element: <STS />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="sales" replace />,
+          },
+          {
+            path: "sales",
+            element: <Sales />,
+          },
+          {
+            path: "target",
+            element: <StoreTarget />,
+          },
+          {
+            path: "store",
+            element: <Store />,
+          },
+        ],
+      },
+    ],
+  },
+  {
     element: <RouteAuth />,
     children: [
       {
@@ -273,15 +299,6 @@ const routes: RouteObject[] = [
         path: "settings",
         element: <SidebarLayout />,
         children: [
-          // {
-          //   index: true,
-          //   element: <Navigate to="Dashboard" replace />,
-          // },
-
-          // {
-          //   path: "Dashboard",
-          //   element: <Dashboard />,
-          // },
           {
             path: "Dictionary",
             element: <Dictionary />,

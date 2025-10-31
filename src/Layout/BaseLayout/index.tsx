@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import { Box } from "@mui/material";
-import * as PropTypes from "prop-types";
+// import * as PropTypes from "prop-types";
 import type { FC, ReactNode } from "react";
 
 interface BaseLayoutProps {
@@ -21,8 +21,8 @@ const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
   );
 };
 
-BaseLayout.propTypes = {
-  children: PropTypes.node as any,
-};
+// BaseLayout.propTypes = {
+//   children: PropTypes.node as any,
+// };
 
 export default BaseLayout;

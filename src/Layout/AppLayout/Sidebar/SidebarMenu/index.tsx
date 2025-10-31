@@ -162,25 +162,30 @@ function SidebarMenu({
             icon: <CalendarIcon />,
             hide: true,
           },
-
           {
-            label: "Store",
-            link: "/settings/store",
+            label: "STS",
+            link: "/sts",
             icon: <StoreIcon />,
             hide: true,
           },
-          {
-            label: "Target",
-            link: "/settings/target",
-            icon: <AdminPanelSettingsIcon />,
-            hide: true,
-          },
-          {
-            label: "Sales",
-            link: "/settings/sales",
-            icon: <SellIcon />,
-            hide: true,
-          },
+          // {
+          //   label: "Store",
+          //   link: "/settings/store",
+          //   icon: <StoreIcon />,
+          //   hide: true,
+          // },
+          // {
+          //   label: "Target",
+          //   link: "/settings/target",
+          //   icon: <AdminPanelSettingsIcon />,
+          //   hide: true,
+          // },
+          // {
+          //   label: "Sales",
+          //   link: "/settings/sales",
+          //   icon: <SellIcon />,
+          //   hide: true,
+          // },
           {
             label: "UserGroup",
             link: "/settings/UserGroup",

@@ -3,7 +3,7 @@ import { Button, Grid, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 
 interface PageHeaderProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   icon?: ReactNode;
   icon2?: ReactNode;
@@ -26,7 +26,7 @@ const PageHeader = ({
   return (
     <>
       <Helmet>
-        <title>{title}</title>
+        <title>{title ? title : ""}</title>
       </Helmet>
       <Grid
         container
