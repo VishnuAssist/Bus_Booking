@@ -116,7 +116,7 @@ const LeaveView = () => {
     console.log("row", row);
   };
 
-  const handleView = (row: leaverequesttype) => console.log("View", row);
+  // const handleView = (row: leaverequesttype) => console.log("View", row);
 
   return (
     <CommisionContainer>
@@ -143,7 +143,6 @@ const LeaveView = () => {
                 columns={columns as any}
                 rows={leaveData?.items || []}
                 actions={{
-                  onView: handleView,
                   onEdit: (row) => {
                     setSelectedLeaveRequest(row);
                     setLeaveRequests(true);

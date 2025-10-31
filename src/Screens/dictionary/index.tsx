@@ -92,7 +92,7 @@ const DictionaryPage = () => {
   ];
 
   console.log("select", selectedDictionary);
-  const handleView = (row: dictionarytype) => console.log("View", row);
+  // const handleView = (row: dictionarytype) => console.log("View", row);
   const handleEdit = (row: dictionarytype) => {
     setSelectedDictionary(row);
     setModalOpen(true);
@@ -120,7 +120,6 @@ const DictionaryPage = () => {
             columns={columns}
             rows={dicData?.items || []}
             actions={{
-              onView: handleView,
               onEdit: handleEdit,
               onDelete: handleDelete,
             }}
