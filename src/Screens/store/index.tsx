@@ -108,8 +108,6 @@ const Store = () => {
     return fields;
   };
 
-  console.log("storesData", storesData);
-
   if (isLoading) {
     return (
       <CommisionContainer>

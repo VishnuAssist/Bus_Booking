@@ -229,7 +229,7 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "RequestApproval",
+            label: "Leave Request",
             link: "/Admin/request",
             icon: <HowToRegIcon />,
             hide: true,

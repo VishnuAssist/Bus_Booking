@@ -1,25 +1,22 @@
 import React, { useState } from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Chip,
-  Divider,
-  Grid,
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   IconButton,
-  Button,
   TextField,
+  Box,
+  Typography,
 } from "@mui/material";
-import {
-  Event,
-  Comment,
-  CalendarMonth,
-  CloseRounded,
-} from "@mui/icons-material";
+import { CloseRounded, CheckCircle, Cancel } from "@mui/icons-material";
 import type { leaverequesttype, StatusItem } from "../../../model/LeaveRequest";
 import {
   useGetallLeavesQuery,
@@ -29,7 +26,6 @@ import { useGetstatusQuery } from "../../../Api/dictionaryApi";
 
 const RequestView = () => {
   const { data: request } = useGetallLeavesQuery({});
-
   const { data: statusData } = useGetstatusQuery({});
   const [updateLeave] = usePutLeavesMutation();
 
@@ -38,7 +34,7 @@ const RequestView = () => {
   const [comments, setComments] = useState("");
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(
     null
-  ); // Track the action type
+  );
 
   const handleOpenDialog = (
     req: leaverequesttype,
@@ -60,10 +56,9 @@ const RequestView = () => {
   const handleSubmit = async () => {
     if (!selectedReq?.id || !statusData || !actionType) return;
 
+    const statusKey = actionType === "approve" ? "approved" : "rejected";
     const statusObj = statusData.statuses.find(
-      (s: StatusItem) =>
-        s.name.toLowerCase() ===
-        (actionType === "approve" ? "approved" : "reject").toLowerCase()
+      (s: StatusItem) => s.name.toLowerCase() === statusKey
     );
 
     if (!statusObj) {
@@ -77,17 +72,14 @@ const RequestView = () => {
       approvedBy: "Admin",
       reason: "Nothing",
       approverComments: comments,
-      approvedOn: "2025-10-24T04:31:39.396Z",
+      approvedOn: new Date().toISOString(),
     };
 
     try {
-      if (selectedReq?.id) {
-        const response = await updateLeave(payload).unwrap();
-        console.log(" Leave updated:", response);
-      }
+      await updateLeave(payload).unwrap();
       handleCloseDialog();
     } catch (err) {
-      console.error(" Error submitting leave:", err);
+      console.error("Error submitting leave:", err);
     }
   };
 
@@ -96,13 +88,15 @@ const RequestView = () => {
     return status ? status.name : "Unknown";
   };
 
-  const getStatusColor = (id: number) => {
-    const name = getStatusName(id)?.toLowerCase();
+  const getStatusColor = (
+    id: number
+  ): "success" | "error" | "warning" | "default" => {
+    const name = getStatusName(id).toLowerCase();
     switch (name) {
       case "approved":
         return "success";
-      case "reject":
       case "rejected":
+      case "reject":
         return "error";
       case "waiting":
         return "warning";
@@ -111,126 +105,127 @@ const RequestView = () => {
     }
   };
 
-  const InfoItem = ({
-    icon,
-    label,
-    value,
-  }: {
-    icon: React.ReactNode;
-    label: string;
-    value: string;
-  }) => (
-    <Box display="flex" alignItems="center" mb={1}>
-      <Box mr={1}>{icon}</Box>
-      <Box>
-        <Typography variant="body2" color="text.secondary">
-          {label}
-        </Typography>
-        <Typography variant="body1">{value}</Typography>
-      </Box>
-    </Box>
-  );
+  const formatDate = (dateString: string) => {
+    return dateString
+      ? new Date(dateString).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "-";
+  };
+
+  const isPending = (statusId: number) => {
+    return getStatusName(statusId).toLowerCase() === "waiting";
+  };
 
   return (
-    <Box p={1}>
-      <Grid container spacing={2}>
-        {request?.items.map((req) => (
-          <Grid size={{ xs: 12, md: 4, sm: 6 }} key={req.id}>
-            <Card
-              sx={{
-                borderRadius: 3,
-                boxShadow: 3,
-                "&:hover": { boxShadow: 5 },
-                transition: "0.2s ease",
-              }}
-            >
-              <CardContent>
-                <Box display="flex" justifyContent="space-between" mb={1}>
-                  <Chip
-                    label={req.leaveType}
-                    color="primary"
+    <>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <strong>User</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Leave Type</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Start Date</strong>
+              </TableCell>
+              <TableCell>
+                <strong>End Date</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Reason</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Status</strong>
+              </TableCell>
+              <TableCell align="center">
+                <strong>Action</strong>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {request?.items.map((req) => {
+              const pending = isPending(req.status);
+
+              return (
+                <TableRow
+                  key={req.id}
+                  hover
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                  }}
+                >
+                  <TableCell>{req.userName || "Unknown"}</TableCell>
+                  <TableCell>
+                    <Chip label={req.leaveType} size="small" color="primary" />
+                  </TableCell>
+                  <TableCell>{formatDate(req.startDate)}</TableCell>
+                  <TableCell>{formatDate(req.endDate)}</TableCell>
+                  <TableCell
                     sx={{
-                      fontWeight: "bold",
-                      fontSize: "0.85rem",
-                      borderRadius: "8px",
+                      maxWidth: 200,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
                     }}
-                  />
-                  <Chip
-                    label={getStatusName(req.status)}
-                    color={getStatusColor(req.status)}
-                    sx={{ fontWeight: 600 }}
-                  />
-                </Box>
-
-                <Divider sx={{ my: 1 }} />
-
-                <InfoItem
-                  icon={<CalendarMonth color="info" />}
-                  label="Start Date"
-                  value={
-                    req.startDate
-                      ? new Date(req.startDate).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })
-                      : "-"
-                  }
-                />
-                <InfoItem
-                  icon={<Event color="info" />}
-                  label="End Date"
-                  value={
-                    req.endDate
-                      ? new Date(req.endDate).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })
-                      : "-"
-                  }
-                />
-                <InfoItem
-                  icon={<Comment color="secondary" />}
-                  label="Reason"
-                  value={req.reason}
-                />
-                {req.status == 1 && (
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    mt={2}
-                    gap={2}
+                    title={req.reason}
                   >
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      fullWidth
-                      onClick={() => handleOpenDialog(req, "reject")}
-                    >
-                      Reject
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                      onClick={() => handleOpenDialog(req, "approve")}
-                    >
-                      Approve
-                    </Button>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                    {req.reason}
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={getStatusName(req.status)}
+                      color={getStatusColor(req.status)}
+                      size="small"
+                      sx={{ fontWeight: 600 }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    {pending ? (
+                      <Box display="flex" gap={1} justifyContent="center">
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          color="error"
+                          startIcon={<Cancel />}
+                          onClick={() => handleOpenDialog(req, "reject")}
+                        >
+                          Reject
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="success"
+                          startIcon={<CheckCircle />}
+                          onClick={() => handleOpenDialog(req, "approve")}
+                        >
+                          Approve
+                        </Button>
+                      </Box>
+                    ) : (
+                      <Typography variant="body2" color="text.secondary">
+                        —
+                      </Typography>
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
+      {/* Approval/Rejection Dialog */}
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
-        fullWidth
         maxWidth="sm"
+        fullWidth
       >
         <DialogTitle>
           {actionType === "approve" ? "Approve" : "Reject"} Leave Request
@@ -241,34 +236,39 @@ const RequestView = () => {
             <CloseRounded />
           </IconButton>
         </DialogTitle>
-
         {selectedReq && (
           <DialogContent>
+            <Box mb={2}>
+              <Typography variant="body2" color="text.secondary">
+                <strong>User:</strong> {selectedReq.userName}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <strong>Leave Type:</strong> {selectedReq.leaveType}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <strong>Dates:</strong> {formatDate(selectedReq.startDate)} →{" "}
+                {formatDate(selectedReq.endDate)}
+              </Typography>
+            </Box>
+
             <TextField
               fullWidth
               multiline
               minRows={3}
-              label="Comments"
-              placeholder={`Enter comments for ${actionType}...`}
+              label="Comments (Optional)"
+              placeholder={`Enter reason for ${actionType}ing...`}
               value={comments}
               onChange={(e) => setComments(e.target.value)}
-              sx={{ mt: 2 }}
+              sx={{ mb: 2 }}
             />
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                mt: 2,
-                gap: 2,
-              }}
-            >
+            <Box display="flex" justifyContent="flex-end" gap={2}>
               <Button variant="outlined" onClick={handleCloseDialog}>
                 Cancel
               </Button>
               <Button
                 variant="contained"
-                color={actionType === "approve" ? "primary" : "error"}
+                color={actionType === "approve" ? "success" : "error"}
                 onClick={handleSubmit}
               >
                 {actionType === "approve" ? "Approve" : "Reject"} Leave
@@ -277,7 +277,7 @@ const RequestView = () => {
           </DialogContent>
         )}
       </Dialog>
-    </Box>
+    </>
   );
 };
 
