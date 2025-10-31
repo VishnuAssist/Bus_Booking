@@ -25,7 +25,6 @@ import { IconActionButton } from "../ui";
 import {
   PLACEHOLDER_TEXT,
   HELPER_TEXT,
-  VALIDATION_MESSAGES,
 } from "../constants";
 
 interface RuleGroupComponentProps {
