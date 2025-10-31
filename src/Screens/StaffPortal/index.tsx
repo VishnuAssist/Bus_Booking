@@ -13,49 +13,59 @@ import Attendance from "./Attendence";
 import ShiftRequestindex from "./ShiftRequest";
 import LeaveView from "./LeaveRequest/LeaveView";
 // import Attendance from "../Attendence";
+import StoreIcon from "@mui/icons-material/Store";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import SellIcon from "@mui/icons-material/Sell";
+import TabLayout from "../../Layout/TabLayout";
 
 const index = () => {
+  const [value, setValue] = useState("attendance");
 
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
 
-    const [value, setValue] = useState("attendance");
-  
-    const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
-      setValue(newValue);
-    };
-  return (
-    <>
-      <CommisionContainer>
-        {/* <h1>haiiii</h1> */}
-        <Box>
-          {/* <LeaveView /> */}
+  const tabs = [
+    {
+      label: "Attendance",
+      path: "/staff-service/attendance",
+      icon: <SellIcon />,
+    },
+    {
+      label: "Shift Request",
+      path: "/staff-service/shift-request",
+      icon: <AdminPanelSettingsIcon />,
+    },
+    {
+      label: "Leave Request",
+      path: "/staff-service/leave-request",
+      icon: <StoreIcon />,
+    },
+  ];
 
-          <Box sx={{ width: "100%", typography: "body1" }}>
-            <TabContext value={value}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <TabList
-                  onChange={handleChange}
-                  aria-label="lab API tabs example"
-                >
-                  <Tab label="Attendence" value="attendance" />
-                  <Tab label="Shift Request" value="shift-Request" />
-                  <Tab label="Leave Request" value="leave-Request" />
-                </TabList>
-              </Box>
-              <TabPanel value="attendance" sx={{ padding: 0 }}>
-                <Attendance />
-              </TabPanel>
-              <TabPanel value="shift-Request" sx={{ padding: 0 }}>
-                <ShiftRequestindex />
-              </TabPanel>
-              <TabPanel value="leave-Request" sx={{ padding: 0 }}>
-                <LeaveView />
-              </TabPanel>
-            </TabContext>
-          </Box>
-        </Box>
-      </CommisionContainer>
-    </>
-  );
+  // return (
+  //   // <CommisionContainer>
+  //   <TabContext value={value}>
+  //     <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 3 }}>
+  //       <TabList onChange={handleChange} aria-label="lab API tabs example">
+  //         <Tab label="Attendence" value="attendance" />
+  //         <Tab label="Shift Request" value="shift-Request" />
+  //         <Tab label="Leave Request" value="leave-Request" />
+  //       </TabList>
+  //     </Box>
+  //     <TabPanel value="attendance" sx={{ padding: 0 }}>
+  //       <Attendance />
+  //     </TabPanel>
+  //     <TabPanel value="shift-Request" sx={{ padding: 0 }}>
+  //       <ShiftRequestindex />
+  //     </TabPanel>
+  //     <TabPanel value="leave-Request" sx={{ padding: 0 }}>
+  //       <LeaveView />
+  //     </TabPanel>
+  //   </TabContext>
+  // );
+
+  return <TabLayout tabs={tabs}></TabLayout>;
 };
 
 export default index;

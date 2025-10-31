@@ -7,6 +7,9 @@ import BaseLayout from "../Layout/BaseLayout";
 import RuleList from "../Screens/intellisenseBuilder/components/RuleList";
 import IntellisenseBuilder from "../Screens/intellisenseBuilder/components/IntellisenseBuilder";
 import STS from "../Screens/sts";
+import Attendance from "../Screens/StaffPortal/Attendence";
+import LeaveView from "../Screens/StaffPortal/LeaveRequest/LeaveView";
+import ShiftRequestView from "../Screens/StaffPortal/ShiftRequest/shiftRequestView";
 
 const Loader = (Component: any) => (props: any) =>
   (
@@ -188,6 +191,39 @@ const routes: RouteObject[] = [
               {
                 path: "store",
                 element: <Store />,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    element: <RouteAuth />,
+    children: [
+      {
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: "staff-service",
+            element: <LeaveRequest />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="attendance" replace />,
+              },
+              {
+                path: "attendance",
+                element: <Attendance />,
+              },
+              {
+                path: "shift-request",
+                element: <ShiftRequestView />,
+              },
+              {
+                path: "leave-request",
+                element: <LeaveView />,
               },
             ],
           },

@@ -43,7 +43,6 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 }) => {
   const [toggle_, settoggle] = useState<any>(title);
 
-  console.log("Page", Page);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
