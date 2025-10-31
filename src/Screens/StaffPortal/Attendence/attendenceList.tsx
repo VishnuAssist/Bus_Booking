@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "../../../Store/StoreConfig";
 import AppPagination from "../../../Component/AppPagination";
 import { setAttendanceParams } from "../../../Store/slice/ParamsSlice";
 import { getAxiosParamsA } from "../../../Api/util";
-import AttendanceSearch from "./AttendenceSearch";
+import AttendenceFilter from "./component/AttendenceFilter";
 
 const AttendanceList = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ const AttendanceList = () => {
 
   return (
     <Card sx={{ height: "100%" }}>
-      <AttendanceSearch
+      <AttendenceFilter
         params={attendanceParams}
         setParams={(p) => dispatch(setAttendanceParams(p))}
       />
