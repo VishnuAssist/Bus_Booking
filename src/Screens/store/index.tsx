@@ -144,7 +144,8 @@ const Store = () => {
     <>
       <CommisionContainer>
         <PageHeader
-          // title="Store"
+          title="Store"
+          subtitle="Manage your stores"
           btntitle="Add Store"
           onActionClick={() => setModalOpen(true)}
         />
