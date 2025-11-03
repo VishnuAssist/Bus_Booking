@@ -20,7 +20,7 @@ export const StoreFormFields: FormFieldProps<StoreDto>[] = [
     {
         label: "Country Code",
         name: "countryCode",
-        type: "autocomplete",
+        type: "select",
         baseurl: "/Common/GetCountries",
         required: true,
         size: { sm: 12, md: 12, lg: 12 },

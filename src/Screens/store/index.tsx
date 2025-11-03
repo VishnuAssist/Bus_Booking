@@ -19,7 +19,8 @@ import AppPagination from "../../Component/AppPagination";
 import { Paper } from "@mui/material";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
 import type { MonthlySummarriesQueryParamsType } from "../../model/commissionType";
-import StoreFilter from "./StoreFilter";
+import { userTableDataService } from "./services/StoreTableData";
+import StoreFilter from "./components/StoreFilter";
 
 const Store = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -46,16 +47,11 @@ const Store = () => {
     error,
   } = useGetAllStoresQuery(ValidateParams(queryParams));
 
+  const { columns, rows } = userTableDataService(storesData?.items);
+
   const [addStore] = useAddStoreMutation();
   const [editStore] = useEditStoreMutation();
   const [deleteStore] = useDeleteStoreMutation();
-
-  const StoreColumns = [
-    { id: "storeId", label: "Store ID" },
-    { id: "name", label: "Store Name" },
-    { id: "code", label: "Store Code" },
-    { id: "countryCode", label: "Country Code" },
-  ];
 
   const onSubmit = async (formData: StoreDto) => {
     try {
@@ -154,10 +150,9 @@ const Store = () => {
           />
 
           <CommonTable
-            columns={StoreColumns}
-            rows={storesData?.items || []}
+            columns={columns}
+            rows={rows}
             actions={{
-              // onView: handleViewTargets,
               onEdit: (row) => {
                 setSelectedStore(row);
                 setModalOpen(true);
@@ -186,13 +181,7 @@ const Store = () => {
         title={selectedStore ? "Edit Store" : "Add Store"}
         validationSchema={storeFormValidationSchema}
         fields={storeFields()}
-        defaultValues={
-          selectedStore || {
-            name: "",
-            code: "",
-            countryCode: "",
-          }
-        }
+        defaultValues={selectedStore || {}}
       />
     </>
   );

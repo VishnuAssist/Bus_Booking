@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import TextFilter from "../../Component/Filters/TextFilter";
-import type { MonthlySummarriesQueryParamsType } from "../../model/commissionType";
+import type { MonthlySummarriesQueryParamsType } from "../../../model/commissionType";
+import TextFilter from "../../../Component/Filters/TextFilter";
 
 interface StaffCommissionFilterProps {
   queryParams: MonthlySummarriesQueryParamsType;
