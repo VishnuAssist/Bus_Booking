@@ -836,7 +836,6 @@ export default function CalendarView({
         flexDirection: "column",
         overflow: "hidden",
         p: 0,
-        height: "100%",
         borderRadius: 2,
       }}
     >

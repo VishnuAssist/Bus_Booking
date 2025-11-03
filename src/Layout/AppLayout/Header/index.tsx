@@ -66,7 +66,13 @@ function Header({ expanded, setExpanded }: HeaderProps) {
         {!isMobile && (
           <Button
             disableRipple
-            onClick={handleExpand}
+            onClick={() => {
+              if (window.innerWidth < theme.breakpoints.values.lg) {
+                toggleSidebar();
+              } else {
+                handleExpand();
+              }
+            }}
             sx={{
               minWidth: "auto",
               padding: 0.2,

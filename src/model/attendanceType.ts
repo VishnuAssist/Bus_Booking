@@ -15,6 +15,17 @@ export interface AttendanceType {
   userId: string;
 }
 
+export interface AttendanceRecord {
+  date: string;
+  dayOfWeek: string;
+  type: string;
+  job: string;
+  start: string;
+  end: string;
+  totalHours: string;
+  dailyTotal: string;
+  weeklyTotal?: string;
+}
 export interface AttendanceQueryParamsType extends PaginationOptionsDto {
   StartDate?: string;
   EndDate?: string;

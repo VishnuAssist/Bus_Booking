@@ -59,7 +59,7 @@ const Achievements = () => {
 
   return (
     <div>
-      <Grid container spacing={2}>\
+      <Grid container spacing={2}>
         <Grid size={{ xs: 12 }}>
           <Performance />
         </Grid>

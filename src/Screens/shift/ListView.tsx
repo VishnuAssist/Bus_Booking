@@ -313,7 +313,7 @@ const ListView = () => {
         <Grid size={{ xs: 12, md: 9 }}>
           {filteredShifts.length > 0 && (
             <DndProvider backend={HTML5Backend}>
-              <Box sx={{ height: "calc(100vh - 200px)" }}>
+              <Box >
                 <CalendarView
                   shifts={filteredShifts}
                   onEditShift={(shift) => {

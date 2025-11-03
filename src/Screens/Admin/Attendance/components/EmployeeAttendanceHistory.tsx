@@ -14,26 +14,13 @@ import {
 } from "@mui/material";
 import { History } from "@mui/icons-material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-
-interface AttendanceRecord {
-  date: string;
-  dayOfWeek: string;
-  type: string;
-  job: string;
-  start: string;
-  end: string;
-  totalHours: string;
-  dailyTotal: string;
-  weeklyTotal?: string;
-}
+import type { AttendanceRecord } from "../../../../model/attendanceType";
 
 const EmployeeAttendanceHistory = () => {
-  // Sample data based on the image
   const attendanceData: (
     | AttendanceRecord
     | { isWeekSeparator: boolean; weekRange: string }
   )[] = [
-    // Week 1: Oct 27 - Oct 31
     { isWeekSeparator: true, weekRange: "Oct 27 - Oct 31" },
     {
       date: "31/10",
