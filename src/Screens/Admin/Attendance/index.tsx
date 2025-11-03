@@ -19,10 +19,10 @@ const AdminAttendance = () => {
           title="Attendance"
           subtitle="Track your earnings and performance"
           icon={<AccessTimeOutlinedIcon />}
-          btntitle="Attendance Requests"
+          btntitle="Pending Attendance Requests"
           onActionClick={() => setAttendanceRequests(true)}
           icon2={<ViewIcon />}
-          btntitle2="Shift Requests"
+          btntitle2="Pending Shift Requests"
           onActionClick2={() => setShiftRequests(true)}
         />
 
