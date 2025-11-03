@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -17,27 +17,52 @@ import {
   Typography,
 } from "@mui/material";
 import { CloseRounded, CheckCircle, Cancel } from "@mui/icons-material";
-import type { leaverequesttype, StatusItem } from "../../../model/LeaveRequest";
+import type {
+  leaveReqTableType,
+  StatusItem,
+} from "../../../model/LeaveRequest";
 import {
   useGetallLeavesQuery,
   usePutLeavesMutation,
 } from "../../../Api/StaffservicesApi";
 import { useGetstatusQuery } from "../../../Api/dictionaryApi";
 
-const RequestView = () => {
+interface RequestViewProps {
+  onPendingCountChange?: (count: number) => void;
+}
+
+const RequestView = ({ onPendingCountChange }: RequestViewProps) => {
+
   const { data: request } = useGetallLeavesQuery({});
   const { data: statusData } = useGetstatusQuery({});
   const [updateLeave] = usePutLeavesMutation();
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedReq, setSelectedReq] = useState<leaverequesttype | null>(null);
+  const [selectedReq, setSelectedReq] = useState<leaveReqTableType | null>(
+    null
+  );
   const [comments, setComments] = useState("");
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(
     null
   );
 
+  const getStatusName = (id: number) => {
+    const status = statusData?.statuses?.find((s: StatusItem) => s.id === id);
+    return status ? status.name : "Unknown";
+  };
+  
+  const pendingCount =
+    request?.items?.filter(
+      (req) => getStatusName(req.status).toLowerCase() === "waiting"
+    ).length || 0;
+
+    useEffect(() => {
+    if (onPendingCountChange) {
+      onPendingCountChange(pendingCount);
+    }
+  }, [pendingCount, onPendingCountChange]);
   const handleOpenDialog = (
-    req: leaverequesttype,
+    req: leaveReqTableType,
     action: "approve" | "reject"
   ) => {
     setSelectedReq(req);
@@ -83,10 +108,6 @@ const RequestView = () => {
     }
   };
 
-  const getStatusName = (id: number) => {
-    const status = statusData?.statuses?.find((s: StatusItem) => s.id === id);
-    return status ? status.name : "Unknown";
-  };
 
   const getStatusColor = (
     id: number
@@ -140,10 +161,10 @@ const RequestView = () => {
               <TableCell>
                 <strong>Reason</strong>
               </TableCell>
-              <TableCell>
+              {/* <TableCell>
                 <strong>Status</strong>
-              </TableCell>
-              <TableCell align="center">
+              </TableCell> */}
+              <TableCell>
                 <strong>Action</strong>
               </TableCell>
             </TableRow>
@@ -177,17 +198,17 @@ const RequestView = () => {
                   >
                     {req.reason}
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     <Chip
                       label={getStatusName(req.status)}
                       color={getStatusColor(req.status)}
                       size="small"
                       sx={{ fontWeight: 600 }}
                     />
-                  </TableCell>
-                  <TableCell>
+                  </TableCell> */}
+                  <TableCell >
                     {pending ? (
-                      <Box display="flex" gap={1} justifyContent="center">
+                      <Box display="flex" gap={1} >
                         <Button
                           size="small"
                           variant="outlined"
@@ -208,9 +229,12 @@ const RequestView = () => {
                         </Button>
                       </Box>
                     ) : (
-                      <Typography variant="body2" color="text.secondary">
-                        —
-                      </Typography>
+                      <Chip
+                        label={getStatusName(req.status)}
+                        color={getStatusColor(req.status)}
+                        size="small"
+                        sx={{ fontWeight: 600 }}
+                      />
                     )}
                   </TableCell>
                 </TableRow>
@@ -220,7 +244,6 @@ const RequestView = () => {
         </Table>
       </TableContainer>
 
-      {/* Approval/Rejection Dialog */}
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}

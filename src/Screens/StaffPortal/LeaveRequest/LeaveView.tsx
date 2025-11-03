@@ -4,7 +4,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Card, CardContent, Grid } from "@mui/material";
 import { useState } from "react";
 import CommonTable from "../../../Component/CommenTable";
-import type { leaverequesttype } from "../../../model/LeaveRequest";
+import type { leaverequesttype, StatusItem } from "../../../model/LeaveRequest";
 import {
   useDeleteLeaveMutation,
   useGetallLeavesQuery,
@@ -15,6 +15,7 @@ import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 import ShiftFilter from "../../shift/ShiftFilter";
 import LeaveRequestDialog from "./LeaveForm";
 import CommisionContainer from "../../../Component/container";
+import { useGetstatusQuery } from "../../../Api/dictionaryApi";
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -47,8 +48,35 @@ const LeaveView = () => {
   };
 
   const { data: leaveData } = useGetallLeavesQuery(queryParams);
+  const { data: statusData } = useGetstatusQuery({});
 
   const [deleteLeave] = useDeleteLeaveMutation();
+
+  const getStatusName = (id: number | string) => {
+    const numericId = Number(id);
+    const status = statusData?.statuses?.find(
+      (s: StatusItem) => s.id === numericId
+    );
+    return status ? status.name : "Unknown";
+  };
+
+  const getStatusColor = (
+    id: number
+  ): "success" | "error" | "warning" | "default" => {
+    const name = getStatusName(id).toLowerCase();
+    switch (name) {
+      case "approved":
+        return "success";
+      case "rejected":
+      case "reject":
+        return "error";
+      case "waiting":
+        return "warning";
+      default:
+        return "default";
+    }
+  };
+
   const columns = [
     { id: "id", label: "ID", minWidth: 50 },
     { id: "leaveType", label: "Leave Type", minWidth: 120 },
@@ -58,22 +86,28 @@ const LeaveView = () => {
     {
       id: "status",
       label: "Status",
-      minWidth: 100,
-      format: (value: string) => (
-        <span
-          style={{
-            color:
-              value === "Approved"
-                ? "green"
-                : value === "Rejected"
-                ? "red"
-                : "orange",
-            fontWeight: "bold",
-          }}
-        >
-          {value}
-        </span>
-      ),
+      minWidth: 120,
+      format: (value: number) => {
+        const statusName = getStatusName(value);
+        const color = getStatusColor(value);
+        return (
+          <span
+            style={{
+              color:
+                color === "success"
+                  ? "green"
+                  : color === "error"
+                  ? "red"
+                  : color === "warning"
+                  ? "orange"
+                  : "gray",
+              fontWeight: "bold",
+            }}
+          >
+            {statusName}
+          </span>
+        );
+      },
     },
   ];
 
@@ -82,7 +116,7 @@ const LeaveView = () => {
     console.log("row", row);
   };
 
-  const handleView = (row: leaverequesttype) => console.log("View", row);
+  // const handleView = (row: leaverequesttype) => console.log("View", row);
 
   return (
     <CommisionContainer>
@@ -109,7 +143,6 @@ const LeaveView = () => {
                 columns={columns as any}
                 rows={leaveData?.items || []}
                 actions={{
-                  onView: handleView,
                   onEdit: (row) => {
                     setSelectedLeaveRequest(row);
                     setLeaveRequests(true);

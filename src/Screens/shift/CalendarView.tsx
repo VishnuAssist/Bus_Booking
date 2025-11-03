@@ -62,10 +62,10 @@ const ItemTypes = {
   SHIFT: "shift",
 };
 
-const formatTimeDisplay = (time: string) => {
-  if (!time) return "00:00";
-  return time.slice(0, 5);
-};
+// const formatTimeDisplay = (time: string) => {
+//   if (!time) return "00:00";
+//   return time.slice(0, 5);
+// };
 
 const isDateInShiftRange = (date: Date, shift: Shift) => {
   const checkDate = new Date(date);
@@ -303,7 +303,7 @@ export default function CalendarView({
   onDropShift,
 }: CalendarViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [view, setView] = useState<ViewMode>("week");
+  const [view, setView] = useState<ViewMode>("month");
   const [searchTerm, setSearchTerm] = useState("");
 
   const employees = useMemo(() => getEmployeesFromShifts(shifts), [shifts]);
