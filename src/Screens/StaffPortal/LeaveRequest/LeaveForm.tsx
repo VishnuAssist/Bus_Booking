@@ -119,9 +119,9 @@ const LeaveRequestDialog: React.FC<LeaveDialogProps> = ({
                   onChange={(e) => setLeaveType(Number(e.target.value))}
                 >
                   <MenuItem value={1}>Sick Leave</MenuItem>
-                  <MenuItem value={2}>Annual Leave</MenuItem>
-                  <MenuItem value={3}>Shift Reschedule</MenuItem>
-                  <MenuItem value={4}>Shift Swap</MenuItem>
+                  <MenuItem value={2}>Casual Leave</MenuItem>
+                  <MenuItem value={3}>Annual Leave</MenuItem>
+                  <MenuItem value={4}>Medical Leave</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -148,7 +148,7 @@ const LeaveRequestDialog: React.FC<LeaveDialogProps> = ({
               />
             </Grid>
 
-            <Grid size={{ xs: 12}}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 multiline
