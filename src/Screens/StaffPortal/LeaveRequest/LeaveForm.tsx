@@ -69,12 +69,8 @@ const LeaveRequestDialog: React.FC<LeaveDialogProps> = ({
       leaveType: leaveType,
       startDate: new Date(startDate).toISOString(),
       endDate: new Date(endDate).toISOString(),
-      leaveDays: 0,
-      approvedBy: "",
-      approverComments: "",
       status: 1,
       reason: reason.trim(),
-      approvedOn: null,
     };
 
     try {

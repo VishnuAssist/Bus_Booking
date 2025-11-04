@@ -19,6 +19,7 @@ import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 import StoreIcon from "@mui/icons-material/Store";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SellIcon from "@mui/icons-material/Sell";
+import SecurityIcon from '@mui/icons-material/Security';
 import GroupIcon from "@mui/icons-material/Group";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
@@ -250,6 +251,12 @@ function SidebarMenu({
             label: "Report&Analytics",
             link: "/Admin/reportandAnalytics",
             icon: <AdminPanelSettingsIcon />,
+            hide: true,
+          },
+          {
+            label: "Leave Policy",
+            link: "/Admin/leave-policy",
+            icon: <SecurityIcon />,
             hide: true,
           },
         ],

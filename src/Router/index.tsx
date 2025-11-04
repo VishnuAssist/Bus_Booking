@@ -69,6 +69,7 @@ const Store = Loader(lazy(() => import("../Screens/store/index")));
 const StoreTarget = Loader(lazy(() => import("../Screens/storeTarget")));
 const Sales = Loader(lazy(() => import("../Screens/sales/index")));
 const UserGroup = Loader(lazy(() => import("../Screens/UserGroup")));
+const LeavePolicy = Loader(lazy(() => import("../Screens/Admin/LeavePolicy")));
 
 const Reports = Loader(lazy(() => import("../Screens/Reports/Index")));
 
@@ -303,6 +304,10 @@ const routes: RouteObject[] = [
           {
             path: "achievement",
             element: <AdminAchievement />,
+          },
+          {
+            path: "leave-policy",
+            element: <LeavePolicy />,
           },
           {
             path: "ruleEngine",

@@ -40,7 +40,7 @@ export const attendanceApi = createApi({
     addEditAttendance: builder.mutation<attendanceType, attendanceType>({
       query: (args) => ({
         method: args?.id ? "PUT" : "POST",
-        url: "/Attendance",
+        url: args?.id ? `/Attendance/${args.id}` : "/Attendance",
         body: args,
       }),
       invalidatesTags: ["Attendance"],

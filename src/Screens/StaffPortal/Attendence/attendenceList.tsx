@@ -9,7 +9,6 @@ import {
   CardContent,
 } from "@mui/material";
 import { useGetAllAttendanceQuery } from "../../../Api/AttendanceApi";
-import type { attendanceType } from "../../../model/attendanceType";
 import NoDataCard from "../../../Component/NoDataCard";
 import TableSkeleton from "../../../Component/Skeletons/TableSkeleton";
 import { useAppDispatch, useAppSelector } from "../../../Store/StoreConfig";
@@ -17,6 +16,7 @@ import AppPagination from "../../../Component/AppPagination";
 import { setAttendanceParams } from "../../../Store/slice/ParamsSlice";
 import { getAxiosParamsA } from "../../../Api/util";
 import AttendenceFilter from "./component/AttendenceFilter";
+import type { AttendanceType } from "../../../model/attendanceType";
 
 const AttendanceList = () => {
   const dispatch = useAppDispatch();
@@ -52,17 +52,14 @@ const AttendanceList = () => {
                 <TableRow>
                   <TableCell>Clock In</TableCell>
                   <TableCell>Clock Out</TableCell>
-                  <TableCell>Shift ID</TableCell>
                   <TableCell>Note</TableCell>
-                  <TableCell>Date</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {attendanceData?.items.map((record: attendanceType) => (
+                {attendanceData?.items.map((record: AttendanceType) => (
                   <TableRow key={record.id}>
                     <TableCell>{record.checkInTime}</TableCell>
                     <TableCell>{record.checkOutTime}</TableCell>
-                    <TableCell>{record.shiftId}</TableCell>
                     <TableCell>{record.notes}</TableCell>
                   </TableRow>
                 ))}

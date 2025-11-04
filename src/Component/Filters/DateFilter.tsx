@@ -71,6 +71,7 @@ const DateFilter: React.FC<DateFilterProps> = ({
                 fullWidth: fullWidth,
                 placeholder: "Select Date",
               },
+              
               popper: {
                 sx: {
                   "& .MuiDateCalendar-root": {

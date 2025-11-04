@@ -12,7 +12,6 @@ export const shiftRequestTableDataService = (
     { id: "note", label: "Note" },
     { id: "reason", label: "Reason" },
     { id: "status", label: "Status" },
-    { id: "action", label: "Action" },
   ];
 
   const rows = shiftRequests || [];

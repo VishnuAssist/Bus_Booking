@@ -11,10 +11,10 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useAddEditAttendanceMutation } from "../../../Api/AttendanceApi";
-import type { attendanceType } from "../../../model/attendanceType";
 import type { RootState } from "../../../Store/StoreConfig";
 import { toast } from "react-toastify";
 import { useGetAllStoresQuery } from "../../../Api/StoreApi";
+import type { AttendanceType } from "../../../model/attendanceType";
 
 const ShiftClockMUI: React.FC = () => {
   const [isRunning, setIsRunning] = useState(false);
@@ -82,12 +82,12 @@ const ShiftClockMUI: React.FC = () => {
     }
 
     const clockOut = formatDateToTimeSpan(new Date());
-    const shiftData: attendanceType = {
+    const shiftData: AttendanceType = {
       checkInTime: clockInTime,
       checkOutTime: clockOut,
       workingHours: formatTime(seconds),
       attendanceStatus: 1,
-      shiftId: 1,
+      status: 1,
       notes: note,
       storeId: selectedStoreId,
       userId,

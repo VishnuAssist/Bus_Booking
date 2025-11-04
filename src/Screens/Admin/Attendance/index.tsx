@@ -7,6 +7,7 @@ import CommonDrawer from "./components/CommonDrawer";
 import { useState } from "react";
 import { ViewIcon } from "../../../Assests/Icons/icons";
 import ShiftRequestList from "./components/ShiftRequestList";
+import AttendanceRequestList from "./components/AttendanceRequestList";
 
 const AdminAttendance = () => {
   const [attendanceRequests, setAttendanceRequests] = useState(false);
@@ -35,7 +36,7 @@ const AdminAttendance = () => {
         isOpen={attendanceRequests}
         onClose={() => setAttendanceRequests(false)}
         title="Attendance Request List"
-        children={<ShiftRequestList />}
+        children={<AttendanceRequestList />}
       />
 
       <CommonDrawer

@@ -33,6 +33,14 @@ const ShiftRequestList = () => {
     shiftRequestData?.items || []
   );
 
+   const handleApprove = (row: ShiftRequestType) => {
+    
+    };
+  
+    const handleReject = (row: ShiftRequestType) => {
+     
+    };
+
   return (
     <>
       <AttendanceFilter
@@ -42,33 +50,21 @@ const ShiftRequestList = () => {
       <Box>
         {isLoading && <TableSkeleton />}
 
-        {shiftRequestData?.items?.length === 0 && (
-          <NoDataCard
-            sx={{ height: "100%", minHeight: 100 }}
-            text="No shift request records"
-          />
-        )}
-
         <CommonTable<ShiftRequestType>
           columns={columns}
           rows={rows}
-          // actions={{
-          //   onView: () => {
-          //     setShiftRequestHistory(true);
-          //   },
-          // }}
-
-          // <TableCell>
-          //       <ButtonGroup variant="contained" size="small">
-          //         <Button variant="contained" color="primary" size="small">
-          //           Approve
-          //         </Button>
-          //         <Button variant="contained" color="error" size="small">
-          //           Reject
-          //         </Button>
-          //       </ButtonGroup>
-          //     </TableCell>
+           approval={{
+            onConform: (row) => handleApprove(row),
+            onReject: (row) => handleReject(row),
+          }}
         />
+
+       {shiftRequestData?.items?.length === 0 && (
+          <NoDataCard
+            sx={{ height: "100%", minHeight: 100, mt:2 }}
+            text="No shift request records"
+          />
+        )}
       </Box>
       {shiftRequestData?.metaData && (
         <AppPagination
