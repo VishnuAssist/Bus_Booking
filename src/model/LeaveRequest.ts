@@ -41,13 +41,14 @@ export interface LeaveSummary {
 
 
 export interface leaveReqTableType {
-  id: number;
-  userName: string;
-  leaveType: string | number;
-  startDate: string;
-  endDate: string;
-  reason: string;
-  status: string | number;
+  id?: number;
+  userName?: string;
+  leaveType?: string | number;
+  leavePolicyId?:string | number;
+  startDate?: string | number | undefined;
+  endDate?: string | number | undefined;
+  reason?: string;
+  status?: string | number;
 }
 
 

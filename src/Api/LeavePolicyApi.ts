@@ -4,6 +4,7 @@ import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
 // import type { leaverequesttype, LeaveSummary } from "../model/LeaveRequest";
 import type { LeavePolicy } from "../model/LeavePolicy";
+import type { PolicyData } from "../model/policyType";
 
 export const LeavePolicyApi = createApi({
   reducerPath: "LeavePolicyApi",
@@ -37,7 +38,7 @@ export const LeavePolicyApi = createApi({
       invalidatesTags: ["LeavePolicy"],
     }),
 
-    addEditLeavePolicy: builder.mutation<LeavePolicy, LeavePolicy>({
+    addEditLeavePolicy: builder.mutation<PolicyData, any>({
       query: (body) => ({
         method: body?.id ? "PUT" : "POST",
         url: body?.id ? `/LeavePolicy/${body.id}` : "/LeavePolicy",

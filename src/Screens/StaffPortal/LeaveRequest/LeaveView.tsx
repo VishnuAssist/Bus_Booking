@@ -4,18 +4,32 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Card, CardContent, Grid } from "@mui/material";
 import { useState } from "react";
 import CommonTable from "../../../Component/CommenTable";
-import type { leaverequesttype, StatusItem } from "../../../model/LeaveRequest";
-import {
-  useDeleteLeaveMutation,
-  useGetallLeavesQuery,
-} from "../../../Api/LeaveRequestApi";
+import type {
+  leaveReqTableType,
+  leaverequesttype,
+  StatusItem,
+} from "../../../model/LeaveRequest";
 import AppPagination from "../../../Component/AppPagination";
 import type { ShiftQueryParamsType } from "../../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 import ShiftFilter from "../../shift/ShiftFilter";
-import LeaveRequestDialog from "./LeaveForm";
+// import LeaveRequestDialog from "./LeaveForm";
 import CommisionContainer from "../../../Component/container";
 import { useGetstatusQuery } from "../../../Api/dictionaryApi";
+import { CommonDialog } from "../../../Component/forms/FormDialog";
+import {
+  LeaveRequestFormFields,
+  leaveRequestFormValidationSchema,
+} from "../../../feilds_validation/leaveRequestFields";
+import {
+  useDeleteLeaveMutation,
+  useGetallLeavesQuery,
+  useGetLeavePolicyQuery,
+  usePostLeaveMutation,
+  usePutLeavesMutation,
+} from "../../../Api/leaveRequestApi";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../Store/StoreConfig";
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return "";
@@ -47,11 +61,27 @@ const LeaveView = () => {
     }
   };
 
+  const { data: policyData } = useGetLeavePolicyQuery({});
   const { data: leaveData } = useGetallLeavesQuery(queryParams);
   const { data: statusData } = useGetstatusQuery({});
+  const [postLeave] = usePostLeaveMutation();
+  const [updateLeave] = usePutLeavesMutation();
 
   const [deleteLeave] = useDeleteLeaveMutation();
 
+  const getLeaveFields = () => {
+    const fields = [...LeaveRequestFormFields];
+
+    const policyField = fields.find((f) => f.name === "leavePolicyId");
+    if (policyField && policyData) {
+      policyField.options = policyData?.items?.map((policy: any) => ({
+        id: policy.id,
+        name: policy?.name,
+      }));
+    }
+
+    return fields;
+  };
   const getStatusName = (id: number | string) => {
     const numericId = Number(id);
     const status = statusData?.statuses?.find(
@@ -79,7 +109,7 @@ const LeaveView = () => {
 
   const columns = [
     { id: "id", label: "ID", minWidth: 50 },
-    { id: "leaveType", label: "Leave Type", minWidth: 120 },
+    { id: "leavePolicyId", label: "Leave Policy", minWidth: 120 },
     { id: "startDate", label: "Start Date", minWidth: 100, format: formatDate },
     { id: "endDate", label: "End Date", minWidth: 100, format: formatDate },
     { id: "reason", label: "Reason", minWidth: 200 },
@@ -111,6 +141,40 @@ const LeaveView = () => {
     },
   ];
 
+  const onSubmit = async (formData: leaveReqTableType) => {
+    console.log("formData", formData);
+    try {
+      const start = new Date(formData.startDate || "");
+      const end = new Date(formData.endDate || "");
+
+      const diffTime = end.getTime() - start.getTime();
+      const leaveDays =
+        diffTime >= 0 ? Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1 : 0;
+
+      const payload = {
+        leavePolicyId: formData.leavePolicyId,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        status: 1,
+        leaveDays: leaveDays,
+        reason: formData.reason,
+      };
+
+      if (selectedLeaveRequest?.id) {
+        const response = await updateLeave({
+          id: selectedLeaveRequest.id,
+          ...payload,
+        }).unwrap();
+        console.log("Leave updated:", response);
+      } else {
+        const response = await postLeave(payload).unwrap();
+        console.log("Leave submitted:", response);
+      }
+      setLeaveRequests(false);
+    } catch (err) {
+      console.error("Error submitting leave:", err);
+    }
+  };
   const handleDelete = async (row: leaverequesttype) => {
     await deleteLeave(row?.id || 0);
     console.log("row", row);
@@ -162,10 +226,21 @@ const LeaveView = () => {
           </Card>
         </Grid>
       </Grid>
-      <LeaveRequestDialog
+      {/* <LeaveRequestDialog
         selectedLeaveRequest={selectedLeaveRequest}
         onClose={() => setLeaveRequests(false)}
         open={LeaveRequest}
+      /> */}
+      <CommonDialog
+        open={LeaveRequest}
+        onClose={() => setLeaveRequests(false)}
+        onSubmit={onSubmit}
+        title={
+          selectedLeaveRequest ? "Edit Leave Request" : "Add Leave Request"
+        }
+        validationSchema={leaveRequestFormValidationSchema}
+        fields={getLeaveFields()}
+        defaultValues={selectedLeaveRequest || {}}
       />
     </CommisionContainer>
   );

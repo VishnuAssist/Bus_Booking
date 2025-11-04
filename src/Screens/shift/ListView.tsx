@@ -234,6 +234,7 @@ const ListView = () => {
       } else {
         await postShift(finalData).unwrap();
       }
+      console.log("finalData",finalData)
       setModalOpen(false);
       setSelectedShift(null);
     } catch (error) {

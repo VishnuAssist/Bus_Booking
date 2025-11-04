@@ -2,7 +2,11 @@ import { useState } from "react";
 import CommisionContainer from "../../../Component/container";
 import PageHeader from "../../../Component/commonPageHeader";
 import CommonFormDialog from "../../../Component/forms/AssignForm";
-import type { Policy, PolicyData } from "../../../model/policyType";
+import type {
+  Policy,
+  PolicyData,
+  PolicyQueryParamsType,
+} from "../../../model/policyType";
 import {
   PolicyFormFields,
   policyFormValidationSchema,
@@ -11,59 +15,32 @@ import { useGetallAccountQuery } from "../../../Api/authApi";
 import { useGetAllUserGroupsQuery } from "../../../Api/userGroupApi";
 import CommonTable from "../../../Component/CommenTable";
 import { policyTableDataService } from "./services/policyTableDataService";
-
-
-export const dummyPolicies: Policy[] = [
-  {
-    id: 1,
-    name: "Annual Leave Policy",
-    description:
-      "description.",
-    maxDays: 20,
-    startDate: "2025-01-01",
-    endDate: "2025-12-31",
-    users: [
-      { id: "U1001", userName: "John Doe" },
-      { id: "U1002", userName: "Jane Smith" },
-    ],
-    groups: [
-      { id: 1, groupName: "Sales Department" },
-      { id: 2, groupName: "Marketing Team" },
-    ],
-  },
-  {
-    id: 2,
-    name: "Sick Leave Policy",
-    description:
-      "description.",
-    maxDays: 10,
-    startDate: "2025-01-01",
-    endDate: "2025-12-31",
-    users: [{ id: "U1003", userName: "Michael Johnson" }],
-    groups: [{ id: 3, groupName: "HR Department" }],
-  },
-  {
-    id: 3,
-    name: "Maternity Leave Policy",
-    description:
-      "description.",
-    maxDays: 26,
-    startDate: "2025-03-01",
-    endDate: "2026-02-28",
-    users: [
-      { id: "U1004", userName: "Sophia Patel" },
-      { id: "U1005", userName: "Emily Davis" },
-    ],
-    groups: [{ id: 4, groupName: "Operations" }],
-  },
-];
+import {
+  useAddEditLeavePolicyMutation,
+  useGetallLeavesPolicyQuery,
+} from "../../../Api/LeavePolicyApi";
+import AppPagination from "../../../Component/AppPagination";
+import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
+import PolicyFilter from "./component/policyFilter";
 
 const PolicyView = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedPolicy, setSelectedPolicy] = useState<any | null>(null);
 
+  const [queryParams, setQueryParams] = useState<PolicyQueryParamsType>({
+    ...DEFAULT_PAGINATION_OPTIONS,
+    StartDate: undefined,
+    EndDate: undefined,
+  });
+
+  const handleQueryParamsChange = (newQueryParams: PolicyQueryParamsType) => {
+    setQueryParams(newQueryParams);
+  };
+
   const { data: userData } = useGetallAccountQuery({});
   const { data: groupData } = useGetAllUserGroupsQuery({});
+  const { data: policyData } = useGetallLeavesPolicyQuery({});
+  const [addEditPolicy] = useAddEditLeavePolicyMutation();
 
   const policyFields = () => {
     const fields = [...PolicyFormFields];
@@ -87,12 +64,33 @@ const PolicyView = () => {
   };
 
   const onSubmit = async (formData: PolicyData) => {
-    console.log("formData", formData);
+    try {
+      const finalData = {
+        ...formData,
+        description: formData.description,
+        startDate: formData.startDate,
+        maxDays: formData.maxDays,
+        endDate: formData.endDate,
+      };
+      if (Array.isArray(formData.userIds) && formData.userIds.length > 0) {
+        delete finalData.groupIds;
+      } else if (
+        Array.isArray(formData.groupIds) &&
+        formData.groupIds.length > 0
+      ) {
+        delete finalData.userIds;
+      }
+
+      await addEditPolicy(finalData).unwrap();
+
+      setModalOpen(false);
+      setSelectedPolicy(null);
+    } catch (error) {
+      console.error("Error creating/updating shift:", error);
+    }
   };
 
-   const { columns, rows } = policyTableDataService(
-      dummyPolicies || []
-    );
+  const { columns, rows } = policyTableDataService(policyData?.items || []);
 
   return (
     <>
@@ -103,17 +101,28 @@ const PolicyView = () => {
           onActionClick={() => setModalOpen(true)}
         />
 
-        <CommonTable<Policy>
-                  columns={columns}
-                  rows={rows}
-                   actions={{
-              onView: () => {
-               
-              },
-            }}
-                />
-      </CommisionContainer>
+        <PolicyFilter
+          queryParams={queryParams}
+          onQueryParamsChange={handleQueryParamsChange}
+        />
 
+        <CommonTable<Policy>
+          columns={columns}
+          rows={rows}
+          actions={{
+            onView: () => {},
+          }}
+        />
+
+        {policyData?.metaData && (
+          <AppPagination
+            metaData={policyData?.metaData}
+            onPageChange={(page: number) =>
+              setQueryParams({ ...queryParams, PageNumber: page })
+            }
+          />
+        )}
+      </CommisionContainer>
 
       <CommonFormDialog
         open={isModalOpen}
@@ -125,7 +134,7 @@ const PolicyView = () => {
         title={selectedPolicy ? "Edit Policy" : "Add Policy"}
         validationSchema={policyFormValidationSchema}
         fields={policyFields()}
-        // defaultValues={getDefaultValues(selectedPolicy)}
+        defaultValues={selectedPolicy || {}}
         showAssignmentType={true}
         mode={selectedPolicy ? "edit" : "create"}
       />
