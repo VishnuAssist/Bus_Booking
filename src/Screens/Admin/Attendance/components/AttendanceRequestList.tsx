@@ -13,7 +13,6 @@ import { useState } from "react";
 import AppPagination from "../../../../Component/AppPagination";
 import CommonTable from "../../../../Component/CommenTable";
 import TableSkeleton from "../../../../Component/Skeletons/TableSkeleton";
-import AttendanceFilter from "../../../StaffPortal/Attendence/component/AttendenceFilter";
 import { attendanceRequestTableDataService } from "../service/attendanceTableDataService";
 import {
   useAddEditAttendanceMutation,
@@ -25,6 +24,7 @@ import type {
 } from "../../../../model/attendanceType";
 import { toast } from "react-toastify";
 import NoDataCard from "../../../../Component/NoDataCard";
+import AttendenceFilterAdmin from "./AttendenceFilterAdmin";
 
 const AttendanceRequestList = () => {
   const [queryParams, setQueryParams] = useState<AttendanceQueryParamsType>({
@@ -95,7 +95,7 @@ const AttendanceRequestList = () => {
 
   return (
     <>
-      <AttendanceFilter
+      <AttendenceFilterAdmin
         queryParams={queryParams}
         onQueryParamsChange={handleQueryParamsChange}
       />
@@ -113,8 +113,8 @@ const AttendanceRequestList = () => {
         />
         {attendanceRequestData?.items?.length === 0 && (
           <NoDataCard
-            sx={{ height: "100%", minHeight: 100 ,mt:2}}
-            text="No Attendance request records"
+            sx={{ height: "100%", minHeight: 100, mt: 2 }}
+            text="No Attendance request records "
           />
         )}
       </Box>
