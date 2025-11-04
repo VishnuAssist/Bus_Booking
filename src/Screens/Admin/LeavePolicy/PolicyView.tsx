@@ -17,6 +17,7 @@ import CommonTable from "../../../Component/CommenTable";
 import { policyTableDataService } from "./services/policyTableDataService";
 import {
   useAddEditLeavePolicyMutation,
+  useDeleteLeaveMutation,
   useGetallLeavesPolicyQuery,
 } from "../../../Api/LeavePolicyApi";
 import AppPagination from "../../../Component/AppPagination";
@@ -41,6 +42,7 @@ const PolicyView = () => {
   const { data: groupData } = useGetAllUserGroupsQuery({});
   const { data: policyData } = useGetallLeavesPolicyQuery({});
   const [addEditPolicy] = useAddEditLeavePolicyMutation();
+  const [deletePolicy] = useDeleteLeaveMutation();
 
   const policyFields = () => {
     const fields = [...PolicyFormFields];
@@ -92,6 +94,15 @@ const PolicyView = () => {
 
   const { columns, rows } = policyTableDataService(policyData?.items || []);
 
+  const handleEdit = (row: PolicyData) => {
+    setSelectedPolicy(row);
+    setModalOpen(true);
+  };
+  const handleDelete = async (row: PolicyData) => {
+    await deletePolicy(row?.id || 0);
+    console.log("row", row);
+  };
+
   return (
     <>
       <CommisionContainer>
@@ -111,6 +122,8 @@ const PolicyView = () => {
           rows={rows}
           actions={{
             onView: () => {},
+            // onEdit: handleEdit,
+            onDelete: handleDelete,
           }}
         />
 
