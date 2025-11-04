@@ -4,7 +4,6 @@ import type { AttendanceType } from "../../../../model/attendanceType";
 import NoDataCard from "../../../../Component/NoDataCard";
 import TableSkeleton from "../../../../Component/Skeletons/TableSkeleton";
 import AppPagination from "../../../../Component/AppPagination";
-import AttendanceFilter from "../../../StaffPortal/Attendence/component/AttendenceFilter";
 
 import CommonDrawer from "./CommonDrawer";
 import { useState } from "react";
@@ -13,6 +12,7 @@ import CommonTable from "../../../../Component/CommenTable";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../../Constant/defaultValues";
 import { adminAttendanceTableDataService } from "../service/adminAttendanceTableDataService";
 import type { AttendanceQueryParamsType } from "../../../../model/attendanceType";
+import AttendenceFilterAdmin from "./AttendenceFilterAdmin";
 
 const CurrentLoginUserList = () => {
   const [attedanceHistory, setAttedanceHistory] = useState(false);
@@ -39,19 +39,12 @@ const CurrentLoginUserList = () => {
   return (
     <>
       <Card sx={{ height: "100%" }}>
-        <AttendanceFilter
+        <AttendenceFilterAdmin
           queryParams={queryParams}
           onQueryParamsChange={handleQueryParamsChange}
         />
         <CardContent>
           {isLoading && <TableSkeleton />}
-
-          {attendanceData?.items?.length === 0 && (
-            <NoDataCard
-              sx={{ height: "100%", minHeight: 100 }}
-              text="No attendance records"
-            />
-          )}
 
           <CommonTable<AttendanceType>
             columns={columns}
@@ -62,6 +55,12 @@ const CurrentLoginUserList = () => {
               },
             }}
           />
+          {attendanceData?.items?.length === 0 && (
+            <NoDataCard
+              sx={{ height: "100%", minHeight: 100, mt: 2 }}
+              text="No attendance records"
+            />
+          )}
         </CardContent>
         {attendanceData?.metaData && (
           <AppPagination

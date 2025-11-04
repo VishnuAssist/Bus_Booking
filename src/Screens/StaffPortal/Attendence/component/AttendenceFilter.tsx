@@ -1,4 +1,4 @@
-import { Box, TextField, debounce } from "@mui/material";
+import { Box, debounce, TextField } from "@mui/material";
 import { useState } from "react";
 import type { AttendanceQueryParamsType } from "../../../../model/attendanceType";
 
@@ -9,6 +9,7 @@ interface Props {
 
 const AttendenceFilter = ({ queryParams, onQueryParamsChange }: Props) => {
   const [searchTerm, setSearchTerm] = useState("");
+
 
   const searchDebounce = debounce(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +40,8 @@ const AttendenceFilter = ({ queryParams, onQueryParamsChange }: Props) => {
           }}
         />
       </Box>
+
+
       <Box>
         <TextField
           size="small"

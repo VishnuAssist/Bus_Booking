@@ -31,4 +31,5 @@ export interface AttendanceQueryParamsType extends PaginationOptionsDto {
   StartDate?: string;
   EndDate?: string;
   Status?: number;
+  UserId?: string;
 }
