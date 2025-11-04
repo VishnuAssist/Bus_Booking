@@ -1,18 +1,20 @@
+import type { PaginationOptionsDto } from "../Dto/paginationOptionsDto";
+
 export interface leaverequesttype {
-  id: number;
+  id?: number;
   leaveDays: number | string;
   leaveType: string;
   reason: string;
   startDate: string;
   endDate: string;
-  upload: string;
   approverComments: string;
   approvedBy: string;
   approvedOn: string;
   status: number;
+  assignUserId: string;
 }
 export interface Adminleaverequesttype {
-  id: number;
+  id?: number;
   userIds?: string[];
   leaveType: string;
   reason: string;
@@ -24,6 +26,19 @@ export interface leaveTableType {
   approved: number | string;
   remainingBalance: number | string;
 }
+export interface LeaveSummary {
+  userId: string;
+  userName: string;
+  totalLeaveRequests: number;
+  totalLeaveDays: number;
+  approvedLeaveDays: number;
+  pendingLeaveDays: number;
+  rejectedLeaveDays: number;
+  approvedCount: number;
+  pendingCount: number;
+  rejectedCount: number;
+}
+
 
 export interface leaveReqTableType {
   id: number;
@@ -43,4 +58,10 @@ export interface StatusItem {
 
 export interface StatusResponse {
   statuses: StatusItem[];
+}
+
+export interface LeaveSummaryQueryParamsType extends PaginationOptionsDto {
+  StartDate?:  string ;
+  EndDate?:  string;
+  userId?: string;
 }

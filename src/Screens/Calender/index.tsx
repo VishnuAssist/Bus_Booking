@@ -2,6 +2,8 @@ import { Grid } from "@mui/material";
 import PageHeader from "../../Component/commonPageHeader";
 import CalendarView from "../Calender/calender";
 import CommisionContainer from "../../Component/container";
+import { useAppSelector } from "../../Store/StoreConfig";
+import { useGetallshiftQuery } from "../../Api/shiftApi";
 
 const sampleShifts = [
   {
@@ -62,6 +64,13 @@ const sampleShifts = [
 ];
 
 const index = () => {
+  
+    const userId = useAppSelector((state: any) => state?.auth?.account?.user?.id);
+  
+  const { data: shiftData } = useGetallshiftQuery({ UserId: userId });
+  
+  console.log("shiftData", shiftData);
+
   return (
     <CommisionContainer>
       <PageHeader
@@ -76,17 +85,18 @@ const index = () => {
       <Grid container>
         <Grid size={12}>
           <CalendarView
-            shifts={sampleShifts.map((s) => ({
-              id: s.id,
-              title: s.shiftType,
-              name: `Store ${s.storeId}`,
-              start: new Date(s.startDate),
-              end: new Date(s.endDate),
-              startTime: s.startTime,
-              endTime: s.endTime,
-              location: `Store ${s.storeId}`,
-              employeeId: s.storeId,
-            }))}
+            // shifts={sampleShifts.map((s) => ({
+            //   id: s.id,
+            //   title: s.shiftType,
+            //   name: `Store ${s.storeId}`,
+            //   start: new Date(s.startDate),
+            //   end: new Date(s.endDate),
+            //   startTime: s.startTime,
+            //   endTime: s.endTime,
+            //   location: `Store ${s.storeId}`,
+            //   employeeId: s.storeId,
+            // }))}
+            shifts={shiftData?.items || []}
           />
         </Grid>
       </Grid>

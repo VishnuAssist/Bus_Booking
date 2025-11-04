@@ -7,11 +7,13 @@ import { useState } from "react";
 import CommonTable from "../../../Component/CommenTable";
 import { userTableDataService } from "./services/userTableDataService";
 import { CommonDialog } from "../../../Component/forms/FormDialog";
-import type { Adminleaverequesttype } from "../../../model/LeaveRequest";
+import type { Adminleaverequesttype, LeaveSummaryQueryParamsType } from "../../../model/LeaveRequest";
 import {
   AdminLeaveReqFields,
   AdminLeaveReqFieldsValidationSchema,
 } from "../../../feilds_validation/adminLeaveReqFields";
+import { useGetSummaryLeavesQuery } from "../../../Api/LeaveRequestApi";
+import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 
 const usersData = {
   items: [
@@ -49,6 +51,17 @@ const usersData = {
 };
 
 const UserLeaveList = () => {
+
+  const [queryParams, setQueryParams] = useState<LeaveSummaryQueryParamsType>({
+    ...DEFAULT_PAGINATION_OPTIONS,
+    StartDate: "",
+    EndDate: "",
+    userId:""
+  });
+  const { data: leaveSummary } = useGetSummaryLeavesQuery(queryParams);
+  
+  console.log("leaveSummary", leaveSummary);
+
   const [leaveRequest, setLeaveRequest] = useState(false);
   const [addTimeOffOpen, setAddTimeOffOpen] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
