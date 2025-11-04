@@ -17,7 +17,7 @@ import type { leaverequesttype } from "../../../model/LeaveRequest";
 import {
   usePostLeaveMutation,
   usePutLeavesMutation,
-} from "../../../Api/StaffservicesApi";
+} from "../../../Api/LeaveRequestApi";
 
 interface LeaveFormProps {
   open: boolean;

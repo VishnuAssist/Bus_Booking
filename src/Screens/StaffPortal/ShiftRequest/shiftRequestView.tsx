@@ -8,7 +8,7 @@ import type { leaverequesttype } from "../../../model/LeaveRequest";
 import {
   useDeleteLeaveMutation,
   useGetallLeavesQuery,
-} from "../../../Api/StaffservicesApi";
+} from "../../../Api/LeaveRequestApi";
 import AppPagination from "../../../Component/AppPagination";
 import type { ShiftQueryParamsType } from "../../../model/commissionType";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";

@@ -24,7 +24,7 @@ import type {
 import {
   useGetallLeavesQuery,
   usePutLeavesMutation,
-} from "../../../Api/StaffservicesApi";
+} from "../../../Api/LeaveRequestApi";
 import { useGetstatusQuery } from "../../../Api/dictionaryApi";
 
 interface RequestViewProps {
@@ -32,7 +32,6 @@ interface RequestViewProps {
 }
 
 const RequestView = ({ onPendingCountChange }: RequestViewProps) => {
-
   const { data: request } = useGetallLeavesQuery({});
   const { data: statusData } = useGetstatusQuery({});
   const [updateLeave] = usePutLeavesMutation();
@@ -50,13 +49,13 @@ const RequestView = ({ onPendingCountChange }: RequestViewProps) => {
     const status = statusData?.statuses?.find((s: StatusItem) => s.id === id);
     return status ? status.name : "Unknown";
   };
-  
+
   const pendingCount =
     request?.items?.filter(
       (req) => getStatusName(req.status).toLowerCase() === "waiting"
     ).length || 0;
 
-    useEffect(() => {
+  useEffect(() => {
     if (onPendingCountChange) {
       onPendingCountChange(pendingCount);
     }
@@ -107,7 +106,6 @@ const RequestView = ({ onPendingCountChange }: RequestViewProps) => {
       console.error("Error submitting leave:", err);
     }
   };
-
 
   const getStatusColor = (
     id: number
@@ -206,9 +204,9 @@ const RequestView = ({ onPendingCountChange }: RequestViewProps) => {
                       sx={{ fontWeight: 600 }}
                     />
                   </TableCell> */}
-                  <TableCell >
+                  <TableCell>
                     {pending ? (
-                      <Box display="flex" gap={1} >
+                      <Box display="flex" gap={1}>
                         <Button
                           size="small"
                           variant="outlined"

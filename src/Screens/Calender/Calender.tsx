@@ -114,6 +114,8 @@ function formatYear(date: Date) {
 export default function CalendarView({ shifts }: CalendarViewProps) {
 
 
+  console.log("shifts", shifts);
+
   const userId = useAppSelector((state: any) => state?.auth?.account?.user?.id);
 
   const { data: shiftData } = useGetallshiftQuery({UserId:userId});
