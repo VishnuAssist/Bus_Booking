@@ -24,7 +24,7 @@ import { storeApi } from "../Api/StoreApi";
 import { attendanceApi } from "../Api/AttendanceApi";
 import { commissionApi } from "../Api/commisionApi";
 import { userGroupApi } from "../Api/userGroupApi";
-import { StaffserviceApi } from "../Api/leaveRequestApi";
+import { StaffserviceApi } from "../Api/LeaveRequestApi";
 import { storeTargetApi } from "../Api/storeTargetApi";
 import { LeavePolicyApi } from "../Api/LeavePolicyApi";
 
