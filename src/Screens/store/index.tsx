@@ -21,12 +21,17 @@ import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
 import type { MonthlySummarriesQueryParamsType } from "../../model/commissionType";
 import { userTableDataService } from "./services/StoreTableData";
 import StoreFilter from "./components/StoreFilter";
+import { useGetCountriesQuery } from "../../Api/rulesApi";
 
 const Store = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<StoreDto | null>(null);
 
   // API hooks
+
+  const { data: countrys } = useGetCountriesQuery({})
+
+  console.log("countrys", countrys);
 
   const [queryParams, setQueryParams] =
     useState<MonthlySummarriesQueryParamsType>({
@@ -84,25 +89,17 @@ const Store = () => {
     }
   };
 
-  const storeFields = () => {
-    const fields = [...StoreFormFields];
-    const countryField = fields.find((f) => f.name === "countryCode");
-    if (countryField) {
-      countryField.options = [
-        { id: "US", name: "United States" },
-        { id: "IN", name: "India" },
-        { id: "JP", name: "Japan" },
-        { id: "FR", name: "France" },
-        { id: "DE", name: "Germany" },
-        { id: "AE", name: "United Arab Emirates" },
-        { id: "SG", name: "Singapore" },
-        { id: "AU", name: "Australia" },
-        { id: "CA", name: "Canada" },
-        { id: "GB", name: "United Kingdom" },
-      ];
-    }
-    return fields;
-  };
+  // const storeFields = () => {
+  //   const fields = [...StoreFormFields];
+  //   const countryField = fields.find((f) => f.name === "countryCode");
+  //   if (countryField) {
+  //     countryField.options = countrys?.map((data) => ({
+  //       id: data?.code,
+  //       name: data?.name,
+  //     })) || []
+  //   }
+  //   return fields;
+  // };
 
   if (isLoading) {
     return (
@@ -180,7 +177,7 @@ const Store = () => {
         onSubmit={onSubmit}
         title={selectedStore ? "Edit Store" : "Add Store"}
         validationSchema={storeFormValidationSchema}
-        fields={storeFields()}
+        fields={StoreFormFields}
         defaultValues={selectedStore || {}}
       />
     </>

@@ -3,28 +3,38 @@ import type { FormFieldProps } from "../model/formFeilds";
 import type { StoreDto } from "../model/storeType";
 
 export const StoreFormFields: FormFieldProps<StoreDto>[] = [
-    {
-        label: "Store Name",
-        name: "name",
-        type: "text",
-        required: true,
-        size: { sm: 12, md: 12, lg: 12 },
+  {
+    label: "Store Name",
+    name: "name",
+    type: "text",
+    required: true,
+    size: { sm: 12, md: 12, lg: 12 },
+  },
+  {
+    label: "Store Code",
+    name: "code",
+    type: "text",
+    required: true,
+    size: { sm: 12, md: 12, lg: 12 },
+  },
+  // {
+  //     label: "Country Code",
+  //     name: "countryCode",
+  //     type: "autocomplete",
+  //     // baseurl: "/Common/GetCountries",
+  //     required: true,
+  //     size: { sm: 12, md: 12, lg: 12 },
+  // },
+  {
+    name: "countryCode",
+    label: "Country Code",
+    type: "autocomplete",
+    size: { sm: 12, md: 12, lg: 12 },
+    baseurl: "/Common/GetCountries",
+    autocompletelabel: {
+      optionvalue: { id: "code" },
     },
-    {
-        label: "Store Code",
-        name: "code",
-        type: "text",
-        required: true,
-        size: { sm: 12, md: 12, lg: 12 },
-    },
-    {
-        label: "Country Code",
-        name: "countryCode",
-        type: "select",
-        baseurl: "/Common/GetCountries",
-        required: true,
-        size: { sm: 12, md: 12, lg: 12 },
-    },
+  },
 ];
 
 export const storeFormValidationSchema = yup.object().shape({
