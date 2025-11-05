@@ -26,8 +26,7 @@ import DictionarySearch from "./DictionarySearch";
 
 const DictionaryPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedDictionary, setSelectedDictionary] =
-    useState<dictionarytype | null>(null);
+  const [selectedDictionary, setSelectedDictionary] = useState<dictionarytype | null>(null);
   const dispatch = useAppDispatch();
 
   const DictionaryParams = useAppSelector(
@@ -40,7 +39,7 @@ const DictionaryPage = () => {
   );
   const { data: categorys } = useGetcategoriesQuery();
 
-  console.log("DictionaryParams", DictionaryParams);
+  console.log("selectedDictionary", selectedDictionary);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -94,7 +93,6 @@ const DictionaryPage = () => {
     },
   ];
 
-  console.log("select", selectedDictionary);
   // const handleView = (row: dictionarytype) => console.log("View", row);
   const handleEdit = (row: dictionarytype) => {
     setSelectedDictionary(row);
