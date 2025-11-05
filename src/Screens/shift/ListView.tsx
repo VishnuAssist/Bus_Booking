@@ -312,7 +312,7 @@ const ListView = () => {
           </Box>
         </Grid>
         <Grid size={{ xs: 12, md: 9 }}>
-          {filteredShifts.length > 0 && (
+          {/* {filteredShifts.length > 0 && ( */}
             <DndProvider backend={HTML5Backend}>
               <Box >
                 <CalendarView
@@ -326,7 +326,7 @@ const ListView = () => {
                 />
               </Box>
             </DndProvider>
-          )}
+          {/* )} */}
         </Grid>
       </Grid>
 
