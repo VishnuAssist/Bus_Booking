@@ -5,16 +5,21 @@ export const userTableDataService = (
 ) => {
   const HistoryColumns = [
     { id: "userName", label: "User Name" },
-    { id: "approved", label: "Approved" },
-    { id: "remainingBalance", label: "Remaining Balance" }
+    { id: "totalLeaveDays", label: "Remaining Balance" },
+    { id: "totalLeaveRequests", label: "Requested Leaves" },
+    { id: "approvedLeaveDays", label: "Approved" },
+    { id: "rejectedLeaveDays", label: "Rejected" },
   ];
 
   const rows = userLeave
     ? userLeave.map((leave: leaveTableType) => {
         return {
           userName: leave.userName,
-          approved: leave.approved,
-          remainingBalance: leave.remainingBalance,
+          approvedLeaveDays: leave.approvedLeaveDays,
+          totalLeaveRequests: leave.totalLeaveRequests,
+          totalLeaveDays: leave.totalLeaveDays,
+          rejectedLeaveDays: leave.rejectedLeaveDays,
+          pendingCount: leave.pendingCount,
         };
       })
     : [];

@@ -22,9 +22,15 @@ export interface Adminleaverequesttype {
   endDate: string;
 }
 export interface leaveTableType {
-  userName: string;
-  approved: number | string;
-  remainingBalance: number | string;
+  userName?: string;
+  approvedLeaveDays?: number | string;
+  remainingBalance?: number | string;
+  totalLeaveDays?: number | string;
+  rejectedLeaveDays?: number | string;
+  approvedCount?: number | string;
+  pendingCount?: number | string;
+  rejectedCount?: number | string;
+  totalLeaveRequests?: number | string;
 }
 export interface LeaveSummary {
   userId: string;
