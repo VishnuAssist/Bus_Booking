@@ -7,65 +7,32 @@ import { useState } from "react";
 import CommonTable from "../../../Component/CommenTable";
 import { userTableDataService } from "./services/userTableDataService";
 import { CommonDialog } from "../../../Component/forms/FormDialog";
-import type { Adminleaverequesttype, LeaveSummaryQueryParamsType } from "../../../model/LeaveRequest";
+import type {
+  Adminleaverequesttype,
+  LeaveSummaryQueryParamsType,
+} from "../../../model/LeaveRequest";
 import {
   AdminLeaveReqFields,
   AdminLeaveReqFieldsValidationSchema,
 } from "../../../feilds_validation/adminLeaveReqFields";
 import { useGetSummaryLeavesQuery } from "../../../Api/LeaveRequestApi";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
-
-const usersData = {
-  items: [
-    {
-      id: 1,
-      userName: "Riyas Khan",
-      approved: "Yes",
-      remainingBalance: "5 Days",
-    },
-    {
-      id: 2,
-      userName: "Aisha Patel",
-      approved: "No",
-      remainingBalance: "12 Days",
-    },
-    {
-      id: 3,
-      userName: "John Mathew",
-      approved: "Pending",
-      remainingBalance: "8 Days",
-    },
-    {
-      id: 4,
-      userName: "Sneha Verma",
-      approved: "Yes",
-      remainingBalance: "2 Days",
-    },
-    {
-      id: 5,
-      userName: "Arjun Mehta",
-      approved: "No",
-      remainingBalance: "10 Days",
-    },
-  ],
-};
+import AppPagination from "../../../Component/AppPagination";
+import { Card } from "@mui/material";
 
 const UserLeaveList = () => {
-
   const [queryParams, setQueryParams] = useState<LeaveSummaryQueryParamsType>({
     ...DEFAULT_PAGINATION_OPTIONS,
     StartDate: "",
     EndDate: "",
-    userId:""
+    userId: "",
   });
   const { data: leaveSummary } = useGetSummaryLeavesQuery(queryParams);
-  
-  console.log("leaveSummary", leaveSummary);
 
   const [leaveRequest, setLeaveRequest] = useState(false);
   const [addTimeOffOpen, setAddTimeOffOpen] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
-  const { columns, rows } = userTableDataService(usersData?.items);
+  const { columns, rows } = userTableDataService(leaveSummary?.items);
 
   const adminLeaveReqFields = () => {
     const fields = [...AdminLeaveReqFields];
@@ -88,14 +55,24 @@ const UserLeaveList = () => {
           btntitle2={`Pending Requests (${pendingCount})`}
           onActionClick2={() => setLeaveRequest(true)}
         />
+        <Card>
+          <CommonTable
+            columns={columns}
+            rows={rows}
+            // actions={{
+            //   onView: (rows) => setLeaveRequest(true),
+            // }}
+          />
 
-        <CommonTable
-          columns={columns}
-          rows={rows}
-          actions={{
-            onView: (rows) => setLeaveRequest(true),
-          }}
-        />
+          {leaveSummary?.metaData && (
+            <AppPagination
+              metaData={leaveSummary?.metaData}
+              onPageChange={(page: number) =>
+                setQueryParams({ ...queryParams, PageNumber: page })
+              }
+            />
+          )}
+        </Card>
       </CommisionContainer>
 
       <CommonDialog

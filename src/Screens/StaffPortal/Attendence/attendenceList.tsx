@@ -37,15 +37,8 @@ const AttendanceList = () => {
         setParams={(p) => dispatch(setAttendanceParams(p))}
       />
       <CardContent>
-        {isLoading && <TableSkeleton />}
 
-        {attendanceData?.items?.length === 0 && (
-          <NoDataCard
-            sx={{ height: "100%", minHeight: 100 }}
-            text="No attendance records"
-          />
-        )}
-        {attendanceData?.items && attendanceData?.items?.length > 0 && (
+        {attendanceData?.items && (
           <TableContainer>
             <Table>
               <TableHead>
@@ -66,6 +59,12 @@ const AttendanceList = () => {
               </TableBody>
             </Table>
           </TableContainer>
+        )}
+        {attendanceData?.items?.length === 0 && (
+          <NoDataCard
+            sx={{ height: "100%", minHeight: 100,mt:2 }}
+            text="No attendance records"
+          />
         )}
       </CardContent>
       {attendanceData?.metaData && (
