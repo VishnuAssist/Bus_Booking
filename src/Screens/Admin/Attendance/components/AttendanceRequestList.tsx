@@ -76,6 +76,10 @@ const AttendanceRequestList = () => {
       status: actionType === "approve" ? 2 : 3,
       approverComments: comment,
       notes: selectedRow.notes ?? "",
+      checkInTime: selectedRow.checkInTime ?? "",
+      checkOutTime: selectedRow.checkOutTime ?? "",
+      workingHours: selectedRow.workingHours ?? "",
+      storeId: selectedRow.storeId ?? 0,
     };
 
     try {

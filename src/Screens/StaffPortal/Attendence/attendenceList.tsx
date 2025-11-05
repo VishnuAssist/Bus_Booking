@@ -25,7 +25,7 @@ const AttendanceList = () => {
     (state) => state.auth.Params.AttendanceParams
   );
 
-  const { data: attendanceData, isLoading } = useGetAllAttendanceQuery(
+  const { data: attendanceData } = useGetAllAttendanceQuery(
     getAxiosParamsA({ ...attendanceParams, PageSize: 5 })
   );
   console.log("attendance", attendanceData);
@@ -37,7 +37,6 @@ const AttendanceList = () => {
         setParams={(p) => dispatch(setAttendanceParams(p))}
       />
       <CardContent>
-
         {attendanceData?.items && (
           <TableContainer>
             <Table>
@@ -46,6 +45,7 @@ const AttendanceList = () => {
                   <TableCell>Clock In</TableCell>
                   <TableCell>Clock Out</TableCell>
                   <TableCell>Note</TableCell>
+                  <TableCell>Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -54,6 +54,7 @@ const AttendanceList = () => {
                     <TableCell>{record.checkInTime}</TableCell>
                     <TableCell>{record.checkOutTime}</TableCell>
                     <TableCell>{record.notes}</TableCell>
+                    <TableCell>{record.status}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -62,7 +63,7 @@ const AttendanceList = () => {
         )}
         {attendanceData?.items?.length === 0 && (
           <NoDataCard
-            sx={{ height: "100%", minHeight: 100,mt:2 }}
+            sx={{ height: "100%", minHeight: 100, mt: 2 }}
             text="No attendance records"
           />
         )}
