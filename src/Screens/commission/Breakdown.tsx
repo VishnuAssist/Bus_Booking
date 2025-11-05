@@ -39,7 +39,7 @@ const Breakdown = () => {
                         alignItems: "center",
                         p: 1,
                         borderRadius: 2,
-                        backgroundColor: "#f0fdf4",
+                        // backgroundColor: "#f0fdf4",
                         border: "1px solid #bbf7d0",
                         mb: 2,
                     }}

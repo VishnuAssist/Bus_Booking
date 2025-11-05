@@ -14,7 +14,10 @@ const PageFilter = () => {
         <>
             <Card>
                 <CardContent>
-                    <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <Box>
+                            <Typography sx={{fontSize:"19px",fontWeight:"400"}}>Commission Dashboard</Typography>
+                        </Box>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                             <Button variant="contained" size="small" startIcon={FilterOpen ? <FilterAltOffIcon /> : <FilterAltIcon />} onClick={() => setFilterOpen((prev) => !prev)}>{FilterOpen ? "Hide Filter" : "Show Filter"}</Button>
                             <Button variant="contained" size="small" startIcon={<DownloadIcon />}>Export</Button>
