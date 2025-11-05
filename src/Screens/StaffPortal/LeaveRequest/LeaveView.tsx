@@ -191,7 +191,10 @@ const LeaveView = () => {
         // btntitle="Approval"
         icon={<DescriptionOutlinedIcon />}
         icon2={<AccessTimeIcon />}
-        onActionClick2={() => setLeaveRequests(true)}
+        onActionClick2={() => {
+          setSelectedLeaveRequest(null);
+          setLeaveRequests(true);
+        }}
         // onActionClick={() => setLeaveRequests(true)}
       />
 

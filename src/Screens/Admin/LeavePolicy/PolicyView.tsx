@@ -114,7 +114,9 @@ const PolicyView = () => {
         <PageHeader
           title="Leave Policy"
           btntitle="Add Policy"
-          onActionClick={() => setModalOpen(true)}
+          onActionClick={() => {
+            setSelectedPolicy(null)
+            setModalOpen(true)}}
         />
         <Card>
           <PolicyFilter
