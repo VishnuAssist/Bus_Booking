@@ -18,6 +18,7 @@ import {
 import { useGetSummaryLeavesQuery } from "../../../Api/LeaveRequestApi";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 import AppPagination from "../../../Component/AppPagination";
+import { Card } from "@mui/material";
 
 const UserLeaveList = () => {
   const [queryParams, setQueryParams] = useState<LeaveSummaryQueryParamsType>({
@@ -54,23 +55,24 @@ const UserLeaveList = () => {
           btntitle2={`Pending Requests (${pendingCount})`}
           onActionClick2={() => setLeaveRequest(true)}
         />
-
-        <CommonTable
-          columns={columns}
-          rows={rows}
-          // actions={{
-          //   onView: (rows) => setLeaveRequest(true),
-          // }}
-        />
-
-        {leaveSummary?.metaData && (
-          <AppPagination
-            metaData={leaveSummary?.metaData}
-            onPageChange={(page: number) =>
-              setQueryParams({ ...queryParams, PageNumber: page })
-            }
+        <Card>
+          <CommonTable
+            columns={columns}
+            rows={rows}
+            // actions={{
+            //   onView: (rows) => setLeaveRequest(true),
+            // }}
           />
-        )}
+
+          {leaveSummary?.metaData && (
+            <AppPagination
+              metaData={leaveSummary?.metaData}
+              onPageChange={(page: number) =>
+                setQueryParams({ ...queryParams, PageNumber: page })
+              }
+            />
+          )}
+        </Card>
       </CommisionContainer>
 
       <CommonDialog
