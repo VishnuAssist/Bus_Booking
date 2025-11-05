@@ -1,4 +1,4 @@
-import { Grid, Paper } from "@mui/material";
+import { Divider, Grid, Paper } from "@mui/material";
 import PageFilter from "./PageFilter";
 import Cards from "./Cards";
 import Structure from "./Structure";
@@ -46,22 +46,7 @@ const Commission = () => {
         />
 
         <Grid container spacing={2}>
-          <Grid size={12}>
-            <PageFilter />
-          </Grid>
-          <Grid size={12}>
-            <Cards />
-          </Grid>
-          <Grid size={6}>
-            <Breakdown />
-          </Grid>
-          <Grid size={6}>
-            <MonthlyHistory />
-          </Grid>
-          <Grid size={12}>
-            <Structure />
-          </Grid>
-          <Grid size={12}>
+            <Grid size={12}>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
               <Box sx={{ width: "100%", typography: "body1" }}>
                 <TabContext value={value}>
@@ -94,6 +79,25 @@ const Commission = () => {
               </Box>
             </Paper>
           </Grid>
+           <Grid size={12}>
+            <Divider sx={{ my: 1 }} />
+          </Grid>
+          <Grid size={12}>
+            <PageFilter />
+          </Grid>
+          <Grid size={12}>
+            <Cards />
+          </Grid>
+          <Grid size={6}>
+            <Breakdown />
+          </Grid>
+          <Grid size={6}>
+            <MonthlyHistory />
+          </Grid>
+          <Grid size={12}>
+            <Structure />
+          </Grid>
+        
         </Grid>
       </CommisionContainer>
 

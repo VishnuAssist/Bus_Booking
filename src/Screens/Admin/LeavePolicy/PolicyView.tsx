@@ -23,9 +23,13 @@ import {
 import AppPagination from "../../../Component/AppPagination";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
 import PolicyFilter from "./component/policyFilter";
+import { Card } from "@mui/material";
+import CommonDrawer from "../Attendance/components/CommonDrawer";
+import PolicyPreview from "./PolicyPreview";
 
 const PolicyView = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [selectedPolicy, setSelectedPolicy] = useState<any | null>(null);
 
   const [queryParams, setQueryParams] = useState<PolicyQueryParamsType>({
@@ -65,6 +69,7 @@ const PolicyView = () => {
     return fields;
   };
 
+  
   const onSubmit = async (formData: PolicyData) => {
     try {
       const finalData = {
@@ -111,30 +116,34 @@ const PolicyView = () => {
           btntitle="Add Policy"
           onActionClick={() => setModalOpen(true)}
         />
-
-        <PolicyFilter
-          queryParams={queryParams}
-          onQueryParamsChange={handleQueryParamsChange}
-        />
-
-        <CommonTable<Policy>
-          columns={columns}
-          rows={rows}
-          actions={{
-            onView: () => {},
-            // onEdit: handleEdit,
-            onDelete: handleDelete,
-          }}
-        />
-
-        {policyData?.metaData && (
-          <AppPagination
-            metaData={policyData?.metaData}
-            onPageChange={(page: number) =>
-              setQueryParams({ ...queryParams, PageNumber: page })
-            }
+        <Card>
+          <PolicyFilter
+            queryParams={queryParams}
+            onQueryParamsChange={handleQueryParamsChange}
           />
-        )}
+
+          <CommonTable<Policy>
+            columns={columns}
+            rows={rows}
+            actions={{
+              onView: (row) => {
+      setSelectedPolicy(row);
+      setPreviewOpen(true);
+    },
+              // onEdit: handleEdit,
+              onDelete: handleDelete,
+            }}
+          />
+
+          {policyData?.metaData && (
+            <AppPagination
+              metaData={policyData?.metaData}
+              onPageChange={(page: number) =>
+                setQueryParams({ ...queryParams, PageNumber: page })
+              }
+            />
+          )}
+        </Card>
       </CommisionContainer>
 
       <CommonFormDialog
@@ -151,6 +160,14 @@ const PolicyView = () => {
         showAssignmentType={true}
         mode={selectedPolicy ? "edit" : "create"}
       />
+
+      <CommonDrawer
+              anchor="right"
+              isOpen={previewOpen}
+              onClose={() => setPreviewOpen(false)}
+              title="Policy Preview"
+              children=  {selectedPolicy && <PolicyPreview policy={selectedPolicy} />}
+            />
     </>
   );
 };
