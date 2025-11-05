@@ -29,6 +29,7 @@ const DictionaryPage = () => {
   const [selectedDictionary, setSelectedDictionary] =
     useState<dictionarytype | null>(null);
   const dispatch = useAppDispatch();
+
   const DictionaryParams = useAppSelector(
     (state) => state.auth.Params.DictionaryParams
   );
@@ -38,6 +39,8 @@ const DictionaryPage = () => {
     getAxiosParamsA({ ...DictionaryParams, PageSize: 5 })
   );
   const { data: categorys } = useGetcategoriesQuery();
+
+  console.log("DictionaryParams", DictionaryParams);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -79,7 +82,7 @@ const DictionaryPage = () => {
   };
 
   const columns = [
-    { id: "categoryId", label: "Category ID", minWidth: 50 },
+    { id: "categoryName", label: "Category Name", minWidth: 50 },
     { id: "name", label: "Name", minWidth: 100 },
     { id: "code", label: "Code", minWidth: 100 },
     { id: "description", label: "Description", minWidth: 150 },
@@ -115,6 +118,7 @@ const DictionaryPage = () => {
           <DictionarySearch
             params={DictionaryParams}
             setParams={(p) => dispatch(setDictionaryParams(p))}
+            categories={categorys?.categories || []}
           />
           <CommonTable
             columns={columns}

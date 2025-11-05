@@ -25,6 +25,7 @@ export function getAxiosParamsA(dictionaryParams: QueryParamsType) {
   if (dictionaryParams?.SearchTerm)
     params["SearchTerm"] = dictionaryParams?.SearchTerm;
   if (dictionaryParams?.Code) params["Code"] = dictionaryParams?.Code;
+  if (dictionaryParams?.Category) params["Category"] = dictionaryParams?.Category;
 
 
 

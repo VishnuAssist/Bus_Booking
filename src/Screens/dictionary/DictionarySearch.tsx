@@ -3,19 +3,24 @@ import {
   debounce,
   InputAdornment,
   TextField,
-  InputLabel,
+  Autocomplete,
 } from "@mui/material";
 import { useState } from "react";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import type { QueryParamsType } from "../../model/common";
+import type { dictionarycategoryType } from "../../model/Dictionary";
 
-interface prop {
+
+interface Props {
   params: QueryParamsType;
   setParams: (p: Partial<QueryParamsType>) => void;
+  categories: dictionarycategoryType[];
 }
 
-const DictionarySearch = ({ params, setParams }: prop) => {
-  const [searchterm, setSearchTerm] = useState(params.SearchTerm);
+const DictionarySearch = ({ params, setParams, categories }: Props) => {
+  const [searchTerm, setSearchTerm] = useState(params.SearchTerm || "");
+  const [selectedCategory, setSelectedCategory] =
+    useState<dictionarycategoryType | null>(null);
 
   const debouncedSearch = debounce(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,13 +32,11 @@ const DictionarySearch = ({ params, setParams }: prop) => {
   return (
     <Box margin={2} sx={{ float: "right", display: "flex", gap: 2 }}>
       <Box sx={{ minWidth: 300 }}>
-        <InputLabel htmlFor="Search" className="label-bold">
-          Search
-        </InputLabel>
         <TextField
+          id="Search"
           size="small"
           fullWidth
-          value={searchterm}
+          value={searchTerm}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -46,6 +49,28 @@ const DictionarySearch = ({ params, setParams }: prop) => {
             debouncedSearch(event);
           }}
           placeholder="Search..."
+        />
+      </Box>
+
+      <Box>
+        <Autocomplete
+          size="small"
+          sx={{ width: 200 }}
+          fullWidth
+          options={categories || []}
+          getOptionLabel={(option) => option?.name || ""}
+          value={selectedCategory}
+          onChange={(_, newValue) => {
+            setSelectedCategory(newValue);
+            setParams({
+              ...params,
+              Category: newValue?.id || "",
+              PageNumber: 1,
+            });
+          }}
+          renderInput={(params) => (
+            <TextField {...params} label="Select User" variant="outlined" />
+          )}
         />
       </Box>
     </Box>
