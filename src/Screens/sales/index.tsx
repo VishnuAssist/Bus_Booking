@@ -24,6 +24,7 @@ import { useAppDispatch, useAppSelector } from "../../Store/StoreConfig";
 import { getAxiosParamsA } from "../../Api/util";
 import SalesSearch from "./salesSearch";
 import { Paper } from "@mui/material";
+import ResponseViewDrawer from "../../Component/ResponseViewDrawer";
 
 const Sales = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +34,8 @@ const Sales = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedSales, setSelectedSales] = useState<SalesType | null>(null);
 
+    const [isViewDrawerOpen, setViewDrawerOpen] = useState(false);
+const [selectedSale, setSelectedSale] = useState<SalesType | null>(null);
   // API hooks
   //   const { data: salesData } = useGetAllSalesQuery({});
 
@@ -73,6 +76,10 @@ const Sales = () => {
 
   const SalesColumns = [
     { id: "id", label: "ID", minWidth: 50 },
+        { id: "brandCode", label: "Brand ", minWidth: 50 },
+    { id: "category", label: "Category ", minWidth: 50 },
+    { id: "storeCode", label: "Store Code ", minWidth: 50 },
+    { id: "employeeCode", label: "Employee Code ", minWidth: 50 },
     { id: "invoiceNumber", label: "Invoice Number", minWidth: 120 },
     { id: "itemNumber", label: "Item Number", minWidth: 120 },
     { id: "quantity", label: "Quantity", minWidth: 80 },
@@ -198,6 +205,10 @@ const Sales = () => {
             columns={SalesColumns}
             rows={salesData?.items || []}
             actions={{
+                             onView: (row) => {
+                  setSelectedSale(row);
+                  setViewDrawerOpen(true);
+                },
               onEdit: handleEdit,
               onDelete: handleDelete,
             }}
@@ -234,6 +245,15 @@ const Sales = () => {
         subcategories={subcategories}
         subsubcategories={subsubcategories}
       />
+            {selectedSale && (
+        <ResponseViewDrawer<SalesType>
+          isOpen={isViewDrawerOpen}
+          onClose={() => setViewDrawerOpen(false)}
+          data={selectedSale}
+          title="Sales Details"
+          formFields={SalesFormFields} 
+        />
+      )}
     </>
   );
 };
