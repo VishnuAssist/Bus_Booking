@@ -12,26 +12,11 @@ import {
   type TooltipProps,
 } from "@mui/material";
 import { NavLink as RouterLink } from "react-router-dom";
-
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import DataUsageIcon from "@mui/icons-material/DataUsage";
-import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
-import StoreIcon from "@mui/icons-material/Store";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import SellIcon from "@mui/icons-material/Sell";
-import SecurityIcon from '@mui/icons-material/Security';
-import GroupIcon from "@mui/icons-material/Group";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { SidebarContext } from "../../../../Context/SidebarContext";
 import { CalendarIcon, DashboardIcon } from "../../../../Assests/Icons/icons";
 
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import GroupsIcon from "@mui/icons-material/Groups";
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
   .MuiList-root {
@@ -140,12 +125,6 @@ function SidebarMenu({
             hide: true,
           },
           {
-            label: "Commission",
-            link: "/dashboards/Commission",
-            icon: <DataUsageIcon />,
-            hide: true,
-          },
-          {
             label: "LeaderBoard",
             link: "/dashboards/LeaderBoard",
             icon: <EmojiEventsOutlinedIcon />,
@@ -155,120 +134,6 @@ function SidebarMenu({
             label: "Profile",
             link: "/dashboards/Profile",
             icon: <AccountCircleOutlinedIcon />,
-            hide: true,
-          },
-          {
-            label: "Calendar",
-            link: "/dashboards/Calender",
-            icon: <CalendarIcon />,
-            hide: true,
-          },
-          {
-            label: "STS",
-            link: "/sts",
-            icon: <StoreIcon />,
-            hide: true,
-          },
-          // {
-          //   label: "Store",
-          //   link: "/settings/store",
-          //   icon: <StoreIcon />,
-          //   hide: true,
-          // },
-          // {
-          //   label: "Target",
-          //   link: "/settings/target",
-          //   icon: <AdminPanelSettingsIcon />,
-          //   hide: true,
-          // },
-          // {
-          //   label: "Sales",
-          //   link: "/settings/sales",
-          //   icon: <SellIcon />,
-          //   hide: true,
-          // },
-          {
-            label: "UserGroup",
-            link: "/settings/UserGroup",
-            icon: <GroupsIcon />,
-            hide: true,
-          },
-        ],
-      },
-      {
-        title: "Staff Portal",
-        icon: <GroupIcon />,
-        items: [
-          // {
-          //   label: "Attendence",
-          //   link: "/staff/attendence",
-          //   icon: <AccessTimeIcon />,
-          //   hide: true,
-          // },
-          {
-            label: "Staff Services",
-            link: "/staff-service",
-            icon: <DescriptionOutlinedIcon />,
-            hide: true,
-          },
-        ],
-      },
-      {
-        title: "Admin",
-        icon: <AdminPanelSettingsOutlinedIcon />,
-        items: [
-          {
-            label: "Shift",
-            link: "/Admin/shift",
-            icon: <FilterTiltShiftIcon />,
-            hide: true,
-          },
-          {
-            label: "Attendance & Shift Request",
-            link: "/Admin/attendance",
-            icon: <AdminPanelSettingsIcon />,
-            hide: true,
-          },
-          {
-            label: "Leave Request",
-            link: "/Admin/request",
-            icon: <HowToRegIcon />,
-            hide: true,
-          },
-          {
-            label: "Achievement",
-            link: "/Admin/achievement",
-            icon: <AdminPanelSettingsIcon />,
-            hide: true,
-          },
-          {
-            label: "RuleList",
-            link: "/Admin/rulesList",
-            icon: <AdminPanelSettingsIcon />,
-            hide: true,
-          },
-          {
-            label: "Report&Analytics",
-            link: "/Admin/reportandAnalytics",
-            icon: <AdminPanelSettingsIcon />,
-            hide: true,
-          },
-          {
-            label: "Leave Policy",
-            link: "/Admin/leave-policy",
-            icon: <SecurityIcon />,
-            hide: true,
-          },
-        ],
-      },
-      {
-        title: "Dictionary",
-        icon: <MenuBookIcon />,
-        items: [
-          {
-            label: "Dictionary",
-            link: "/settings/Dictionary",
-            icon: <MenuBookIcon />,
             hide: true,
           },
         ],
@@ -351,11 +216,6 @@ function SidebarMenu({
           <List
             key={index}
             component="div"
-            subheader={
-              <ListSubheader component="div" disableSticky>
-                {group.title}
-              </ListSubheader>
-            }
           >
             <SubMenuWrapper>
               <List component="div">{renderMenuItems(group.items)}</List>
