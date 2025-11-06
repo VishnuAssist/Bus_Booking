@@ -18,12 +18,14 @@
 export interface SalesType {
   id: number;
   departmentId?: number;
-  brandId?: number;
-  categoryId?: number;
-  subCategoryId?: number | null;
-  subSubCategoryId?: number | null;
+  brandCode?: number;
+  category?: number;
+  subCategory?: number | null;
+  subSubCategory?: number | null;
+  storeCode?: number | string;
+  employeeCode?: number | string;
   saleTypeId?: number;
-  saleAmount: number;
+  saleAmount?: number;
   productPrice: number;
   tax: number;
   discount: number;

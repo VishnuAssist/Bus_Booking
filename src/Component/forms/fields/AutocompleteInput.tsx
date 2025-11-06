@@ -123,8 +123,8 @@ const skipCalling = () => {
       disabled={disabled}
       loading={isFetching}
       value={selectedOption ?? null}
-      getOptionLabel={(option) =>
-        optionLabel ? optionLabel(option, 0) : option?.name ?? ""
+      getOptionLabel={(option:any) =>
+        optionLabel ? optionLabel(option, 0) : option?.name ?? option?.employeeCode ?? option?.code ?? ""
       }
       onChange={(_, newValue) => {
         const selectedId = autocompletelabel?.optionvalue?.id

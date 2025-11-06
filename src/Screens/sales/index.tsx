@@ -120,59 +120,59 @@ const Sales = () => {
     const fields = [...SalesFormFields];
 
     // sales field
-    const salesField = fields.find((f) => f.name === "saleTypeId");
-    if (salesField) {
-      salesField.options = sales.map((item) => ({
-        id: item?.id?.toString(),
-        name: item.name,
-      }));
-    }
+    // const salesField = fields.find((f) => f.name === "saleTypeId");
+    // if (salesField) {
+    //   salesField.options = sales.map((item) => ({
+    //     id: item?.id?.toString(),
+    //     name: item.name,
+    //   }));
+    // }
     // Department field
-    const departmentField = fields.find((f) => f.name === "departmentId");
-    if (departmentField) {
-      departmentField.options = departments.map((item) => ({
-        id: item?.id?.toString(),
-        name: item.name,
-      }));
-    }
+    // const departmentField = fields.find((f) => f.name === "departmentId");
+    // if (departmentField) {
+    //   departmentField.options = departments.map((item) => ({
+    //     id: item?.id?.toString(),
+    //     name: item.name,
+    //   }));
+    // }
 
     // Brand field
-    const brandField = fields.find((f) => f.name === "brandId");
-    if (brandField) {
-      brandField.options = brands.map((item) => ({
-        id: item?.id?.toString(),
-        name: item.name,
-      }));
-    }
+    // const brandField = fields.find((f) => f.name === "brandId");
+    // if (brandField) {
+    //   brandField.options = brands.map((item) => ({
+    //     id: item?.id?.toString(),
+    //     name: item.name,
+    //   }));
+    // }
 
     // Category field
-    const categoryField = fields.find((f) => f.name === "categoryId");
-    if (categoryField) {
-      categoryField.options = categories.map((item) => ({
-        id: item?.id?.toString(),
-        name: item.name,
-      }));
-    }
+    // const categoryField = fields.find((f) => f.name === "categoryId");
+    // if (categoryField) {
+    //   categoryField.options = categories.map((item) => ({
+    //     id: item?.id?.toString(),
+    //     name: item.name,
+    //   }));
+    // }
 
     // Subcategory field
-    const subcategoryField = fields.find((f) => f.name === "subCategoryId");
-    if (subcategoryField) {
-      subcategoryField.options = subcategories.map((item) => ({
-        id: item?.id?.toString(),
-        name: item.name,
-      }));
-    }
+    // const subcategoryField = fields.find((f) => f.name === "subCategoryId");
+    // if (subcategoryField) {
+    //   subcategoryField.options = subcategories.map((item) => ({
+    //     id: item?.id?.toString(),
+    //     name: item.name,
+    //   }));
+    // }
 
     // Subsubcategory field
-    const subsubcategoryField = fields.find(
-      (f) => f.name === "subSubCategoryId"
-    );
-    if (subsubcategoryField) {
-      subsubcategoryField.options = subsubcategories.map((item) => ({
-        id: item?.id?.toString(),
-        name: item.name,
-      }));
-    }
+    // const subsubcategoryField = fields.find(
+    //   (f) => f.name === "subSubCategoryId"
+    // );
+    // if (subsubcategoryField) {
+    //   subsubcategoryField.options = subsubcategories.map((item) => ({
+    //     id: item?.id?.toString(),
+    //     name: item.name,
+    //   }));
+    // }
 
     return fields;
   };
