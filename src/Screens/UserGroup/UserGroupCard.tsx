@@ -18,6 +18,8 @@ import { useGetUserGroupByIdQuery } from "../../Api/userGroupApi";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import UserGroupPreview from "./UserGroupPreview";
 
+import UserGroupCardSkeleton from "../../Component/Skeletons/CardSkeleton";
+
 interface Props {
   groups: userGroupType[];
   loading: boolean;
@@ -58,7 +60,7 @@ const UserGroupCard: React.FC<Props> = ({ groups, loading, error }) => {
     }
   };
 
-  if (loading) return <Typography>Loading user groups...</Typography>;
+  if (loading) return <UserGroupCardSkeleton/>;
   if (error)
     return <Typography color="error">Failed to load groups.</Typography>;
   if (!groups.length) return <Typography>No user groups found.</Typography>;
