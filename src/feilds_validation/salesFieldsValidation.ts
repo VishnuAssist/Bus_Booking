@@ -7,21 +7,20 @@ export const SalesFormFields: FormFieldProps<SalesType>[] = [
     //     label: "Department",
     //     name: "departmentId",
     //     type: "text",
-    //     required: true,
+    //     
     //     size: { sm: 12, md: 6, lg: 6 },
     // },
     {
         label: "Brand",
         name: "brandCode",
         type: "text",
-        required: true,
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
         label: "Category",
         name: "category",
         type: "text",
-        required: true,
+
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
@@ -42,63 +41,62 @@ export const SalesFormFields: FormFieldProps<SalesType>[] = [
         label: "Sale Type Id",
         name: "saleTypeId",
         type: "number",
-        required: true,
+
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
         label: "Sale Amount",
         name: "saleAmount",
         type: "number",
-        required: true,
+
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
         label: "Product Price",
         name: "productPrice",
         type: "number",
-        required: true,
+
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
         label: "Tax",
         name: "tax",
         type: "number",
-        required: true,
+
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
         label: "Discount",
         name: "discount",
         type: "number",
-        required: true,
+
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
         label: "Quantity",
         name: "quantity",
         type: "number",
-        required: true,
+
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
         label: "Invoice Number",
         name: "invoiceNumber",
         type: "text",
-        required: true,
+
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
         label: "Item Number",
         name: "itemNumber",
         type: "text",
-        required: true,
+
         size: { sm: 12, md: 6, lg: 6 },
     },
      {
     label: "Employee Code",
     name: "employeeCode",
     type: "autocomplete",
-    required: true,
     multiple: true,
     baseurl: "Account/all",
     size: { sm: 12, md: 6, lg: 6 },
@@ -110,7 +108,6 @@ export const SalesFormFields: FormFieldProps<SalesType>[] = [
     label: "Store Code",
     name: "storeCode",
     type: "autocomplete",
-    required: true,
     multiple: true,
     baseurl: "/Store",
     size: { sm: 12, md: 6, lg: 6 },
@@ -122,7 +119,7 @@ export const SalesFormFields: FormFieldProps<SalesType>[] = [
         label: "Sale Amount",
         name: "saleAmount",
         type: "number",
-        required: true,
+        
         size: { sm: 12, md: 6, lg: 6 },
     },
     {
