@@ -13,7 +13,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   IconButton,
   Dialog,
   DialogTitle,
@@ -23,6 +22,7 @@ import {
   Tab,
   Chip,
   Stack,
+  Grid,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -85,8 +85,6 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
   const dispatch = useAppDispatch();
   const testData = useAppSelector((state) => state.testData);
 
-  console.log("testData", testData);
-
   const [activeTab, setActiveTab] = useState(0);
   const [editingItem, setEditingItem] = useState<{
     type: string;
@@ -123,6 +121,7 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
       }
 
       // Get the current test data (excluding workflowJson)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { workflowJson: _, ...testDataWithoutWorkflow } = testData;
 
       // Prepare the test data with the local workflowJson
@@ -213,70 +212,80 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
     switch (type) {
       case "user":
         return {
-          id: `user-${Date.now()}`,
-          userName: "",
-          email: "",
+          employeeID: Date.now(),
           firstName: "",
-          lastName: "",
-          employeeCode: "",
-          storeId: testData.storeId,
-          countryCode: "US",
-          retailCountryCode: "US",
-          departmentId: 10,
-          brandId: 5,
-          companyId: 1,
-          categoryId: 3,
-          branchId: 2,
-          designation: "",
-          dateJoined: new Date().toISOString(),
+          gender: "MALE",
           dateOfBirth: "",
-          isActive: true,
-          roleId: "role-associate",
+          personalEmail: "",
+          telephoneNo: "",
+          displayName: "",
+          companyCode: "",
+          employeeClassification: "PERMANENT",
+          employeeCode: "",
+          dateOfJoining: new Date().toLocaleDateString(),
+          department: "",
+          designationName: "",
+          category: "RETAIL",
+          storeCode: "",
+          brandCode: "",
+          country: "",
+          retailCountry: "",
+          resignationDate: null,
+          createdDateTime: "",
+          branch: "",
         };
       case "sale":
         return {
-          id: Date.now(),
-          departmentId: 10,
-          brandId: 5,
-          saleAmount: 0,
-          categoryId: 3,
-          subCategoryId: 15,
-          subSubCategoryId: 25,
-          saleTypeId: 1,
-          productPrice: 0,
-          tax: 0,
-          discount: 0,
+          countryCode: "",
+          storeID: "",
+          date: new Date().toLocaleDateString(),
+          brandID: "",
+          category: "",
+          employeeNumber: "",
+          amount: 0,
           quantity: 1,
+          createdTime: new Date().toISOString(),
+          department: "",
+          subCategory: "",
+          subSubCategory: "",
+          discount: 0,
+          tax: 0,
           invoiceNumber: "",
           itemNumber: "",
-          notes: "",
-          storeId: testData.storeId,
-          createdBy: "user-001",
-          createdOn: new Date().toISOString(),
         };
       case "attendance":
         return {
-          id: Date.now(),
-          userId: "user-001",
-          storeId: testData.storeId,
-          totalHours: 0,
-          createdBy: "user-001",
-          createdOn: new Date().toISOString(),
+          countryCode: "",
+          storeID: "",
+          employeeNumber: "",
+          date: new Date().toLocaleDateString(),
+          dayType: "Working Day",
+          timeIn: null,
+          timeOut: null,
+          leaveType: null,
+          exceptionStatus: "OK",
+          companyID: 1,
+          subCompanyID: 1,
+          createdTime: "",
+          actualWorkHours: null,
+          attendanceID: Date.now(),
+          remarks: null,
+          shiftCode: "",
         };
       case "leave":
         return {
-          id: Date.now(),
-          leaveType: "Annual",
-          startDate: new Date().toISOString(),
-          endDate: new Date().toISOString(),
-          leaveDays: 1,
-          reason: "",
-          status: "Pending",
-          approverComments: "",
-          approvedBy: "",
-          approvedOn: "",
-          createdBy: "user-001",
-          totalDays: 1,
+          employeeNumber: "",
+          date: new Date().toLocaleDateString(),
+          leaveTypeCode: "LVANL",
+          leaveUnits: 1,
+          leaveTypeLongDescription: "Annual Leave",
+          leaveReason: "",
+          remarks: null,
+          leaveID: Date.now(),
+          countryCode: "",
+          storeID: "",
+          createdTime: "",
+          leaveApplnNumber: 0,
         };
       case "storeTarget":
         return {
@@ -323,63 +332,145 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
     setEditingItem(null);
   };
 
-  const renderTable = (data: any[], type: string, columns: string[]) => (
-    <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
-      <Table stickyHeader size="small">
-        <TableHead>
-          <TableRow>
-            {columns.map((column) => (
-              <TableCell key={column} sx={{ fontWeight: "bold" }}>
-                {column}
-              </TableCell>
-            ))}
-            <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((item, index) => (
-            <TableRow key={item.id || index}>
-              {columns.map((column) => {
-                const key = column.toLowerCase().replace(/\s+/g, "");
-                const value = item[key];
-                return (
-                  <TableCell key={column}>
-                    {typeof value === "boolean" ? (
-                      <Chip
-                        label={value ? "Active" : "Inactive"}
-                        color={value ? "success" : "default"}
-                        size="small"
-                      />
-                    ) : typeof value === "number" ? (
-                      value.toLocaleString()
-                    ) : (
-                      String(value || "")
-                    )}
-                  </TableCell>
-                );
-              })}
-              <TableCell>
-                <IconButton
-                  size="small"
-                  onClick={() => handleEdit(type, index, item)}
-                  color="primary"
+  const renderTable = (data: any[], type: string, columns: string[]) => {
+    // Map display column names to actual field names
+    const columnToFieldMap: Record<string, string> = {
+      "Employee ID": "employeeID",
+      "First Name": "firstName",
+      "Display Name": "displayName",
+      "Employee Code": "employeeCode",
+      "Designation Name": "designationName",
+      "Store Code": "storeCode",
+      "Country Code": "countryCode",
+      "Store ID": "storeID",
+      "Brand ID": "brandID",
+      "Employee Number": "employeeNumber",
+      "Day Type": "dayType",
+      "Time In": "timeIn",
+      "Time Out": "timeOut",
+      "Actual Work Hours": "actualWorkHours",
+      "Shift Code": "shiftCode",
+      "Leave Type Code": "leaveTypeCode",
+      "Leave Type Long Description": "leaveTypeLongDescription",
+      "Leave Units": "leaveUnits",
+      "Leave Reason": "leaveReason",
+      "Role ID": "roleId",
+      "Target Amount": "targetAmount",
+      "Target Penetration": "storeKPITargetBraPenetration",
+      "Achievement Penetration": "storeKPIAchievementBraPenetration",
+      "Target Achievement": "storeTargetAchievement",
+    };
+
+    return (
+      <TableContainer>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column}
+                  sx={{
+                    fontSize: "0.875rem",
+                    fontWeight: 300,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
                 >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  onClick={() => handleDelete(type, index)}
-                  color="error"
-                >
-                  <DeleteIcon />
-                </IconButton>
+                  {column}
+                </TableCell>
+              ))}
+              <TableCell
+                sx={{
+                  fontSize: "0.875rem",
+                  fontWeight: 300,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                Actions
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+          </TableHead>
+          <TableBody>
+            {data.map((item, index) => (
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={
+                  item.employeeID ||
+                  item.attendanceID ||
+                  item.leaveID ||
+                  item.id ||
+                  index
+                }
+              >
+                {columns.map((column) => {
+                  // Use mapping if available, otherwise convert to camelCase
+                  const key =
+                    columnToFieldMap[column] ||
+                    column.toLowerCase().replace(/\s+/g, "");
+                  const value = item[key];
+                  return (
+                    <TableCell
+                      key={column}
+                      sx={{
+                        fontSize: "0.875rem",
+                        fontWeight: 300,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {typeof value === "boolean" ? (
+                        <Chip
+                          label={value ? "Active" : "Inactive"}
+                          color={value ? "success" : "default"}
+                          size="small"
+                        />
+                      ) : typeof value === "number" ? (
+                        value.toLocaleString()
+                      ) : value === null || value === undefined ? (
+                        ""
+                      ) : (
+                        String(value)
+                      )}
+                    </TableCell>
+                  );
+                })}
+                <TableCell
+                  sx={{
+                    fontSize: "0.875rem",
+                    fontWeight: 300,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  <IconButton
+                    size="small"
+                    onClick={() => handleEdit(type, index, item)}
+                    color="primary"
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleDelete(type, index)}
+                    color="error"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
 
   const renderEditDialog = () => {
     if (!editingItem) return null;
@@ -396,47 +487,100 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
       >
         <DialogTitle>{isNew ? `Add New ${type}` : `Edit ${type}`}</DialogTitle>
         <DialogContent>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
-            {Object.keys(data).map((key) => {
-              if (key === "id") return null;
+          <Box sx={{ mt: 1 }}>
+            <Grid container spacing={2}>
+              {Object.keys(data).map((key) => {
+                // Skip ID fields
+                if (
+                  key === "id" ||
+                  key === "employeeID" ||
+                  key === "attendanceID" ||
+                  key === "leaveID"
+                )
+                  return null;
 
-              const value = data[key];
-              const isDate = key.includes("Date") || key.includes("On");
-              const isNumber = typeof value === "number";
-              const isBoolean = typeof value === "boolean";
+                const value = data[key];
 
-              return (
-                <TextField
-                  key={key}
-                  label={key.charAt(0).toUpperCase() + key.slice(1)}
-                  value={
-                    isDate
-                      ? value
-                        ? new Date(value).toISOString().slice(0, 16)
-                        : ""
-                      : String(value || "")
-                  }
-                  onChange={(e) => {
-                    const newData = { ...data };
-                    if (isDate) {
-                      newData[key] = new Date(e.target.value).toISOString();
-                    } else if (isNumber) {
-                      newData[key] = parseFloat(e.target.value) || 0;
-                    } else if (isBoolean) {
-                      newData[key] = e.target.value === "true";
-                    } else {
-                      newData[key] = e.target.value;
+                // Check if this is a date field (but exclude createdTime and createdDateTime which are not dates)
+                const isDateField =
+                  (key.includes("Date") ||
+                    key.includes("date") ||
+                    key.includes("On")) &&
+                  !key.includes("createdTime") &&
+                  !key.includes("createdDateTime");
+
+                const isNumber = typeof value === "number";
+                const isBoolean = typeof value === "boolean";
+
+                // Helper function to safely parse date
+                const parseDate = (dateValue: any): string => {
+                  if (!dateValue) return "";
+
+                  // If it's already a valid date string (ISO format)
+                  if (
+                    typeof dateValue === "string" &&
+                    dateValue.includes("T")
+                  ) {
+                    const date = new Date(dateValue);
+                    if (!isNaN(date.getTime())) {
+                      return date.toISOString().slice(0, 16);
                     }
-                    setEditingItem({ ...editingItem, data: newData });
-                  }}
-                  type={
-                    isDate ? "datetime-local" : isNumber ? "number" : "text"
                   }
-                  fullWidth
-                  size="small"
-                />
-              );
-            })}
+
+                  // Try parsing as date
+                  const date = new Date(dateValue);
+                  if (!isNaN(date.getTime())) {
+                    return date.toISOString().slice(0, 16);
+                  }
+
+                  // If parsing fails, return empty string
+                  return "";
+                };
+
+                return (
+                  <Grid size={{ xs: 12, sm: 6, md: 4 }} key={key}>
+                    <TextField
+                      label={key.charAt(0).toUpperCase() + key.slice(1)}
+                      value={
+                        isDateField ? parseDate(value) : String(value ?? "")
+                      }
+                      onChange={(e) => {
+                        const newData = { ...data };
+                        if (isDateField) {
+                          const dateValue = e.target.value;
+                          if (dateValue) {
+                            const date = new Date(dateValue);
+                            if (!isNaN(date.getTime())) {
+                              newData[key] = date.toISOString();
+                            } else {
+                              newData[key] = dateValue; // Keep as string if invalid
+                            }
+                          } else {
+                            newData[key] = "";
+                          }
+                        } else if (isNumber) {
+                          newData[key] = parseFloat(e.target.value) || 0;
+                        } else if (isBoolean) {
+                          newData[key] = e.target.value === "true";
+                        } else {
+                          newData[key] = e.target.value;
+                        }
+                        setEditingItem({ ...editingItem, data: newData });
+                      }}
+                      type={
+                        isDateField
+                          ? "datetime-local"
+                          : isNumber
+                          ? "number"
+                          : "text"
+                      }
+                      fullWidth
+                      size="small"
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>
           </Box>
         </DialogContent>
         <DialogActions>
@@ -453,9 +597,9 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
+    <Box>
       {/* Main Content */}
-      <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <Box>
         <Card sx={{ mb: 2 }}>
           <CardHeader
             title="Test Data Configuration"
@@ -533,7 +677,7 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
         </Card>
 
         {/* Data Tables */}
-        <Card sx={{ flex: 1 }}>
+        <Card>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={activeTab} onChange={handleTabChange}>
               <Tab label={`Users (${testData.users.length})`} />
@@ -548,7 +692,7 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
             <Box
               sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
             >
-              <Typography variant="h6">Users</Typography>
+              <Typography variant="h6"></Typography>
               <Button
                 startIcon={<AddIcon />}
                 onClick={() => handleAddNew("user")}
@@ -559,13 +703,14 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
               </Button>
             </Box>
             {renderTable(testData.users, "user", [
-              "ID",
-              "User Name",
-              "Email",
+              "Employee ID",
               "First Name",
-              "Last Name",
-              "Designation",
-              "Is Active",
+              "Display Name",
+              "Employee Code",
+              "Department",
+              "Designation Name",
+              "Store Code",
+              "Country",
             ])}
           </TabPanel>
 
@@ -584,13 +729,16 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
               </Button>
             </Box>
             {renderTable(testData.sales, "sale", [
-              "ID",
-              "Sale Amount",
-              "Product Price",
-              "Tax",
+              "Country Code",
+              "Store ID",
+              "Date",
+              "Brand ID",
+              "Category",
+              "Employee Number",
+              "Amount",
               "Quantity",
-              "Invoice Number",
-              "Notes",
+              "Tax",
+              "Discount",
             ])}
           </TabPanel>
 
@@ -609,10 +757,15 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
               </Button>
             </Box>
             {renderTable(testData.attendance, "attendance", [
-              "ID",
-              "User ID",
-              "Total Hours",
-              "Created On",
+              "Country Code",
+              "Store ID",
+              "Employee Number",
+              "Date",
+              "Day Type",
+              "Time In",
+              "Time Out",
+              "Actual Work Hours",
+              "Shift Code",
             ])}
           </TabPanel>
 
@@ -631,13 +784,14 @@ const TestData: React.FC<TestDataProps> = ({ workflowJson }) => {
               </Button>
             </Box>
             {renderTable(testData.leaves, "leave", [
-              "ID",
-              "Leave Type",
-              "Start Date",
-              "End Date",
-              "Leave Days",
-              "Status",
-              "Reason",
+              "Employee Number",
+              "Date",
+              "Leave Type Code",
+              "Leave Type Long Description",
+              "Leave Units",
+              "Leave Reason",
+              "Country Code",
+              "Store ID",
             ])}
           </TabPanel>
 
