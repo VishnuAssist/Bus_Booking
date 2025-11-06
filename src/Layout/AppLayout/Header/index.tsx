@@ -5,9 +5,13 @@ import {
   useTheme,
   Container,
   useMediaQuery,
+  IconButton,
 } from "@mui/material";
 import Modechanger from "./ModeChanger";
 import SignOutButton from "./SignOut";
+import Logo from "../../../Assests/Icons/valiram2.png";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import SearchIcon from "@mui/icons-material/Search";
 
 function Header() {
   const theme = useTheme();
@@ -37,27 +41,35 @@ function Header() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          position: "relative",
           minHeight: theme.header.height,
           px: 2,
         }}
       >
-        {isMobile ? (
+        {!isMobile && (
           <Box
             sx={{
-              flex: 1,
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              height: "100%",
               display: "flex",
               alignItems: "center",
-              px: 1,
             }}
-          ></Box>
-        ) : (
-          <>
-            <Box display="flex" alignItems="center" sx={{ ml: "auto" }}>
-              <Modechanger />
-              <SignOutButton />
-            </Box>
-          </>
+          >
+            <img src={Logo} alt="Valiram" style={{ height: 40 }} />
+          </Box>
         )}
+        <IconButton>
+          <SearchIcon />
+        </IconButton>
+        <Box display="flex" alignItems="center" sx={{ ml: "auto" }}>
+          <IconButton>
+            <NotificationsActiveIcon />
+          </IconButton>
+          <Modechanger />
+          <SignOutButton />
+        </Box>
       </Container>
     </HeaderWrapper>
   );

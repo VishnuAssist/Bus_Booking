@@ -1,25 +1,28 @@
-import { FC } from "react";
-import { Box, alpha, lighten, useTheme, useMediaQuery, Card } from "@mui/material";
+import {
+  Box,
+  useTheme,
+  useMediaQuery,
+  Card,
+} from "@mui/material";
 import { Outlet } from "react-router-dom";
 
 import Header from "./Header";
 import Footer from "../../Component/Footer";
 import TopMenu from "./Topbar";
+import type { FC } from "react";
 
 const SidebarLayout: FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const topBarHeight = 50; // height for TopMenu
+  const topBarHeight = 50;
 
   return (
     <Box sx={{ flex: 1, height: "100%" }}>
-      {/* Fixed Header */}
       <Header />
-<Card >
-      <TopMenu />
-</Card>
-      {/* Page Content */}
+      <Card>
+        <TopMenu />
+      </Card>
       <Box
         sx={{
           position: "relative",
