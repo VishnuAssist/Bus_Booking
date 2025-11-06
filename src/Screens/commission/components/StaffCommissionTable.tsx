@@ -3,11 +3,20 @@ import { useGetStaffCommissionsQuery } from "../../../Api/commisionApi";
 import { staffCommissionsTableDataService } from "../services/staffCommissionsTableDataService";
 import AppPagination from "../../../Component/AppPagination";
 import { useState } from "react";
-import type { MonthlySummarriesQueryParamsType } from "../../../model/commissionType";
+import type {
+  MonthlySummarriesQueryParamsType,
+  StaffCommissionResponseType,
+} from "../../../model/commissionType";
 import StaffCommissionFilter from "./StaffCommissionFilter";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../../Constant/defaultValues";
+import ResponseViewDrawer from "../../../Component/ResponseViewDrawer";
+import { StaffCommissionFormFields } from "../../../feilds_validation/staffCommissionFields_validation";
 
 const StaffCommissionTable = () => {
+  const [isResponseDrawerOpen, setResponseDrawerOpen] = useState(false);
+  const [selectedStaffCommission, setSelectedStaffCommission] =
+    useState<StaffCommissionResponseType | null>(null);
+
   const [queryParams, setQueryParams] =
     useState<MonthlySummarriesQueryParamsType>({
       ...DEFAULT_PAGINATION_OPTIONS,
@@ -33,7 +42,16 @@ const StaffCommissionTable = () => {
         onQueryParamsChange={handleQueryParamsChange}
       />
 
-      <CommonTable columns={columns} rows={rows} />
+      <CommonTable<StaffCommissionResponseType>
+        columns={columns}
+        rows={rows}
+        actions={{
+          onView: (row) => {
+            setSelectedStaffCommission(row);
+            setResponseDrawerOpen(true);
+          },
+        }}
+      />
 
       {staffCommissions?.metaData && (
         <AppPagination
@@ -41,6 +59,16 @@ const StaffCommissionTable = () => {
           onPageChange={(page: number) => {
             setQueryParams({ ...queryParams, PageNumber: page });
           }}
+        />
+      )}
+
+      {selectedStaffCommission && (
+        <ResponseViewDrawer<Partial<StaffCommissionResponseType>>
+          isOpen={isResponseDrawerOpen}
+          onClose={() => setResponseDrawerOpen(false)}
+          data={selectedStaffCommission}
+          title="Staff Commission Response"
+          formFields={StaffCommissionFormFields}
         />
       )}
     </>
