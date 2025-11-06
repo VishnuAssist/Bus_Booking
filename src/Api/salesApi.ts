@@ -11,24 +11,23 @@ export const salesApi = createApi({
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
     // Get all sales with pagination and filtering
-    getAllSales: builder.query<
-      { items: SalesType[]; metaData: MetaData },
-      any
-    >({
-      query: (args) => ({
-        method: "GET",
-        url: "/Sales",
-        params: {
-          ...args,
-        },
-      }),
-      transformResponse: (response, metaData) =>
-        dataWithMeta<SalesType[], MetaData>(
-          response as SalesType[],
-          metaData as any
-        ),
-      providesTags: ["Sales"],
-    }),
+    getAllSales: builder.query<{ items: SalesType[]; metaData: MetaData }, any>(
+      {
+        query: (args) => ({
+          method: "GET",
+          url: "/Sales",
+          params: {
+            ...args,
+          },
+        }),
+        transformResponse: (response, metaData) =>
+          dataWithMeta<SalesType[], MetaData>(
+            response as SalesType[],
+            metaData as any
+          ),
+        providesTags: ["Sales"],
+      }
+    ),
 
     // Get single sale by ID
     getSale: builder.query<SalesType, number>({
@@ -39,13 +38,11 @@ export const salesApi = createApi({
       providesTags: (_result, _error, id) => [{ type: "Sales", id }],
     }),
 
-
-
     // Add or Edit sale (combined endpoint)
     addEditSale: builder.mutation<any, any>({
       query: (args) => ({
         method: args?.id ? "PUT" : "POST",
-        url: "/Sales",
+        url: args?.id ? `/Sales/${args?.id}` : "/Sales",
         body: args,
       }),
       invalidatesTags: ["Sales"],
@@ -60,21 +57,20 @@ export const salesApi = createApi({
       invalidatesTags: ["Sales"],
     }),
 
-   // Bulk import sales via CSV
-bulkImportSales: builder.mutation<any, File>({
-  query: (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
+    // Bulk import sales via CSV
+    bulkImportSales: builder.mutation<any, File>({
+      query: (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
 
-    return {
-      method: "POST",
-      url: "/Sales/bulk-import",
-      body: formData,
-    };
-  },
-  invalidatesTags: ["Sales"],
-}),
-
+        return {
+          method: "POST",
+          url: "/Sales/bulk-import",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["Sales"],
+    }),
   }),
 });
 

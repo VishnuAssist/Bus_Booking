@@ -5,7 +5,7 @@ import { dataWithMeta } from "../Lib/ApiUtil";
 import type { StatusResponse } from "../model/LeaveRequest";
 import type {
   dictionarycategoryType,
-  DictionaryQueryParamsType,
+  // DictionaryQueryParamsType,
   dictionarytype,
 } from "../model/Dictionary";
 
@@ -17,7 +17,7 @@ export const dictionaryApi = createApi({
   endpoints: (builder) => ({
     getalldictionary: builder.query<
       { items: dictionarytype[]; metaData: MetaData },
-      DictionaryQueryParamsType
+      any
     >({
       query: (args) => ({
         method: "GET",
