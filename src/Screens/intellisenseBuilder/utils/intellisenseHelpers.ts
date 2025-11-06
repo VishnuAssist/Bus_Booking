@@ -80,7 +80,7 @@ export const buildTableVariables = (
     type: "variable",
     detail: "(table)",
     info: `${tableName} table - Access fields like ${tableName}.${
-      schema[tableName][0]?.name || "field"
+      schema[tableName]?.name || "field"
     }`,
   }));
 };

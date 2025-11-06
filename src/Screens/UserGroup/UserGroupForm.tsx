@@ -24,6 +24,7 @@ import { useAddEditUserGroupMutation } from "../../Api/userGroupApi";
 import { useGetallAccountQuery } from "../../Api/authApi";
 import type { UserType } from "../../model/userType";
 import type { UserGroupFormType, userGroupType } from "../../model/userGroup";
+import { toast } from "react-toastify";
 
 const UserGroupDialog: React.FC<{
   open: boolean;
@@ -82,8 +83,22 @@ const UserGroupDialog: React.FC<{
       reset();
     } catch (error) {
       console.error("Error creating user group:", error);
+        const message =
+      error?.data || "Failed to save user group. Please try again.";
+    toast.error(message);
     }
   };
+
+  const handleClose = () => {
+  reset({
+    groupName: "",
+    description: "",
+    isActive: true,
+    memberUserIds: [],
+  });
+  setSelectedUsers([]);
+  onClose();
+};
 
   const handleUserToggle = (userId: string) => {
     setSelectedUsers((prev) =>
@@ -199,7 +214,7 @@ const UserGroupDialog: React.FC<{
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onClose} color="inherit">
+          <Button onClick={handleClose} color="inherit">
             Cancel
           </Button>
           <Button type="submit" variant="contained" disabled={isSubmitting}>

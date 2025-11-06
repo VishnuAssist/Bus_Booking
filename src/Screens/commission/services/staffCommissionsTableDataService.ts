@@ -17,6 +17,7 @@ export const staffCommissionsTableDataService = (
     ? staffCommissions.map((commission: StaffCommissionResponseType) => {
         return {
           id: commission.id,
+          userId: commission.userId,
           payout: commission.payout,
           note: commission.note,
           commissionTypeId: commission.commissionTypeId,

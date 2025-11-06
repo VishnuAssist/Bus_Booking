@@ -15,7 +15,7 @@ import type {
 export const storeApi = createApi({
   reducerPath: "storeApi",
   baseQuery: APIFetchBase,
-  tagTypes: ["Store","StoreTarget","StoreKPI"],
+  tagTypes: ["Store", "StoreTarget", "StoreKPI"],
   keepUnusedDataFor: 300,
   endpoints: (builder) => ({
     getAllStores: builder.query<
@@ -58,9 +58,9 @@ export const storeApi = createApi({
       invalidatesTags: [{ type: "Store", id: "LIST" }],
     }),
     editStore: builder.mutation<void, StoreDto>({
-      query: ({ storeId, ...body }) => ({
+      query: (body) => ({
         method: "PUT",
-        url: `/Store/${storeId}`,
+        url: `/Store/${body?.storeId}`,
         body,
       }),
       invalidatesTags: (_, _error, { storeId }) => [

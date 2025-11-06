@@ -20,26 +20,7 @@ export const staffMonthlySummaryTableDataService = (
     { id: "note", label: "Note" },
   ];
 
-  const rows = staffCommissions
-    ? staffCommissions.map((commission: StaffMonthlySummaryResponseType) => {
-        return {
-          id: commission.id,
-          year: commission.year,
-          month: commission.month,
-          target: commission.target,
-          achivement: commission.achivement,
-          totalPayout: commission.totalPayout,
-          totalWorkingDays: commission.totalWorkingDays,
-          leaveDays: commission.leaveDays,
-          ruleId: commission.ruleId,
-          userGroupId: commission.userGroupId,
-          groupTargetAchieved: commission.groupTargetAchieved,
-          totalGroupTarget: commission.totalGroupTarget,
-          status: commission.status,
-          note: commission.note,
-        };
-      })
-    : [];
+  const rows = staffCommissions || [];
 
   return { columns: HistoryColumns, rows };
 };
