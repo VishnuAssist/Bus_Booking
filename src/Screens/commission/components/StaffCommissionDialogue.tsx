@@ -27,18 +27,8 @@ const StaffCommissionDialogue = ({
   const onSubmitStaffCommission = async (
     formData: ProcessStaffCommissionPayload
   ) => {
-    const [yearStr, monthStr] = formData.year.toString().split("-");
-    const year = parseInt(yearStr, 10);
-    const month = parseInt(monthStr, 10);
-
-    const updatedFormData = {
-      ...formData,
-      year,
-      month,
-    };
-
     try {
-      await staffCommissionMutation(updatedFormData).unwrap();
+      await staffCommissionMutation(formData).unwrap();
       onClose();
     } catch {
       toast.error("Error saving entry");
@@ -53,7 +43,11 @@ const StaffCommissionDialogue = ({
       title="Process Staff Commission"
       validationSchema={staffCommissionFormValidationSchema}
       fields={staffCommissionFields()}
-      defaultValues={{}}
+      defaultValues={{
+        commissionTypeId: 0,
+        ruleId: 0,
+        payout: 0,
+      }}
     />
   );
 };

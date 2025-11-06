@@ -21,8 +21,8 @@ export const MonthlySummaryFormFields: FormFieldProps<ProcessMonthlySummaryPaylo
       label: "Store",
       name: "storeId",
       type: "autocomplete",
-  
-            size: { sm: 12, md: 6, lg: 6 },
+
+      size: { sm: 12, md: 6, lg: 6 },
       baseurl: "Store",
       autocompletelabel: {
         optionvalue: { id: "storeId" },
@@ -42,10 +42,15 @@ export const MonthlySummaryFormFields: FormFieldProps<ProcessMonthlySummaryPaylo
       },
     },
     {
-      label: "Year & Month",
+      label: "Year",
       name: "year",
-      type: "date",
-      required: true,
+      type: "yearpicker",
+      size: { sm: 12, md: 6, lg: 6 },
+    },
+    {
+      label: "Month",
+      name: "month",
+      type: "monthpicker",
       size: { sm: 12, md: 6, lg: 6 },
     },
     {
@@ -62,30 +67,38 @@ export const MonthlySummaryFormFields: FormFieldProps<ProcessMonthlySummaryPaylo
       size: { sm: 12, md: 6, lg: 6 },
       baseurl: "Rules",
     },
-    {
-      label: "Additional Workflow JSON",
-      name: "additionalWorkflowJson",
-      type: "textarea",
-      min: "10",
-      size: { sm: 12, md: 12, lg: 12 },
-    },
   ];
 
 export const monthlySummaryFormValidationSchema = yup.object().shape({
-  userId: yup.mixed().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
+  userId: yup
+    .mixed()
+    .optional()
+    .transform((curr, orig) => (orig === "" ? null : curr))
+    .nullable(),
 
-  storeId: yup.mixed().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
+  storeId: yup
+    .mixed()
+    .optional()
+    .transform((curr, orig) => (orig === "" ? null : curr))
+    .nullable(),
 
-  userGroupId: yup.mixed().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
+  userGroupId: yup
+    .mixed()
+    .optional()
+    .transform((curr, orig) => (orig === "" ? null : curr))
+    .nullable(),
 
-  year: yup.string().typeError("Year is required").required("Year is required"),
+  year: yup.number().required("Year is required"),
+  month: yup.number().required("Month is required"),
 
-  brandId: yup.mixed().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
+  brandId: yup
+    .mixed()
+    .optional()
+    .transform((curr, orig) => (orig === "" ? null : curr))
+    .nullable(),
 
   ruleIdsToUse: yup
     .array()
     .of(yup.number())
     .min(1, "At least one rule must be selected"),
-
-  additionalWorkflowJson: yup.string().optional(),
 });

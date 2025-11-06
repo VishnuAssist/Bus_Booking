@@ -28,9 +28,15 @@ export const StaffCommissionFormFields: FormFieldProps<ProcessStaffCommissionPay
       },
     },
     {
-      label: "Year & Month",
+      label: "Year",
       name: "year",
-      type: "date",
+      type: "yearpicker",
+      size: { sm: 12, md: 6, lg: 6 },
+    },
+    {
+      label: " Month",
+      name: "month",
+      type: "monthpicker",
       size: { sm: 12, md: 6, lg: 6 },
     },
     {
@@ -48,37 +54,42 @@ export const StaffCommissionFormFields: FormFieldProps<ProcessStaffCommissionPay
       baseurl: "Rules",
     },
     {
-      label: "Additional Workflow JSON",
-      name: "additionalWorkflowJson",
-      type: "textarea",
-      min: "10",
-      size: { sm: 12, md: 12, lg: 12 },
+      name: "commissionTypeId",
+      label: "Type",
+      type: "autocomplete",
+      size: { sm: 12, md: 6, lg: 6 },
+      baseurl: "/Dictionary?Category=1",
+      autocompletelabel: {
+        optionvalue: { id: "id" },
+      },
     },
-      {
-    name: "commissionTypeId",
-    label: "Type",
-    type: "autocomplete",
-    size: { sm: 12, md: 6, lg: 6 },
-    baseurl: "/Dictionary?Category=1",
-    autocompletelabel: {
-      optionvalue: { id: "id" },
-    },
-  },
   ];
 
 export const staffCommissionFormValidationSchema = yup.object().shape({
-  userId: yup.string().trim().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
+  userId: yup
+    .string()
+    .trim()
+    .optional()
+    .transform((curr, orig) => (orig === "" ? null : curr))
+    .nullable(),
 
-  storeId: yup.number().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
+  storeId: yup
+    .number()
+    .optional()
+    .transform((curr, orig) => (orig === "" ? null : curr))
+    .nullable(),
 
-  year: yup.string().typeError("Year is required").required("Year is required"),
+  year: yup.number().required("Year is required"),
+  month: yup.number().required("Month is required"),
 
-  brandId: yup.number().optional().transform((curr, orig) => orig === '' ? null : curr).nullable(),
+  brandId: yup
+    .number()
+    .optional()
+    .transform((curr, orig) => (orig === "" ? null : curr))
+    .nullable(),
 
   ruleIdsToUse: yup
     .array()
     .of(yup.number())
     .min(1, "At least one rule must be selected"),
-
-  additionalWorkflowJson: yup.string().optional(),
 });

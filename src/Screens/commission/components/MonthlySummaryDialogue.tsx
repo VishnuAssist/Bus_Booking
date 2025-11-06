@@ -27,18 +27,8 @@ const MonthlySummaryDialogue = ({
   const onSubmitMonthlySummary = async (
     formData: ProcessMonthlySummaryPayload
   ) => {
-    const [yearStr, monthStr] = formData.year.toString().split("-");
-    const year = parseInt(yearStr, 10);
-    const month = parseInt(monthStr, 10);
-
-    const updatedFormData = {
-      ...formData,
-      year,
-      month,
-    };
-
     try {
-      await monthlySummaryMutation(updatedFormData).unwrap();
+      await monthlySummaryMutation(formData).unwrap();
       onClose();
     } catch {
       toast.error("Error saving entry");
@@ -53,7 +43,11 @@ const MonthlySummaryDialogue = ({
       title="Process Monthly Summary"
       validationSchema={monthlySummaryFormValidationSchema}
       fields={monthlySummaryFields()}
-      defaultValues={{}}
+      defaultValues={{
+        storeId: 0,
+        userGroupId: 0,
+        brandId: 0,
+      }}
     />
   );
 };

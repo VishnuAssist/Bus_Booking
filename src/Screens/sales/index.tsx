@@ -34,8 +34,8 @@ const Sales = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedSales, setSelectedSales] = useState<SalesType | null>(null);
 
-    const [isViewDrawerOpen, setViewDrawerOpen] = useState(false);
-const [selectedSale, setSelectedSale] = useState<SalesType | null>(null);
+  const [isViewDrawerOpen, setViewDrawerOpen] = useState(false);
+  const [selectedSale, setSelectedSale] = useState<SalesType | null>(null);
   // API hooks
   //   const { data: salesData } = useGetAllSalesQuery({});
 
@@ -76,7 +76,7 @@ const [selectedSale, setSelectedSale] = useState<SalesType | null>(null);
 
   const SalesColumns = [
     { id: "id", label: "ID", minWidth: 50 },
-        { id: "brandCode", label: "Brand ", minWidth: 50 },
+    { id: "brandCode", label: "Brand ", minWidth: 50 },
     { id: "category", label: "Category ", minWidth: 50 },
     { id: "storeCode", label: "Store Code ", minWidth: 50 },
     { id: "employeeCode", label: "Employee Code ", minWidth: 50 },
@@ -125,62 +125,6 @@ const [selectedSale, setSelectedSale] = useState<SalesType | null>(null);
 
   const SalesFields = () => {
     const fields = [...SalesFormFields];
-
-    // sales field
-    // const salesField = fields.find((f) => f.name === "saleTypeId");
-    // if (salesField) {
-    //   salesField.options = sales.map((item) => ({
-    //     id: item?.id?.toString(),
-    //     name: item.name,
-    //   }));
-    // }
-    // Department field
-    // const departmentField = fields.find((f) => f.name === "departmentId");
-    // if (departmentField) {
-    //   departmentField.options = departments.map((item) => ({
-    //     id: item?.id?.toString(),
-    //     name: item.name,
-    //   }));
-    // }
-
-    // Brand field
-    // const brandField = fields.find((f) => f.name === "brandId");
-    // if (brandField) {
-    //   brandField.options = brands.map((item) => ({
-    //     id: item?.id?.toString(),
-    //     name: item.name,
-    //   }));
-    // }
-
-    // Category field
-    // const categoryField = fields.find((f) => f.name === "categoryId");
-    // if (categoryField) {
-    //   categoryField.options = categories.map((item) => ({
-    //     id: item?.id?.toString(),
-    //     name: item.name,
-    //   }));
-    // }
-
-    // Subcategory field
-    // const subcategoryField = fields.find((f) => f.name === "subCategoryId");
-    // if (subcategoryField) {
-    //   subcategoryField.options = subcategories.map((item) => ({
-    //     id: item?.id?.toString(),
-    //     name: item.name,
-    //   }));
-    // }
-
-    // Subsubcategory field
-    // const subsubcategoryField = fields.find(
-    //   (f) => f.name === "subSubCategoryId"
-    // );
-    // if (subsubcategoryField) {
-    //   subsubcategoryField.options = subsubcategories.map((item) => ({
-    //     id: item?.id?.toString(),
-    //     name: item.name,
-    //   }));
-    // }
-
     return fields;
   };
 
@@ -205,10 +149,10 @@ const [selectedSale, setSelectedSale] = useState<SalesType | null>(null);
             columns={SalesColumns}
             rows={salesData?.items || []}
             actions={{
-                             onView: (row) => {
-                  setSelectedSale(row);
-                  setViewDrawerOpen(true);
-                },
+              onView: (row) => {
+                setSelectedSale(row);
+                setViewDrawerOpen(true);
+              },
               onEdit: handleEdit,
               onDelete: handleDelete,
             }}
@@ -231,7 +175,16 @@ const [selectedSale, setSelectedSale] = useState<SalesType | null>(null);
         title={selectedSales ? "Edit Sales" : "Add Sales"}
         validationSchema={salesFormValidationSchema}
         fields={SalesFields()}
-        defaultValues={selectedSales || {}}
+        defaultValues={
+          selectedSales || {
+            saleTypeId: 0,
+            productPrice: 0,
+            tax: 0,
+            discount: 0,
+            quantity: 0,
+            saleAmount: 0,
+          }
+        }
       />
 
       <BulkImportDialog
@@ -245,13 +198,14 @@ const [selectedSale, setSelectedSale] = useState<SalesType | null>(null);
         subcategories={subcategories}
         subsubcategories={subsubcategories}
       />
-            {selectedSale && (
+
+      {selectedSale && (
         <ResponseViewDrawer<SalesType>
           isOpen={isViewDrawerOpen}
           onClose={() => setViewDrawerOpen(false)}
           data={selectedSale}
           title="Sales Details"
-          formFields={SalesFormFields} 
+          formFields={SalesFormFields}
         />
       )}
     </>

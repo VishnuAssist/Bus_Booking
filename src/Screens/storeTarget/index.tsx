@@ -143,6 +143,7 @@ const StoreTarget = () => {
               onDelete: handleDelete,
             }}
           />
+
           {targetsData?.metaData && (
             <AppPagination
               metaData={targetsData.metaData}
