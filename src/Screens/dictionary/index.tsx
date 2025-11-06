@@ -2,7 +2,7 @@ import { useState } from "react";
 //import PageHeader from "../../Component/pageHeader";
 import CommisionContainer from "../../Component/container";
 import { CommonDialog } from "../../Component/forms/FormDialog";
-import type { dictionarytype } from "../../model/Dictionary";
+import type { DictionaryQueryParamsType, dictionarytype } from "../../model/Dictionary";
 import { toast } from "react-toastify";
 import {
   DictionaryFormFields,
@@ -19,24 +19,32 @@ import {
 import { createFormData } from "../../Lib/ApiUtil";
 import { Paper } from "@mui/material";
 import AppPagination from "../../Component/AppPagination";
-import { setDictionaryParams } from "../../Store/slice/ParamsSlice";
-import { getAxiosParamsA } from "../../Api/util";
-import { useAppDispatch, useAppSelector } from "../../Store/StoreConfig";
-import DictionarySearch from "./DictionarySearch";
+
+
+import { dictionaryTableDataService } from "./Services/DictionaryTableDataService";
+import DictionaryFilter from "./Components/DictionaryFilter";
+import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
+
 
 const DictionaryPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedDictionary, setSelectedDictionary] = useState<dictionarytype | null>(null);
-  const dispatch = useAppDispatch();
+  
 
-  const DictionaryParams = useAppSelector(
-    (state) => state.auth.Params.DictionaryParams
-  );
 
-  // const { data: dicData } = useGetalldictionaryQuery({});
-  const { data: dicData } = useGetalldictionaryQuery(
-    getAxiosParamsA({ ...DictionaryParams, PageSize: 5 })
-  );
+   const [queryParams, setQueryParams] = useState<DictionaryQueryParamsType>({
+      ...DEFAULT_PAGINATION_OPTIONS,
+    
+    });
+  
+    const handleQueryParamsChange = (
+      newQueryParams: DictionaryQueryParamsType
+    ) => {
+      setQueryParams(newQueryParams);
+    };
+
+  
+  const { data: dicData } = useGetalldictionaryQuery(queryParams);
   const { data: categorys } = useGetcategoriesQuery();
 
   console.log("selectedDictionary", selectedDictionary);
@@ -77,22 +85,12 @@ const DictionaryPage = () => {
       handleModalClose();
     } catch (error) {
       toast.error("Error saving entry");
+      console.error(error);
     }
   };
 
-  const columns = [
-    { id: "categoryName", label: "Category Name", minWidth: 50 },
-    { id: "name", label: "Name", minWidth: 100 },
-    { id: "code", label: "Code", minWidth: 100 },
-    { id: "description", label: "Description", minWidth: 150 },
-    {
-      id: "isActive",
-      label: "Status",
-      minWidth: 80,
-      format: (value: boolean) => (value ? "Active" : "Inactive"),
-    },
-  ];
 
+ const { columns, rows } = dictionaryTableDataService(dicData?.items);
   // const handleView = (row: dictionarytype) => console.log("View", row);
   const handleEdit = (row: dictionarytype) => {
     setSelectedDictionary(row);
@@ -113,24 +111,26 @@ const DictionaryPage = () => {
           onActionClick={() => setModalOpen(true)}
         />
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <DictionarySearch
-            params={DictionaryParams}
-            setParams={(p) => dispatch(setDictionaryParams(p))}
-            categories={categorys?.categories || []}
-          />
+        
+          <DictionaryFilter 
+            queryParams={queryParams}
+            onQueryParamsChange={handleQueryParamsChange}
+            categories={categorys?.categories || []}/>
+
           <CommonTable
             columns={columns}
-            rows={dicData?.items || []}
+            rows={rows}
             actions={{
               onEdit: handleEdit,
               onDelete: handleDelete,
             }}
           />
+          
           {dicData?.metaData && (
             <AppPagination
               metaData={dicData?.metaData}
               onPageChange={(page: number) =>
-                dispatch(setDictionaryParams({ PageNumber: page }))
+                setQueryParams({ ...queryParams, PageNumber: page })
               }
             />
           )}

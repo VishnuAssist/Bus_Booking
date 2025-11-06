@@ -2,7 +2,8 @@ import type { PaginationOptionsDto } from "../Dto/paginationOptionsDto";
 
 export interface dictionarytype {
   id?: number;
-  categoryId: number;
+  categoryId?: number;
+  categoryName:string;
   name: string;
   value?: string;
   label?: string | undefined;
@@ -27,5 +28,5 @@ export interface dictionarycategoryType {
 export interface DictionaryQueryParamsType extends PaginationOptionsDto {
   categoryId?: number;
   Ids?: number;
-  category: string;
+  category?: number;
 }
