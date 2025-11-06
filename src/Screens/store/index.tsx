@@ -27,6 +27,8 @@ const Store = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<StoreDto | null>(null);
 
+  console.log("selectedStore",selectedStore)
+
   // API hooks
 
   const { data: countrys } = useGetCountriesQuery({})
@@ -89,17 +91,17 @@ const Store = () => {
     }
   };
 
-  // const storeFields = () => {
-  //   const fields = [...StoreFormFields];
-  //   const countryField = fields.find((f) => f.name === "countryCode");
-  //   if (countryField) {
-  //     countryField.options = countrys?.map((data) => ({
-  //       id: data?.code,
-  //       name: data?.name,
-  //     })) || []
-  //   }
-  //   return fields;
-  // };
+  const storeFields = () => {
+    const fields = [...StoreFormFields];
+    // const countryField = fields.find((f) => f.name === "countryCode");
+    // if (countryField) {
+    //   countryField.options = countrys?.map((data) => ({
+    //     id: data?.code,
+    //     name: data?.name,
+    //   })) || []
+    // }
+    return fields;
+  };
 
   if (isLoading) {
     return (
@@ -177,7 +179,7 @@ const Store = () => {
         onSubmit={onSubmit}
         title={selectedStore ? "Edit Store" : "Add Store"}
         validationSchema={storeFormValidationSchema}
-        fields={StoreFormFields}
+        fields={storeFields()}
         defaultValues={selectedStore || {}}
       />
     </>
