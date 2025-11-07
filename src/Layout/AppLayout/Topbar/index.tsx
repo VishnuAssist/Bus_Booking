@@ -90,6 +90,7 @@ interface AnchorPosition {
         { label: "Dictionary", link: "/settings/dictionary" },
         { label: "Store Directory", link: "/management/teams" },
         { label: "Store Users", link: "/management/settings" },
+        { label: "Store Users", link: "/management/settings/StoreUser" },
       ],
     },
   ];
