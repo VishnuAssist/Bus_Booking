@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import APIFetchBase from "../Store/ApiConfig";
 import type { loginType, UserLoginType } from "../Dto/authDto";
-import type { MetaData } from "../model/common";
+import type { MetaData } from "../model/commonType";
 import type { UserList } from "../model/userType";
 import { dataWithMeta } from "../Lib/ApiUtil";
 

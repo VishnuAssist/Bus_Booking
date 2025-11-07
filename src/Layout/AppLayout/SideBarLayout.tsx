@@ -45,7 +45,12 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
         }}
       >
         {/* <Header expand={expanded} />{" "} */}
-        <Header expanded={expanded} setExpanded={setExpanded} />
+        <Header
+          expanded={expanded}
+          setExpanded={setExpanded}
+          showSidebarToggle={true}
+          isSidebarLayout={true}
+        />
 
         <Sidebar expanded={expanded} setExpanded={(e) => setExpanded(e)} />
         <Box

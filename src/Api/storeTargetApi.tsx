@@ -8,7 +8,7 @@ import type {
   ProcessStoreTargetRequest,
   StoreTargetDto,
 } from "../model/storeTargetType";
-import type { MetaData } from "../model/common";
+import type { MetaData } from "../model/commonType";
 
 export const storeTargetApi = createApi({
   reducerPath: "storeTargetApi",

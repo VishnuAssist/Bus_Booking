@@ -26,9 +26,16 @@ import { SidebarContext } from "../../../Context/SidebarContext";
 interface HeaderProps {
   expanded: boolean;
   setExpanded: (e: boolean) => void;
+  showSidebarToggle?: boolean;
+  isSidebarLayout?: boolean;
 }
 
-function Header({ expanded, setExpanded }: HeaderProps) {
+function Header({
+  expanded,
+  setExpanded,
+  showSidebarToggle,
+  isSidebarLayout,
+}: HeaderProps) {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   console.log("sidebarToggle", sidebarToggle);
   const theme = useTheme();
@@ -47,13 +54,16 @@ function Header({ expanded, setExpanded }: HeaderProps) {
           position: fixed;
           justify-content: space-between;
            width: 100%;
-          @media (min-width: ${theme.breakpoints.values.lg}px) {
-              left: ${expanded ? theme.sidebar.width : "80px"};
-              width: auto;
-          }
+           @media (min-width: ${theme.breakpoints.values.lg}px) {
+      ${
+        isSidebarLayout
+          ? `left: ${expanded ? theme.sidebar.width : "80px"}; width: auto;`
+          : `left: 0; width: 100%;`
+      }
+    }
   `
   );
-  
+
   return (
     <HeaderWrapper sx={{ height: isMobile ? 60 : theme.header.height }}>
       <Container
@@ -68,7 +78,7 @@ function Header({ expanded, setExpanded }: HeaderProps) {
           position: "relative",
         }}
       >
-        {!isMobile && (
+        {showSidebarToggle && !isMobile && (
           <Button
             disableRipple
             onClick={() => {
