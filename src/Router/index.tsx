@@ -2,9 +2,10 @@ import { Suspense, lazy } from "react";
 import { Navigate, type RouteObject } from "react-router-dom";
 import LazyLoading from "../Component/Loading/LazyLoading";
 import RouteAuth from "../Auth/RouteAuth";
-import SidebarLayout from "../Layout/AppLayout";
+import SidebarLayout from "../Layout/AppLayout/SideBarLayout";
 import BaseLayout from "../Layout/BaseLayout";
 import STS from "../Screens/sts";
+import TopBarLayout from "../Layout/AppLayout/TopBarLayout";
 
 const Loader = (Component: any) => (props: any) =>
   (
@@ -13,13 +14,7 @@ const Loader = (Component: any) => (props: any) =>
     </Suspense>
   );
 
-// OverView
 const Profile = Loader(lazy(() => import("../Screens/Profile")));
-
-
-// Management
-
-// Admin
 
 
 const Store = Loader(lazy(() => import("../Screens/store/index")));
@@ -89,7 +84,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "dashboards",
-        element: <SidebarLayout />,
+        element: <TopBarLayout />,
         children: [
           {
             index: true,
@@ -111,7 +106,7 @@ const routes: RouteObject[] = [
     element: <RouteAuth />,
     children: [
       {
-        element: <SidebarLayout />,
+        element: <TopBarLayout />,
         children: [
           {
             path: "sts",
@@ -151,7 +146,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "settings",
-        element: <SidebarLayout />,
+        element: <TopBarLayout />,
         children: [
           {
             path: "store",

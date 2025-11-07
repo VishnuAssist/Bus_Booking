@@ -23,19 +23,6 @@ import { useContext } from "react";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { SidebarContext } from "../../../Context/SidebarContext";
 
-const HeaderWrapper = styled(Box)(({ theme }) => ({
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  zIndex: 10,
-  backgroundColor: alpha(
-    theme.header?.background || theme.palette.background.paper,
-    0.95
-  ),
-  backdropFilter: "blur(6px)",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-}));
 interface HeaderProps {
   expanded: boolean;
   setExpanded: (e: boolean) => void;
@@ -48,6 +35,25 @@ function Header({ expanded, setExpanded }: HeaderProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const handleExpand = () => setExpanded(!expanded);
 
+  const HeaderWrapper = styled(Box)(
+    ({ theme }) => `
+          right: 0;
+          z-index: 6;
+          background-color: ${alpha(
+            theme.header.background || theme.colors.alpha.black[100],
+            0.95
+          )};
+          backdrop-filter: blur(3px);
+          position: fixed;
+          justify-content: space-between;
+           width: 100%;
+          @media (min-width: ${theme.breakpoints.values.lg}px) {
+              left: ${expanded ? theme.sidebar.width : "80px"};
+              width: auto;
+          }
+  `
+  );
+  
   return (
     <HeaderWrapper sx={{ height: isMobile ? 60 : theme.header.height }}>
       <Container

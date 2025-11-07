@@ -5,10 +5,9 @@ import Header from "./Header";
 import Footer from "../../Component/Footer";
 import TopMenu from "./Topbar";
 import { useState, type FC } from "react";
-import Sidebar from "./Sidebar";
 
-const SidebarLayout: FC = () => {
-    const [expanded, setExpanded] = useState(false);
+const TopBarLayout: FC = () => {
+  const [expanded, setExpanded] = useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -17,9 +16,7 @@ const SidebarLayout: FC = () => {
 
   return (
     <Box sx={{ flex: 1, height: "100%" }}>
-      <Header expanded={expanded} setExpanded={setExpanded}/>
-
-      <Sidebar expanded={expanded} setExpanded={(e) => setExpanded(e)} />
+      <Header expanded={expanded} setExpanded={setExpanded} />
 
       <Card>
         <TopMenu />
@@ -41,4 +38,4 @@ const SidebarLayout: FC = () => {
   );
 };
 
-export default SidebarLayout;
+export default TopBarLayout;
