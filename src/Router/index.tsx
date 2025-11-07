@@ -18,6 +18,7 @@ const Profile = Loader(lazy(() => import("../Screens/Profile")));
 
 
 const Store = Loader(lazy(() => import("../Screens/store/index")));
+const Dictionary = Loader(lazy(() => import("../Screens/Dictionary/index")));
 const StoreTarget = Loader(lazy(() => import("../Screens/storeTarget")));
 
 const Status404 = Loader(lazy(() => import("../Component/Status/Status404")));
@@ -148,6 +149,10 @@ const routes: RouteObject[] = [
         path: "settings",
         element: <TopBarLayout />,
         children: [
+          {
+            path: "dictionary",
+            element: <Dictionary />,
+          },
           {
             path: "store",
             element: <Store />,

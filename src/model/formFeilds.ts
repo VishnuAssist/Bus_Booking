@@ -1,7 +1,7 @@
 // import { QueryParamsType } from "./common";
 
 import type { JSX } from "react";
-import type { QueryParamsType } from "./common";
+import type { QueryParamsType } from "./commonType";
 // import type { QueryParamsType } from "./common";
 
 export interface OptionType {

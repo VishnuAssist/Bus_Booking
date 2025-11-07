@@ -16,7 +16,12 @@ const TopBarLayout: FC = () => {
 
   return (
     <Box sx={{ flex: 1, height: "100%" }}>
-      <Header expanded={expanded} setExpanded={setExpanded} />
+      <Header
+        expanded={expanded}
+        setExpanded={setExpanded}
+        showSidebarToggle={false}
+        isSidebarLayout={false}
+      />
 
       <Card>
         <TopMenu />

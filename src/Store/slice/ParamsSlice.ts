@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type {  PayloadAction } from "@reduxjs/toolkit";
-import type { QueryParamsType } from "../../model/common";
+import type { QueryParamsType } from "../../model/commonType";
 
 interface ParamsState {
   SalesParams: QueryParamsType;
