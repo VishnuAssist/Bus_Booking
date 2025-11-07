@@ -19,6 +19,7 @@ const Profile = Loader(lazy(() => import("../Screens/Profile")));
 
 const Store = Loader(lazy(() => import("../Screens/store/index")));
 const StoreTarget = Loader(lazy(() => import("../Screens/storeTarget")));
+const StoreUser = Loader(lazy(() => import("../Screens/storeUser")));
 
 const Status404 = Loader(lazy(() => import("../Component/Status/Status404")));
 const Status500 = Loader(lazy(() => import("../Component/Status/Status500")));
@@ -129,6 +130,7 @@ const routes: RouteObject[] = [
                 path: "target",
                 element: <StoreTarget />,
               },
+            
 
               {
                 path: "store",
@@ -160,6 +162,10 @@ const routes: RouteObject[] = [
             path: "storeTarget",
             element: <StoreTarget />,
           },
+            {
+                path: "StoreUser",
+                element: <StoreUser />,
+              },
         ],
       },
     ],
