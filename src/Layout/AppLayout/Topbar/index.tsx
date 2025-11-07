@@ -87,7 +87,7 @@ interface AnchorPosition {
       icon: <AccountCircleOutlinedIcon />,
       category: "management",
       subItems: [
-        { label: "Dictionary", link: "/management/users" },
+        { label: "Dictionary", link: "/settings/dictionary" },
         { label: "Store Directory", link: "/management/teams" },
         { label: "Store Users", link: "/management/settings" },
       ],

@@ -1,81 +1,86 @@
-import { Helmet } from "@dr.pogodin/react-helmet";
-import { Button, Grid, Typography } from "@mui/material";
-import type { ReactNode } from "react";
+import { Typography, Box, Paper } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Link } from "react-router-dom";
+import type { FC } from "react";
 
-interface PageHeaderProps {
-  title?: string;
-  subtitle?: string;
-  icon?: ReactNode;
-  icon2?: ReactNode;
-  btntitle?: string;
-  btntitle2?: string;
-  onActionClick?: () => void;
-  onActionClick2?: () => void;
+interface CommonHeaderProps {
+  heading?: string;
+  subHeading?: string;
+  children?: React.ReactNode;
+  backIcon?: boolean;
+  url?: string;
 }
 
-const PageHeader = ({
-  title,
-  subtitle,
-  btntitle,
-  btntitle2,
-  icon,
-  icon2,
-  onActionClick,
-  onActionClick2,
-}: PageHeaderProps) => {
+const CommonHeader: FC<CommonHeaderProps> = ({
+  heading = "",
+  subHeading = "",
+  children,
+  backIcon = false,
+  url,
+  ...rest
+}) => {
   return (
-    <>
-      <Helmet>
-        <title>{title ? title : ""}</title>
-      </Helmet>
-      <Grid
-        container
-        display={"flex"}
-        flexDirection={"row"}
-        justifyContent="space-between"
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      marginBottom={2}
+      component={Paper}
+      width="100%"
+      sx={{
+        px: 2,
+        py: 1.5,
+        flexDirection: {
+          xs: "column",
+          sm: "row",
+        },
+        alignItems: {
+          xs: "start",
+          sm: "center",
+        },
+      }}
+      {...rest}
+      boxShadow="rgba(0, 0, 0, 0.09) 4px 4px 11px 2px"
+    >
+      <Box
+        display="flex"
         alignItems="center"
-        sx={{ py: 2 }}
+        justifyContent="start"
+        gap={2}
+        sx={{
+          mb: children ? { xs: 2, sm: 0 } : 0, // Conditional margin - Add margin below the first Box in column layout
+          justifyContent: { xs: "start" }, // Add margin below the first Box in column layout
+        }}
       >
-        <Grid size={{ xs: 6, lg: 8 }}>
-          <Typography sx={{ fontSize: "18px" }}>{title}</Typography>
-          <Typography color="text.secondary" fontWeight={400}>
-            {subtitle}
-          </Typography>
-        </Grid>
-        <Grid
-          size={{ xs: 6, lg: 4 }}
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: 2,
-          }}
+        {backIcon && (
+          <Link to={url ?? "/"}>
+            <ArrowBackIcon color="primary" sx={{ mt: "5px" }} />
+          </Link>
+        )}
+        <Typography
+          variant="h3"
+          component="h3"
+          fontWeight="600"
+          textTransform="uppercase"
         >
-          {btntitle && (
-            <Button
-              sx={{ mt: { xs: 2, md: 0 } }}
-              variant="contained"
-              startIcon={icon}
-              onClick={onActionClick}
-              size="small"
-            >
-              {btntitle}
-            </Button>
-          )}
-          {btntitle2 && (
-            <Button
-              sx={{ mt: { xs: 2, md: 0 } }}
-              variant="contained"
-              startIcon={icon2}
-              onClick={onActionClick2}
-              size="small"
-            >
-              {btntitle2}
-            </Button>
-          )}
-        </Grid>
-      </Grid>
-    </>
+          {heading}
+        </Typography>
+        <Typography variant="subtitle2">{subHeading}</Typography>
+      </Box>
+
+      <Box
+        display="flex"
+        gap={2}
+        justifyContent="flex-end"
+        sx={{
+          width: { xs: "100%", sm: "auto" },
+          justifyContent: { xs: "start", sm: "flex-end" }, 
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
   );
 };
-export default PageHeader;
+
+export default CommonHeader;

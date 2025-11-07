@@ -8,18 +8,17 @@ interface Props {
 const CommisionContainer = ({ children }: Props) => {
   return (
     <Box
-      sx={(theme) => ({
+      sx={{
         maxWidth: "98%",
         mx: 3,
         height: "100%",
-        pt: `calc(${theme.header.height})`
-      })}
+        pt: 2,
+      }}
       id="LeaseView"
     >
       {children}
     </Box>
   );
 };
-
 
 export default CommisionContainer;
