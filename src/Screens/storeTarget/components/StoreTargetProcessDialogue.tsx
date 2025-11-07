@@ -2,10 +2,11 @@ import { CommonDialog } from "../../../Component/forms/FormDialog";
 import type { ProcessStoreTargetRequest } from "../../../model/storeTargetType";
 import { useProcessStoreTargetMutation } from "../../../Api/storeTargetApi";
 import { toast } from "react-toastify";
-import {
-  ProcessStoreTargetFormFields,
-  ProcessStoreTargetFormValidationSchema,
-} from "../../../feilds_validation/processStoreTargetFormFields";
+import { ProcessStoreTargetFormFields, ProcessStoreTargetFormValidationSchema } from "../../../feilds_validation/processStoreValidation";
+// import {
+//   ProcessStoreTargetFormFields,
+//   ProcessStoreTargetFormValidationSchema,
+// } from "../../../feilds_validation/processStoreTargetFormFields";
 
 interface StoreTargetProcessDialogueProps {
   open: boolean;

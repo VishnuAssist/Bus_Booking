@@ -2,6 +2,7 @@
 
 import type { JSX } from "react";
 import type { QueryParamsType } from "./common";
+// import type { QueryParamsType } from "./common";
 
 export interface OptionType {
   id?: string | number;

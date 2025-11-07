@@ -18,10 +18,10 @@ import { ValidateParams } from "../../Lib/utile";
 import AppPagination from "../../Component/AppPagination";
 import { Paper } from "@mui/material";
 import { DEFAULT_PAGINATION_OPTIONS } from "../../Constant/defaultValues";
-import type { MonthlySummarriesQueryParamsType } from "../../model/commissionType";
+// import type { MonthlySummarriesQueryParamsType } from "../../model/commissionType";
 import { userTableDataService } from "./services/StoreTableData";
 import StoreFilter from "./components/StoreFilter";
-import { useGetCountriesQuery } from "../../Api/rulesApi";
+// import { useGetCountriesQuery } from "../../Api/rulesApi";
 
 const Store = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -31,18 +31,19 @@ const Store = () => {
 
   // API hooks
 
-  const { data: countrys } = useGetCountriesQuery({})
+  // const { data: countrys } = useGetCountriesQuery({})
+  const countrys:any[] = []
 
   console.log("countrys", countrys);
 
   const [queryParams, setQueryParams] =
-    useState<MonthlySummarriesQueryParamsType>({
+    useState<any>({
       ...DEFAULT_PAGINATION_OPTIONS,
       PageSize: DEFAULT_PAGINATION_OPTIONS.PageSize || 5,
     });
 
   const handleQueryParamsChange = (
-    newQueryParams: MonthlySummarriesQueryParamsType
+    newQueryParams: any
   ) => {
     {
       setQueryParams(newQueryParams);

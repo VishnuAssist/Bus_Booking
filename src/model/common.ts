@@ -1,5 +1,4 @@
 export interface QueryParamsType {
- 
   Category?: number | null | string;
   OrderBy?: string;
   SearchTerm?: string;
@@ -9,9 +8,9 @@ export interface QueryParamsType {
   PageSize?: number;
   StartYear?: number;
   EndYear?: number;
-isAll?: boolean;
+  isAll?: boolean;
   spaceId?: number;
- maxDaysUntilExpiry?:number
+  maxDaysUntilExpiry?: number;
   chargeId?: number;
   LandlordId?: number;
   propertyId?: number;
@@ -44,7 +43,6 @@ isAll?: boolean;
   Page?: string;
   PageId?: string;
   userId?: string;
-
 }
 
 export interface MetaData {
@@ -54,11 +52,11 @@ export interface MetaData {
   totalCount: number;
 }
 export interface ColumnConfig<T> {
-  id: keyof T
-  label: string
-  icon?: React.ReactNode
-  format?: (value: any, row: T) => React.ReactNode
-  size?: { sm?: number, md?: number, lg?: number }
+  id: keyof T;
+  label: string;
+  icon?: React.ReactNode;
+  format?: (value: any, row: T) => React.ReactNode;
+  size?: { sm?: number; md?: number; lg?: number };
 }
 
 export interface FilterData {
@@ -86,15 +84,15 @@ export interface SalesData {
   invoiceNo: string;
   spaceName: string;
   currencyName: string;
-  invoiceCount: number
+  invoiceCount: number;
 }
 export interface notificationtype {
-  id: number
-  page: string
-  pageId: string
-  message: string
-  title: string
-  createdOn: string
+  id: number;
+  page: string;
+  pageId: string;
+  message: string;
+  title: string;
+  createdOn: string;
 }
 export interface ExportJob {
   id: number;
@@ -104,13 +102,9 @@ export interface ExportJob {
   completedAt?: string;
   fileName?: string;
 
-
-
-
-  issue: string,
-  requestedBy: string,
-  date: string,
-
+  issue: string;
+  requestedBy: string;
+  date: string;
 }
 
 export interface ExportStartResponse {
