@@ -1,13 +1,14 @@
 // src/api/storeTargetApi.ts
 import { createApi } from "@reduxjs/toolkit/query/react";
 import APIFetchBase from "../Store/ApiConfig";
-import type { MetaData } from "../model/common";
+// import type { MetaData } from "../model/common";
 import { dataWithMeta } from "../Lib/ApiUtil";
 import type { QueryParamsType } from "../Dto/formDto";
 import type {
   ProcessStoreTargetRequest,
   StoreTargetDto,
 } from "../model/storeTargetType";
+import type { MetaData } from "../model/common";
 
 export const storeTargetApi = createApi({
   reducerPath: "storeTargetApi",
