@@ -37,6 +37,7 @@ function Header({
   isSidebarLayout,
 }: HeaderProps) {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  console.log("sidebarToggle", sidebarToggle);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const handleExpand = () => setExpanded(!expanded);
