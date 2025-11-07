@@ -9,6 +9,7 @@ import {
   InputBase,
   Paper,
   Tooltip,
+  Button,
 } from "@mui/material";
 import Modechanger from "./ModeChanger";
 import SignOutButton from "./SignOut";
@@ -18,6 +19,9 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import SearchIcon from "@mui/icons-material/Search";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import AccessibilityNewSharpIcon from "@mui/icons-material/AccessibilityNewSharp";
+import { useContext } from "react";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import { SidebarContext } from "../../../Context/SidebarContext";
 
 const HeaderWrapper = styled(Box)(({ theme }) => ({
   position: "fixed",
@@ -32,10 +36,16 @@ const HeaderWrapper = styled(Box)(({ theme }) => ({
   backdropFilter: "blur(6px)",
   boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
 }));
+interface HeaderProps {
+  expanded: boolean;
+  setExpanded: (e: boolean) => void;
+}
 
-function Header() {
+function Header({ expanded, setExpanded }: HeaderProps) {
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const handleExpand = () => setExpanded(!expanded);
 
   return (
     <HeaderWrapper sx={{ height: isMobile ? 60 : theme.header.height }}>
@@ -51,6 +61,30 @@ function Header() {
           position: "relative",
         }}
       >
+        {!isMobile && (
+          <Button
+            disableRipple
+            onClick={() => {
+              if (window.innerWidth < theme.breakpoints.values.lg) {
+                toggleSidebar();
+              } else {
+                handleExpand();
+              }
+            }}
+            sx={{
+              minWidth: "auto",
+              padding: 0.2,
+              mr: 1,
+              bgcolor: theme.colors.primary.main,
+            }}
+          >
+            {expanded ? (
+              <ChevronLeft sx={{ color: "white" }} />
+            ) : (
+              <ChevronRight sx={{ color: "white" }} />
+            )}
+          </Button>
+        )}
         <Box display="flex" alignItems="center" gap={1}>
           {!isMobile && (
             <Paper

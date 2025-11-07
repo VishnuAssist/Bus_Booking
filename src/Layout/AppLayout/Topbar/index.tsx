@@ -28,31 +28,65 @@ const menuItems = [
     category: "main",
   },
   {
-    label: "Profile",
+    label: "Employee",
+    icon: <DashboardIcon />,
+    category: "reports",
+    subItems: [
+      { label: "Employee Management", link: "/reports/sales" },
+      { label: "Sync Employee", link: "/reports/performance" },
+      { label: "Group Management", link: "/reports/analytics" },
+    ],
+  },
+  {
+    label: "Zone",
     link: "/dashboards/Profile",
     icon: <AccountCircleOutlinedIcon />,
     category: "main",
   },
-  //   {
-  //     label: "Reports",
-  //     icon: <DashboardIcon />,
-  //     category: "reports",
-  //     subItems: [
-  //       { label: "Sales Report", link: "/reports/sales" },
-  //       { label: "Performance Report", link: "/reports/performance" },
-  //       { label: "Analytics", link: "/reports/analytics" },
-  //     ],
-  //   },
-  //   {
-  //     label: "Management",
-  //     icon: <AccountCircleOutlinedIcon />,
-  //     category: "management",
-  //     subItems: [
-  //       { label: "User Management", link: "/management/users" },
-  //       { label: "Team Management", link: "/management/teams" },
-  //       { label: "Settings", link: "/management/settings" },
-  //     ],
-  //   },
+  {
+    label: "SOP",
+    link: "/dashboards/Profile",
+    icon: <AccountCircleOutlinedIcon />,
+    category: "main",
+  },
+  {
+    label: "POS",
+    link: "/dashboards/Profile",
+    icon: <AccountCircleOutlinedIcon />,
+    category: "main",
+  },
+  {
+    label: "Vouchers",
+    icon: <AccountCircleOutlinedIcon />,
+    category: "management",
+    subItems: [
+      { label: "Vouchers Management", link: "/management/users" },
+      { label: "My Vouchers", link: "/management/teams" },
+      { label: "Valiram Vouchers", link: "/management/settings" },
+      { label: "Transaction History", link: "/management/settings" },
+    ],
+  },
+  {
+    label: "Activities",
+    icon: <AccountCircleOutlinedIcon />,
+    category: "management",
+    subItems: [
+      { label: "Task", link: "/management/users" },
+      { label: "Survey", link: "/management/teams" },
+      { label: "Challenges", link: "/management/settings" },
+      { label: "Tutorial", link: "/management/settings" },
+    ],
+  },
+  {
+    label: "Settings",
+    icon: <AccountCircleOutlinedIcon />,
+    category: "management",
+    subItems: [
+      { label: "Dictionary", link: "/management/users" },
+      { label: "Store Directory", link: "/management/teams" },
+      { label: "Store Users", link: "/management/settings" },
+    ],
+  },
 ];
 
 export default function TopMenu() {
@@ -188,7 +222,7 @@ export default function TopMenu() {
           boxShadow: "0px 2px 8px rgba(0,0,0,0.08)",
           borderBottom: "1px solid",
           borderColor: "divider",
-          zIndex: 1200,
+          zIndex: 100,
         }}
       >
         {!isMobile ? (

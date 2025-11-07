@@ -1,17 +1,15 @@
-import {
-  Box,
-  useTheme,
-  useMediaQuery,
-  Card,
-} from "@mui/material";
+import { Box, useTheme, useMediaQuery, Card } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
 import Header from "./Header";
 import Footer from "../../Component/Footer";
 import TopMenu from "./Topbar";
-import type { FC } from "react";
+import { useState, type FC } from "react";
+import Sidebar from "./Sidebar";
 
 const SidebarLayout: FC = () => {
+    const [expanded, setExpanded] = useState(false);
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -19,7 +17,10 @@ const SidebarLayout: FC = () => {
 
   return (
     <Box sx={{ flex: 1, height: "100%" }}>
-      <Header />
+      <Header expanded={expanded} setExpanded={setExpanded}/>
+
+      <Sidebar expanded={expanded} setExpanded={(e) => setExpanded(e)} />
+
       <Card>
         <TopMenu />
       </Card>
