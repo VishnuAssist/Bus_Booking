@@ -19,81 +19,47 @@ interface AnchorPosition {
   left: number;
 }
 
-	const menuItems = [
-    {
-      label: "Dashboard",
-      link: "/dashboards/Dashboard",
-      icon: <DashboardIcon />,
-      category: "main",
-    },
-    {
-      label: "LeaderBoard",
-      link: "/dashboards/LeaderBoard",
-      icon: <EmojiEventsOutlinedIcon />,
-      category: "main",
-    },
-    {
-      label: "Employee",
-      icon: <DashboardIcon />,
-      category: "reports",
-      subItems: [
-        { label: "Employee Management", link: "/reports/sales" },
-        { label: "Sync Employee", link: "/reports/performance" },
-        { label: "Group Management", link: "/reports/analytics" },
-      ],
-    },
-    {
-      label: "Zone",
-      link: "/dashboards/Profile",
-      icon: <AccountCircleOutlinedIcon />,
-      category: "main",
-    },
-    {
-      label: "SOP",
-      link: "/dashboards/Profile",
-      icon: <AccountCircleOutlinedIcon />,
-      category: "main",
-    },
-    {
-      label: "POS",
-      link: "/dashboards/Profile",
-      icon: <AccountCircleOutlinedIcon />,
-      category: "main",
-    },
-    {
-      label: "Vouchers",
-      icon: <AccountCircleOutlinedIcon />,
-      category: "management",
-      subItems: [
-        { label: "Vouchers Management", link: "/management/users" },
-        { label: "My Vouchers", link: "/management/teams" },
-        { label: "Valiram Vouchers", link: "/management/settings" },
-        { label: "Transaction History", link: "/management/settings" },
-      ],
-    },
-    {
-      label: "Activities",
-      icon: <AccountCircleOutlinedIcon />,
-      category: "management",
-      subItems: [
-        { label: "Task", link: "/management/users" },
-        { label: "Survey", link: "/management/teams" },
-        { label: "Challenges", link: "/management/settings" },
-        { label: "Tutorial", link: "/management/settings" },
-      ],
-    },
-    {
-      label: "Settings",
-      icon: <AccountCircleOutlinedIcon />,
-      category: "management",
-      subItems: [
-        { label: "Dictionary", link: "/settings/dictionary" },
-        { label: "Store Directory", link: "/management/teams" },
-        { label: "Store Users", link: "/management/settings" },
-        { label: "Store Users", link: "/management/settings/StoreUser" },
-      ],
-    },
-  ];
+const menuItems = [
+  {
+    label: "Dashboard",
+    link: "/dashboards/Dashboard",
+    icon: <DashboardIcon />,
+    category: "main",
+  },
+  {
+    label: "Bus & Operators",
+    icon: <DashboardIcon />,
+    category: "main",
+    subItems: [
+      { label: "Bus Management", link: "/dashboards/operatormanagemet" },
+      { label: "Operator Management", link: "/dashboards/operatormanagemet" },
+    ],
+  },
+  {
+    label: "Booking Management",
+    link: "/reports/operatormanagemet",
+    icon: <EmojiEventsOutlinedIcon />,
+    category: "main",
+  },
+  {
+    label: "Schedule Management",
+    link: "/dashboards/operatormanagemet",
+    icon: <EmojiEventsOutlinedIcon />,
+    category: "main",
+  },
+  {
+    label: "Payment & Finance",
+    link: "/dashboards/operatormanagemet",
+    icon: <EmojiEventsOutlinedIcon />,
+    category: "main",
+  },
+  {
+    label: "Reports & Analytics",
+    link: "/dashboards/operatormanagemet",
+    icon: <EmojiEventsOutlinedIcon />,
+    category: "reports",
+  },
+];
 
 export default function TopMenu() {
   const theme = useTheme();
@@ -105,11 +71,16 @@ export default function TopMenu() {
     [key: string]: AnchorPosition | null;
   }>({});
 
-  const mainItems = menuItems.filter((item) => item.category === "main");
+  const mainItems = menuItems.filter(
+    (item) => item.category === "main" && !item.subItems
+  );
   const menuWithSubItems = menuItems.filter((item) => item.subItems);
 
   // ✅ safer handleMenuOpen
-  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>, menuLabel: string) => {
+  const handleMenuOpen = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    menuLabel: string
+  ) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setMenuAnchors((prev) => ({
       ...prev,
@@ -143,7 +114,8 @@ export default function TopMenu() {
           to={item.link}
           startIcon={item.icon}
           sx={{
-            color: location.pathname === item.link ? "primary.main" : "text.primary",
+            color:
+              location.pathname === item.link ? "primary.main" : "text.primary",
             fontWeight: location.pathname === item.link ? 600 : 400,
             px: 2,
             py: 1,

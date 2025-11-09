@@ -119,7 +119,7 @@ function Header({
           )}
         </Box>
 
-        {!isMobile && (
+        {/* {!isMobile && (
           <Box
             sx={{
               position: "absolute",
@@ -129,17 +129,12 @@ function Header({
           >
             <img src={Logo} alt="Logo" style={{ height: 40 }} />
           </Box>
-        )}
+        )} */}
 
         <Box display="flex" alignItems="center" gap={1} ml="auto">
           <Tooltip title="Notification">
             <IconButton>
               <NotificationsActiveIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Accessibility">
-            <IconButton>
-              <AccessibilityNewSharpIcon />
             </IconButton>
           </Tooltip>
           <Modechanger />

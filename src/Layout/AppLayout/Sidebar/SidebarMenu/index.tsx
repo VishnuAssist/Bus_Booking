@@ -124,16 +124,22 @@ function SidebarMenu({
             icon: <DashboardIcon />,
             hide: true,
           },
+        ],
+      },
+       {
+        title: "Management",
+        icon: <DashboardIcon />,
+        items: [
+          // {
+          //   label: "Attendence",
+          //   link: "/staff/attendence",
+          //   icon: <AccessTimeIcon />,
+          //   hide: true,
+          // },
           {
-            label: "LeaderBoard",
-            link: "/dashboards/LeaderBoard",
-            icon: <EmojiEventsOutlinedIcon />,
-            hide: true,
-          },
-          {
-            label: "Profile",
-            link: "/dashboards/Profile",
-            icon: <AccountCircleOutlinedIcon />,
+            label: "Operator Management",
+            link: "/dashboards/operatormanagemet",
+            icon: <DashboardIcon />,
             hide: true,
           },
         ],

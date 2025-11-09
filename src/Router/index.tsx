@@ -15,7 +15,9 @@ const Loader = (Component: any) => (props: any) =>
   );
 
 const Profile = Loader(lazy(() => import("../Screens/Profile")));
-
+const OperatorManagement = Loader(
+  lazy(() => import("../Screens/OperatorManagement"))
+);
 
 const Store = Loader(lazy(() => import("../Screens/store/index")));
 const Dictionary = Loader(lazy(() => import("../Screens/Dictionary/index")));
@@ -96,10 +98,10 @@ const routes: RouteObject[] = [
             path: "Profile",
             element: <Profile />,
           },
-          // {
-          //   path: "Calender",
-          //   element: <Calender />,
-          // },
+          {
+            path: "operatormanagemet",
+            element: <OperatorManagement />,
+          },
         ],
       },
     ],
@@ -131,7 +133,6 @@ const routes: RouteObject[] = [
                 path: "target",
                 element: <StoreTarget />,
               },
-            
 
               {
                 path: "store",
@@ -167,10 +168,10 @@ const routes: RouteObject[] = [
             path: "storeTarget",
             element: <StoreTarget />,
           },
-            {
-                path: "StoreUser",
-                element: <StoreUser />,
-              },
+          {
+            path: "StoreUser",
+            element: <StoreUser />,
+          },
         ],
       },
     ],

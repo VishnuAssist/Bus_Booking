@@ -113,10 +113,7 @@ function Sidebar({
                 </IconButton>
                 <Box>
                   <Typography fontSize={16} fontWeight={500}>
-                    Zone Commission
-                  </Typography>
-                  <Typography fontSize={12} fontWeight={300}>
-                    Performance Platform
+                    Go Bus
                   </Typography>
                 </Box>
               </Box>
